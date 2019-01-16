@@ -6,9 +6,7 @@ const third = (1 / 3) * (Metrics.screenHeight - Metrics.navBarHeight * 2)
 export default StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: 'white',
-    borderTopWidth: 20,
-    borderTopColor: Colors.background,
+    backgroundColor: Colors.snow,
   },
   containerWithNavbar: {
     ...ApplicationStyles.screen.containerWithNavbar,
@@ -88,11 +86,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   navBarStyle: {
-    height: Metrics.navBarHeight - 10,
+    height: Metrics.navBarHeight + 20,
     paddingTop: 0,
-  },
-  navBarRightTextStyle: {
-    paddingRight: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   angleDownIcon: {
     height: 20,

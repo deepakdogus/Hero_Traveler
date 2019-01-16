@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 import TextButton from '../../Components/TextButton'
@@ -13,37 +14,42 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: isIPhoneX() ? 20 : 15,
   },
   text: {
     fontFamily: Fonts.type.montserrat,
-    fontSize: 16,
-    color: Colors.red,
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.background,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
-    flex: 1 / 3,
+    flex: 2 / 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: isIPhoneX() ? 15 : 0,
   },
   titleText: {
     textAlign: 'center',
     color: Colors.background,
-    fontSize: 18,
-    fontWeight: '700',
-    marginTop: 45,
-  },
-  row: {
-    flexDirection: 'row',
+    fontSize: 13,
+    justifyContent: 'center',
   },
   left: {
-    flex: 1 / 3,
+    flex: 3 / 10,
     flexDirection: 'row',
     marginTop: isIPhoneX() ? 15 : 0,
   },
   leftText: {
     textAlign: 'left',
     paddingLeft: Metrics.doubleBaseMargin,
-    color: Colors.feedDividerGrey,
+    color: Colors.background,
   },
   right: {
-    flex: 1 / 3,
+    flex: 3 / 10,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: isIPhoneX() ? 15 : 0,
@@ -51,9 +57,10 @@ const styles = StyleSheet.create({
   rightText: {
     textAlign: 'right',
     paddingRight: Metrics.doubleBaseMargin,
+    color: Colors.redHighlights,
   },
   leftBtn: {
-    tintColor: Colors.redHighlights,
+    tintColor: Colors.navBarText,
   },
   inactiveText: {
     opacity: 0.5,
@@ -78,6 +85,23 @@ const styles = StyleSheet.create({
 })
 
 export default class NavBar extends Component {
+  static propTypes = {
+    style: PropTypes.number,
+    leftTitle: PropTypes.string,
+    leftIcon: PropTypes.string,
+    leftTextStyle: PropTypes.number,
+    leftIconStyle: PropTypes.number,
+    onLeft: PropTypes.func,
+    title: PropTypes.string,
+    titleStyle: PropTypes.number,
+    onTitle: PropTypes.func,
+    rightTitle: PropTypes.string,
+    rightIcon: PropTypes.string,
+    rightTextStyle: PropTypes.number,
+    onRight: PropTypes.func,
+    isRightValid: PropTypes.bool,
+  }
+
   render() {
     const {
       style,

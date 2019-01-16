@@ -25,19 +25,20 @@ import NavBar from '../CreateStory/NavBar'
 const imageHeight
   = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight - 40
 
-const tabTypes = {
-  all: null,
-  see: 'see',
-  do: 'do',
-  eat: 'eat',
-  stay: 'stay',
-  guide: 'guide',
-}
+// const tabTypes = {
+//   all: null,
+//   see: 'see',
+//   do: 'do',
+//   eat: 'eat',
+//   stay: 'stay',
+//   guides: 'guides',
+// }
 
-// removing story subtypes for now, to add back replace `restrictedTabTypes` on line 144 with `tabTypes`
+// removing story subtypes for now, to add back replace all instances of
+// `restrictedTabTypes` with `tabTypes`
 const restrictedTabTypes = {
   stories: null,
-  guides: 'guide',
+  guides: 'guides',
 }
 
 class CategoryFeedScreen extends React.Component {
@@ -108,7 +109,7 @@ class CategoryFeedScreen extends React.Component {
         selectedTab,
       },
       () => {
-        if (selectedTab !== tabTypes.guide) this.loadStories()
+        if (selectedTab !== restrictedTabTypes.guides) this.loadStories()
       },
     )
   }
@@ -116,7 +117,7 @@ class CategoryFeedScreen extends React.Component {
   renderFeedItem = (feedItem, index) => {
     return (
       <ConnectedFeedItemPreview
-        isStory={this.state.selectedTab !== tabTypes.guide}
+        isStory={this.state.selectedTab !== restrictedTabTypes.guides}
         feedItem={feedItem}
         height={imageHeight}
         userId={this.props.user.id}
@@ -170,7 +171,7 @@ class CategoryFeedScreen extends React.Component {
       title,
       categoryGuidesById,
     } = this.props
-    const { selectedTab } = this.state
+    const { selectedTab, refreshing } = this.state
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
@@ -183,31 +184,33 @@ class CategoryFeedScreen extends React.Component {
       )
     }
 
-    if (fetchStatus.fetching && !this.state.refreshing) {
+    if (fetchStatus.fetching && !refreshing) {
       bottomContent = this.renderNoStories(<Loader />)
     }
     else if (
-      (selectedTab !== tabTypes.guide && _.size(storiesById) === 0)
-      || (selectedTab === tabTypes.guide && _.size(categoryGuidesById === 0))
+      (selectedTab !== restrictedTabTypes.guides && _.size(storiesById) === 0)
+      || (selectedTab === restrictedTabTypes.guides && _.size(categoryGuidesById) === 0)
     ) {
       bottomContent = this.renderNoStories(
         <NoStoriesMessage
-          text={selectedTab === tabTypes.guide ? 'guides' : 'stories'}
+          text={`There are no ${
+            selectedTab === restrictedTabTypes.guides ? 'guides' : 'stories'
+          } for this category`}
         />,
       )
     }
     else {
       bottomContent = (
         <ConnectedFeedList
-          isStory={selectedTab !== tabTypes.guide}
+          isStory={selectedTab !== restrictedTabTypes.guides}
           style={styles.feedList}
           entitiesById={
-            selectedTab === tabTypes.guide ? categoryGuidesById : storiesById
+            selectedTab === restrictedTabTypes.guides ? categoryGuidesById : storiesById
           }
           renderSectionHeader={this.renderTabs()}
           renderFeedItem={this.renderFeedItem}
           onRefresh={this._onRefresh}
-          refreshing={this.state.refreshing}
+          refreshing={refreshing}
         />
       )
     }

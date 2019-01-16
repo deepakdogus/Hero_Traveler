@@ -182,4 +182,7 @@ export default StyleSheet.create({
     zIndex: 100,
     padding: Metrics.section,
   },
+  redText: {
+    color: Colors.red,
+  },
 })

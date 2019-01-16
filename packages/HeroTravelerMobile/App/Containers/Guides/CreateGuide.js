@@ -169,8 +169,8 @@ class CreateGuide extends SharedCreateGuide {
               isRightValid={this.isGuideValid() && !creating ? true : false}
               onRight={onDone}
               rightTitle={this.isExistingGuide() ? 'Next' : 'Create'}
-              rightTextStyle={storyCoverStyles.navBarRightTextStyle}
-              style={storyCoverStyles.navBarStyle}
+              rightTextStyle={styles.rightTextStyle}
+              style={[storyCoverStyles.navBarStyle, styles.bottomBorder]}
             />
             <View style={styles.coverHeight}>
               {!!error && (

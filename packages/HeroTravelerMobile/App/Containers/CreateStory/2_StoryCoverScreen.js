@@ -579,145 +579,145 @@ class StoryCoverScreen extends Component {
 
     return (
       <View style={styles.root}>
-          <ScrollView
-            ref={this.setScrollViewRef}
-            keyboardShouldPersistTaps='handled'
-            stickyHeaderIndices={[0]}
-            onScroll={this.onScroll}
-            scrollEventThrottle={16}
-            onContentSizeChange={this.onContentSizeChange}
-            bounces={false}
-          >
-            <NavBar
-              title='Save'
-              onTitle={this._onTitle}
-              onLeft={this._onLeft}
-              leftTitle='Close'
-              onRight={this._onRight}
-              rightIcon={'arrowRightRed'}
-              isRightValid={this.isValid()}
-              rightTitle='Next'
-              rightTextStyle={styles.navBarRightTextStyle}
-              style={styles.navBarStyle}
-            />
-            <View style={this._getCoverStyle()}>
-                {error && (
-                  <ShadowButton
-                    style={styles.errorButton}
-                    onPress={this.clearError}
-                    text={error} />
-                )}
-                <EditableCoverMedia
-                  isPhoto={this.isPhotoType()}
-                  media={coverImage || coverVideo}
-                  clearError={this.clearError}
-                  targetId={id}
-                  onUpdate={updateWorkingDraft}
-                  onTrimError={this.onTrimError}
-                  jumpToTop={this.jumpToTop}
+        <ScrollView
+          ref={this.setScrollViewRef}
+          keyboardShouldPersistTaps='handled'
+          stickyHeaderIndices={[0]}
+          onScroll={this.onScroll}
+          scrollEventThrottle={16}
+          onContentSizeChange={this.onContentSizeChange}
+          bounces={false}
+        >
+          <NavBar
+            title='SAVE'
+            onTitle={this._onTitle}
+            onLeft={this._onLeft}
+            leftTitle='Close'
+            onRight={this._onRight}
+            rightIcon={'arrowRightRed'}
+            isRightValid={this.isValid()}
+            rightTitle='Next'
+            rightTextStyle={styles.navBarRightTextStyle}
+            style={styles.navBarStyle}
+          />
+          <View style={this._getCoverStyle()}>
+              {error && (
+                <ShadowButton
+                  style={styles.errorButton}
+                  onPress={this.clearError}
+                  text={error}
                 />
-              </View>
-              <View style={styles.titlesWrapper}>
-                {!this.hasNoCover() && (
-                  <TextInput
-                    style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
-                    placeholder='Add a caption...'
-                    value={coverCaption}
-                    onChangeText={this.setCoverCaption}
-                    returnKeyType='done'
-                    blurOnSubmit
-                  />
-                )}
+              )}
+              <EditableCoverMedia
+                isPhoto={this.isPhotoType()}
+                media={coverImage || coverVideo}
+                clearError={this.clearError}
+                targetId={id}
+                onUpdate={updateWorkingDraft}
+                onTrimError={this.onTrimError}
+                jumpToTop={this.jumpToTop}
+              />
+            </View>
+            <View style={styles.titlesWrapper}>
+              {!this.hasNoCover() && (
                 <TextInput
-                  style={[
-                    styles.titleInput,
-                    {height: this.state.titleHeight},
-                  ]}
-                  placeholder='Add a title'
-                  placeholderTextColor={Colors.background}
-                  value={title}
-                  onChangeText={this.setTitleAndFocus}
-                  onFocus={this.jumpToTitle}
+                  style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
+                  placeholder='Add a caption...'
+                  value={coverCaption}
+                  onChangeText={this.setCoverCaption}
                   returnKeyType='done'
-                  maxLength={40}
-                  multiline={true}
-                  blurOnSubmit
-                  onContentSizeChange={this.setTitleHeight}
-                />
-                <TextInput
-                  style={styles.description}
-                  placeholder='Add a subtitle'
-                  placeholderTextColor={Colors.grey}
-                  value={description}
-                  onChangeText={this.setDescriptionAndFocus}
-                  onFocus={this.jumpToTitle}
-                  returnKeyType='done'
-                  maxLength={50}
                   blurOnSubmit
                 />
-                <View style={styles.divider}/>
-              </View>
-              <View style={styles.editorWrapper}>
-                {this.renderEditor()}
-              </View>
-            {<View style={styles.toolbarAvoiding}></View>}
-          </ScrollView>
-          {showIntroTooltip && (
-              <Tooltip
-                type='image-edit'
-                onDismiss={this._completeIntroTooltip}
-                dimBackground={true}
+              )}
+              <TextInput
+                style={[
+                  styles.titleInput,
+                  {height: this.state.titleHeight},
+                ]}
+                placeholder='Add a title'
+                placeholderTextColor={Colors.background}
+                value={title}
+                onChangeText={this.setTitleAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={40}
+                multiline={true}
+                blurOnSubmit
+                onContentSizeChange={this.setTitleHeight}
               />
-          )}
-          {this.editor && (
-            <KeyboardTrackingView
-              style={styles.trackingToolbarContainer}
-              trackInteractive={true}
-            >
-              {
-              <Toolbar
-                ref={this.setToolbarRef}
-                display={this.state.toolbarDisplay}
-                onPress={this.editor.onToolbarPress}
+              <TextInput
+                style={styles.description}
+                placeholder='Add a subtitle'
+                placeholderTextColor={Colors.grey}
+                value={description}
+                onChangeText={this.setDescriptionAndFocus}
+                onFocus={this.jumpToTitle}
+                returnKeyType='done'
+                maxLength={50}
+                blurOnSubmit
               />
-              }
-            </KeyboardTrackingView>
-          )}
-          {this.state.activeModal === 'cancel' && this.renderCancel()}
-          {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
-            && this.renderFailModal()
-          }
-          {this.isUploading() && (
-            <Loader
-              style={styles.loading}
-              text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
-              textStyle={styles.loadingText}
-              tintColor='rgba(0,0,0,.9)' />
-          )}
-          {this.state.updating && (
-            <Loader
-              style={styles.loading}
-              text='Saving progress...'
-              textStyle={styles.loaderText}
-              tintColor='rgba(0,0,0,.9)' />
-          )}
-          {this.hasNoDraft() && !this.props.error && (
-            <Loader
-              style={styles.loading}
-              text='Initializing Draft'
-              textStyle={styles.loaderText}
-              tintColor='rgba(0,0,0,.9)' />
-          )}
-          {validationError && (
+              <View style={styles.divider}/>
+            </View>
+            <View style={styles.editorWrapper}>
+              {this.renderEditor()}
+            </View>
+          {<View style={styles.toolbarAvoiding}></View>}
+        </ScrollView>
+        {showIntroTooltip && (
             <Tooltip
-              onPress={this.clearError}
-              position={'title'}
-              text={validationError}
-              onDismiss={this._dismissTooltip}
+              type='image-edit'
+              onDismiss={this._completeIntroTooltip}
+              dimBackground={true}
             />
-          )}
-        </View>
-      // </View>
+        )}
+        {this.editor && (
+          <KeyboardTrackingView
+            style={styles.trackingToolbarContainer}
+            trackInteractive={true}
+          >
+            {
+            <Toolbar
+              ref={this.setToolbarRef}
+              display={this.state.toolbarDisplay}
+              onPress={this.editor.onToolbarPress}
+            />
+            }
+          </KeyboardTrackingView>
+        )}
+        {this.state.activeModal === 'cancel' && this.renderCancel()}
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
+          && this.renderFailModal()
+        }
+        {this.isUploading() && (
+          <Loader
+            style={styles.loading}
+            text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
+            textStyle={styles.loadingText}
+            tintColor='rgba(0,0,0,.9)' />
+        )}
+        {this.state.updating && (
+          <Loader
+            style={styles.loading}
+            text='Saving progress...'
+            textStyle={styles.loaderText}
+            tintColor='rgba(0,0,0,.9)' />
+        )}
+        {this.hasNoDraft() && !this.props.error && (
+          <Loader
+            style={styles.loading}
+            text='Initializing Draft'
+            textStyle={styles.loaderText}
+            tintColor='rgba(0,0,0,.9)' />
+        )}
+        {validationError && (
+          <Tooltip
+            onPress={this.clearError}
+            position={'title'}
+            text={validationError}
+            onDismiss={this._dismissTooltip}
+          />
+        )}
+      </View>
     )
   }
 }

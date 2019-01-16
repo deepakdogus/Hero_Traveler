@@ -7,6 +7,8 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: Colors.background,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   tabbar: {
     height: Metrics.tabBarHeight,
@@ -18,7 +20,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: isIPhoneX() ? 'flex-start' : 'center',
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.snow,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   tabbarButton: {
     height: 55,
@@ -29,13 +33,14 @@ export default StyleSheet.create({
     height: 55,
     lineHeight: 55,
     letterSpacing: 1.5,
-    color: Colors.snow,
+    color: Colors.background,
     textAlign: 'center',
     fontSize: 15,
     fontFamily: Fonts.type.montserrat,
+    fontWeight: '500',
   },
   tabbarTextNotSelected: {
-    color: Colors.grey,
+    color: Colors.signupGrey,
   },
   imageWrapper: {
     flex: 1,
@@ -75,5 +80,11 @@ export default StyleSheet.create({
     color: Colors.navBarText,
     textAlign: 'center',
     padding: 20,
+  },
+  rightTextNoIcon: {
+    paddingRight: 20,
+  },
+  rightTextWithIcon: {
+    paddingRight: 5,
   },
 })

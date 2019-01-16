@@ -73,7 +73,7 @@ export default async function createStory(storyData, assetFormater) {
   // make a query for the story with just the fields
   // we want for the search index
   const populatedStory = await Story.get({_id: newStory._id})
-  algoliaHelper.addStoryToIndex(populatedStory)
+  if (!populatedStory.draft) algoliaHelper.addStoryToIndex(populatedStory)
 
   return {
     story: populatedStory,

@@ -5,7 +5,8 @@ import {hasValidOauth} from '../../middleware'
 // route functions
 import getStory from './getStory'
 import getUserStories from './getUserStories'
-import create from './create'
+import createStory from './createStory'
+import createStoryOld from './createStoryOld'
 import getUserFeed from './getUserFeed'
 import getUserFeedOld from './getUserFeedOld'
 import getUserLikes from './getUserLikes'
@@ -83,7 +84,8 @@ router.get('/:id', endpointWrapper(getStory))
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
 router.put('/:id/flag', hasValidOauth, endpointWrapper(flagStory))
-router.post('/', hasValidOauth, endpointWrapper(create))
+router.post('/', hasValidOauth, endpointWrapper(createStoryOld))
+router.post('/v2', hasValidOauth, endpointWrapper(createStory))
 
 router.get(
   '/guide/:guideId',

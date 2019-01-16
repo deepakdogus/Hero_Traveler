@@ -224,7 +224,7 @@ const create = () => {
 
   // publishes a draft
   const createStory = (story) => {
-    return api.post('story', {story})
+    return api.post('story/v2', {story})
   }
 
   const createDraft = () => {

@@ -13,9 +13,9 @@ class SignupSocialScreen extends React.Component {
     loadSuggestedPeople: PropTypes.func,
     myFollowedUsers: PropTypes.array,
     sessionUser: PropTypes.object,
-    followUser: PropTypes.object,
-    unfollowUser: PropTypes.object,
-    users: PropTypes.array,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
+    users: PropTypes.object,
     suggestedUsersById: PropTypes.array,
   }
 

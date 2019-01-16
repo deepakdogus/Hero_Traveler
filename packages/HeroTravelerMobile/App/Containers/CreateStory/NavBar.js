@@ -68,6 +68,9 @@ const styles = StyleSheet.create({
     tintColor: Colors.red,
     marginLeft: 10,
   },
+  extraTouchMarginStyle: {
+    marginRight: 50,
+  },
   rightIconStyle: {
     ...NavButtonStyles.image,
     marginRight: 10,
@@ -103,6 +106,7 @@ export default class NavBar extends Component {
                     image: [
                       styles.leftIconStyle,
                       styles.leftBtn,
+                      !leftTitle && styles.extraTouchMarginStyle,
                       leftIconStyle,
                     ],
                   }}

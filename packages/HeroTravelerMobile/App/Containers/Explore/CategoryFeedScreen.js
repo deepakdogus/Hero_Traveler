@@ -219,7 +219,6 @@ class CategoryFeedScreen extends React.Component {
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
           leftIcon="arrowLeft"
-          leftIconStyle={styles.navbarLeftIconStyle}
           onRight={this._onRight}
           rightTextStyle={
             isFollowingCategory

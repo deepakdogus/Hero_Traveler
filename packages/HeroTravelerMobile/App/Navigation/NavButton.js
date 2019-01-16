@@ -13,11 +13,11 @@ export default class NavButton extends React.Component {
   }
 
   render() {
-    const { onRight, onLeft, text, style = {} } = this.props
+    const { onRight, onLeft, iconName, text, style = {} } = this.props
     const TabIconInstance = (
       <TabIcon
-        name={this.props.iconName}
-        style={{ image: [Styles.image, style.icon || {}] }}
+        name={iconName}
+        style={{ image: [Styles.image, style.icon || {}], view: Styles.view }}
       />
     )
 
@@ -32,7 +32,7 @@ export default class NavButton extends React.Component {
         >
           {text}
         </Text>
-        {onRight && TabIconInstance}
+        {onRight && iconName && TabIconInstance}
       </TouchableOpacity>
     )
   }

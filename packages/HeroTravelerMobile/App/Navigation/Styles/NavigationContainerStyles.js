@@ -1,15 +1,11 @@
-import {Colors, Metrics, Fonts} from '../../Shared/Themes/'
+import { Colors, Metrics, Fonts } from '../../Shared/Themes/'
 import { isIPhoneX } from '../../Themes/Metrics'
 
 export default {
   container: {
     flex: 1,
   },
-  navBarTitle: {
-    color: Colors.navBarText,
-  justifyContent: 'flex-end',
-  },
-  navBarClear: {
+  navBar: {
     backgroundColor: Colors.clear,
     borderBottomWidth: 0,
     paddingTop: isIPhoneX() ? 15 : 0,
@@ -29,40 +25,42 @@ export default {
     height: Metrics.tabBarHeight,
     justifyContent: isIPhoneX() ? 'flex-start' : 'center',
   },
-  lightNavText: {
+  navTitle: {
+    fontSize: 18,
+  },
+  storyTitle: {
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '600',
+    letterSpacing: .7,
+    fontSize: 15,
+    color: Colors.background,
+  },
+  navText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
     fontSize: 16,
   },
-  lightNavTitle: {
-    fontSize: 18,
-  },
   navBarBack: {
     tintColor: Colors.redHighlights,
     transform: [{scaleX: 0.75}, {scaleY: 0.75}],
+    marginRight: 50,
+  },
+  backButtonWithText: {
+    tintColor: Colors.navBarText,
+    marginRight: 0,
   },
   browseGuest: {
     fontSize: 12,
     color: Colors.snow,
-  },
-  doneFollow: {
-    color: Colors.red,
-  },
-  redHighlightTint: {
-    tintColor: Colors.redHighlights,
-  },
-  signupTopicsRight: {
-    color: Colors.red,
-    paddingRight: 20,
-  },
-  buttonRed: {
-    tintColor: Colors.red,
   },
   buttonGrey: {
     tintColor: Colors.navBarText,
   },
   buttonGreyText: {
     color: Colors.navBarText,
+    fontSize: 16,
+    paddingBottom: 2.5,
+    fontFamily: Fonts.type.montserrat,
   },
   createStory: {
     view: {
@@ -75,13 +73,6 @@ export default {
     image: {
       transform: [{scaleX: 0.5}, {scaleY: 0.5}],
     },
-  },
-  storyTitle: {
-    fontFamily: Fonts.type.sourceSansPro,
-    fontWeight: '600',
-    letterSpacing: .7,
-    fontSize: 15,
-    color: Colors.background,
   },
   tabIcon: {
     image: {

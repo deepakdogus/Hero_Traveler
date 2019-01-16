@@ -66,17 +66,17 @@ import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 import { Images } from '../Shared/Themes'
 
 const navBarProps = {
-  navigationBarStyle: Styles.navBarClear,
-  titleStyle: [Styles.lightNavText, Styles.lightNavTitle],
-  backButtonTextStyle: Styles.lightNavText,
-  leftButtonTextStyle: Styles.lightNavText,
-  rightButtonTextStyle: Styles.lightNavText,
+  navigationBarStyle: Styles.navBar,
+  titleStyle: [Styles.navText, Styles.navTitle],
+  backButtonTextStyle: Styles.buttonGreyText,
+  leftButtonTextStyle: Styles.buttonGreyText,
+  rightButtonTextStyle: Styles.navText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack,
 }
 
-const redBack = {
-  leftButtonIconStyle: Styles.buttonRed,
+const backButtonWithText = {
+  leftButtonIconStyle: Styles.backButtonWithText,
 }
 
 const tabBarProps = {
@@ -114,7 +114,6 @@ const socialRightBtn = ({ onRight }) => (
   <NavButton
     onRight={onRight}
     text='Done'
-    iconName='arrowRightRed'
   />
 )
 
@@ -209,8 +208,8 @@ export default NavActions.create(
           hideNavBar={false}
           component={SignupSocial}
           renderRightButton={socialRightBtn}
-          leftButtonIconStyle={Styles.buttonGrey}
           backTitle='Back'
+          {..._.merge({}, navBarProps, backButtonWithText)}
           backButtonImage={Images.iconArrowLeft}
           backButtonTextStyle={Styles.buttonGreyText}
           onRight={navToTabbar}
@@ -265,7 +264,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Terms & Conditions'
+        title={'Terms & Conditions'}
       />
       <Scene
         key='FAQ'
@@ -294,7 +293,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, navBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -303,7 +301,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, navBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -405,7 +402,6 @@ export default NavActions.create(
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
-        leftButtonIconStyle={Styles.redHighlightTint}
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         navigationBarStyle={Styles.navBarFixedHeight}
@@ -414,7 +410,6 @@ export default NavActions.create(
         key='guestExplore'
         component={ExploreScreen}
         onLeft={NavActions.pop}
-        leftButtonIconStyle={Styles.redHighlightTint}
         backButtonImage={Images.iconArrowLeft}
       />
       <Scene
@@ -423,7 +418,6 @@ export default NavActions.create(
         title='Followers'
         direction='horizontal'
         onLeft={popVertical}
-        leftButtonIconStyle={Styles.redHighlightTint}
         backButtonImage={Images.iconArrowLeft}
       />
       <Scene
@@ -473,7 +467,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        leftButtonIconStyle={Styles.redHighlightTint}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -482,7 +475,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        leftButtonIconStyle={Styles.redHighlightTint}
         titleStyle={Styles.storyTitle}
       />
     </Scene>,

@@ -92,7 +92,7 @@ export default StyleSheet.create({
     paddingTop: 0,
   },
   navBarRightTextStyle: {
-    paddingRight: 10,
+    paddingRight: 5,
   },
   angleDownIcon: {
     height: 20,

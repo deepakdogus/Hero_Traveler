@@ -69,6 +69,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     marginBottom: 5,
     minHeight: 108,
+    backgroundColor: Colors.snow,
   },
   italicText: {
     fontFamily: Fonts.type.sourceSansPro,

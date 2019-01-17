@@ -25,8 +25,14 @@ export default {
     height: Metrics.tabBarHeight,
     justifyContent: isIPhoneX() ? 'flex-start' : 'center',
   },
+  navText: {
+    fontFamily: Fonts.type.montserrat,
+    color: Colors.background,
+    fontSize: 16,
+  },
   navTitle: {
-    fontSize: 18,
+    fontSize: 13,
+    fontWeight: '600',
   },
   storyTitle: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -34,11 +40,6 @@ export default {
     letterSpacing: .7,
     fontSize: 15,
     color: Colors.background,
-  },
-  navText: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.background,
-    fontSize: 16,
   },
   navBarBack: {
     tintColor: Colors.redHighlights,

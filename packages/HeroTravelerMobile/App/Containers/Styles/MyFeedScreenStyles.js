@@ -5,7 +5,7 @@ import { isIPhoneX } from '../../Themes/Metrics'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.feedDividerGrey,
+    backgroundColor: Colors.snow,
   },
   fakeNavBar: {
     height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20

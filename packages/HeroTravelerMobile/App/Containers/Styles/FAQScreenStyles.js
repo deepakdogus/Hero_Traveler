@@ -1,18 +1,18 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
     backgroundColor: Colors.snow,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 20 : Metrics.navBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.navBarText,
   },
   scrollView: {
     flex: 1,
-  },
-  scrollViewContent: {
-    paddingTop: 1.5 * Metrics.navBarHeight,
-    paddingBottom: 1.5 * Metrics.tabBarHeight,
   },
   questionText: {
     color: Colors.blackoutTint,

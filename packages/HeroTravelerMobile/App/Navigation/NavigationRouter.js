@@ -231,7 +231,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Change Password'
+        title='CHANGE PASSWORD'
       />
       <Scene
         key='changeEmail'
@@ -239,7 +239,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Change Email'
+        title='CHANGE EMAIL'
       />
       <Scene
         key='settings'
@@ -247,7 +247,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Settings'
+        title='SETTINGS'
       />
       <Scene
         key='settings_notification'
@@ -255,7 +255,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Notifications'
+        title='NOTIFICATIONS'
 
       />
       <Scene
@@ -264,7 +264,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title={'Terms & Conditions'}
+        title={'TERMS & CONDITIONS'}
       />
       <Scene
         key='FAQ'
@@ -279,13 +279,13 @@ export default NavActions.create(
         component={PrivacyScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
-        title='Privacy Policy'
+        title='PRIVACY POLICY'
       />
       <Scene
         key='resetPassword'
         component={ResetPasswordScreen}
         onLeft={NavActions.pop}
-        title='Reset Password'
+        title='RESET PASSWORD'
       />
       <Scene
         key='story'
@@ -309,7 +309,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconClose}
-        title='Comments'
+        title='COMMENTS'
       />
       <Scene
         key='tabbar'
@@ -343,7 +343,6 @@ export default NavActions.create(
             component={CategoryFeedScreen}
             onLeft={NavActions.pop}
             backButtonImage={Images.iconArrowLeft}
-            title='Category Feed'
             hideNavBar={true}
           />
         </Scene>
@@ -358,7 +357,7 @@ export default NavActions.create(
           key='activity'
           icon={TabIcon}
           component={ActivityScreen}
-          title='Notifications'
+          title='NOTIFICATIONS'
           {...navBarProps}
         />
         <Scene
@@ -415,7 +414,7 @@ export default NavActions.create(
       <Scene
         key='followersScreen'
         component={FollowersScreen}
-        title='Followers'
+        title='FOLLOWERS'
         direction='horizontal'
         onLeft={popVertical}
         backButtonImage={Images.iconArrowLeft}

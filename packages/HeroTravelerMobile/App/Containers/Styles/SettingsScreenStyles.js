@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     backgroundColor: Colors.lightGreyAreas,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 20 : Metrics.navBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.navBarText,
   },
   separator: {
     height: 35,

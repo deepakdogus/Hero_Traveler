@@ -46,6 +46,7 @@ export default StyleSheet.create({
   },
   topAreaWrapper: {
     marginBottom: 10,
+    backgroundColor: Colors.snow,
   },
   avatarWrapper: {
     flexDirection: 'column',

@@ -1,23 +1,12 @@
 export default function convertUrlsToImageFormat(thumbnail, heroImage, altText){
-  const thumbFormat = thumbnail.format === 'jpg' || 'jpeg' ? 'jpeg' : thumbnail.format
-  const heroFormat = heroImage.format === 'jpg' || 'jpeg' ? 'jpeg' : heroImage.format
-  const heroImageName = `${heroImage.public_id.substring(heroImage.public_id.lastIndexOf('/') + 1)}.${heroImage.format}`
-  const heroDashSpacedImageName = heroImageName.split(' ').join('-')
-  const thumbnailName = `${thumbnail.public_id.substring(thumbnail.public_id.lastIndexOf('/') + 1)}.${thumbnail.format}`
-  const thumbnailDashSpacedImageName = thumbnailName.split(' ').join('-')
-  return {
+  const result = {
     altText,
-    original: {
-      filename: heroImageName,
-      path: `v${heroImage.version}/${heroImage.public_id.split('/')[0]}/${heroDashSpacedImageName}`,
-      folders: [`v${heroImage.version}`, heroImage.public_id.split('/')[0]],
-      width: heroImage.width,
-      height: heroImage.height,
-      meta: {
-        mimeType: `${heroImage.resource_type}/${heroFormat}`,
-      },
-    },
-    versions: {
+  }
+  if (thumbnail) {
+    const thumbFormat = thumbnail.format === 'jpg' || 'jpeg' ? 'jpeg' : thumbnail.format
+    const thumbnailName = `${thumbnail.public_id.substring(thumbnail.public_id.lastIndexOf('/') + 1)}.${thumbnail.format}`
+    const thumbnailDashSpacedImageName = thumbnailName.split(' ').join('-')
+    result.versions = {
       thumbnail240: {
         filename: thumbnailName,
         path: `v${thumbnail.version}/${thumbnail.public_id.split('/')[0]}/${thumbnailDashSpacedImageName}`,
@@ -28,6 +17,22 @@ export default function convertUrlsToImageFormat(thumbnail, heroImage, altText){
           mimeType: `${thumbnail.resource_type}/${thumbFormat}`,
         },
       },
-    },
+    }
   }
+  if (heroImage) {
+    const heroImageName = `${heroImage.public_id.substring(heroImage.public_id.lastIndexOf('/') + 1)}.${heroImage.format}`
+    const heroDashSpacedImageName = heroImageName.split(' ').join('-')
+    const heroFormat = heroImage.format === 'jpg' || 'jpeg' ? 'jpeg' : heroImage.format
+    result.original = {
+      filename: heroImageName,
+      path: `v${heroImage.version}/${heroImage.public_id.split('/')[0]}/${heroDashSpacedImageName}`,
+      folders: [`v${heroImage.version}`, heroImage.public_id.split('/')[0]],
+      width: heroImage.width,
+      height: heroImage.height,
+      meta: {
+        mimeType: `${heroImage.resource_type}/${heroFormat}`,
+      },
+    }
+  }
+  return result
 }

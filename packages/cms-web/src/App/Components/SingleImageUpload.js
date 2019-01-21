@@ -36,7 +36,7 @@ class SingleImageUpload extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.value !== get(state, 'fileList.0.url')) {
       const { fileList } = state
-      const url = props.id === 'thumbnail' ?
+      const url = props.id === 'thumbnail' || 'channelThumbnail' ?
         getImageUrl(props.value, 'categoryThumbnail') :
         getImageUrl(props.value)
       return {

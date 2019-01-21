@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import get from 'lodash/get'
 import SingleImageUpload from '../SingleImageUpload'
 
 const Option = Select.Option
@@ -153,6 +154,16 @@ EditUserForm.propTypes = {
   resetPasswordRequest: PropTypes.func.isRequired,
 }
 
-const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
+// const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
+
+const mapPropsToFields = ({ record }) => {
+  const values = mapValues(record, (value, key) => {
+    if (key === 'channelImage') return undefined
+    return Form.createFormField({ value })
+  })
+  values['channelThumbnail'] = Form.createFormField({ value: get(record, 'channelImage') })
+  values['channelHeroImage'] = Form.createFormField({ value: get(record, 'channelImage') })
+  return values
+}
 
 export default Form.create({ mapPropsToFields })(EditUserForm)

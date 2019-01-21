@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native'
 
-import styles, { feedItemHeight } from './Styles/ProfileViewStyles'
+import styles, { feedItemHeight } from './Styles/ProfileTabsAndStoriesStyles'
 import { Colors } from '../Shared/Themes'
 import ConnectedFeedList from '../Containers/ConnectedFeedList'
 import Loader from './Loader'
@@ -115,7 +115,7 @@ export default class ProfileTabsAndStories extends Component {
     // change.
     const {user, editable} = this.props
 
-    let height = editable ? 217 : 179
+    let height = editable ? 217 : 197
     height += hasBadge(user.role) ? 21 : 0
     height += this.props.error ? 27 : 0
     return height
@@ -148,9 +148,7 @@ export default class ProfileTabsAndStories extends Component {
         )}
         {isGettingStories && (
           <View style={styles.spinnerWrapper}>
-            <Loader
-              style={styles.spinner}
-              spinnerColor={Colors.background} />
+            <Loader spinnerColor={Colors.background} />
           </View>
         )}
 

@@ -224,6 +224,18 @@ class HeaderLoggedIn extends React.Component {
               >
                 Explore
               </ConditionalLink>
+              <Divider>&nbsp;</Divider>
+              <ConditionalLink
+                to='/discover/'
+                pathname={pathname}
+                openSaveEditsModal={openSaveEditsModal}
+                isMenuLink={true}
+                haveFieldsChanged={haveFieldsChanged}
+                workingDraft={workingDraft}
+                originalDraft={originalDraft}
+              >
+                Discover
+              </ConditionalLink>
             </Row>
           </Col>
         </LoggedInDesktopContainer>

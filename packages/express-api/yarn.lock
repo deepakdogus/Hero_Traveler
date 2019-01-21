@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.60":
-  version "0.0.60"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.60.tgz#92e8e2836a5d6b0ed9a8c2a04f6ef24c0b87e8c5"
+"@hero/ht-core@0.0.76":
+  version "0.0.76"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.76.tgz#d8845dd4088fa3ccebb73740c53ca60f3b82032d"
+  integrity sha1-2IRd1AiPo8zrtzdAxTymDzuCAy0=
   dependencies:
-    "@hero/ht-util" "^0.0.50"
+    "@hero/ht-util" "^0.0.60"
     algoliasearch "^3.22.1"
     babel-preset-flow "^6.23.0"
     babel-register "^6.23.0"
@@ -26,9 +27,10 @@
     rand-token "^0.3.0"
     standard-error "^1.1.0"
 
-"@hero/ht-util@^0.0.50":
-  version "0.0.50"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.50.tgz#3b1be954fc392a1ae999108bbac889e059297e7b"
+"@hero/ht-util@^0.0.60":
+  version "0.0.60"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.60.tgz#2db466984063a8a6e61b21cfc2c2b096b5a625f8"
+  integrity sha1-LbRmmEBjqKbmGyHPwsKwlrWmJfg=
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

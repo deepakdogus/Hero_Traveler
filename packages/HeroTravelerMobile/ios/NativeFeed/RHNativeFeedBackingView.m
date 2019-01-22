@@ -39,9 +39,9 @@
   _heights = @[];
   _separatorHeight = 0.f;
   
-  _backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
-  _titleColor = [UIColor colorWithWhite:0.935f alpha:1.f]; //[UIColor lightGrayColor];
-  _separatorColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
+  _backgroundColor = [UIColor redColor];
+  _titleColor = [UIColor orangeColor]; //[UIColor lightGrayColor];
+  _separatorColor = [UIColor greenColor];
 
   _leftInset = 15.f;
 
@@ -121,126 +121,103 @@
   
   UIGraphicsBeginImageContextWithOptions(fullSize, NO, [UIScreen mainScreen].scale);
   
-  UIColor* _backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
-  UIColor* _titleColor = [UIColor colorWithWhite:0.935f alpha:1.f]; //[UIColor lightGrayColor];
-  UIColor* _separatorColor = [UIColor colorWithWhite:0.929411f alpha:1.f];
-  
-  CGFloat _leftInset = 15.f;
-  
-  CGFloat _topBarHeight = 66.f;
-  CGFloat _topTitleTopInset = 17.f;
-  CGFloat _topTitleHeight = 32.f;
-  CGFloat _topTitleWidth = 120.f;
-  
-  CGFloat _bottomBarHeight = 87.f;
-  CGFloat _bottomTopTitleTopInset = 10.f;
-  CGFloat _bottomTopTitleHeight = 23.f;
-  CGFloat _bottomTopTitleWidth = 140.f;
-  
-  CGFloat _bottomMiddleSpacerHeight = 15.f;
-  CGFloat _bottomBottomTitleHeight = 19.f;
-  CGFloat _bottomBottomTitleWidth = 80.f;
-  
-  CGRect rect = CGRectMake(0, 0, size.width, size.height);
+  UIColor* _backgroundColor = [UIColor redColor];
+  UIColor* _itemCellImageColor = [UIColor greenColor];
+  UIColor* _itemTitleViewImageColor = [UIColor blueColor];
+  UIColor* _titlesColor = [UIColor whiteColor];
 
+  CGFloat _itemTopInset = 20.f;
+  CGFloat _itemSideInsets = 13.5f;
+  CGFloat _itemCornerRadius = 5.f;
+  
+  CGFloat _bottomTitleBackingSize = 146.5f;
+  
+  CGFloat _locationTitleTopInset = 15.f;
+  CGFloat _locationTitleLeftInset = 15.f;
+  CGFloat _locationTitleWidth = 150.f;
+  CGFloat _locationTitleHeight = 15.f;
+  
+  CGFloat _postTitleTopInset = 40.f;
+  CGFloat _postTitleLeftInset = 15.f;
+  CGFloat _postTitleWidth = 200.f;
+  CGFloat _postTitleHeight = 40.f;
+  
+  CGFloat _profileCircleTopInset = 109.5f;
+  CGFloat _profileCircleLeftInset = 15.f;
+  CGFloat _profileCircleSize = 32.f;
+  
+  CGFloat _profileNameTopInset = 109.5f;
+  CGFloat _profileNameLeftInset = 62.f;
+  CGFloat _profileNameWidth = 75.f;
+  CGFloat _profileNameHeight = 14.f;
+
+  CGRect rect = CGRectMake(0, 0, size.width, size.height);
+  
   CGContextRef context = UIGraphicsGetCurrentContext();
 
   [_backgroundColor setFill];
   CGContextFillRect(context, rect);
+
+  [_itemCellImageColor setFill];
+  CGRect itemCellRect = CGRectMake(rect.origin.x + _itemSideInsets,
+                                   rect.origin.y + _itemTopInset,
+                                   rect.size.width - (_itemSideInsets * 2.f),
+                                   rect.size.height - _itemTopInset);
+
+  UIBezierPath* path = [UIBezierPath bezierPathWithRoundedRect:itemCellRect cornerRadius:_itemCornerRadius];
+  CGContextAddPath(context, path.CGPath);
+  CGContextFillPath(context);
+  CGContextClosePath(context);
   
-  [_titleColor setFill];
-  CGRect middleViewRect = CGRectMake(rect.origin.x,
-                                     rect.origin.y+_topBarHeight,
-                                     rect.size.width,
-                                     rect.size.height-_topBarHeight-_bottomBarHeight);
-  CGContextFillRect(context, middleViewRect);
+
+  [_itemTitleViewImageColor setFill];
+  CGRect titleCellRect = CGRectMake(itemCellRect.origin.x,
+                                     itemCellRect.origin.y + itemCellRect.size.height - _bottomTitleBackingSize,
+                                     itemCellRect.size.width,
+                                     _bottomTitleBackingSize);
+  CGContextFillRect(context, titleCellRect);
+//  UIBezierPath* path2 = [UIBezierPath bezierPathWithRoundedRect:itemCellRect cornerRadius:_itemCornerRadius];
+//  CGContextAddPath(context, path2.CGPath);
+//  CGContextFillPath(context);
+//  CGContextClosePath(context);
+//
+//  CGRect cornerCoverRect = CGRectMake(titleCellRect.origin.x,
+//                                      titleCellRect.origin.y - 20.f,
+//                                      titleCellRect.size.width,
+//                                      40.f);
+//  [_itemCellImageColor setFill];
+//  CGContextFillRect(context, cornerCoverRect);
   
-  CGRect topTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                   rect.origin.y+_topTitleTopInset,
-                                   _topTitleWidth,
-                                   _topTitleHeight);
-  CGContextFillRect(context, topTitleRect);
+  [_titlesColor setFill];
   
-  CGFloat topOfBottomBar = rect.origin.y+rect.size.height-_bottomBarHeight;
-  
-  CGRect bottomTopTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                         topOfBottomBar+_bottomTopTitleTopInset,
-                                         _bottomTopTitleWidth,
-                                         _bottomTopTitleHeight);
-  CGContextFillRect(context, bottomTopTitleRect);
-  
-  CGRect bottomBottomTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                            topOfBottomBar+_bottomTopTitleTopInset+_bottomTopTitleHeight+_bottomMiddleSpacerHeight,
-                                            _bottomBottomTitleWidth,
-                                            _bottomBottomTitleHeight);
-  CGContextFillRect(context, bottomBottomTitleRect);
-  
-  CGRect sepeatorRect = CGRectMake(rect.origin.x,
-                                   rect.origin.y + size.height,
-                                   size.width,
-                                   separatorSize);
-  [_separatorColor setFill];
-  CGContextFillRect(context, sepeatorRect);
+  CGRect locationRect = CGRectMake(titleCellRect.origin.x + _locationTitleLeftInset,
+                                   titleCellRect.origin.y + _locationTitleTopInset,
+                                   _locationTitleWidth,
+                                   _locationTitleHeight);
+  CGContextFillRect(context, locationRect);
+
+  CGRect postTitleRect = CGRectMake(titleCellRect.origin.x + _postTitleLeftInset,
+                                   titleCellRect.origin.y + _postTitleTopInset,
+                                   _postTitleWidth,
+                                   _postTitleHeight);
+  CGContextFillRect(context, postTitleRect);
+
+  CGRect profileNameRect = CGRectMake(titleCellRect.origin.x + _profileNameLeftInset,
+                                    titleCellRect.origin.y + _profileNameTopInset,
+                                    _profileNameWidth,
+                                    _profileNameHeight);
+  CGContextFillRect(context, profileNameRect);
+
+  CGRect profileCircleRect = CGRectMake(titleCellRect.origin.x + _profileCircleLeftInset,
+                                      titleCellRect.origin.y + _profileCircleTopInset,
+                                      _profileCircleSize,
+                                      _profileCircleSize);
+  CGContextFillEllipseInRect(context, profileCircleRect);
 
   UIImage* ret = UIGraphicsGetImageFromCurrentImageContext();  // UIImage returned.
   UIGraphicsEndImageContext();
   return ret;
 }
 
-- (void) drawRect:(CGRect)rect
-{
-  [_separatorColor setFill];
-  [[UIBezierPath bezierPathWithRect:rect] fill];
-
-  CGFloat yOffset = 0.f;
-
-  for (NSNumber* cellHeightObj in _heights)
-  {
-    CGFloat cellHeight = [cellHeightObj floatValue];
-
-    CGRect cellRect = CGRectMake(rect.origin.x,
-                                 rect.origin.y+yOffset,
-                                 rect.size.width,
-                                 cellHeight);
-    [self drawCellTemplate:cellRect];
-
-    yOffset += cellHeight + _separatorHeight;
-  }
-}
-
-- (void) drawCellTemplate:(CGRect)rect
-{
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  
-  [_backgroundColor setFill];
-  CGContextFillRect(context, rect);
-  
-  [_titleColor setFill];
-  CGRect middleViewRect = CGRectMake(rect.origin.x,
-                                     rect.origin.y+_topBarHeight,
-                                     rect.size.width,
-                                     rect.size.height-_topBarHeight-_bottomBarHeight);
-  CGContextFillRect(context, middleViewRect);
-  
-  CGRect topTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                   rect.origin.y+_topTitleTopInset,
-                                   _topTitleWidth,
-                                   _topTitleHeight);
-  CGContextFillRect(context, topTitleRect);
-  
-  CGFloat topOfBottomBar = rect.origin.y+rect.size.height-_bottomBarHeight;
-  
-  CGRect bottomTopTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                         topOfBottomBar+_bottomTopTitleTopInset,
-                                         _bottomTopTitleWidth,
-                                         _bottomTopTitleHeight);
-  CGContextFillRect(context, bottomTopTitleRect);
-  
-  CGRect bottomBottomTitleRect = CGRectMake(rect.origin.x+_leftInset,
-                                            topOfBottomBar+_bottomTopTitleTopInset+_bottomTopTitleHeight+_bottomMiddleSpacerHeight,
-                                            _bottomBottomTitleWidth,
-                                            _bottomBottomTitleHeight);
-  CGContextFillRect(context, bottomBottomTitleRect);
-}
 
 @end

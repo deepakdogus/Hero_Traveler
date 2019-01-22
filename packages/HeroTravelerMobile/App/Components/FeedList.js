@@ -200,6 +200,8 @@ export default class FeedList extends React.Component {
         onTouchMove={this.scrollResponderHandleTouchMove}
         onTouchStart={this.scrollResponderHandleTouchStart}
         onTouchCancel={this.scrollResponderHandleTouchCancel}
+        leadingCellSpace={100}
+        trailingCellSpace={100}
       >
         <RefreshControl
           enabled={this.props.refreshing}

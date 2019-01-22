@@ -12,15 +12,10 @@ import DiscoverChannelsGrid from '../Components/DiscoverChannelsGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import UserActions from '../Shared/Redux/Entities/Users'
 
-const CenteredText = styled.p`
-  text-align: center;
-  color: ${props => props.theme.Colors.background}
-`
-
 const Wrapper = styled.div``
 
 const ContentWrapper = styled.div`
-  margin: 0 7%;
+  margin: 100px 7%;
   text-align: center;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
@@ -51,8 +46,8 @@ class Discover extends Component {
     this.props.loadChannels()
   }
 
-  _navToCategory = (categoryId) => {
-    this.props.reroute(`/category/${categoryId}`)
+  _navToChannel = (channelId) => {
+    this.props.reroute(`/channel/${channelId}`)
   }
 
   onClickTab = (event) => {
@@ -71,7 +66,10 @@ class Discover extends Component {
         />
         <ContentWrapper>
           {this.state.activeTab === 'CHANNELS'
-          && <DiscoverChannelsGrid channels={this.props.channels} />
+          && <DiscoverChannelsGrid
+            channels={this.props.channels}
+            onClickChannel={this._navToChannel}
+             />
           }
           {this.state.activeTab === 'CATEGORIES'
           && <ExploreGrid
@@ -105,7 +103,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest({ featured: true })),
     loadChannels: () => dispatch(UserActions.fetchChannels()),
     reroute: (path) => dispatch(push(path)),
   }

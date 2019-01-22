@@ -2,7 +2,8 @@ import { call, put } from 'redux-saga/effects'
 import CategoryActions from '../Redux/Entities/Categories'
 
 export function * getCategories (api, action) {
-  const response = yield call(api.getCategories)
+  const { params } = action
+  const response = yield call(api.getCategories, params)
   if (response.ok) {
     const { entities } = response.data;
     yield put(CategoryActions.loadCategoriesSuccess(entities.categories))

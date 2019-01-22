@@ -19,45 +19,14 @@ const Wrapper = styled.div`
 `
 
 const CategoryTile = styled.div`
-  background-image: ${props => `url(${props.imageSource})`};
+  background: ${props => props.imageSource ? `url(${props.imageSource})` : '#efefef'};
   background-repeat: no-repeat;
   background-size: cover;
-  padding-top: 50%;
-  padding-bottom: 50%;
+  width: 150px;
+  height: 185px;
+  margin: 0 auto;
   position: relative;
-`
-
-const TitleContainer = styled(OverlayHover)`
-  ${VerticalCenterStyles};
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.3);
-`
-
-const Title = styled.div`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 400;
-  font-size: 18px;
-  color: ${props => props.theme.Colors.snow};
-  letter-spacing: .6px;
-  margin: 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 12px;
-  }
-`
-
-const RedCheck = styled(Icon)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-color: ${props => props.theme.Colors.snow};
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 50%;
-  background-color: ${props => props.theme.Colors.snow};
+  border-radius: 10px;
 `
 
 // created specific component to optimize speed with _onClickTile
@@ -65,7 +34,6 @@ class Tile extends React.Component {
    static propTypes = {
     channel: PropTypes.object,
     onClick: PropTypes.func,
-    isSelected: PropTypes.bool,
   }
 
   _onClickTile = () => {
@@ -73,29 +41,20 @@ class Tile extends React.Component {
   }
 
   render(){
-    const {channel, isSelected} = this.props
+    const {channel} = this.props
     console.log('channel', channel)
     return (
-      <Col xs={4} lg={3} >
+      <Col xs={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
             imageSource={
               getImageUrl(
                 channel.channelImage,
                 'categoryThumbnail',
-                {width: 400, height: 400},
+                {width: 150, height: 185},
               )
             }
           />
-          <TitleContainer
-            selected={channel.selected}
-            overlayColor='black'
-          >
-            <Title>{channel.title}</Title>
-          </TitleContainer>
-          {isSelected &&
-            <RedCheck name='redCheck' />
-          }
         </Wrapper>
       </Col>
     )
@@ -105,20 +64,18 @@ class Tile extends React.Component {
 export default class DiscoverChannelsGrid extends React.Component {
   static propTypes = {
     channels: PropTypes.object,
-    onClickCategory: PropTypes.func,
-    getIsSelected: PropTypes.func,
+    onClickChannel: PropTypes.func,
   }
 
   render() {
-    const {channels, getIsSelected, onClickCategory} = this.props
+    const {channels, onClickChannel} = this.props
 
     const renderedCategories = channels.map((channel) => {
       return (
         <Tile
           key={channel.id}
           channel={channel}
-          isSelected={getIsSelected ? getIsSelected(channel.id) : false}
-          onClick={onClickCategory}
+          onClick={onClickChannel}
         />
       )
     })

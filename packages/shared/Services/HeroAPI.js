@@ -257,8 +257,8 @@ const create = () => {
     .then(response => safeNormalize(response, [Story]))
   }
 
-  const getCategories = () => {
-    return api.get('category')
+  const getCategories = (params) => {
+    return api.get('category', params)
     .then(response => safeNormalize(response, [Category]))
   }
 

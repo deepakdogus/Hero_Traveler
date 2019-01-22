@@ -332,6 +332,15 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   heightsChanged = NO;
   lastBackingViewSeperatorHeight = _cellSeparatorHeight;
   lastTotalHeaderHeight = headerHeight;
+  
+  CGFloat leadingViewY = headerHeight - self.leadingCellSpace;
+  CGRect leadingViewRect = CGRectMake(0, leadingViewY, self.bounds.size.width, self.leadingCellSpace);
+  UIView* leadingView = [[UIView alloc] initWithFrame:leadingViewRect];
+  leadingView.backgroundColor = [UIColor orangeColor];
+  leadingView.userInteractionEnabled = YES;
+  [_scrollView insertSubview:leadingView atIndex:0];
+  [newTemplates addObject:leadingView];
+  
   CGFloat yOffset = headerHeight;
   
   for (RHStoryInfo* storyInfo in _storyInfos)
@@ -354,6 +363,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     yOffset += cellHeight + _cellSeparatorHeight;
   }
   
+  CGFloat trailingViewY = yOffset;
+  CGRect trailingViewRect = CGRectMake(0, trailingViewY, self.bounds.size.width, self.trailingCellSpace);
+  UIView* trailingView = [[UIView alloc] initWithFrame:trailingViewRect];
+  trailingView.backgroundColor = [UIColor orangeColor];
+  trailingView.userInteractionEnabled = YES;
+  [_scrollView insertSubview:trailingView atIndex:0];
+  [newTemplates addObject:trailingView];
+
   _cellTemplatesViews = [NSArray arrayWithArray:newTemplates];
 }
 
@@ -392,7 +409,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     }
   }
   
-  return totalHeaderHeight;
+  return totalHeaderHeight + self.leadingCellSpace;
 }
 
 - (CGFloat) getTotalCellHeight
@@ -424,7 +441,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   }
 
   _scrollView.contentSize = CGSizeMake(self.bounds.size.width,
-                                       [self getTotalHeaderHeight] + totalLoadedCellHeight);
+                                       [self getTotalHeaderHeight] + totalLoadedCellHeight + self.trailingCellSpace);
   
   for (RHNativeFeedItem* view in _scrollView.subviews)
   {

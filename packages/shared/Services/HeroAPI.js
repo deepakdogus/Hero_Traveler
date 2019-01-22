@@ -395,6 +395,10 @@ const create = () => {
     .then(response => safeNormalize(response, [Activity]))
   }
 
+  const getChannels = () => {
+    return api.get('user/channels')
+  }
+
   const setActivityRead = (activityId) => {
     return api.put(`user/activity/${activityId}`)
   }
@@ -523,6 +527,7 @@ const create = () => {
     verifyEmail,
     getActivity,
     setActivityRead,
+    getChannels,
     deleteStory,
     changePassword,
     signupCheck,

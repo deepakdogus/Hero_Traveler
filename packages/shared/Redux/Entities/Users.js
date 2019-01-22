@@ -53,6 +53,9 @@ const { Types, Creators } = createActions({
   removeAvatar: ['userId'],
   removeAvatarSuccess: ['user'],
   removeAvatarFailure: ['error'],
+  fetchChannels: null,
+  fetchChannelsSuccess: ['channels'],
+  fetchChannelsFaliure: ['error']
 })
 
 export const UserTypes = Types
@@ -73,6 +76,7 @@ export const INITIAL_STATE = Immutable({
   usersBookmarksById: {},
   userFollowersByUserIdAndId: {},
   userFollowingByUserIdAndId: {},
+  channels: [],
   error: null,
 })
 
@@ -434,7 +438,17 @@ export const activitySeenFailure = (state, {activityId}) => {
   return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
 }
 
+export const fetchChannels = (state) => {
+  return state.merge({fetchStatus: fetching()})
+}
 
+export const fetchChannelsSuccess = (state, {channels}) => {
+  return state.merge({fetchStatus: fetchingSuccess(), channels})
+}
+
+export const fetchChannelsFailure = (state, {error}) => {
+  return state.merge({fetchStatus: fetchingError(), error})
+}
 
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
@@ -477,6 +491,7 @@ export const resetActivities = (state) => state.merge({
   activities: {},
   activitiesById: [],
 })
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -526,4 +541,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REMOVE_AVATAR]: removeAvatar,
   [Types.REMOVE_AVATAR_SUCCESS]: removeAvatarSuccess,
   [Types.REMOVE_AVATAR_FAILURE]: removeAvatarFailure,
+  [Types.FETCH_CHANNELS]: fetchChannels,
+  [Types.FETCH_CHANNELS_SUCCESS]: fetchChannelsSuccess,
+  [Types.FETCH_CHANNELS_FAILURE]: fetchChannelsFailure
 })

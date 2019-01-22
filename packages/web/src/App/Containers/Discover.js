@@ -7,25 +7,14 @@ import PropTypes from 'prop-types'
 import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import TabBar from '../Components/TabBar'
-// import DiscoverGrid from '../Components/DiscoverGrid'
+import ExploreGrid from '../Components/ExploreGrid'
+import DiscoverChannelsGrid from '../Components/DiscoverChannelsGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 const CenteredText = styled.p`
   text-align: center;
   color: ${props => props.theme.Colors.background}
-`
-
-const DiscoverText = styled(CenteredText)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 30px;
-  letter-spacing: .6px;
-  padding: 50px 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 18px;
-    padding: 30px 0px;
-    margin: 0;
-  }
 `
 
 const Wrapper = styled.div``
@@ -43,8 +32,10 @@ const tabBarTabs = ['CHANNELS', 'CATEGORIES']
 class Discover extends Component {
   static propTypes = {
     categories: PropTypes.object,
+    channels: PropTypes.array,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
+    loadChannels: PropTypes.func,
     reroute: PropTypes.func,
   }
 
@@ -57,6 +48,7 @@ class Discover extends Component {
 
   componentDidMount() {
     this.props.loadCategories()
+    this.props.loadChannels()
   }
 
   _navToCategory = (categoryId) => {
@@ -78,37 +70,34 @@ class Discover extends Component {
           onClickTab={this.onClickTab}
         />
         <ContentWrapper>
-          <DiscoverText>DISCOVER</DiscoverText>
+          {this.state.activeTab === 'CHANNELS'
+          && <DiscoverChannelsGrid channels={this.props.channels} />
+          }
+          {this.state.activeTab === 'CATEGORIES'
+          && <ExploreGrid
+            categories={this.props.categories}
+            onClickCategory={this._navToCategory}
+             />
+          }
           <Footer />
         </ContentWrapper>
       </Wrapper>
     )
   }
-
-  // render() {
-  //   return (
-  //     <Wrapper>
-  //       <DiscoverHeader/>
-  //       <ContentWrapper>
-  //         <DiscoverText>EXPLORE</DiscoverText>
-  //           <DiscoverGrid
-  //             categories={this.props.categories}
-  //             onClickCategory={this._navToCategory}
-  //           />
-  //         <Footer />
-  //       </ContentWrapper>
-  //     </Wrapper>
-  //   )
-  // }
 }
 
 function mapStateToProps(state, ownProps) {
   let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
-  } = state.entities.categories;
+  } = state.entities.categories
+
+  const { 
+    channels,
+  } = state.entities.users
 
   return {
+    channels,
     categories,
     categoriesFetchStatus,
   }
@@ -117,6 +106,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadChannels: () => dispatch(UserActions.fetchChannels()),
     reroute: (path) => dispatch(push(path)),
   }
 }

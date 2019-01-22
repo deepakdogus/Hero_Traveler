@@ -62,6 +62,7 @@ import {
   userUnfollowUser,
   getActivities,
   seenActivity,
+  getChannels,
 } from './UserSagas'
 
 import {
@@ -203,6 +204,7 @@ export default function * root () {
     takeLatest(UserTypes.UNFOLLOW_USER, userUnfollowUser, heroAPI),
     takeLatest(UserTypes.FETCH_ACTIVITIES, getActivities, heroAPI),
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
+    takeLatest(UserTypes.FETCH_CHANNELS, getChannels, heroAPI),
 
     // Media Upload
     takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),

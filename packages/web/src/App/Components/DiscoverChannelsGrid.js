@@ -1,0 +1,134 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+import { Grid, Row, Col } from './FlexboxGrid'
+import getImageUrl from '../Shared/Lib/getImageUrl'
+import Icon from './Icon'
+import { VerticalCenterStyles } from './VerticalCenter'
+import OverlayHover from './OverlayHover'
+
+const StyledGrid = styled(Grid)`
+  max-width: 1000px;
+`
+
+const Wrapper = styled.div`
+  margin: 1px;
+  position: relative;
+  cursor: pointer;
+`
+
+const CategoryTile = styled.div`
+  background-image: ${props => `url(${props.imageSource})`};
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 50%;
+  padding-bottom: 50%;
+  position: relative;
+`
+
+const TitleContainer = styled(OverlayHover)`
+  ${VerticalCenterStyles};
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.3);
+`
+
+const Title = styled.div`
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.snow};
+  letter-spacing: .6px;
+  margin: 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 12px;
+  }
+`
+
+const RedCheck = styled(Icon)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-color: ${props => props.theme.Colors.snow};
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 50%;
+  background-color: ${props => props.theme.Colors.snow};
+`
+
+// created specific component to optimize speed with _onClickTile
+class Tile extends React.Component {
+   static propTypes = {
+    channel: PropTypes.object,
+    onClick: PropTypes.func,
+    isSelected: PropTypes.bool,
+  }
+
+  _onClickTile = () => {
+    this.props.onClick(this.props.channel.id)
+  }
+
+  render(){
+    const {channel, isSelected} = this.props
+    console.log('channel', channel)
+    return (
+      <Col xs={4} lg={3} >
+        <Wrapper onClick={this._onClickTile}>
+          <CategoryTile
+            imageSource={
+              getImageUrl(
+                channel.channelImage,
+                'categoryThumbnail',
+                {width: 400, height: 400},
+              )
+            }
+          />
+          <TitleContainer
+            selected={channel.selected}
+            overlayColor='black'
+          >
+            <Title>{channel.title}</Title>
+          </TitleContainer>
+          {isSelected &&
+            <RedCheck name='redCheck' />
+          }
+        </Wrapper>
+      </Col>
+    )
+  }
+}
+
+export default class DiscoverChannelsGrid extends React.Component {
+  static propTypes = {
+    channels: PropTypes.object,
+    onClickCategory: PropTypes.func,
+    getIsSelected: PropTypes.func,
+  }
+
+  render() {
+    const {channels, getIsSelected, onClickCategory} = this.props
+
+    const renderedCategories = channels.map((channel) => {
+      return (
+        <Tile
+          key={channel.id}
+          channel={channel}
+          isSelected={getIsSelected ? getIsSelected(channel.id) : false}
+          onClick={onClickCategory}
+        />
+      )
+    })
+
+    return (
+      <StyledGrid fluid>
+        <Row>
+          {renderedCategories}
+        </Row>
+      </StyledGrid>
+    )
+  }
+}

@@ -13,6 +13,7 @@ import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
+import TabIcon from './TabIcon'
 
 export default class FeedItemCover extends Component {
   static propTypes = {
@@ -30,6 +31,7 @@ export default class FeedItemCover extends Component {
     locationText: PropTypes.string,
     isFeed: PropTypes.bool,
     isReadingScreen: PropTypes.bool,
+    isGuide: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -80,7 +82,7 @@ export default class FeedItemCover extends Component {
   }
 
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
-    const {children, showPlayButton} = this.props
+    const {children, showPlayButton, isFeed, isGuide} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
@@ -109,9 +111,10 @@ export default class FeedItemCover extends Component {
           <View style={styles.gradient}>
             {children}
           </View>
-        {showPlayButton && isVideo && (
-          this.renderPlayButton()
-        )}
+          {showPlayButton && isVideo && (
+            this.renderPlayButton()
+          )}
+          {isFeed && isGuide && this.renderGuideIcon()}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -185,6 +188,18 @@ export default class FeedItemCover extends Component {
           playButtonSize === 'small' ? styles.smallPlayButton : {},
         ]}
         size={playButtonSize || 'small'}
+      />
+    )
+  }
+
+  renderGuideIcon() {
+    return (
+      <TabIcon
+        name='guide-alt'
+        style={{
+          image: styles.guideIcon,
+          view: styles.guideIconContainer,
+        }}
       />
     )
   }
@@ -357,5 +372,14 @@ const styles = StyleSheet.create({
   },
   noCoverIcon: {
     color: Colors.lightGreyAreas,
+  },
+  guideIcon: {
+    height: 45,
+    width: 38,
+  },
+  guideIconContainer: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
   },
 })

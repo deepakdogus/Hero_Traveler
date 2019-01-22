@@ -372,6 +372,7 @@ export default class FeedItemPreview extends Component {
       isShowCover,
       selectedStories,
       location,
+      isStory,
     } = this.props
     if (!feedItem) return null
 
@@ -398,6 +399,7 @@ export default class FeedItemPreview extends Component {
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
             locationText={this.getLocationText()}
             isReadingScreen={isReadingScreen}
+            isGuide={!isStory}
             style={styles.feedItemCover}
           />
         )}

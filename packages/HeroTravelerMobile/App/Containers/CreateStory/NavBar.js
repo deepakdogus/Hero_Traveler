@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 
 export default class NavBar extends Component {
   static propTypes = {
-    style: PropTypes.number,
+    style: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
     leftTitle: PropTypes.string,
     leftIcon: PropTypes.string,
     leftTextStyle: PropTypes.number,

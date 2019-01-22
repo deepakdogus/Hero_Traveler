@@ -46,6 +46,19 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  activityRow: {
+    paddingTop: 5,
+    alignItems: 'flex-end',
+  },
+  activityIconContainer: {
+    paddingLeft: 10,
+    borderLeftColor: Colors.feedDividerGrey,
+    borderLeftWidth: 1,
+  },
+  activityIcon: {
+    height: 30,
+    width: 30,
+  },
   avatar: {
     marginRight: Metrics.baseMargin,
   },

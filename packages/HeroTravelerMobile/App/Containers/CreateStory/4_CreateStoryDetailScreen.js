@@ -290,7 +290,7 @@ class CreateStoryDetailScreen extends React.Component {
             leftIcon='arrowLeftRed'
             leftTitle='Back'
             onLeft={this._onLeft}
-            leftTextStyle={{paddingLeft: 5}}
+            leftTextStyle={styles.navBarLeftText}
             onRight={this._onRight}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
             rightTextStyle={styles.redText}

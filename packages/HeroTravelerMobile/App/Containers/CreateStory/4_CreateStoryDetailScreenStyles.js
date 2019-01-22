@@ -185,4 +185,7 @@ export default StyleSheet.create({
   redText: {
     color: Colors.red,
   },
+  navBarLeftText: {
+    paddingLeft: 5,
+  },
 })

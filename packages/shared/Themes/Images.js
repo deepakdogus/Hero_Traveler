@@ -138,12 +138,18 @@ const images = {
   iconGreyCheck: require('../Images/ht-icons/grey-check.png'),
   iconCreateGuide: require('../Images/ht-icons/icon_create-new-guide.png'),
   iconGuide: require('../Images/ht-icons/icon_guide.png'),
+  iconGuideAlt: require('../Images/ht-icons/icon_guide-alt.png'),
   iconCreateSave: require('../Images/ht-icons/icon_create-save.png'),
   iconCreateSaveLarge: require('../Images/ht-icons/icon_create-save-large.png'),
   iconCreatePhoto: require('../Images/ht-icons/icon_create-photo.png'),
   iconCreateVideo: require('../Images/ht-icons/icon_create-video.png'),
   iconCreateAddCover: require('../Images/ht-icons/icon_create-add-cover.png'),
   iconNavNotifications: require('../Images/ht-icons/icon_nav-notifications.png'),
+  iconActivitySee: require('../Images/ht-icons/icon_activity-see.png'),
+  iconActivityDo: require('../Images/ht-icons/icon_activity-do.png'),
+  iconActivityEat: require('../Images/ht-icons/icon_activity-eat.png'),
+  iconActivityStay: require('../Images/ht-icons/icon_activity-stay.png'),
+  iconAddButton: require('../Images/ht-icons/icon_add-button.png'),
 }
 
 export default images

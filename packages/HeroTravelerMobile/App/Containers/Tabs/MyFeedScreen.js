@@ -217,7 +217,7 @@ class MyFeedScreen extends React.Component {
               <TextInput
                 ref={this._setupInputRef}
                 style={styles.searchInput}
-                placeholder='Search'
+                placeholder={'People & Places'}
                 placeholderTextColor={Colors.grey}
                 // onFocus={this.setFocus}
                 onChange={this._changeQuery}

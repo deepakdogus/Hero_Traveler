@@ -138,6 +138,16 @@ class TabIcon extends React.Component {
         return Images.iconNavProfileActive
       case 'guide':
         return Images.iconGuide
+      case 'guide-alt':
+        return Images.iconGuideAlt
+      case 'activity-see':
+        return Images.iconActivitySee
+      case 'activity-do':
+        return Images.iconActivityDo
+      case 'activity-eat':
+        return Images.iconActivityEat
+      case 'activity-stay':
+        return Images.iconActivityStay
       case 'profile':
       default:
         return Images.iconNavProfile

@@ -265,7 +265,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description, coverCaption, draft} = this.props.feedItem
+    const {title, counts, description, coverCaption, draft, type} = this.props.feedItem
     const {isReadingScreen, isStory, isFeed, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
@@ -279,6 +279,18 @@ export default class FeedItemPreview extends Component {
           <Text style={[storyReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
           </Text>
+        )}
+        {isReadingScreen && isStory && (
+          <View style={styles.activityRow}>
+            <View style={styles.activityIconContainer}>
+              <TabIcon
+                name={`activity-${type}`}
+                style={{
+                  image: styles.activityIcon,
+                }}
+              />
+            </View>
+          </View>
         )}
         {!isReadingScreen && this.hasLocation() && (
           <Text

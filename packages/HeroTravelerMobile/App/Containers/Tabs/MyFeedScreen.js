@@ -1,27 +1,32 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity, TextInput, Text } from 'react-native'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
-import { Metrics, Colors } from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
+import HistoryActions from '../../Shared/Redux/HistoryRedux'
+
+import { Metrics } from '../../Shared/Themes'
+import styles from '../Styles/MyFeedScreenStyles'
+
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
-import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
-import TabIcon from '../../Components/TabIcon'
+import SearchPlacesPeople from '../../Components/SearchPlacesPeople'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
   following: 'following',
   guides: 'guides',
+  // featured: 'featured',
+  // trending: 'trending',
 }
 
 class MyFeedScreen extends React.Component {
@@ -36,10 +41,13 @@ class MyFeedScreen extends React.Component {
     sync: PropTypes.object,
     fetchStatus: PropTypes.object,
     storiesById: PropTypes.arrayOf(PropTypes.string),
+    stories: PropTypes.object,
     backgroundFailures: PropTypes.object,
     updateDraft: PropTypes.func,
     publishLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
+    addRecentSearch: PropTypes.func,
+    searchHistory: PropTypes.object,
   };
 
   constructor(props) {
@@ -164,33 +172,26 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  _setupInputRef = ref => this._searchInput = ref
-
-  _changeQuery = (e) => {
-    const q = e.nativeEvent.text
-    const hasSearchText = q.length > 0
-    this.setState({
-      hasSearchText,
-    })
-  }
-
-  cancelSearch = () => {
-    // this.setState({
-    //   hasSearchText: false,
-    // })
-  }
-
   render () {
-    let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
+    let {
+      storiesById,
+      fetchStatus,
+      sync,
+      feedGuidesById,
+      stories,
+      searchHistory,
+      addRecentSearch,
+      user,
+    } = this.props
     const {selectedTab} = this.state
     let bottomContent
 
-    const isStoriesSelected = selectedTab === tabTypes.following
+    const isFollowingSelected = selectedTab === tabTypes.following
     const failure = this.getFirstBackgroundFailure()
 
     if (
-      (isStoriesSelected && (!storiesById || !storiesById.length))
-      || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
+      (isFollowingSelected && (!storiesById || !storiesById.length))
+      || (!isFollowingSelected && (!feedGuidesById || !feedGuidesById.length))
     ) {
       let innerContent = this._showNoStories()
       bottomContent = this._wrapElt(innerContent)
@@ -198,8 +199,8 @@ class MyFeedScreen extends React.Component {
     else {
       bottomContent = (
         <ConnectedFeedList
-          isStory={isStoriesSelected}
-          entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
+          isStory={isFollowingSelected}
+          entitiesById={isFollowingSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
           sectionContentHeight={40}
@@ -210,45 +211,12 @@ class MyFeedScreen extends React.Component {
     }
 
     return (
-      <View style={[styles.containerWithTabbar, styles.root]}>
-        <View style={styles.fakeNavBar}>
-          <View style={styles.headerSearch}>
-            <View style={styles.searchWrapper}>
-              <TextInput
-                ref={this._setupInputRef}
-                style={styles.searchInput}
-                placeholder={'People & Places'}
-                placeholderTextColor={Colors.grey}
-                // onFocus={this.setFocus}
-                onChange={this._changeQuery}
-                // onChangeText={this.checkClearResults}
-                returnKeyType='search'
-              />
-              { this.state.hasSearchText && (
-                <TouchableOpacity
-                  style={styles.InputXPosition}
-                  onPress={this.resetSearchText}
-                >
-                  <TabIcon
-                    name='closeDark'
-                    style={{
-                      view: styles.InputXView,
-                      image: styles.InputXIcon,
-                    }}
-                  />
-                </TouchableOpacity>
-              )}
-            </View>
-          {this.state.hasSearchText && (
-            <TouchableOpacity
-              onPress={this.cancelSearch}>
-              <View style={styles.cancelBtn}>
-                <Text style={styles.cancelBtnText}>Cancel</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          </View>
-        </View>
+      <SearchPlacesPeople
+        stories={stories}
+        searchHistory={searchHistory}
+        addRecentSearch={addRecentSearch}
+        user={user}
+      >
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -257,7 +225,7 @@ class MyFeedScreen extends React.Component {
           discardUpdate={this.props.discardUpdate}
         />
         { bottomContent }
-      </View>
+      </SearchPlacesPeople>
     )
   }
 }
@@ -275,11 +243,13 @@ const mapStateToProps = (state) => {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
+    stories: state.entities.stories.entities,
     feedGuidesById,
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,
     backgroundFailures,
+    searchHistory: state.history.searchHistory,
   }
 }
 
@@ -290,6 +260,7 @@ const mapDispatchToProps = (dispatch) => {
     discardUpdate: (storyId) => dispatch(StoryActions.removeBackgroundFailure(storyId)),
     publishLocalDraft: (story) => dispatch(StoryCreateActions.publishLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
+    addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }
 

@@ -15,7 +15,7 @@ import ListItem from './ListItem'
 import Avatar from './Avatar'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import styles from '../Containers/Styles/ExploreScreenStyles'
+import styles from './Styles/SearchPlacesPeopleStyles'
 import Colors from '../Shared/Themes/Colors'
 
 const MAX_ITEMS = 5
@@ -164,18 +164,15 @@ class SearchList extends Component {
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
     const locationHits = lastLocationPredictions || []
 
-    const hasNoResults =
-      !isSearching
+    const hasNoResults = !isSearching
       && !searchHits.length
       && !locationHits.length
 
-    const showRecentPlacesSearches =
-      hasNoResults
+    const showRecentPlacesSearches = hasNoResults
       && !!searchHistory.places.length
       && (!hasSearchText || query.length < 3)
 
-    const showRecentPeopleSearches =
-      hasNoResults
+    const showRecentPeopleSearches = hasNoResults
       && !!searchHistory.people.length
       && (!hasSearchText || query.length < 3)
 
@@ -186,24 +183,27 @@ class SearchList extends Component {
         {isSearching && <Loader style={styles.searchLoader} />}
         {!isSearching && selectedTabIndex === 0 && (
           <ScrollView>
-            {!!locationHits.length &&
+            {!!locationHits.length && (
               this.renderResultsSection(
                 'LOCATIONS',
                 lastLocationPredictions,
                 this.renderLocationRow,
-              )}
-            {!!searchHits.length &&
+              )
+            )}
+            {!!searchHits.length && (
               this.renderResultsSection(
                 'STORIES',
                 searchHits,
                 this.renderPlacesRow,
-              )}
-            {showRecentPlacesSearches &&
+              )
+            )}
+            {showRecentPlacesSearches && (
               this.renderResultsSection(
                 'RECENT SEARCHES',
                 searchHistory.places,
                 this.renderRecentSearchesRow,
-              )}
+              )
+            )}
             {!showRecentPlacesSearches && showNoResults && this.renderNoResults()}
           </ScrollView>
         )}

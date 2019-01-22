@@ -14,6 +14,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
     flex: 1,
   },
+  listContainer: {
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 20 : Metrics.navBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
+  },
   list: {
     height: listHeight,
     width: Metrics.screenWidth,

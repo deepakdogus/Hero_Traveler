@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -9,7 +10,11 @@ export default StyleSheet.create({
   },
   lightBG: {
     backgroundColor: Colors.snow,
-    // minHeight: Metrics.screenHeight
+  },
+  listContainer: {
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 20 : Metrics.navBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   emptyMessage: {
     marginTop: Metrics.doubleSection,
@@ -38,6 +43,8 @@ export default StyleSheet.create({
   subtitle: {
     ...Fonts.style.instructions,
     fontSize: 15,
+    fontWeight: '400',
+    color: Colors.grey,
     textAlign: 'center',
   },
   connectSocialText: {

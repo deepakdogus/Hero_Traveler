@@ -40,7 +40,7 @@ export default class ProfileUserInfo extends Component {
 
   _navToFollowers = () => {
     NavActions.followersScreen({
-      title: 'Followers',
+      title: 'FOLLOWERS',
       followersType: 'followers',
       userId: this.props.user.id,
     })
@@ -48,7 +48,7 @@ export default class ProfileUserInfo extends Component {
 
   _navToFollowing = () => {
     NavActions.followersScreen({
-      title: 'Following',
+      title: 'FOLLOWING',
       followersType: 'following',
       userId: this.props.user.id,
     })

@@ -114,7 +114,8 @@ class EditCategory extends React.Component {
       formSubmitting: true,
     })
     const { thumbnail, heroImage } = values
-    if (thumbnail || heroImage) {
+    if ((thumbnail && thumbnail.public_id) ||
+        (heroImage && heroImage.public_id)) {
       values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
     }
     new Promise((resolve, reject) => {

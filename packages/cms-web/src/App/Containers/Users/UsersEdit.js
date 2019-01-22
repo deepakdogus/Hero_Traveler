@@ -122,7 +122,8 @@ class EditUser extends React.Component {
       formSubmitting: true,
     })
     const { channelThumbnail, channelHeroImage } = values
-    if (channelThumbnail || channelHeroImage) {
+    if ((channelThumbnail && channelThumbnail.public_id) ||
+        (channelHeroImage && channelHeroImage.public_id)) {
       values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
     }
     new Promise((resolve, reject) => {

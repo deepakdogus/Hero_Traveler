@@ -45,7 +45,6 @@ export default StyleSheet.create({
     marginTop: Metrics.doubleSection,
   },
   feedList: {
-    height: Metrics.screenHeight - Metrics.tabBarHeight,
     marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   },
   storyTitleStyle: {

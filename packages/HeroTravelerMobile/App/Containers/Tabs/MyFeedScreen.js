@@ -202,6 +202,7 @@ class MyFeedScreen extends React.Component {
           entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
+          sectionContentHeight={40}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />

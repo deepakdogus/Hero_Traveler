@@ -50,9 +50,6 @@ export default StyleSheet.create({
     marginTop: isIPhoneX() ? 30 : 40,
     fontWeight: '700',
   },
-  feedList: {
-    height: Metrics.screenHeight - Metrics.tabBarHeight,
-  },
   tabStyle: {
     width: Metrics.screenWidth * 0.25,
   },

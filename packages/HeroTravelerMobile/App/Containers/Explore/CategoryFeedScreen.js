@@ -203,11 +203,11 @@ class CategoryFeedScreen extends React.Component {
       bottomContent = (
         <ConnectedFeedList
           isStory={selectedTab !== restrictedTabTypes.guides}
-          style={styles.feedList}
           entitiesById={
             selectedTab === restrictedTabTypes.guides ? categoryGuidesById : storiesById
           }
           renderSectionHeader={this.renderTabs()}
+          sectionContentHeight={40}
           renderFeedItem={this.renderFeedItem}
           onRefresh={this._onRefresh}
           refreshing={refreshing}

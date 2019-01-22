@@ -160,6 +160,7 @@ export default class ProfileTabsAndStories extends Component {
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}
+            sectionContentHeight={50}
             renderSectionHeader={this.renderTabs()}
             renderFeedItem={this.renderFeedItem}
             pagingIsDisabled

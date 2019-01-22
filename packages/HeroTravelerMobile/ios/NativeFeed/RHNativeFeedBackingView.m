@@ -39,9 +39,9 @@
   _heights = @[];
   _separatorHeight = 0.f;
   
-  _backgroundColor = [UIColor redColor];
-  _titleColor = [UIColor orangeColor]; //[UIColor lightGrayColor];
-  _separatorColor = [UIColor greenColor];
+  _backgroundColor = [UIColor redColor]; // these don't impact colors anymore
+  _titleColor = [UIColor orangeColor];
+  _separatorColor = [UIColor whiteColor];
 
   _leftInset = 15.f;
 
@@ -121,13 +121,13 @@
   
   UIGraphicsBeginImageContextWithOptions(fullSize, NO, [UIScreen mainScreen].scale);
   
-  UIColor* _backgroundColor = [UIColor redColor];
-  UIColor* _itemCellImageColor = [UIColor greenColor];
-  UIColor* _itemTitleViewImageColor = [UIColor blueColor];
-  UIColor* _titlesColor = [UIColor whiteColor];
+  UIColor* _backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
+  UIColor* _itemCellImageColor = [UIColor whiteColor];
+  UIColor* _itemTitleViewImageColor = [UIColor whiteColor];
+  UIColor* _titlesColor =  [UIColor colorWithWhite:0.935f alpha:1.f];
 
   CGFloat _itemTopInset = 20.f;
-  CGFloat _itemSideInsets = 13.5f;
+  CGFloat _itemSideInsets = 14.5f;
   CGFloat _itemCornerRadius = 5.f;
   
   CGFloat _bottomTitleBackingSize = 146.5f;

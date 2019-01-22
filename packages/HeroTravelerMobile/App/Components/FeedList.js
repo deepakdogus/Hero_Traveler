@@ -37,6 +37,7 @@ export default class FeedList extends React.Component {
     renderSectionHeader: PropTypes.object,
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
+    sectionContentHeight: PropTypes.number,
     style: PropTypes.number,
     sessionError: PropTypes.string,
     clearSessionError: PropTypes.func,
@@ -121,6 +122,7 @@ export default class FeedList extends React.Component {
     const {
       targetEntities,
       renderSectionHeader,
+      sectionContentHeight,
       renderHeaderContent,
       headerContentHeight,
     } = this.props
@@ -200,8 +202,8 @@ export default class FeedList extends React.Component {
         onTouchMove={this.scrollResponderHandleTouchMove}
         onTouchStart={this.scrollResponderHandleTouchStart}
         onTouchCancel={this.scrollResponderHandleTouchCancel}
-        leadingCellSpace={100}
-        trailingCellSpace={100}
+        leadingCellSpace={1} // leadingCellSpace must be at least 1 for trailing space to appear
+        trailingCellSpace={20}
       >
         <RefreshControl
           enabled={this.props.refreshing}
@@ -214,7 +216,7 @@ export default class FeedList extends React.Component {
           </NativeFeedHeader>
         ) : null}
         {renderSectionHeader ? (
-          <NativeFeedHeader headerHeight={40} sticky={true}>
+          <NativeFeedHeader headerHeight={sectionContentHeight} sticky={true}>
             {renderSectionHeader}
           </NativeFeedHeader>
         ) : null}

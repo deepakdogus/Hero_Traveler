@@ -75,8 +75,8 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
   },
   searchTitleWrapper: {
-    height: 46,
-    marginTop: Metrics.doubleBaseMargin,
+    backgroundColor: Colors.snow,
+    height: 60,
     marginLeft: Metrics.doubleBaseMargin,
     marginRight: Metrics.doubleBaseMargin,
     paddingTop: Metrics.baseMargin,
@@ -253,5 +253,9 @@ export default StyleSheet.create({
   },
   noResultsText: {
     color: Colors.background,
+  },
+  noRecentSearchesText: {
+    color: Colors.background,
+    textAlign: 'left',
   },
 })

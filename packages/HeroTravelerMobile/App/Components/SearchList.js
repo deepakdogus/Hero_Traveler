@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  ScrollView,
+  SectionList,
   View,
   Text,
   Keyboard,
@@ -11,7 +11,6 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import Loader from './Loader'
-import List from './List'
 import ListItem from './ListItem'
 import Avatar from './Avatar'
 
@@ -79,39 +78,51 @@ class SearchList extends Component {
     if (user._id === this.props.userId) {
       NavActions.profile({ type: 'jump' })
     }
- else {
+    else {
       NavActions.readOnlyProfile({
         userId: user._id,
       })
     }
   }
 
-  renderLocationRow = location => {
+  // search results
+  renderSearchTitle = ({ section: { title, data } }) =>
+    (
+      !title
+      || !data
+      || !data.length
+      || (title === 'RECENT SEARCHES' && !this.shouldDisplayRecentPlaces())
+    )
+      ? null
+      : (
+        <View style={styles.searchTitleWrapper}>
+          <Text style={styles.searchTitleText}>{title}</Text>
+        </View>
+      )
+
+  renderLocationRow = ({ item: location }) => {
     return (
       <ListItem
         onPress={this._navToSearchResults(location)}
         text={<Text style={styles.listItemText}>{location.primaryText}</Text>}
         style={styles.searchRowItem}
-        keyboardShouldPersistTaps={'handled'}
       />
     )
   }
 
-  renderPlacesRow = story => {
+  renderPlacesRow = ({ item: place }) => {
     return (
       <ListItem
-        keyboardShouldPersistTaps={'handled'}
-        onPress={this._navToStory(story)}
-        text={<Text style={styles.listItemText}>{story.title}</Text>}
+        onPress={this._navToStory(place)}
+        text={<Text style={styles.listItemText}>{place.title}</Text>}
         style={styles.searchRowItem}
       />
     )
   }
 
-  renderPeopleRow = user => {
+  renderPeopleRow = ({ item: user }) => {
     return (
       <ListItem
-        keyboardShouldPersistTaps={'handled'}
         onPress={this._navToUserProfile(user)}
         leftElement={
           <Avatar
@@ -127,10 +138,65 @@ class SearchList extends Component {
     )
   }
 
-  renderRecentSearchesRow = item => {
+  //no results
+  hasNoResults = () => {
+    const {
+      isSearching,
+      lastSearchResults,
+      lastLocationPredictions,
+    } = this.props
+    const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const locationHits = lastLocationPredictions || []
+
+    return !isSearching
+      && !searchHits.length
+      && !locationHits.length
+  }
+
+  renderNoResults = () => {
+    const {
+      hasSearchText,
+      query,
+    } = this.props
+    if (!(this.hasNoResults() && hasSearchText && query.length >= 3)) return null
+    return (
+      <View style={styles.noResults}>
+        <Text style={styles.noResultsText}>{'No results'}</Text>
+      </View>
+    )
+  }
+
+  //recent searches
+  shouldDisplayRecent = (type) => {
+    const {
+      searchHistory,
+      hasSearchText,
+      query,
+    } = this.props
+
+    return this.hasNoResults()
+      && !!searchHistory[type].length
+      && (!hasSearchText || query.length < 3)
+  }
+
+  shouldDisplayRecentPlaces = () => this.shouldDisplayRecent('places')
+
+  shouldDisplayRecentPeople = () => this.shouldDisplayRecent('people')
+
+  renderNoRecentSearches = () => {
+    return (
+    <View style={styles.noResults}>
+      <Text style={styles.noResultsText}>
+        {'No recent searches yet. Search for something!'}
+      </Text>
+    </View>
+  )
+}
+
+  renderRecentSearchesRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPlaces()) return null
     return (
       <ListItem
-        keyboardShouldPersistTaps={'handled'}
         onPress={this._navConditionally(item)}
         text={<Text style={styles.listItemText}>{item.title}</Text>}
         style={styles.searchRowItem}
@@ -138,24 +204,10 @@ class SearchList extends Component {
     )
   }
 
-  renderSearchTitle = text => (
-    <View style={styles.searchTitleWrapper}>
-      <Text style={styles.searchTitleText}>{text}</Text>
-    </View>
-  )
-
-  renderResultsSection = (title, items, renderFunc) => (
-    <Fragment>
-      {this.renderSearchTitle(title)}
-      <List items={items} renderRow={renderFunc} />
-    </Fragment>
-  )
-
-  renderNoResults = () => (
-    <View style={styles.noResults}>
-      <Text style={styles.noResultsText}>{'No results'}</Text>
-    </View>
-  )
+  renderRecentPeopleRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPeople()) return null
+    return this.renderPeopleRow({ item })
+  }
 
   render = () => {
     const {
@@ -164,73 +216,61 @@ class SearchList extends Component {
       lastSearchResults,
       lastLocationPredictions,
       searchHistory,
-      hasSearchText,
-      query,
     } = this.props
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
-    const locationHits = lastLocationPredictions || []
-
-    const hasNoResults = !isSearching
-      && !searchHits.length
-      && !locationHits.length
-
-    const showRecentPlacesSearches = hasNoResults
-      && !!searchHistory.places.length
-      && (!hasSearchText || query.length < 3)
-
-    const showRecentPeopleSearches = hasNoResults
-      && !!searchHistory.people.length
-      && (!hasSearchText || query.length < 3)
-
-    const showNoResults = hasNoResults && hasSearchText && query.length >= 3
 
     return (
-      <View style={styles.scrollWrapper} keyboardShouldPersistTaps={'always'}>
+      <View style={styles.scrollWrapper}>
         {isSearching && <Loader style={styles.searchLoader} />}
         {!isSearching && selectedTabIndex === 0 && (
-          <ScrollView
+          <SectionList
+            keyboardDismissMode={'on-drag'}
             keyboardShouldPersistTaps={'handled'}
-          >
-            {!!locationHits.length && (
-              this.renderResultsSection(
-                'LOCATIONS',
-                lastLocationPredictions,
-                this.renderLocationRow,
-              )
-            )}
-            {!!searchHits.length && (
-              this.renderResultsSection(
-                'STORIES',
-                searchHits,
-                this.renderPlacesRow,
-              )
-            )}
-            {showRecentPlacesSearches && (
-              this.renderResultsSection(
-                'RECENT SEARCHES',
-                searchHistory.places,
-                this.renderRecentSearchesRow,
-              )
-            )}
-            {!showRecentPlacesSearches && showNoResults && this.renderNoResults()}
-          </ScrollView>
+            renderSectionHeader={this.renderSearchTitle}
+            sections={[
+              {
+                title: 'LOCATIONS',
+                data: lastLocationPredictions || [],
+                renderItem: this.renderLocationRow,
+                keyExtractor: item => item.placeID,
+               },
+              {
+                title: 'STORIES',
+                data: searchHits || [],
+                renderItem: this.renderPlacesRow,
+                keyExtractor: item => item.id,
+              },
+              {
+                title: 'RECENT SEARCHES',
+                data: searchHistory.places || [],
+                renderItem: this.renderRecentSearchesRow,
+                keyExtractor: item => item.id,
+              },
+            ]}
+            ListFooterComponent={this.renderNoResults}
+          />
         )}
         {!isSearching && selectedTabIndex === 1 && (
-          <ScrollView>
-            {searchHits.length > 0 && (
-              <List
-                items={searchHits}
-                renderRow={this.renderPeopleRow}
-              />
-            )}
-            {showRecentPeopleSearches && (
-              <List
-                items={searchHistory.people}
-                renderRow={this.renderPeopleRow}
-              />
-            )}
-            {!showRecentPeopleSearches && showNoResults && this.renderNoResults()}
-          </ScrollView>
+          <SectionList
+            keyboardDismissMode={'on-drag'}
+            keyboardShouldPersistTaps={'handled'}
+            renderSectionHeader={this.renderSearchTitle}
+            sections={[
+              {
+                data: searchHits,
+                renderItem: this.renderPeopleRow,
+                keyExtractor: item => item.id,
+              },
+              {
+                title: 'RECENT SEARCHES',
+                data: searchHistory.people,
+                renderItem: this.renderRecentPeopleRow,
+                keyExtractor: item => item.id,
+                ListEmptyComponent: this.renderNoRecentSearches,
+              },
+            ]}
+            ListFooterComponent={this.renderNoResults}
+          />
         )}
       </View>
     )

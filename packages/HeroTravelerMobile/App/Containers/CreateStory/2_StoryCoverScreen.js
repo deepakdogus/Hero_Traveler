@@ -69,6 +69,7 @@ class StoryCoverScreen extends Component {
     error: PropTypes.string,
     draftToBeSaved: PropTypes.object,
     setWorkingDraft: PropTypes.func,
+    draftIdToDBId: PropTypes.object,
   }
 
   static defaultProps = {
@@ -341,10 +342,11 @@ class StoryCoverScreen extends Component {
   }
 
   cleanDraft(draft){
-    const {workingDraft, originalDraft} = this.props
+    const {workingDraft, originalDraft, draftIdToDBId} = this.props
     if (!isFieldSame('title', workingDraft, originalDraft)) draft.title = _.trim(draft.title)
     if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
+    if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
     draft.draftjsContent = this.editor.getEditorStateAsObject()
   }
 
@@ -783,6 +785,7 @@ export default connect((state) => {
     pendingUpdate: getPendingDraftById(state, originalDraft.id),
     draftToBeSaved: {...state.storyCreate.draftToBeSaved},
     error: state.storyCreate.error || '',
+    draftIdToDBId: state.storyCreate.draftIdToDBId,
   }
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),

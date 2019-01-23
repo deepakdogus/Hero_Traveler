@@ -94,6 +94,7 @@ class EditStory extends Component {
     syncProgressMessage: PropTypes.string,
     syncProgress: PropTypes.number,
     openGlobalModal: PropTypes.func,
+    draftIdToDBId: PropTypes.object,
   }
 
   constructor(props){
@@ -141,7 +142,6 @@ class EditStory extends Component {
 
   componentDidUpdate(prevProps){
     const {
-      subPath,
       reroute,
       match,
       originalDraft,
@@ -166,14 +166,9 @@ class EditStory extends Component {
     }
 
     if (hasCompletedSave) {
-      const prevId = _.get(prevProps, 'workingDraft.id', '')
-      const didFirstSaveAsDraft = isLocalDraft(prevId) && prevId !== workingDraft.id
       if (this.state.saveAction === 'publish') {
         this.props.reroute('/feed')
         this.props.resetCreateStore()
-      }
-      else if (didFirstSaveAsDraft) {
-        reroute(`/editStory/${workingDraft.id}/${subPath}`)
       }
     }
 
@@ -259,7 +254,7 @@ class EditStory extends Component {
   }
 
   cleanDraft(draft){
-    const {workingDraft, originalDraft} = this.props
+    const {workingDraft, originalDraft, draftIdToDBId} = this.props
     const cleanedDraft = _.merge({}, draft)
     if (!isFieldSame('title', workingDraft, originalDraft)) {
       cleanedDraft.title = _.trim(cleanedDraft.title)
@@ -272,6 +267,7 @@ class EditStory extends Component {
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
     cleanedDraft.draftjsContent = this.getEditorState()
+    if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
   }
 
@@ -436,6 +432,7 @@ function mapStateToProps(state, props) {
     syncProgressMessage,
     backgroundFailures,
     globalModal: state.ux,
+    draftIdToDBId: state.storyCreate.draftIdToDBId,
   }
 }
 

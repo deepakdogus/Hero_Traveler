@@ -59,7 +59,9 @@ export const INITIAL_STATE = Immutable({
   },
   imageUpload: {
     ...initialImageUpload
-  }
+  },
+  // used to make sure we dont save the same local draft multiple times to DB
+  draftIdToDBId: {},
 })
 
 /* ------------- Reducers ------------- */
@@ -76,6 +78,7 @@ export const saveDraftSuccess = (state, {draft, story}) => {
     sync: {
       syncProgress: state.sync.syncProgressSteps,
     },
+    draftIdToDBId: { [draft.id]: story.id}
   }
 
   return state.merge(update, {deep: true})

@@ -216,6 +216,7 @@ class MyFeedScreen extends React.Component {
         searchHistory={searchHistory}
         addRecentSearch={addRecentSearch}
         user={user}
+        placeholder={`Search`}
       >
         <BackgroundPublishingBars
           sync={sync}

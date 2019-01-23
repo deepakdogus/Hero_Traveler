@@ -181,6 +181,21 @@ export default StyleSheet.create({
     height: 40,
     width: 30,
   },
+  searchIconView: {
+    position: 'absolute',
+    top: 0,
+    left: 10,
+    justifyContent: 'center',
+    height: 15,
+    width: 15,
+    paddingRight: 2.5,
+    marginVertical: 7.5,
+    transform: [{ scaleX: 2 }, { scaleY: 2 }],
+  },
+  searchIcon: {
+    height: 15,
+    width: 15,
+  },
   InputXPosition: {
     position: 'absolute',
     top: 0,

@@ -33,6 +33,7 @@ class SearchPlacesPeople extends Component {
     searchHistory: PropTypes.object,
     addRecentSearch: PropTypes.func,
     renderTabs: PropTypes.func,
+    placeholder: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   }
 
@@ -217,6 +218,7 @@ class SearchPlacesPeople extends Component {
       user,
       addRecentSearch,
       searchHistory,
+      placeholder,
     } = this.props
     const showSearch
       = this.state.lastSearchResults
@@ -228,13 +230,23 @@ class SearchPlacesPeople extends Component {
 
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
-        <View style={[styles.fakeNavBar, renderTabs && styles.navBarBorder]}>
+        <View style={[
+          styles.fakeNavBar,
+          renderTabs && !showSearch && styles.navBarBorder,
+        ]}>
           <View style={styles.headerSearch}>
             <View style={styles.searchWrapper}>
+              <TabIcon
+                name="explore"
+                style={{
+                  view: styles.searchIconView,
+                  image: styles.searchIcon,
+                }}
+              />
               <TextInput
                 ref={this.setupInputRef}
                 style={styles.searchInput}
-                placeholder="Places &amp; People"
+                placeholder={placeholder || `Places & People`}
                 placeholderTextColor={Colors.grey}
                 onFocus={this.setFocus}
                 onChange={this._changeQuery}

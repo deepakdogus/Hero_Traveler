@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, ScrollView } from 'react-native'
-import {Actions as NavActions} from 'react-native-router-flux'
-import {navToProfile} from '../Navigation/NavigationRouter'
+import { Actions as NavActions } from 'react-native-router-flux'
+import { navToProfile } from '../Navigation/NavigationRouter'
 import styles from '../Containers/Styles/SearchResultsScreenStyles'
 
 import FeedItemsOfType from './FeedItemsOfType'
@@ -15,17 +15,20 @@ class SearchResultsSeeAllScreen extends Component {
     userId: PropTypes.string,
   }
 
-  _onPressAuthor = (authorId) => {
+  _onPressAuthor = authorId => {
     const { userId } = this.props
     if (authorId === userId) navToProfile()
-    else NavActions.readOnlyProfile({userId: authorId})
+    else NavActions.readOnlyProfile({ userId: authorId })
   }
 
   render = () => {
     const { feedItemType, typeLabels, feedItems } = this.props
     return (
       <View style={styles.root}>
-        <ScrollView style={styles.scrollViewNoMargin}>
+        <ScrollView
+          style={styles.scrollViewNoMargin}
+          contentInset={{ bottom: 25 }}
+        >
           <FeedItemsOfType
             type={feedItemType}
             label={typeLabels[feedItemType].toUpperCase()}

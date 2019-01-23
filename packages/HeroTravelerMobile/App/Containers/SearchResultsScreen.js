@@ -149,7 +149,10 @@ class SearchResultsScreen extends Component {
           <Loader style={styles.loader} spinnerColor={Colors.blackoutTint} />
         )}
         {!isFetchingResults && hasResults && (
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            contentInset={{ bottom: 25 }}
+          >
             {Object.keys(this.typeLabels).map((type, idx) => {
               const feedItems = (type === 'guides' || type === 'stories')
                 ? lastSearchResults[type]
@@ -170,6 +173,7 @@ class SearchResultsScreen extends Component {
                 />
               )
             })}
+            <View style={styles.spacer}/>
           </ScrollView>
         )}
         {!isFetchingResults && !hasResults && (

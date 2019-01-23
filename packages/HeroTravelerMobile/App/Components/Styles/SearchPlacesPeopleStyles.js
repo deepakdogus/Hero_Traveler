@@ -12,6 +12,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
     backgroundColor: Colors.snow,
+    zIndex: 2, // need to set this so embedded NativeFeeds can't capture clicks in the navBar
   },
   navBarBorder: {
     borderBottomColor: Colors.feedDividerGrey,

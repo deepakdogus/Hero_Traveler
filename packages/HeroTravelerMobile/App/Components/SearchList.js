@@ -5,6 +5,7 @@ import {
   ScrollView,
   View,
   Text,
+  Keyboard,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -34,6 +35,7 @@ class SearchList extends Component {
   }
 
   _navToSearchResults = location => () => {
+    Keyboard.dismiss()
     NavActions.searchResults({
       location,
       userId: this.props.userId,
@@ -90,6 +92,7 @@ class SearchList extends Component {
         onPress={this._navToSearchResults(location)}
         text={<Text style={styles.listItemText}>{location.primaryText}</Text>}
         style={styles.searchRowItem}
+        keyboardShouldPersistTaps={'handled'}
       />
     )
   }
@@ -97,6 +100,7 @@ class SearchList extends Component {
   renderPlacesRow = story => {
     return (
       <ListItem
+        keyboardShouldPersistTaps={'handled'}
         onPress={this._navToStory(story)}
         text={<Text style={styles.listItemText}>{story.title}</Text>}
         style={styles.searchRowItem}
@@ -107,6 +111,7 @@ class SearchList extends Component {
   renderPeopleRow = user => {
     return (
       <ListItem
+        keyboardShouldPersistTaps={'handled'}
         onPress={this._navToUserProfile(user)}
         leftElement={
           <Avatar
@@ -125,6 +130,7 @@ class SearchList extends Component {
   renderRecentSearchesRow = item => {
     return (
       <ListItem
+        keyboardShouldPersistTaps={'handled'}
         onPress={this._navConditionally(item)}
         text={<Text style={styles.listItemText}>{item.title}</Text>}
         style={styles.searchRowItem}
@@ -179,10 +185,12 @@ class SearchList extends Component {
     const showNoResults = hasNoResults && hasSearchText && query.length >= 3
 
     return (
-      <View style={styles.scrollWrapper}>
+      <View style={styles.scrollWrapper} keyboardShouldPersistTaps={'always'}>
         {isSearching && <Loader style={styles.searchLoader} />}
         {!isSearching && selectedTabIndex === 0 && (
-          <ScrollView>
+          <ScrollView
+            keyboardShouldPersistTaps={'handled'}
+          >
             {!!locationHits.length && (
               this.renderResultsSection(
                 'LOCATIONS',

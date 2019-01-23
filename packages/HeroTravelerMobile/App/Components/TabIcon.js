@@ -160,12 +160,12 @@ class TabIcon extends React.Component {
       : {}
 
   render() {
-    const { style = {}, name, notificationCount, selected } = this.props
+    const { style = {}, name, notificationCount, selected, defaultScale } = this.props
     return (
       <View style={style.view}>
         <Image
           source={this.getIconSource(`${name}${selected ? '-active' : ''}`)}
-          style={[style.image, this.getTabStyle(name)] || {}}
+          style={[style.image, !defaultScale && this.getTabStyle(name)]}
         />
         {name === 'activity' && notificationCount > 0 && (
           <NotificationBadge count={notificationCount} />

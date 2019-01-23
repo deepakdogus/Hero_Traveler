@@ -1,6 +1,12 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { View, TextInput, TouchableOpacity, Text} from 'react-native'
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Keyboard,
+} from 'react-native'
 import PropTypes from 'prop-types'
 
 // Search
@@ -206,10 +212,14 @@ class SearchPlacesPeople extends Component {
       selectedTabIndex: null,
       lastSearchResults: null,
       lastLocationPredictions: null,
+      hasSearchText: false,
     })
+    Keyboard.dismiss()
   }
 
   setupInputRef = ref => (this._searchInput = ref)
+
+  focusInput = () => this._searchInput.focus()
 
   render = () => {
     const {
@@ -220,10 +230,17 @@ class SearchPlacesPeople extends Component {
       searchHistory,
       placeholder,
     } = this.props
-    const showSearch
-      = this.state.lastSearchResults
-      || this.state.lastLocationPredictions
-      || this.state.selectedTabIndex !== null
+    const {
+      lastSearchResults,
+      lastLocationPredictions,
+      selectedTabIndex,
+      hasSearchText,
+      searchingGoogle,
+      searchingAlgolia,
+    } = this.state
+    const showSearch = lastSearchResults
+      || lastLocationPredictions
+      || selectedTabIndex !== null
 
     // TODO: remove conditional navBarBorder when you want to display the tab bar;
     // uncomment the renderTab() line
@@ -236,16 +253,23 @@ class SearchPlacesPeople extends Component {
         ]}>
           <View style={styles.headerSearch}>
             <View style={styles.searchWrapper}>
-              <TabIcon
-                name="explore"
-                style={{
-                  view: styles.searchIconView,
-                  image: styles.searchIcon,
-                }}
-              />
+              {!hasSearchText && (
+                <TouchableOpacity
+                  style={styles.searchIconPosition}
+                  onPress={this.focusInput}
+                >
+                  <TabIcon
+                    name="explore"
+                    defaultScale
+                    style={{
+                      image: styles.searchIcon,
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
               <TextInput
                 ref={this.setupInputRef}
-                style={styles.searchInput}
+                style={[styles.searchInput, hasSearchText && styles.searchInputFlex]}
                 placeholder={placeholder || `Places & People`}
                 placeholderTextColor={Colors.grey}
                 onFocus={this.setFocus}
@@ -254,22 +278,20 @@ class SearchPlacesPeople extends Component {
                 returnKeyType="search"
                 autoCorrect={false}
               />
-              {this.state.hasSearchText && (
                 <TouchableOpacity
-                  style={styles.InputXPosition}
-                  onPress={this.resetSearchText}
+                  style={[styles.InputXPosition, hasSearchText && styles.InputXAbsolutePosition]}
+                  onPress={hasSearchText ? this.resetSearchText : this.focusInput}
                 >
                   <TabIcon
                     name="closeDark"
                     style={{
-                      view: styles.InputXView,
+                      view: [styles.InputXView, !hasSearchText && styles.InputXViewHidden],
                       image: styles.InputXIcon,
                     }}
                   />
                 </TouchableOpacity>
-              )}
             </View>
-            {this.state.selectedTabIndex !== null && (
+            {selectedTabIndex !== null && (
               <TouchableOpacity onPress={this.onPressCancel}>
                 <View style={styles.cancelBtn}>
                   <Text style={styles.cancelBtnText}>Cancel</Text>
@@ -278,25 +300,26 @@ class SearchPlacesPeople extends Component {
             )}
           </View>
         </View>
+        {/* uncomment when adding channels feature */}
         {/* {!showSearch && renderTabs && renderTabs()} */}
         {!showSearch && children}
         {showSearch && (
           <View style={styles.tabsViewContainer}>
             <SearchTabBar
-              selectedTabIndex={this.state.selectedTabIndex}
+              selectedTabIndex={selectedTabIndex}
               goToPlacesTab={this._goToPlacesTab}
               goToPeopleTab={this._goToPeopleTab}
             />
             <SearchList
-              selectedTabIndex={this.state.selectedTabIndex}
-              lastSearchResults={this.state.lastSearchResults}
-              lastLocationPredictions={this.state.lastLocationPredictions}
+              selectedTabIndex={selectedTabIndex}
+              lastSearchResults={lastSearchResults}
+              lastLocationPredictions={lastLocationPredictions}
               isSearching={
-                this.state.searchingAlgolia || this.state.searchingGoogle
+                searchingAlgolia || searchingGoogle
               }
               userId={user.id}
               query={this.helper.state.query}
-              hasSearchText={this.state.hasSearchText}
+              hasSearchText={hasSearchText}
               addRecentSearch={addRecentSearch}
               searchHistory={searchHistory}
             />

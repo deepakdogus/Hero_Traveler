@@ -78,7 +78,7 @@ const CategorySchema = new mongoose.Schema({
       }
     }
   },
-  channelSponsorLogo: {
+  categorySponsorLogo: {
     altText: String,
     original: {
       filename: String,

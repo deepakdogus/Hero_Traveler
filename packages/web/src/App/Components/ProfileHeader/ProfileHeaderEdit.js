@@ -328,8 +328,7 @@ export default class ProfileHeaderEdit extends React.Component {
     } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     const minRows = 7
-    const bioLines =
-      (bio && typeof bio === 'string')
+    const bioLines = (bio && typeof bio === 'string')
       ? (bio.match(/\r?\n/g) || '').length + 1
       : minRows
     let targetedImage
@@ -341,7 +340,7 @@ export default class ProfileHeaderEdit extends React.Component {
 
     const isUsernameError = _.get(error, 'message', '').includes('username')
     const isBioError = _.get(error, 'message', '').includes('Bio')
-      || bio.length > 500
+      || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
 

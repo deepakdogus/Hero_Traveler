@@ -47,6 +47,59 @@ const CategorySchema = new mongoose.Schema({
       }
     }
   },
+  sponsorLink: {
+    type: String
+  },
+  interstitialImage: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
+  categorySponsorLogo: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
   counts: {
     followers: {
       type: Number,

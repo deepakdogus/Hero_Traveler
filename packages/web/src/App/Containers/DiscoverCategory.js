@@ -87,6 +87,7 @@ class DiscoverCategory extends ContainerWithFeedList {
       isFollowingCategory,
     } = this.props
     const {selectedFeedItems} = this.getSelectedFeedItems()
+    console.log('category', category)
 
     return (
       <ContentWrapper>

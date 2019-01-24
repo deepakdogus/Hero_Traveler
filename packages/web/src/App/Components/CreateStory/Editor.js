@@ -89,6 +89,22 @@ export default class BodyEditor extends React.Component {
   componentDidMount() {
     this.props.setGetEditorState(this.getEditorStateAsObject)
     this.editor.focus()
+    this.setupWindowResizeListener()
+  }
+
+  setupWindowResizeListener = () => {
+    window.addEventListener('resize', this._onResizeWindow)
+  }
+
+  _onResizeWindow = () => {
+    this.editor.blur()
+    // no 'onDoneResizing' event in JS, can be emulated with reasonable timeout
+    clearTimeout(resizeTimer)
+    const resizeTimer = setTimeout(() => this.editor.focus(), 250)
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this._onResizeWindow)
   }
 
   getEditorStateAsObject = () => {

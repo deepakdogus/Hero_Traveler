@@ -9,10 +9,7 @@ import {
 } from '../Shared'
 import {Row} from '../../FlexboxGrid'
 
-
-
-export default class SaveEdits extends React.Component{
-
+export default class SaveEdits extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
     nextPathAfterSave: PropTypes.string,
@@ -35,7 +32,8 @@ export default class SaveEdits extends React.Component{
   _reroute = () => {
     if (this.props.nextPathAfterSave === 'logout') {
       this.logoutAndReroute()
-    } else {
+    }
+    else {
       this.props.reroute(this.props.nextPathAfterSave)
     }
     this.props.closeModal()
@@ -53,7 +51,6 @@ export default class SaveEdits extends React.Component{
   }
 
   render(){
-
     return(
       <Container>
         <Title>{ this._renderModalMessage() }</Title>

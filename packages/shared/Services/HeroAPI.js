@@ -213,6 +213,10 @@ const create = () => {
     .then(response => safeNormalize(response, [Story]))
   }
 
+  const getUsersDeletedStories = (userId) => {
+    return api.get(`story/user/${userId}/deleted`)
+  }
+
   const getCategoryStories = (categoryId, params = {}) => {
     return api.get(`story/category/${categoryId}`, params)
     .then(response => safeNormalize(response, [Story]))
@@ -220,7 +224,7 @@ const create = () => {
 
   // publishes a draft
   const createStory = (story) => {
-    return api.post('story', {story})
+    return api.post('story/v2', {story})
   }
 
   const createDraft = () => {
@@ -488,6 +492,7 @@ const create = () => {
     getCategories,
     getHashtags,
     getUserStories,
+    getUsersDeletedStories,
     getCategoryStories,
     getSuggestedUsers,
     getUserFollowers,

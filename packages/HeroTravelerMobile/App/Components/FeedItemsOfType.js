@@ -95,9 +95,16 @@ export default class FeedItemsOfType extends Component {
         {!isShowAll && showDivider && (
           <View style={StoryReadingScreenStyles.divider} />
         )}
-        <View style={[styles.wrapper, isShowAll && styles.wrapperShowAll]}>
-          <Text style={styles.label}>{label}</Text>
-          <View style={styles.feedItemsWrapper}>{this.renderFeedItems()}</View>
+        <View style={[
+          styles.wrapper,
+          isShowAll && styles.wrapperShowAll,
+        ]}>
+          <Text style={styles.label}>
+            {label}
+          </Text>
+          <View style={styles.feedItemsWrapper}>
+            {this.renderFeedItems()}
+          </View>
           {!isShowAll && feedItems.length > 4 && (
             <TouchableOpacity onPress={this.onPressAll}>
               <View style={styles.seeAllView}>

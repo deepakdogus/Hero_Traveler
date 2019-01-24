@@ -132,7 +132,11 @@ class SearchList extends Component {
         }
         text={<Text style={styles.listItemText}>{user.username}</Text>}
         rightElement={
-          <Icon name="angle-right" color={Colors.whiteAlphaPt3} size={30} />
+          <Icon
+            name="angle-right"
+            color={Colors.whiteAlphaPt3}
+            size={30}
+          />
         }
       />
     )

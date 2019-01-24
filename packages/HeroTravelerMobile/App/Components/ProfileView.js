@@ -5,8 +5,8 @@ import {
   View,
 } from 'react-native'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
-import HeroAPI from '../Shared/Services/HeroAPI'
 import ProfileUserInfo from './ProfileUserInfo'
 import ProfileTabsAndStories from './ProfileTabsAndStories'
 import ShadowButton from './ShadowButton'
@@ -15,8 +15,6 @@ import Tooltip from './Tooltip'
 // @TODO UserActions shouldn't be in a component
 import UserActions from '../Shared/Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
-
-const api = HeroAPI.create()
 
 export const TabTypes = {
   stories: 'TAB_STORIES',
@@ -44,6 +42,25 @@ class ProfileView extends React.Component {
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
+    onSelectTab: PropTypes.func,
+    user: PropTypes.object,
+    accessToken: PropTypes.string,
+    completeTooltip: PropTypes.func,
+    stories: PropTypes.arrayOf(PropTypes.string),
+    drafts: PropTypes.arrayOf(PropTypes.string),
+    pendingDraftsIds: PropTypes.arrayOf(PropTypes.string),
+    bookmarks: PropTypes.arrayOf(PropTypes.string),
+    guideIds: PropTypes.arrayOf(PropTypes.string),
+    fetchStatus: PropTypes.object,
+    draftsFetchStatus: PropTypes.object,
+    bookmarksFetchStatus: PropTypes.object,
+    guidesFetchStatus: PropTypes.object,
+    editable: PropTypes.bool,
+    isFollowing: PropTypes.bool,
+    onPressFollow: PropTypes.func,
+    onPressUnfollow: PropTypes.func,
+    onRefresh: PropTypes.func,
+    bookmarksError: PropTypes.object,
   }
 
   constructor(props) {
@@ -56,10 +73,6 @@ class ProfileView extends React.Component {
       usernameText: props.user.username || 'Enter a username',
       aboutText: props.user.about || '',
     }
-  }
-
-  componentDidMount() {
-    api.setAuth(this.props.accessToken)
   }
 
   componentWillReceiveProps(newProps) {
@@ -84,6 +97,7 @@ class ProfileView extends React.Component {
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab})
+      this.props.onSelectTab(tab)
     }
   }
 
@@ -95,9 +109,21 @@ class ProfileView extends React.Component {
   _bioRef = c => this.bioInput = c
 
   getFeedItemsById() {
-    const {drafts, bookmarks, stories, guideIds} = this.props
+    const {
+      stories,
+      drafts = [],
+      pendingDraftsIds = [],
+      bookmarks,
+      guideIds,
+    } = this.props
+
     if (this.state.selectedTab === TabTypes.stories) return stories
-    else if (this.state.selectedTab === TabTypes.drafts) return drafts
+    else if (this.state.selectedTab === TabTypes.drafts) {
+      const filteredPendingIds = pendingDraftsIds.filter(id => {
+        return drafts.indexOf(id) === -1
+      })
+      return [...filteredPendingIds, ...drafts]
+    }
     else if (this.state.selectedTab === TabTypes.bookmarks) return bookmarks
     else if (this.state.selectedTab === TabTypes.guides) return guideIds
   }
@@ -193,7 +219,8 @@ class ProfileView extends React.Component {
 const mapStateToProps = (state) => {
   const userId = state.session.userId
   // If the signup process is not completed, a user can still login but they don't have some entities set.
-  const hasBookmarks = !!state.entities.stories.bookmarks && !!state.entities.stories.bookmarks[userId]
+  const hasBookmarks = _.has(state, `entities.stories.bookmarks[${userId}]`)
+
   return {
     userId,
     location: state.routes.scene.name,

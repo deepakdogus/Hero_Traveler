@@ -36,28 +36,30 @@ export default async function createStory(storyData, assetFormater) {
   const {coverImage, coverVideo} = storyData
 
   // lets us know which Story method to follow and how to handle media assets
-  const isLocalStory = storyData.draft
+  const isLocalStory = storyData.id.startsWith('local-')
   let newStory
 
   const storyObject = {
     ...storyData,
-    draft: false,
     categories: await parseAndInsertStoryCategories(storyData.categories),
-    hashtags: await parseAndInsertStoryHashtags(storyData.hashtags)
+    hashtags: await parseAndInsertStoryHashtags(storyData.hashtags),
   }
 
-  const authorDetails = await getUserDetails(storyData.author);
+  const authorDetails = await getUserDetails(storyData.author)
   if (authorDetails) {
     storyObject.featured = (
-      authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE ||
-      authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE ||
-      authorDetails.role == Constants.USER_ROLES_FELLOW_VALUE
+      authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE
+      || authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE
+      || authorDetails.role == Constants.USER_ROLES_FELLOW_VALUE
     )
   } else {
-    throw new Error('Could not find the author for this story');
+    throw new Error('Could not find the author for this story')
   }
 
-  if (!storyObject.locationInfo.latitude) {
+  if (
+    storyObject.locationInfo
+    && !storyObject.locationInfo.latitude
+  ) {
     storyObject.locationInfo = await getLocationInfo(storyObject.locationInfo.name)
   }
 
@@ -71,7 +73,7 @@ export default async function createStory(storyData, assetFormater) {
   // make a query for the story with just the fields
   // we want for the search index
   const populatedStory = await Story.get({_id: newStory._id})
-  algoliaHelper.addStoryToIndex(populatedStory)
+  if (!populatedStory.draft) algoliaHelper.addStoryToIndex(populatedStory)
 
   return {
     story: populatedStory,

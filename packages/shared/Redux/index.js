@@ -19,6 +19,7 @@ export default () => {
     mediaUpload: require('./MediaUploadRedux').reducer,
     routes,
     entities,
+    pendingUpdates: require('./PendingUpdatesRedux').reducer,
     ux: require('../../Redux/UXRedux').reducer,
     history: require('./HistoryRedux').reducer,
   })

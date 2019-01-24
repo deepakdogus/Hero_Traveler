@@ -1,20 +1,17 @@
 import { createReducer, createActions } from 'reduxsauce'
 import { changeCoverVideo, needToChangeCoverVideo } from './helpers/coverUpload'
 import Immutable from 'seamless-immutable'
-
+import _ from 'lodash'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  registerDraft: null,
-  registerDraftSuccess: ['draft'],
-  registerDraftFailure: ['error'],
+  addLocalDraft: ['draft'],
   editStory: ['storyId', 'cachedStory'],
-  editStorySuccess: ['story'],
+  editStorySuccess: ['story', 'isPendingUpdateOverride'],
   editStoryFailure: ['error', 'cachedStory'],
-  publishLocalDraft: ['draft'],
-  publishDraft: ['draft'],
-  publishDraftSuccess: ['draft'],
-  publishDraftFailure: ['error'],
+  saveLocalDraft: ['draft', 'saveAsDraft'],
+  saveDraftSuccess: ['draft', 'story'],
+  saveDraftFailure: ['error'],
   discardDraft: ['draftId'],
   discardDraftSuccess: ['draft'],
   discardDraftFailure: ['error'],
@@ -47,6 +44,8 @@ const initialImageUpload = {
 export const INITIAL_STATE = Immutable({
   draft: null,
   workingDraft: null,
+  draftToBeSaved: null,
+  isPendingUpdateOverride: false,
   sync: {
     syncProgress: 0,
     syncProgressSteps: 0,
@@ -60,22 +59,29 @@ export const INITIAL_STATE = Immutable({
   },
   imageUpload: {
     ...initialImageUpload
-  }
+  },
+  // used to make sure we dont save the same local draft multiple times to DB
+  draftIdToDBId: {},
 })
 
 /* ------------- Reducers ------------- */
 export const reset = () => INITIAL_STATE
 
-export const publish = (state, { userId }) => state.merge({ error: null })
+export const saveDraft = (state, { draft }) => state.merge({
+  error: null,
+  draftToBeSaved: draft,
+})
 
-export const publishSuccess = (state, {draft}) => {
-  return state.merge({
+export const saveDraftSuccess = (state, {draft, story}) => {
+  const update = {
     error: null,
-    draft: null,
     sync: {
       syncProgress: state.sync.syncProgressSteps,
-    }
-  }, {deep: true})
+    },
+    draftIdToDBId: { [draft.id]: story.id}
+  }
+
+  return state.merge(update, {deep: true})
 }
 
 export const failure = (state, {error}) => state.merge({ error })
@@ -87,12 +93,9 @@ export const failureUpdating = (state, {error}) => {
       error: true
     }
   })
-
 }
 
-export const registerDraft = () => INITIAL_STATE
-
-export const registerDraftSuccess = (state, {draft}) => {
+export const addLocalDraft = (state, {draft}) => {
   return state.merge({
     draft,
     workingDraft: draft,
@@ -175,12 +178,13 @@ export const editStory = (state) => {
   })
 }
 
-export const editStorySuccess = (state, {story}) => {
+export const editStorySuccess = (state, { story, isPendingUpdateOverride = false }) => {
   return state.merge({
     fetchStatus: {
       loaded: true,
       fetching: false
     },
+    isPendingUpdateOverride,
     draft: story,
     workingDraft: story,
     error: false,
@@ -218,18 +222,16 @@ export const uploadImageFailure = (state, {error, id}) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.PUBLISH_DRAFT]: publish,
-  [Types.PUBLISH_LOCAL_DRAFT]: publish,
-  [Types.PUBLISH_DRAFT_SUCCESS]: publishSuccess,
-  [Types.PUBLISH_DRAFT_FAILURE]: failure,
+  [Types.SAVE_LOCAL_DRAFT]: saveDraft,
+  [Types.SAVE_DRAFT_SUCCESS]: saveDraftSuccess,
+  [Types.SAVE_DRAFT_FAILURE]: failure,
   [Types.DISCARD_DRAFT_SUCCESS]: reset,
   [Types.DISCARD_DRAFT_FAILURE]: failure,
   [Types.UPDATE_WORKING_DRAFT]: updateWorkingDraft,
+  [Types.UPDATE_DRAFT]: saveDraft,
   [Types.UPDATE_DRAFT_SUCCESS]: updateDraftSuccess,
   [Types.UPDATE_DRAFT_FAILURE]: failureUpdating,
-  [Types.REGISTER_DRAFT]: registerDraft,
-  [Types.REGISTER_DRAFT_SUCCESS]: registerDraftSuccess,
-  [Types.REGISTER_DRAFT_FAILURE]: failure,
+  [Types.ADD_LOCAL_DRAFT]: addLocalDraft,
   [Types.UPLOAD_COVER_IMAGE_SUCCESS]: uploadCoverImageSuccess,
   [Types.UPLOAD_COVER_IMAGE_FAILURE]: uploadCoverImageFailure,
   [Types.EDIT_STORY]: editStory,

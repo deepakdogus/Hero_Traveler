@@ -12,6 +12,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { Metrics } from '../Shared/Themes'
 import styles from './Styles/FeedItemPreviewStyle'
@@ -57,7 +58,6 @@ export default class FeedItemPreview extends Component {
     areInRenderLocation: PropTypes.bool,
     deleteGuide: PropTypes.func,
     deleteStory: PropTypes.func,
-    removeDraft: PropTypes.func,
     onPressFollow: PropTypes.func,
     onPressUnfollow: PropTypes.func,
     isAuthor: PropTypes.bool,
@@ -76,28 +76,30 @@ export default class FeedItemPreview extends Component {
     isFeed: true,
   }
 
+  navToStoryEdit = () => {
+    const storyId = this.props.feedItem.id
+
+    NavActions.createStoryFlow({
+      storyId,
+      type: 'reset',
+      navigatedFromProfile: true,
+      shouldLoadStory: false,
+    })
+    NavActions.createStory_cover({
+      storyId,
+      navigatedFromProfile: true,
+      shouldLoadStory: false,
+    })
+  }
+
   _touchEdit = () => {
     const {isStory, feedItem} = this.props
-    if (isStory) {
-      NavActions.createStoryFlow({
-        storyId: feedItem.id,
-        type: 'reset',
-        navigatedFromProfile: true,
-        shouldLoadStory: false,
-      })
-      NavActions.createStory_cover({
-        storyId: feedItem.id,
-        navigatedFromProfile: true,
-        shouldLoadStory: false,
-      })
-    }
-    else {
-      NavActions.createGuide({ guideId: feedItem.id })
-    }
+    if (isStory) this.navToStoryEdit()
+    else NavActions.createGuide({ guideId: feedItem.id })
   }
 
   _touchTrash = () => {
-    const { deleteStory, removeDraft, feedItem, user, isStory, deleteGuide} = this.props
+    const { deleteStory, feedItem, user, isStory, deleteGuide} = this.props
     Alert.alert(
       `Delete ${isStory ? 'Story' : 'Guide'}`,
       `Are you sure you want to delete this ${isStory ? 'story' : 'guide'}?`,
@@ -108,8 +110,7 @@ export default class FeedItemPreview extends Component {
           style: 'destructive',
           onPress: () => {
             if (isStory) {
-              if (feedItem.draft) removeDraft(feedItem.id)
-              else deleteStory(user.id, feedItem.id)
+              deleteStory(user.id, feedItem.id)
             }
             else {
               deleteGuide(feedItem.id)
@@ -361,8 +362,11 @@ export default class FeedItemPreview extends Component {
   }
 
   getOnPress = () => {
-    const {isStory, onPressStory, onPressGuide} = this.props
-    return isStory ? onPressStory : onPressGuide
+    const {isStory, onPressStory, onPressGuide, feedItem} = this.props
+    if (!isStory) return onPressGuide
+    return isLocalDraft(feedItem.id)
+      ? this.navToStoryEdit
+      : onPressStory
   }
 
   render () {

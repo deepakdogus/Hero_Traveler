@@ -17,7 +17,10 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import {
+  haveFieldsChanged,
+  hasChangedSinceSave,
+} from '../Shared/Lib/draftChangedHelpers'
 import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
@@ -63,6 +66,7 @@ class Header extends React.Component {
     activities: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
+    draftToBeSaved: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     pathname: PropTypes.string,
@@ -168,15 +172,23 @@ class Header extends React.Component {
   }
 
   openSaveEditsModal = path => {
+    const {workingDraft, originalDraft, draftToBeSaved, pathname} = this.props
+
     if (
-      this.props.workingDraft
-      && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+      pathname.includes('editStory')
+      && workingDraft
+      && haveFieldsChanged(workingDraft, originalDraft)
+      // extra check to ensure we dont show modal after they click save and nav away
+      // without making further edits to the draft
+      && hasChangedSinceSave(workingDraft, draftToBeSaved)
     ) {
       this.setState({
         nextPathAfterSave: path,
       })
       this.props.openGlobalModal('saveEdits')
+    }
+    else {
+      this.props.reroute(path)
     }
   }
 
@@ -322,6 +334,7 @@ function mapStateToProps(state) {
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
+    draftToBeSaved: state.storyCreate.draftToBeSaved,
     pathname: pathname,
     signedUp: state.signup.signedUp,
   }

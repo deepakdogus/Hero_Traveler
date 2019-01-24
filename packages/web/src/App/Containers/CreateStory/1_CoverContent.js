@@ -14,6 +14,7 @@ class CreateStoryCoverContent extends Component {
     updateWorkingDraft: PropTypes.func,
     setGetEditorState: PropTypes.func,
     uploadImage: PropTypes.func,
+    isPendingUpdateOverride: PropTypes.bool,
   }
 
   onInputChange = (update) => {
@@ -40,6 +41,7 @@ class CreateStoryCoverContent extends Component {
           onInputChange={this.onInputChange}
           workingDraft={this.props.workingDraft}
           uploadImage={this.props.uploadImage}
+          isPendingUpdateOverride={this.props.isPendingUpdateOverride}
         />
         <BodyEditor
           onInputChange={this.onInputChange}
@@ -54,6 +56,7 @@ class CreateStoryCoverContent extends Component {
 function mapStateToProps(state) {
   return {
     workingDraft: {...state.storyCreate.workingDraft},
+    isPendingUpdateOverride: state.storyCreate.isPendingUpdateOverride,
   }
 }
 

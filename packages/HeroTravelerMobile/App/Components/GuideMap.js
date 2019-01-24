@@ -9,18 +9,18 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import ImageWrapper from './ImageWrapper'
 import { getFeedItemImageURL } from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
-import { storyWidth, storyHeight } from './Styles/FeedItemsOfTypeStyles'
+import { feedItemWidth, feedItemHeight } from './Styles/FeedItemsOfTypeStyles'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {
   video: true,
-  width: storyWidth / 2,
-  height: storyHeight / 2,
+  width: feedItemWidth / 2,
+  height: feedItemHeight / 2,
 }
 
 const imageOptions = {
-  width: storyWidth / 2,
-  height: storyHeight / 2,
+  width: feedItemWidth / 2,
+  height: feedItemHeight / 2,
 }
 
 class GuideMap extends Component {
@@ -73,7 +73,8 @@ class GuideMap extends Component {
           + (distance * increment) / Math.cos((lat * Math.PI) / 180)
         latLongId = lat + '-' + long
         increment++
-      } while (cache.indexOf(latLongId) > -1)
+      }
+      while (cache.indexOf(latLongId) > -1)
       cache.push(latLongId)
 
       coords[story.id] = {
@@ -120,13 +121,11 @@ class GuideMap extends Component {
     return storiesRegion
   })
 
-  onPressStory = story => {
-    return () =>
-      NavActions.story({
-        storyId: story._id,
-        title: displayLocationDetails(story.locationInfo),
-      })
-  }
+  onPressStory = story => () =>
+    NavActions.story({
+      storyId: story._id,
+      title: displayLocationDetails(story.locationInfo),
+    })
 
   renderStoryPins = () => {
     return this.props.stories.map(story => {

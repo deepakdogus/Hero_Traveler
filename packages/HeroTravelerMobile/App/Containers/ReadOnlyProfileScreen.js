@@ -4,17 +4,18 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {Colors} from '../Shared/Themes'
-import UserActions, {getFollowers} from '../Shared/Redux/Entities/Users'
-import StoryActions, {getByUser, getUserFetchStatus} from '../Shared/Redux/Entities/Stories'
+import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
+import StoryActions, {
+  getByUser,
+  getUserFetchStatus,
+} from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import ProfileView from '../Components/ProfileView'
+import ProfileView, { TabTypes } from '../Components/ProfileView'
 import Loader from '../Components/Loader'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import styles from './Styles/ProfileScreenStyles'
 
-
 class ReadOnlyProfileScreen extends Component {
-
   static propTypes = {
     userId: PropTypes.string.isRequired,
     attemptRefreshUser: PropTypes.func.isRequired,
@@ -49,6 +50,15 @@ class ReadOnlyProfileScreen extends Component {
     attemptGetUserGuides(userId)
   }
 
+  _selectTab = (tab) => {
+    switch (tab) {
+      case TabTypes.stories:
+        return this.props.attemptGetUserStories(this.props.userId)
+      case TabTypes.guides:
+        return this.props.attemptGetUserGuides(this.props.userId)
+    }
+  }
+
   render () {
     const {
       user,
@@ -81,10 +91,11 @@ class ReadOnlyProfileScreen extends Component {
         fetchStatus={storiesFetchStatus}
         guidesFetchStatus={guidesFetchStatus}
         onPressFollow={this.follow}
-        onPressUnfollow={this.unfollow}
+        onPressUnfollowz={this.unfollow}
         isFollowing={_.includes(myFollowedUsers, user.id)}
         style={styles.root}
         refresh={this.initializeData}
+        onSelectTab={this._selectTab}
       />
     )
   }
@@ -109,7 +120,7 @@ const mapStateToProps = (state, props) => {
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[props.userId] : [],
     guidesFetchStatus: guides.fetchStatus,
     userFetchStatus: users.fetchStatus,
-    myFollowedUsers: getFollowers(users, 'following', authedUser.id)
+    myFollowedUsers: getFollowers(users, 'following', authedUser.id),
   }
 }
 

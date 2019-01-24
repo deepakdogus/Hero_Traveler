@@ -11,6 +11,7 @@ import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
+import getPendingDrafts from '../Shared/Lib/getPendingDrafts'
 import { runIfAuthed } from '../Lib/authHelpers'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
@@ -130,6 +131,7 @@ class Profile extends ContainerWithFeedList {
       uploadImage,
       uploadMedia,
       openGlobalModal,
+      pendingDrafts,
     } = this.props
     if (!profilesUser) return null
 
@@ -137,7 +139,15 @@ class Profile extends ContainerWithFeedList {
     const isEdit = path[path.length - 1] === 'edit'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
-    const {selectedFeedItems} = this.getSelectedFeedItems()
+
+    let {selectedFeedItems} = this.getSelectedFeedItems()
+    if (this.state.activeTab === 'DRAFTS') {
+      const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
+      const filteredPendingDrafts = pendingDrafts.filter(draft => {
+        return selectedFeedItemsIds.indexOf(draft.id) === -1
+      })
+      selectedFeedItems = [...filteredPendingDrafts, ...selectedFeedItems]
+    }
 
     return (
       <ContentWrapper>
@@ -199,6 +209,7 @@ function mapStateToProps(state, ownProps) {
     guidesById: _.get(guides, `guideIdsByUserId[${userId}]`, []),
     draftsFetchStatus: stories.drafts.fetchStatus,
     draftsById: stories.drafts.byId,
+    pendingDrafts: getPendingDrafts(state.pendingUpdates),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     userBookmarksById: getByBookmarks(users, userId),
     error: stories.error,
@@ -217,6 +228,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    loadDrafts: () => dispatch(StoryActions.loadDrafts()),
+    getDeletedStories: () => dispatch(StoryActions.getDeletedStories(targetUserId)),
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>

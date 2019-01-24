@@ -6,34 +6,36 @@ import { connect } from 'react-redux'
 import StoryCoverScreen from './2_StoryCoverScreen'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../../Shared/Lib/createLocalDraft'
+import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 
 class CreateStoryScreen extends Component {
   static propTypes = {
     storyId: PropTypes.string,
-    cachedStory: PropTypes.object,
+    story: PropTypes.object,
     userId: PropTypes.string,
-    registerDraft: PropTypes.func,
+    addLocalDraft: PropTypes.func,
     loadDraft: PropTypes.func,
     discardDraft: PropTypes.func,
     publish: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
+    setWorkingDraft: PropTypes.func,
   }
 
   componentWillMount() {
     const {
-      storyId, userId, cachedStory,
-      registerDraft, loadDraft, setWorkingDraft,
+      storyId, userId, story,
+      addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
     if (!storyId) {
-      registerDraft(createLocalDraft(userId))
+      addLocalDraft(createLocalDraft(userId))
     }
     // should only load publish stories since locals do not exist in DB
-    else if (storyId.substring(0,6) !== 'local-'){
-      loadDraft(storyId, cachedStory)
+    else if (isLocalDraft(storyId)) {
+      loadDraft(storyId, story)
     }
     else {
-      setWorkingDraft(cachedStory)
+      setWorkingDraft(story)
     }
   }
 
@@ -42,14 +44,17 @@ class CreateStoryScreen extends Component {
       <StoryCoverScreen {...this.props}/>
     )
   }
-
 }
 
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
+
+  const pendingDraft = _.get(state, `pendingUpdates.pendingUpdates[${props.storyId}].story`)
+  const savedStory = state.entities.stories.entities[props.storyId]
+
   return {
     userId: state.session.userId,
-    cachedStory: state.entities.stories.entities[props.storyId],
+    story: savedStory || pendingDraft,
     accessToken: accessToken.value,
     draft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
@@ -58,11 +63,10 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
-    setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
+    loadDraft: (draftId, story) => dispatch(StoryCreateActions.editStory(draftId, story)),
+    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    publish: (draft) => dispatch(StoryCreateActions.publishDraft(draft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }
 }

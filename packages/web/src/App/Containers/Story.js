@@ -168,6 +168,7 @@ class Story extends Component {
       isLiked,
       onClickAddToGuide,
     } = this.props
+
     if (!story || !author) return null
 
     return (

@@ -121,11 +121,18 @@ class EditUser extends React.Component {
     this.setState({
       formSubmitting: true,
     })
-    const { channelThumbnail, channelHeroImage } = values
+    const { channelThumbnail, channelHeroImage, channelSponsorLogo, interstitialImage } = values
     if ((channelThumbnail && channelThumbnail.public_id) ||
         (channelHeroImage && channelHeroImage.public_id)) {
       values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
     }
+    if (channelSponsorLogo && channelSponsorLogo.public_id) {
+      values.channelSponsorLogo = convertUrlsToImageFormat(undefined, channelSponsorLogo, 'channelSponsorLogo')
+    }
+    if (interstitialImage && interstitialImage.public_id) {
+      values.interstitialImage = convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
+    }
+    
     new Promise((resolve, reject) => {
       putUser({
         id,

@@ -14,6 +14,11 @@ const ButtonStyled = styled(Button)`
   margin-right: 10px;
 `
 
+const Divider = styled.hr`
+  border-bottom: 2px solid black;
+  width: 100%;
+`
+
 class EditUserForm extends React.Component {
   state = {
   }
@@ -45,7 +50,7 @@ class EditUserForm extends React.Component {
       record,
     } = this.props
 
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
 
     const formItemLayout = {
       wrapperCol: {
@@ -92,19 +97,6 @@ class EditUserForm extends React.Component {
             </Select>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Channel Thumbnail Image">
-          {getFieldDecorator('channelThumbnail', {
-          })(
-            <SingleImageUpload />
-          )}
-        </FormItem>
-
-        <FormItem {...formItemLayout} label="Channel Hero Image">
-          {getFieldDecorator('channelHeroImage', {
-          })(
-            <SingleImageUpload />
-          )}
-        </FormItem>
         
         <FormItem>
           {getFieldDecorator('isFeatured', {
@@ -122,6 +114,49 @@ class EditUserForm extends React.Component {
             <Checkbox>Make this user a channel</Checkbox>
           )}
         </FormItem>
+        {getFieldValue('isChannel') && <div>
+          <Divider />
+
+          <h2>Channel Image Assets</h2>
+
+          <FormItem {...formItemLayout} label="Channel Thumbnail Image">
+            {getFieldDecorator('channelThumbnail', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Channel Hero Image">
+            {getFieldDecorator('channelHeroImage', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Channel Interstitial Image (App)">
+            {getFieldDecorator('interstitialImage', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Channel Sponsor Logo (Website)">
+            {getFieldDecorator('channelSponsorLogo', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Sponsor Link">
+            {getFieldDecorator('sponsorLink', {
+              rules: [],
+            })(
+              <Input placeholder="Add a link to a profile or website" />
+            )}
+          </FormItem>
+
+          <Divider />
+        </div>}
         <FormItem>
           <div>
             <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>

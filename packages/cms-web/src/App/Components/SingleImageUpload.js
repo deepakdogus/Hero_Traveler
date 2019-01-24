@@ -36,7 +36,7 @@ class SingleImageUpload extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.value !== get(state, 'fileList.0.url')) {
       const { fileList } = state
-      const url = props.id === 'thumbnail' || 'channelThumbnail' ?
+      const url = props.id === 'thumbnail' || props.id === 'channelThumbnail' ?
         getImageUrl(props.value, 'categoryThumbnail') :
         getImageUrl(props.value)
       return {
@@ -58,7 +58,7 @@ class SingleImageUpload extends React.Component {
     const { value, id } = this.props
     if (!value) return
     const { fileList } = this.state
-    const url = id === 'thumbnail' || 'channelThumbnail' ?
+    const url = id === 'thumbnail' || id === 'channelThumbnail' ?
         getImageUrl(value, 'categoryThumbnail') :
         getImageUrl(value)
     this.setState({

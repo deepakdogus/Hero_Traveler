@@ -9,18 +9,18 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import ImageWrapper from './ImageWrapper'
 import { getFeedItemImageURL } from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
-import { storyWidth, storyHeight } from './Styles/FeedItemsOfTypeStyles'
+import { feedItemWidth, feedItemHeight } from './Styles/FeedItemsOfTypeStyles'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {
   video: true,
-  width: storyWidth / 2,
-  height: storyHeight / 2,
+  width: feedItemWidth / 2,
+  height: feedItemHeight / 2,
 }
 
 const imageOptions = {
-  width: storyWidth / 2,
-  height: storyHeight / 2,
+  width: feedItemWidth / 2,
+  height: feedItemHeight / 2,
 }
 
 class GuideMap extends Component {

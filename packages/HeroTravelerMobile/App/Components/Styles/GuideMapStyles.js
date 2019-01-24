@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { Fonts, Colors } from '../../Shared/Themes/'
-import {storyWidth} from './FeedItemsOfTypeStyles'
+import { feedItemWidth } from './FeedItemsOfTypeStyles'
 
 export default StyleSheet.create({
   mapView: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
     marginLeft: 10,
   },
   image: {
-    height: storyWidth / 2 / 16 * 9,
-    width: storyWidth / 2,
+    height: feedItemWidth / 2 / 16 * 9,
+    width: feedItemWidth / 2,
   },
 })

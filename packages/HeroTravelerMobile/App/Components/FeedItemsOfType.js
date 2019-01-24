@@ -105,7 +105,7 @@ export default class FeedItemsOfType extends Component {
           <View style={styles.feedItemsWrapper}>
             {this.renderFeedItems()}
           </View>
-          {!isShowAll && feedItems.length > 4 &&
+          {!isShowAll && feedItems.length > 4 && (
             <TouchableOpacity onPress={this.onPressAll}>
               <View style={styles.seeAllView}>
                 <Text style={styles.seeAll}>
@@ -113,7 +113,7 @@ export default class FeedItemsOfType extends Component {
                 </Text>
               </View>
             </TouchableOpacity>
-          }
+          )}
         </View>
       </Fragment>
     )

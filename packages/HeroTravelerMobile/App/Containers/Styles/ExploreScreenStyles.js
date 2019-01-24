@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: Colors.background,
-    paddingTop: Metrics.baseMargin*2,
+    paddingTop: Metrics.baseMargin * 2,
   },
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
@@ -34,13 +34,13 @@ export default StyleSheet.create({
     height: Metrics.searchBarHeight,
     backgroundColor: '#424242',
     opacity: .6,
-    paddingLeft: Metrics.baseMargin/2,
-    paddingRight: Metrics.baseMargin/2,
+    paddingLeft: Metrics.baseMargin / 2,
+    paddingRight: Metrics.baseMargin / 2,
     borderRadius: 5,
   },
   scrollWrapper: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   searchInput: {
     flex: 1,
@@ -54,24 +54,50 @@ export default StyleSheet.create({
   cancelBtn: {
     marginTop: 5,
     padding: Metrics.baseMargin,
-    paddingRight: 0
+    paddingRight: 0,
   },
   cancelBtnText: {
     color: '#9e9e9e',
     fontFamily: Fonts.type.montserrat,
+  },
+  searchTitleWrapper: {
+    height: 46,
+    marginTop: Metrics.doubleBaseMargin,
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin / 2,
+    justifyContent:'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+  },
+  searchTitleText: {
+    fontSize: 16,
+    letterSpacing: 0.7,
+    fontWeight: '600',
+    color: Colors.snow,
+  },
+  searchRowItem: {
+    marginLeft: Metrics.doubleBaseMargin,
+    marginRight: Metrics.doubleBaseMargin,
+    padding: 0,
+    paddingTop: Metrics.baseMargin,
+    paddingBottom: Metrics.baseMargin,
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   titleWrapper: {
     flex: 1,
     marginVertical: Metrics.doubleBaseMargin,
     marginTop: 13.5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     ...Fonts.style.title,
     fontSize: 16,
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   grid: {
     flex: 1,
@@ -85,7 +111,7 @@ export default StyleSheet.create({
     width: (Metrics.screenWidth - 33) / 3,
     height: 100,
     margin: 2,
-    backgroundColor: Colors.transparent
+    backgroundColor: Colors.transparent,
   },
   gridImage: {
     width: (Metrics.screenWidth - 33) / 3,
@@ -102,10 +128,10 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     textAlign: 'center',
-    lineHeight: 100
+    lineHeight: 100,
   },
-  tabs: {
-    flex: 1
+  tabsViewContainer: {
+    flex: 1,
   },
   tabnav: {
     height: 46,
@@ -126,10 +152,10 @@ export default StyleSheet.create({
     color: '#9e9e9e',
     fontSize: 13,
     letterSpacing: 1.2,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   tabSelected: {
-    borderBottomColor: Colors.red
+    borderBottomColor: Colors.red,
   },
   tabTextSelected: {
     fontFamily: Fonts.type.montserrat,
@@ -138,10 +164,10 @@ export default StyleSheet.create({
     letterSpacing: 1.2,
   },
   storyTitleStyle: {
-    fontSize: 12
+    fontSize: 12,
   },
   storySubtitleStyle: {
-    fontSize: 8
+    fontSize: 8,
   },
   thumbnailImage: {
     height: 40,
@@ -172,7 +198,7 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   videoCoverWrapper: {
-    position: 'relative'
+    position: 'relative',
   },
   listItemText: {
     fontSize: 15,
@@ -186,7 +212,15 @@ export default StyleSheet.create({
   noFindText: {
     color: 'white',
     padding: Metrics.section,
-    textAlign: 'center'
+    textAlign: 'center',
+    flex: 1,
+  },
+  noResults: {
+    alignItems: 'center',
+    padding: 30,
+  },
+  noResultsText: {
+    color: Colors.snow,
   },
 })
 

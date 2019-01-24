@@ -113,12 +113,12 @@ class SearchResults extends Component {
     // guides
     this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
     this.setupSearchListeners(this.guideHelper, 'guides')
-    this.search(this.guideHelper, MAX_STORY_RESULTS)
+    this.search(this.guideHelper, MAX_GUIDE_RESULTS)
 
     // stories
     this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.setupSearchListeners(this.storyHelper, 'stories')
-    this.search(this.storyHelper, MAX_GUIDE_RESULTS)
+    this.search(this.storyHelper, MAX_STORY_RESULTS)
   }
 
   componentWillReceiveProps(nextProps) {

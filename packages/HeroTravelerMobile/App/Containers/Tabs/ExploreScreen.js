@@ -15,7 +15,7 @@ import styles, {
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
 import TabBar from '../../Components/TabBar'
-import SearchPlacesPeople from '../../Components/SearchPlacesPeople'
+import SearchPlacesPeople from '../SearchPlacesPeople'
 
 const tabTypes = {
   channels: 'channels',

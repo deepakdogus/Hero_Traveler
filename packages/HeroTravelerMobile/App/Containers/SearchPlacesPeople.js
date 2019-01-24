@@ -1,12 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Keyboard,
-} from 'react-native'
+import { connect } from 'react-redux'
+import { View, TextInput, TouchableOpacity, Text, Keyboard } from 'react-native'
 import PropTypes from 'prop-types'
 
 // Search
@@ -17,12 +12,15 @@ import RNGooglePlaces from 'react-native-google-places'
 
 import env from '../Config/Env'
 
-import styles from './Styles/SearchPlacesPeopleStyles'
+import HistoryActions from '../Shared/Redux/HistoryRedux'
+import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
+
+import styles from '../Components/Styles/SearchPlacesPeopleStyles'
 import { Colors } from '../Shared/Themes'
 
-import SearchList from './SearchList'
-import SearchTabBar from './SearchTabBar'
-import TabIcon from './TabIcon'
+import SearchList from '../Components/SearchList'
+import SearchTabBar from '../Components/SearchTabBar'
+import TabIcon from '../Components/TabIcon'
 
 const algoliasearch = algoliasearchModule(
   env.SEARCH_APP_NAME,
@@ -37,6 +35,9 @@ class SearchPlacesPeople extends Component {
     user: PropTypes.object,
     stories: PropTypes.object,
     searchHistory: PropTypes.object,
+    myFollowedUsers: PropTypes.array,
+    unfollowUser: PropTypes.func,
+    followUser: PropTypes.func,
     addRecentSearch: PropTypes.func,
     renderTabs: PropTypes.func,
     placeholder: PropTypes.string,
@@ -229,6 +230,9 @@ class SearchPlacesPeople extends Component {
       addRecentSearch,
       searchHistory,
       placeholder,
+      followUser,
+      unfollowUser,
+      myFollowedUsers,
     } = this.props
     const {
       lastSearchResults,
@@ -238,19 +242,19 @@ class SearchPlacesPeople extends Component {
       searchingGoogle,
       searchingAlgolia,
     } = this.state
-    const showSearch = lastSearchResults
-      || lastLocationPredictions
-      || selectedTabIndex !== null
-
+    const showSearch
+      = lastSearchResults || lastLocationPredictions || selectedTabIndex !== null
     // TODO: remove conditional navBarBorder when you want to display the tab bar;
     // uncomment the renderTab() line
 
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
-        <View style={[
-          styles.fakeNavBar,
-          renderTabs && !showSearch && styles.navBarBorder,
-        ]}>
+        <View
+          style={[
+            styles.fakeNavBar,
+            renderTabs && !showSearch && styles.navBarBorder,
+          ]}
+        >
           <View style={styles.headerSearch}>
             <View style={styles.searchWrapper}>
               {!hasSearchText && (
@@ -269,7 +273,10 @@ class SearchPlacesPeople extends Component {
               )}
               <TextInput
                 ref={this.setupInputRef}
-                style={[styles.searchInput, hasSearchText && styles.searchInputFlex]}
+                style={[
+                  styles.searchInput,
+                  hasSearchText && styles.searchInputFlex,
+                ]}
                 placeholder={placeholder || `Places & People`}
                 placeholderTextColor={Colors.grey}
                 onFocus={this.setFocus}
@@ -278,18 +285,24 @@ class SearchPlacesPeople extends Component {
                 returnKeyType="search"
                 autoCorrect={false}
               />
-                <TouchableOpacity
-                  style={[styles.InputXPosition, hasSearchText && styles.InputXAbsolutePosition]}
-                  onPress={hasSearchText ? this.resetSearchText : this.focusInput}
-                >
-                  <TabIcon
-                    name="closeDark"
-                    style={{
-                      view: [styles.InputXView, !hasSearchText && styles.InputXViewHidden],
-                      image: styles.InputXIcon,
-                    }}
-                  />
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.InputXPosition,
+                  hasSearchText && styles.InputXAbsolutePosition,
+                ]}
+                onPress={hasSearchText ? this.resetSearchText : this.focusInput}
+              >
+                <TabIcon
+                  name="closeDark"
+                  style={{
+                    view: [
+                      styles.InputXView,
+                      !hasSearchText && styles.InputXViewHidden,
+                    ],
+                    image: styles.InputXIcon,
+                  }}
+                />
+              </TouchableOpacity>
             </View>
             {selectedTabIndex !== null && (
               <TouchableOpacity onPress={this.onPressCancel}>
@@ -314,14 +327,15 @@ class SearchPlacesPeople extends Component {
               selectedTabIndex={selectedTabIndex}
               lastSearchResults={lastSearchResults}
               lastLocationPredictions={lastLocationPredictions}
-              isSearching={
-                searchingAlgolia || searchingGoogle
-              }
+              isSearching={searchingAlgolia || searchingGoogle}
               userId={user.id}
               query={this.helper.state.query}
               hasSearchText={hasSearchText}
               addRecentSearch={addRecentSearch}
               searchHistory={searchHistory}
+              followUser={followUser}
+              unfollowUser={unfollowUser}
+              myFollowedUsers={myFollowedUsers}
             />
           </View>
         )}
@@ -330,4 +344,23 @@ class SearchPlacesPeople extends Component {
   }
 }
 
-export default SearchPlacesPeople
+const mapStateToProps = state => {
+  const { users } = state.entities
+  const userId = state.session.userId
+  return {
+    user: state.entities.users.entities[state.session.userId],
+    stories: state.entities.stories.entities,
+    searchHistory: state.history.searchHistory,
+    myFollowedUsers: getFollowers(users, 'following', userId),
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
+  followUser: (sessionUserId, userIdToFollow) =>
+    dispatch(UserActions.followUser(sessionUserId, userIdToFollow)),
+  unfollowUser: (sessionUserId, userIdToUnfollow) =>
+    dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPlacesPeople)

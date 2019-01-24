@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { Colors, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   row: {
@@ -10,9 +10,15 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: 40,
   },
+  rowWithHorizontalInset: {
+    marginHorizontal: 0,
+  },
   rowWrapper: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,
+  },
+  rowWrapperInset: {
+    marginHorizontal: Metrics.doubleBaseMargin,
   },
   avatarAndName: {
     flexDirection: 'row',

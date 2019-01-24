@@ -9,7 +9,6 @@ import StoryActions from '../../Shared/Redux/Entities/Stories'
 import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import HistoryActions from '../../Shared/Redux/HistoryRedux'
 
 import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/MyFeedScreenStyles'
@@ -19,7 +18,7 @@ import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
-import SearchPlacesPeople from '../../Components/SearchPlacesPeople'
+import SearchPlacesPeople from '../SearchPlacesPeople'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
@@ -47,8 +46,6 @@ class MyFeedScreen extends React.Component {
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
-    addRecentSearch: PropTypes.func,
-    searchHistory: PropTypes.object,
     resetFailCount: PropTypes.func,
     updateOrder: PropTypes.arrayOf(PropTypes.string),
   };
@@ -187,8 +184,6 @@ class MyFeedScreen extends React.Component {
       sync,
       feedGuidesById,
       stories,
-      searchHistory,
-      addRecentSearch,
       user,
     } = this.props
     const { selectedTab } = this.state
@@ -221,8 +216,6 @@ class MyFeedScreen extends React.Component {
     return (
       <SearchPlacesPeople
         stories={stories}
-        searchHistory={searchHistory}
-        addRecentSearch={addRecentSearch}
         user={user}
         placeholder={`Search`}
       >
@@ -247,18 +240,15 @@ const mapStateToProps = (state) => {
     error,
   } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
-
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
     storiesById: userFeedById,
-    stories: state.entities.stories.entities,
     feedGuidesById,
     error,
     location: state.routes.scene.name,
     sync: state.storyCreate.sync,
-    searchHistory: state.history.searchHistory,
     pendingUpdates: state.pendingUpdates.pendingUpdates,
     updateOrder: state.pendingUpdates.updateOrder,
   }
@@ -272,7 +262,6 @@ const mapDispatchToProps = (dispatch) => {
     resetFailCount: (storyId) => dispatch(PendingUpdatesActions.resetFailCount(storyId)),
     saveLocalDraft: (story) => dispatch(StoryCreateActions.saveLocalDraft(story)),
     updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
-    addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }
 

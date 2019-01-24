@@ -8,15 +8,12 @@ import {
   Keyboard,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
+import styles from './Styles/SearchPlacesPeopleStyles'
+
+import FollowFollowingRow from './FollowFollowingRow'
 import Loader from './Loader'
 import ListItem from './ListItem'
-import Avatar from './Avatar'
-
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import styles from './Styles/SearchPlacesPeopleStyles'
-import Colors from '../Shared/Themes/Colors'
 
 const MAX_ITEMS = 5
 
@@ -31,6 +28,9 @@ class SearchList extends Component {
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
     hasSearchText: PropTypes.bool,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
+    myFollowedUsers: PropTypes.array,
   }
 
   _navToSearchResults = location => () => {
@@ -69,20 +69,12 @@ class SearchList extends Component {
       ? this._navToStory(item)
       : this._navToSearchResults(item)
 
-  _navToUserProfile = user => () => {
+  _navToUserProfile = user => {
     this.props.addRecentSearch({
       searchType: 'people',
-      id: user._id,
+      id: user._id || user.id,
       ...user,
     })
-    if (user._id === this.props.userId) {
-      NavActions.profile({ type: 'jump' })
-    }
-    else {
-      NavActions.readOnlyProfile({
-        userId: user._id,
-      })
-    }
   }
 
   // search results
@@ -121,26 +113,21 @@ class SearchList extends Component {
   }
 
   renderPeopleRow = ({ item: user }) => {
+    const { userId, followUser, unfollowUser } = this.props
     return (
-      <ListItem
-        onPress={this._navToUserProfile(user)}
-        leftElement={
-          <Avatar
-            avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-            iconColor={Colors.lightGreyAreas}
-          />
-        }
-        text={<Text style={styles.listItemText}>{user.username}</Text>}
-        rightElement={
-          <Icon
-            name="angle-right"
-            color={Colors.whiteAlphaPt3}
-            size={30}
-          />
-        }
+      <FollowFollowingRow
+        sessionUserId={userId}
+        user={user}
+        followUser={followUser}
+        unfollowUser={unfollowUser}
+        isFollowing={user.isFollowing}
+        navToProfileMixin={this._navToUserProfile}
+        styledInset
       />
     )
   }
+
+  userIsFollowed = userId => _.includes(this.props.myFollowedUsers, userId)
 
   //no results
   hasNoResults = () => {
@@ -261,15 +248,23 @@ class SearchList extends Component {
             renderSectionHeader={this.renderSearchTitle}
             sections={[
               {
-                data: searchHits,
+                title: 'RESULTS',
+                data: searchHits.map(user => ({
+                  ...user,
+                  id: user._id, // normalize `_id` from algolia to `id` for db
+                  isFollowing: this.userIsFollowed(user._id),
+                })),
                 renderItem: this.renderPeopleRow,
-                keyExtractor: item => item.id,
+                keyExtractor: item => item._id,
               },
               {
                 title: 'RECENT SEARCHES',
-                data: searchHistory.people,
+                data: searchHistory.people.map(user => ({
+                  ...user,
+                  isFollowing: this.userIsFollowed(user.id),
+                })),
                 renderItem: this.renderRecentPeopleRow,
-                keyExtractor: item => item.id,
+                keyExtractor: item => item._id,
                 ListEmptyComponent: this.renderNoRecentSearches,
               },
             ]}

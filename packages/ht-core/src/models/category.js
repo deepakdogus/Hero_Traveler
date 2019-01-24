@@ -25,7 +25,60 @@ const CategorySchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  sponsorLink: {
+    type: String
+  },
   image: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
+  interstitialImage: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
+  channelSponsorLogo: {
     altText: String,
     original: {
       filename: String,

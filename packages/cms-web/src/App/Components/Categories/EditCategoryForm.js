@@ -73,6 +73,28 @@ class EditCategoryForm extends React.Component {
             <SingleImageUpload />
           )}
         </FormItem>
+
+        <FormItem {...formItemLayout} label="Category Interstitial Image (App)">
+            {getFieldDecorator('interstitialImage', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Category Sponsor Logo (Website)">
+            {getFieldDecorator('categorySponsorLogo', {
+            })(
+              <SingleImageUpload />
+            )}
+          </FormItem>
+
+          <FormItem {...formItemLayout} label="Sponsor Link">
+            {getFieldDecorator('sponsorLink', {
+              rules: [],
+            })(
+              <Input placeholder="Add a link to a profile or website" />
+            )}
+          </FormItem>
         
         <FormItem>
           {getFieldDecorator('featured', {

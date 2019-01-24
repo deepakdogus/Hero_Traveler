@@ -10,7 +10,7 @@ import ImageWrapper from './ImageWrapper'
 import { getFeedItemImageURL } from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
 import { storyWidth, storyHeight } from './Styles/FeedItemsOfTypeStyles'
-import { displayLocation } from '../Shared/Lib/locationHelpers'
+import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {
   video: true,
@@ -124,7 +124,7 @@ class GuideMap extends Component {
   onPressStory = story => () =>
     NavActions.story({
       storyId: story._id,
-      title: displayLocation(story.locationInfo),
+      title: displayLocationDetails(story.locationInfo),
     })
 
   renderStoryPins = () => {

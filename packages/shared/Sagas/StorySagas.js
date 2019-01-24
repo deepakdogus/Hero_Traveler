@@ -121,6 +121,20 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
   }
 }
 
+export function * getChannelStories (api, {channelId, storyType}) {
+  const response = yield call(api.getChannelStories, channelId)
+  if (response.ok) {
+    const { entities, result } = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.fromChannelSuccess(channelId, result)),
+    ]
+  } else {
+    yield put(StoryActions.fromChannelFailure(channelId, new Error('Failed to get stories for category')))
+  }
+}
+
 export const extractUploadData = (uploadData) => {
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
   const baseObject = {

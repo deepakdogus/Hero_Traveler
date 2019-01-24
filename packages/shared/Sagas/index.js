@@ -12,6 +12,7 @@ import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
+import { DiscoverTypes } from '../Redux/DiscoverRedux'
 // Entities
 import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
@@ -62,8 +63,12 @@ import {
   userUnfollowUser,
   getActivities,
   seenActivity,
-  getChannels,
 } from './UserSagas'
+
+import {
+  getChannels,
+  getDiscoverCategories
+} from './DiscoverSagas'
 
 import {
   getStory,
@@ -76,6 +81,7 @@ import {
   updateDraft,
   getUserStories,
   getCategoryStories,
+  getChannelStories,
   likeStory,
   bookmarkStory,
   getBookmarks,
@@ -181,6 +187,7 @@ export default function * root () {
     takeLatest(StoryTypes.LIKES_AND_BOOKMARKS_REQUEST, getLikesAndBookmarks, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),
+    takeLatest(StoryTypes.FROM_CHANNEL_REQUEST, getChannelStories, heroAPI),
     takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
     takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
@@ -204,7 +211,10 @@ export default function * root () {
     takeLatest(UserTypes.UNFOLLOW_USER, userUnfollowUser, heroAPI),
     takeLatest(UserTypes.FETCH_ACTIVITIES, getActivities, heroAPI),
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
-    takeLatest(UserTypes.FETCH_CHANNELS, getChannels, heroAPI),
+
+    // Discover
+    takeLatest(DiscoverTypes.FETCH_CHANNELS, getChannels, heroAPI),
+    takeLatest(DiscoverTypes.FETCH_CATEGORIES, getDiscoverCategories, heroAPI),
 
     // Media Upload
     takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),

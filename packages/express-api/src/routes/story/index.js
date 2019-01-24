@@ -11,6 +11,7 @@ import getUserFeedOld from './getUserFeedOld'
 import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
+import getChannelStories from './getChannelStories'
 import toggleLike from './toggleLike'
 import toggleBookmark from './toggleBookmark'
 import getBookmarks from './getBookmarks'
@@ -40,6 +41,7 @@ router.get('/user/:userId/feed', hasValidOauth, endpointWrapper(getUserFeedOld))
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories))
+router.get('/channel/:channelId', endpointWrapper(getChannelStories))
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 
 // webhook for uploading a video

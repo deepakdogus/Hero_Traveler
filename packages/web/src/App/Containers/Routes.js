@@ -27,6 +27,18 @@ const Category = Loadable({
   delay: 300,
 })
 
+const DiscoverCategory = Loadable({
+  loader: () => import('./DiscoverCategory'),
+  loading: Loading,
+  delay: 300,
+})
+
+const DiscoverChannel = Loadable({
+  loader: () => import('./DiscoverChannel'),
+  loading: Loading,
+  delay: 300,
+})
+
 const Feed = Loadable({
   loader: () => import('./Feed'),
   loading: Loading,
@@ -102,6 +114,8 @@ class AppRoot extends Component {
         <Route exact path='/' component={Explore} />
         <Route exact path='/discover' component={Discover} />
         <Route exact path='/category/:categoryId' component={Category} />
+        <Route exact path='/discover/category/:categoryId' component={DiscoverCategory} />
+        <Route exact path='/discover/channel/:channelId' component={DiscoverChannel} />
         <AuthRoute exact path='/feed' component={Feed} />
         <AuthRoute path='/signup/social' component={SignupSocial} />
         <AuthRoute path='/signup/topics' component={SignupTopics} />

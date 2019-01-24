@@ -37,7 +37,6 @@ const ShouldEditLogo = styled.div`
   }}
 `
 
-
 export default class ConditionalLink extends React.Component{
 
   static propTypes = {
@@ -51,6 +50,7 @@ export default class ConditionalLink extends React.Component{
     originalDraft: PropTypes.object,
     children: PropTypes.any,
     noBorder: PropTypes.bool,
+    noExact: PropTypes.bool,
   }
 
   _handleOpenSaveEditsModal = () => {
@@ -82,6 +82,7 @@ export default class ConditionalLink extends React.Component{
     const {
       isMenuLink,
       to,
+      noExact,
     } = this.props
 
     if (this.getShouldOpenSaveEditsModal()) {
@@ -89,7 +90,10 @@ export default class ConditionalLink extends React.Component{
     } else {
       const ChosenLink = isMenuLink ? MenuLink : Link
       const props = {to}
-      if (isMenuLink) props.exact = true
+      if (isMenuLink) {
+        if (noExact === true) props.exact = false
+        else props.exact = true
+      }
       return (
         <ChosenLink {...props}>
           {this.props.children}

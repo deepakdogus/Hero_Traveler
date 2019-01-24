@@ -49,7 +49,7 @@ function getUri(image: object|string, type: string): ?string {
 
     const filename = ensureJpgExtension(_.last(path.split('/')))
     // hot fix to avoid search crashing. Need to bulk update algolia
-    const folderPath = folders ? folders.join('/') : 'files'
+    const folderPath = folders && folders.length ? folders.join('/') : 'files'
     return `${folderPath}/${filename}`
   }
 

@@ -7,10 +7,9 @@ import PropTypes from 'prop-types'
 import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import TabBar from '../Components/TabBar'
-import ExploreGrid from '../Components/ExploreGrid'
 import DiscoverChannelsGrid from '../Components/DiscoverChannelsGrid'
-import CategoryActions from '../Shared/Redux/Entities/Categories'
-import UserActions from '../Shared/Redux/Entities/Users'
+import DiscoverCategoriesGrid from '../Components/DiscoverCategoriesGrid'
+import DiscoverActions from '../Shared/Redux/DiscoverRedux'
 
 const Wrapper = styled.div``
 
@@ -26,7 +25,7 @@ const tabBarTabs = ['CHANNELS', 'CATEGORIES']
 
 class Discover extends Component {
   static propTypes = {
-    categories: PropTypes.object,
+    categories: PropTypes.array,
     channels: PropTypes.array,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
@@ -47,7 +46,11 @@ class Discover extends Component {
   }
 
   _navToChannel = (channelId) => {
-    this.props.reroute(`/channel/${channelId}`)
+    this.props.reroute(`/discover/channel/${channelId}`)
+  }
+
+  _navToCategory = (categoryId) => {
+    this.props.reroute(`/discover/category/${categoryId}`)
   }
 
   onClickTab = (event) => {
@@ -72,7 +75,7 @@ class Discover extends Component {
              />
           }
           {this.state.activeTab === 'CATEGORIES'
-          && <ExploreGrid
+          && <DiscoverCategoriesGrid
             categories={this.props.categories}
             onClickCategory={this._navToCategory}
              />
@@ -86,25 +89,23 @@ class Discover extends Component {
 
 function mapStateToProps(state, ownProps) {
   let {
-    fetchStatus: categoriesFetchStatus,
-    entities: categories,
-  } = state.entities.categories
+    data: categories,
+  } = state.discover.categories
 
   const { 
-    channels,
-  } = state.entities.users
+    data: channels,
+  } = state.discover.channels
 
   return {
     channels,
     categories,
-    categoriesFetchStatus,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest({ featured: true })),
-    loadChannels: () => dispatch(UserActions.fetchChannels()),
+    loadCategories: () => dispatch(DiscoverActions.fetchCategories()),
+    loadChannels: () => dispatch(DiscoverActions.fetchChannels()),
     reroute: (path) => dispatch(push(path)),
   }
 }

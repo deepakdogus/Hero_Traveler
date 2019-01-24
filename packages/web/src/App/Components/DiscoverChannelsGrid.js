@@ -42,7 +42,6 @@ class Tile extends React.Component {
 
   render(){
     const {channel} = this.props
-    console.log('channel', channel)
     return (
       <Col xs={3} lg={2} >
         <Wrapper onClick={this._onClickTile}>
@@ -63,7 +62,7 @@ class Tile extends React.Component {
 
 export default class DiscoverChannelsGrid extends React.Component {
   static propTypes = {
-    channels: PropTypes.object,
+    channels: PropTypes.array,
     onClickChannel: PropTypes.func,
   }
 
@@ -88,4 +87,8 @@ export default class DiscoverChannelsGrid extends React.Component {
       </StyledGrid>
     )
   }
+}
+
+DiscoverChannelsGrid.defaultProps = {
+  channels: [],
 }

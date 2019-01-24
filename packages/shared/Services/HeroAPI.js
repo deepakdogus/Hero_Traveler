@@ -218,6 +218,11 @@ const create = () => {
     .then(response => safeNormalize(response, [Story]))
   }
 
+  const getChannelStories = (channelId, params = {}) => {
+    return api.get(`story/channel/${channelId}`, params)
+    .then(response => safeNormalize(response, [Story]))
+  }
+
   // publishes a draft
   const createStory = (story) => {
     return api.post('story', {story})
@@ -399,6 +404,10 @@ const create = () => {
     return api.get('user/channels')
   }
 
+  const getDiscoverCategories = (params) => {
+    return api.get('category', params)
+  }
+
   const setActivityRead = (activityId) => {
     return api.put(`user/activity/${activityId}`)
   }
@@ -493,6 +502,7 @@ const create = () => {
     getHashtags,
     getUserStories,
     getCategoryStories,
+    getChannelStories,
     getSuggestedUsers,
     getUserFollowers,
     getUserFollowing,
@@ -528,6 +538,7 @@ const create = () => {
     getActivity,
     setActivityRead,
     getChannels,
+    getDiscoverCategories,
     deleteStory,
     changePassword,
     signupCheck,

@@ -17,6 +17,9 @@ const { Types, Creators } = createActions({
   fromCategoryRequest: ['categoryId', 'storyType'],
   fromCategorySuccess: ['categoryId', 'categoryStoriesById'],
   fromCategoryFailure: ['categoryId', 'error'],
+  fromChannelRequest: ['channelId', 'storyType'],
+  fromChannelSuccess: ['channelId', 'channelStoriesById'],
+  fromChannelFailure: ['channelId', 'error'],
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
   loadDraftsFailure: ['error'],
@@ -56,6 +59,7 @@ export const INITIAL_STATE = Immutable({
   userStoryFeedCount: 9999999999,
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
+  storiesByChannelAndId: {},
   backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
@@ -192,6 +196,43 @@ export const categoryFailure = (state, {categoryId, error}) => {
   )
   .setIn(
     ['storiesByCategoryAndId', categoryId, 'byId'],
+    derivedStoriesById
+  )
+  .setIn(['error'], error)
+}
+
+export const channelRequest = (state, {channelId}) => {
+  const errorLessState = state.setIn(['error'], null)
+  return errorLessState.setIn(
+    ['storiesByChannelAndId', channelId, 'fetchStatus'],
+    {fetching: true, loaded: false}
+  )
+}
+
+export const channelSuccess = (state, {channelId, channelStoriesById}) => {
+  return state.setIn(
+    ['storiesByChannelAndId', channelId, 'fetchStatus'],
+    {fetching: false, loaded: true}
+  )
+  .setIn(
+    ['storiesByChannelAndId', channelId, 'byId'],
+    channelStoriesById
+  )
+}
+
+export const channelFailure = (state, {channelId, error}) => {
+  const derivedStoriesById = _.values(state.entities).filter(story => {
+    return story.channels.some(channel => {
+      return channel.id === channelId
+    })
+  }).map(story => story.id)
+
+  return state.setIn(
+    ['storiesByChannelAndId', channelId, 'fetchStatus'],
+    {fetching: false, loaded: false}
+  )
+  .setIn(
+    ['storiesByChannelAndId', channelId, 'byId'],
     derivedStoriesById
   )
   .setIn(['error'], error)
@@ -350,6 +391,10 @@ export const getFetchStatus = (state, categoryId) => {
   return state.getIn(['storiesByCategoryAndId', categoryId, 'fetchStatus'], {})
 }
 
+export const getByChannel = (state, channelId) => {
+  return state.getIn(['storiesByChannelAndId', channelId, 'byId'], [])
+}
+
 export const getByUser = (state, userId) => {
   return state.getIn(['storiesByUserAndId', userId, 'byId'], [])
 }
@@ -379,6 +424,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FROM_CATEGORY_REQUEST]: categoryRequest,
   [Types.FROM_CATEGORY_SUCCESS]: categorySuccess,
   [Types.FROM_CATEGORY_FAILURE]: categoryFailure,
+  [Types.FROM_CHANNEL_REQUEST]: channelRequest,
+  [Types.FROM_CHANNEL_SUCCESS]: channelSuccess,
+  [Types.FROM_CHANNEL_FAILURE]: channelFailure,
   [Types.LOAD_DRAFTS]: loadDrafts,
   [Types.LOAD_DRAFTS_SUCCESS]: loadDraftsSuccess,
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,

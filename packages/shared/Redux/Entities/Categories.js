@@ -21,6 +21,7 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     loaded: false,
   },
+  discoverCategories: [],
   error: null
 })
 

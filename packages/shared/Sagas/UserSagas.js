@@ -213,16 +213,3 @@ export function * removeAvatar(api, {userId}) {
     )))
   }
 }
-
-export function  * getChannels(api) {
-  const response = yield call(
-    api.getChannels
-  )
-
-  if (response.ok) {
-    yield put(UserActions.fetchChannelsSuccess(response.data))
-  } else {
-    yield put(UserActions.fetchChannelsFailure(new Error('Failed to fetch channels')))
-  }
-}
-

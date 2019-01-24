@@ -233,6 +233,7 @@ class HeaderLoggedIn extends React.Component {
                 haveFieldsChanged={haveFieldsChanged}
                 workingDraft={workingDraft}
                 originalDraft={originalDraft}
+                noExact
               >
                 Discover
               </ConditionalLink>

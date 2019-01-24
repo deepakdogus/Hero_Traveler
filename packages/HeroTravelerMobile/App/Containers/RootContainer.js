@@ -134,8 +134,12 @@ class RootContainer extends Component {
 
   isDarkBar() {
     const location = this.props.location
-    return location === 'profile' || location === 'readOnlyProfile' ||
-    location === 'story' || location === 'guide'
+    return location === 'profile'
+    || location === 'readOnlyProfile'
+    || location === 'story'
+    || location === 'guide'
+    || location === 'searchResults'
+    || location === 'searchResultsSeeAll'
   }
 
   render () {

@@ -7,9 +7,9 @@ import memoize from 'memoize-one'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import ImageWrapper from './ImageWrapper'
-import { getStoryImageUrl } from './GuideStoriesOfType'
+import { getFeedItemImageURL } from './FeedItemsOfType'
 import styles from './Styles/GuideMapStyles'
-import { storyWidth, storyHeight } from './Styles/GuideStoriesOfTypeStyles'
+import { storyWidth, storyHeight } from './Styles/FeedItemsOfTypeStyles'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 
 const videoImageOptions = {
@@ -73,7 +73,8 @@ class GuideMap extends Component {
           + (distance * increment) / Math.cos((lat * Math.PI) / 180)
         latLongId = lat + '-' + long
         increment++
-      } while (cache.indexOf(latLongId) > -1)
+      }
+      while (cache.indexOf(latLongId) > -1)
       cache.push(latLongId)
 
       coords[story.id] = {
@@ -120,17 +121,19 @@ class GuideMap extends Component {
     return storiesRegion
   })
 
-  onPressStory = story => {
-    return () =>
-      NavActions.story({
-        storyId: story._id,
-        title: displayLocationDetails(story.locationInfo),
-      })
-  }
+  onPressStory = story => () =>
+    NavActions.story({
+      storyId: story._id,
+      title: displayLocationDetails(story.locationInfo),
+    })
 
   renderStoryPins = () => {
     return this.props.stories.map(story => {
-      const coverUrl = getStoryImageUrl(story, videoImageOptions, imageOptions)
+      const coverUrl = getFeedItemImageURL(
+        story,
+        videoImageOptions,
+        imageOptions,
+      )
       let coords = this.state.coords[story._id]
 
       return (

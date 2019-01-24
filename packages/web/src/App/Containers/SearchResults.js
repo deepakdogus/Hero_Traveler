@@ -138,7 +138,7 @@ class SearchResults extends Component {
   setupSearchListeners = (helper, type) => {
     helper.on('result', res => {
       this.setState({
-        search: false,
+        searching: false,
         lastSearchResults: {
           ...this.state.lastSearchResults,
           [type]: res.hits,

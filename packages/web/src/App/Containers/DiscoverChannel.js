@@ -5,10 +5,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import StoryActions, { getByChannel } from '../Shared/Redux/Entities/Stories'
-import CategoryActions from '../Shared/Redux/Entities/Categories'
 import DiscoverActions from '../Shared/Redux/DiscoverRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import SignupActions from '../Shared/Redux/SignupRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
 import CategoryHeader from '../Components/CategoryHeader'
@@ -16,20 +15,41 @@ import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 
-import { runIfAuthed } from '../Lib/authHelpers'
+import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const tabBarTabs = ['STORIES', 'GUIDES']
 
 const ContentWrapper = styled.div``
 
 const FeedItemListWrapper = styled.div`
-  margin: 50px 7% 0;
+  margin: 10px 7% 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
   }
 `
 
-class DiscoverChannel extends React.Component {
+const SponsoredBy = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 50px;
+  color: #adadad;
+`
+
+const StyledImage = styled.img`
+  height: 50px;
+  margin: 5px;
+`
+
+const Divider = styled.hr`
+  border-bottom: 2px solid black;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 50px; 
+`
+
+class DiscoverChannel extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.object,
     channelId: PropTypes.string,
@@ -44,10 +64,12 @@ class DiscoverChannel extends React.Component {
   state = { activeTab: 'STORIES' }
 
   componentWillMount() {
-    const {channel, loadChannels} = this.props
+    const {channel, loadChannels, getStories, getGuides} = this.props
     if (!channel) {
       loadChannels()
     }
+    getStories()
+    getGuides()
   }
 
   onClickTab = (event) => {
@@ -68,6 +90,7 @@ class DiscoverChannel extends React.Component {
       channel,
       isFollowingChannel,
     } = this.props
+    const {selectedFeedItems} = this.getSelectedFeedItems()
     return (
       <ContentWrapper>
         <CategoryHeader
@@ -84,9 +107,17 @@ class DiscoverChannel extends React.Component {
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
+        <SponsoredBy>
+          <span>Sponsored by </span>
+            <a href={_.get(channel, 'sponsorLink')}>
+              <StyledImage src={getImageUrl(_.get(channel, 'channelSponsorLogo'))} />
+            </a>
+        </SponsoredBy>
+        
         <FeedItemListWrapper>
+          <Divider />
           <FeedItemList
-            feedItems={[]}
+            feedItems={selectedFeedItems}
             activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'} 
           />
           <Footer />
@@ -100,10 +131,11 @@ function mapStateToProps(state, ownProps) {
   const channelId = ownProps.match.params.channelId
   const sessionUserId = state.session.userId
   let isFollowingChannel = false
-  if (state.session.userId) {
-    isFollowingChannel = _.includes(state.signup.selectedCategories, channelId)
+  if (sessionUserId && channelId){
+    const myFollowedUsersObject = state.entities.users.userFollowingByUserIdAndId[sessionUserId]
+    const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
+    isFollowingChannel = _.includes(myFollowedUsers, channelId)
   }
-  console.log('state', state)
   return {
     sessionUserId,
     channelId,
@@ -111,7 +143,7 @@ function mapStateToProps(state, ownProps) {
     storiesById: getByChannel(state.entities.stories, channelId),
     stories: state.entities.stories.entities,
     guides: state.entities.guides.entities,
-    guidesById: _.get(state, `entities.guides.guideIdsByChannelId[${channelId}]`, []),
+    guidesById: _.get(state, `entities.guides.guideIdsByUserId[${channelId}]`, []),
     isFollowingChannel,
   }
 }
@@ -119,17 +151,14 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   const channelId = ownProps.match.params.channelId
   return {
-    getStories: (_ignore, storyType) => {
-      storyType = storyType.toLowerCase()
-      if (storyType === 'all') storyType = null
+    getStories: () => {
       dispatch(StoryActions.fromChannelRequest(channelId))
     },
     loadChannels: () => dispatch(DiscoverActions.fetchChannels()),
     getGuides: () => dispatch(GuideActions.getChannelGuides(channelId)),
-    followChannel: (sessionUserId, channelId) =>
-      dispatch(runIfAuthed(sessionUserId, SignupActions.signupFollowChannel, [channelId])),
-    unfollowChannel: (sessionUserId, channelId) =>
-      dispatch(runIfAuthed(sessionUserId, SignupActions.signupUnfollowChannel, [channelId])),
+    followChannel: (sessionUserID, channelId) => dispatch(UserActions.followUser(sessionUserID, channelId)),
+    unfollowChannel: (sessionUserID, channelId) => dispatch(UserActions.unfollowUser(sessionUserID, channelId)),
+    
   }
 }
 

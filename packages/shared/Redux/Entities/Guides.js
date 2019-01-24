@@ -21,6 +21,7 @@ const { Types, Creators } = createActions({
   guideFeedSuccess: ['feedGuidesById'],
   getCategoryGuides: ['categoryId'],
   getCategoryGuidesSuccess: ['categoryId', 'guideIds'],
+  getChannelGuides: ['channelId'],
   bulkSaveStoryToGuideRequest: ['storyId', 'isInGuide'],
   dismissError: null,
   likeGuideRequest: ['guideId', 'userId'],
@@ -45,6 +46,7 @@ export const INITIAL_STATE = Immutable({
   error: null,
   guideIdsByUserId: {},
   guideIdsByCategoryId: {},
+  guideIdsByChannelId: {},
   feedGuidesById: [],
 })
 
@@ -84,7 +86,10 @@ export const receiveUsersGuides = (state, {guides = {}, userId}) => {
 
 export const receiveCategoryGuides = (state, {categoryId, guideIds = {}}) => {
   return state.setIn(['guideIdsByCategoryId', categoryId], guideIds)
+}
 
+export const receiveChannelGuides = (state, {channelId, guideIds = {}}) => {
+  return state.setIn(['guideIdsByChannelId', channelId], guideIds)
 }
 
 export const receiveNewGuide = (state, {guides = {}, userId}) => {
@@ -195,6 +200,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GUIDE_FEED_SUCCESS]: guideFeedSuccess,
   [Types.GET_CATEGORY_GUIDES]: request,
   [Types.GET_CATEGORY_GUIDES_SUCCESS]: receiveCategoryGuides,
+  [Types.GET_CHANNEL_GUIDES]: request,
   [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,

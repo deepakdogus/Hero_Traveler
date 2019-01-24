@@ -15,6 +15,8 @@ import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 
+import getImageUrl from '../Shared/Lib/getImageUrl'
+
 import { runIfAuthed } from '../Lib/authHelpers'
 
 const tabBarTabs = ['STORIES', 'GUIDES']
@@ -26,6 +28,27 @@ const FeedItemListWrapper = styled.div`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: 0;
   }
+`
+
+const SponsoredBy = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 50px;
+  color: #adadad;
+`
+
+const StyledImage = styled.img`
+  height: 50px;
+  margin: 5px;
+`
+
+const Divider = styled.hr`
+  border-bottom: 2px solid black;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 50px; 
 `
 
 class DiscoverCategory extends ContainerWithFeedList {
@@ -40,12 +63,14 @@ class DiscoverCategory extends ContainerWithFeedList {
     isFollowingCategory: PropTypes.bool,
   }
 
-  state = { activeTab: 'ALL' }
+  state = { activeTab: 'STORIES' }
 
   componentDidMount() {
-    const {category, loadCategories} = this.props
+    const {category, loadCategories, getStories, getGuides} = this.props
     this.getTabInfo()
     if (!category) loadCategories()
+    getStories(null, 'all')
+    getGuides()
   }
 
   _followCategory = (categoryId) => {
@@ -76,10 +101,18 @@ class DiscoverCategory extends ContainerWithFeedList {
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
+        <SponsoredBy>
+          <span>Sponsored by </span>
+            <a href={_.get(category, 'sponsorLink')}>
+              <StyledImage src={getImageUrl(_.get(category, 'categorySponsorLogo'))} />
+            </a>
+        </SponsoredBy>
         <FeedItemListWrapper>
+          <Divider />
           <FeedItemList
             feedItems={selectedFeedItems}
-            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}/>
+            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}
+          />
           <Footer />
         </FeedItemListWrapper>
       </ContentWrapper>

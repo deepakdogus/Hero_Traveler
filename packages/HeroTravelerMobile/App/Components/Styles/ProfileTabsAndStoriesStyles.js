@@ -22,10 +22,7 @@ export default StyleSheet.create({
       ? Metrics.navBarHeight + 14 // 15 -1 to keep shared border @ 1px
       : Metrics.navBarHeight - 1, // same as line above
   },
-  topAreaWrapper: {
-    marginBottom: 10,
-    backgroundColor: Colors.snow,
-  },
+  topAreaWrapper: {},
   errorText: {
     color: Colors.grey,
     textAlign: 'center',

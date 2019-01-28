@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
 import { isIPhoneX } from '../../Themes/Metrics'
 
 const avatarImageSize = 95

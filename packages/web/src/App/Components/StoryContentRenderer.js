@@ -152,12 +152,12 @@ export default class StoryContentRenderer extends React.Component {
     const lastSectionLastIdx = lastSection.length - 1
     const lastBlock = lastSection[lastSectionLastIdx]
 
-    // sections [array] contain blocks [array], which contain parts [objects]
+    // sections [array] contain blocks [array], which contain block parts [objects]
     // e.g. [ [[{text}, {spacer}], [{text}, {spacer}]], [[{spacer}, {image}, {spacer}, {spacer}]] ]
     //
     // 1. return all but the last section as normal
     // 2. within the last section, return all but the last block as normal
-    // 3. filter that block to remove
+    // 3. filter that block to remove spacers after content
     return [
       ...contentSections.slice(0, lastIdx),
       [

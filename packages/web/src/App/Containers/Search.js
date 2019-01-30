@@ -86,6 +86,10 @@ const ScrollingListContainer = styled.div`
   overflow-y: scroll;
   margin: 30px auto 0;
   max-width: 800px;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     height: ${getCalculatedHeight(true)}
   }
@@ -450,6 +454,7 @@ class Search extends Component {
         shouldFetchSuggestions={activeTab === 'PLACES'}
         renderChildren={this.renderChildren}
         isSearch
+        searchOptions={{types: ['geocode']}}
       />
     )
   }

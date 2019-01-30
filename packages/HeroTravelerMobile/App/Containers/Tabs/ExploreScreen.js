@@ -155,7 +155,9 @@ class ExploreScreen extends Component {
 
       if (selectedTabIndex === 0) {
         this.setState({ searchingGoogle: true })
-        RNGooglePlaces.getAutocompletePredictions(inputText)
+        RNGooglePlaces.getAutocompletePredictions(inputText, {
+          type: 'geocode',
+        })
         .then((predictions) => this.setState({
           searchingGoogle: false,
           lastLocationPredictions: predictions,

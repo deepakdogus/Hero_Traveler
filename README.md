@@ -58,6 +58,21 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
 ```
 * Once you save your upload presets, you will see their 'names'.  Note these for [ENV set-up](#setting-up-your-env)
 
+### 3. Algolia (Search)
+* Follow the email invitation and make an account (request if you have not already received)
+* Click on `Indices` in the left side bar
+* For each existing prod index below, click `Manage Index > Copy` and name the copied indices with the convention `[YOUR NAME]_dev_[INDEX TYPE]`:
+  * `prod_USERS`
+  * `prod_STORIES`
+  * `prod_GUIDES`
+  * `prod_CATEGORIES`
+  * `prod_HASHTAGS`
+* For your development story and guide indices:
+  * go to the index page and click the `Configuration` tab
+  * click `Facets` in the sidebar
+  * Under 'Attributes for Faceting' click `Add an Attribute`
+  * add 'locationInfo.country' and in the dropdown to the right, select `Filter only`
+  * make sure to click the green `Save Settings` button
 
 ## Setting up your ENV
 ### 1. Shell profile

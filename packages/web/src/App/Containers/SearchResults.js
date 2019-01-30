@@ -92,7 +92,7 @@ class SearchResults extends Component {
   }
 
   componentWillMount() {
-    const { location, country, lat, lng, seeAllType } = this.props
+    const { location, lat, lng, seeAllType } = this.props
 
     // title label
     let label = ''
@@ -114,7 +114,9 @@ class SearchResults extends Component {
     })
 
     // guides
-    this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
+    this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX, {
+      disjunctiveFacets: ['locationInfo.country'],
+    })
     this.setupSearchListeners(this.guideHelper, 'guides')
     this.search(this.guideHelper, MAX_STORY_RESULTS)
 
@@ -122,7 +124,6 @@ class SearchResults extends Component {
     this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX, {
       disjunctiveFacets: ['locationInfo.country'],
     })
-    this.storyHelper.addDisjunctiveFacetRefinement('locationInfo.country', `${country}`)
     this.setupSearchListeners(this.storyHelper, 'stories')
     this.search(this.storyHelper, MAX_GUIDE_RESULTS)
   }
@@ -157,7 +158,11 @@ class SearchResults extends Component {
   }
 
   search = (helper, hits) => {
-    const { lat, lng } = this.props
+    const { country, lat, lng } = this.props
+    helper.addDisjunctiveFacetRefinement(
+      'locationInfo.country',
+      `${country}`,
+    )
     helper
       .setQuery()
       .setQueryParameter(

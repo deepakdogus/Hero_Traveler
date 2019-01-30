@@ -20,6 +20,7 @@ import { Row } from '../Components/FlexboxGrid'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import { formatLocationWeb } from '../Shared/Lib/formatLocation'
 
 const MAX_STORY_RESULTS = 10
 
@@ -296,14 +297,13 @@ class Search extends Component {
     this.props.reroute(`/story/${id}`)
   }
 
-  _getLatLngAndNav = async item => {
-    const results = await geocodeByAddress(item.description)
-    const { lat, lng } = await getLatLng(results[0])
-    this._navToLocationResults({lat, lng, ...item })
-  }
-
-  _navToLocationResults = ({ lat, lng, id, title }) => {
+  _navToLocationResults = async ({id, description }) => {
     const { reroute, addRecentSearch } = this.props
+    let { name: title, country, latitude: lat, longitude: lng } = await formatLocationWeb(
+      description,
+      geocodeByAddress,
+      getLatLng,
+    )
     if (lat && lng) {
       addRecentSearch({
         searchType: 'places',
@@ -315,7 +315,7 @@ class Search extends Component {
         lng,
       })
       reroute({
-        pathname: `/results/${lat}/${lng}`,
+        pathname: `/results/${country}/${lat}/${lng}`,
         search: `?t=${title}`,
       })
     }
@@ -354,7 +354,7 @@ class Search extends Component {
             <SearchAutocompleteList
               label='LOCATIONS'
               autocompleteItems={formattedLocations}
-              navigate={this._getLatLngAndNav}
+              navigate={this._navToLocationResults}
             />
           )}
           {this.state.lastSearchResults.hits

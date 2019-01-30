@@ -19,6 +19,8 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
+const MAX_RADIUS = 804672 // = 250 miles in meters
+const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -65,6 +67,7 @@ class SearchResults extends Component {
     wentBack: PropTypes.bool,
     lat: PropTypes.string,
     lng: PropTypes.string,
+    country: PropTypes.string,
     seeAllType: PropTypes.string,
     location: PropTypes.object,
   }
@@ -89,7 +92,7 @@ class SearchResults extends Component {
   }
 
   componentWillMount() {
-    const { location, lat, lng, seeAllType } = this.props
+    const { location, country, lat, lng, seeAllType } = this.props
 
     // title label
     let label = ''
@@ -116,7 +119,10 @@ class SearchResults extends Component {
     this.search(this.guideHelper, MAX_STORY_RESULTS)
 
     // stories
-    this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX, {
+      disjunctiveFacets: ['locationInfo.country'],
+    })
+    this.storyHelper.addDisjunctiveFacetRefinement('locationInfo.country', `${country}`)
     this.setupSearchListeners(this.storyHelper, 'stories')
     this.search(this.storyHelper, MAX_GUIDE_RESULTS)
   }
@@ -151,12 +157,15 @@ class SearchResults extends Component {
   }
 
   search = (helper, hits) => {
+    const { lat, lng } = this.props
     helper
-      .setQuery('')
+      .setQuery()
       .setQueryParameter(
         'aroundLatLng',
-        `${this.props.lat}, ${this.props.lng}`,
+        `${lat}, ${lng}`,
       )
+      .setQueryParameter('aroundRadius', MAX_RADIUS)
+      .setQueryParameter('aroundPrecision', METER_PRECISION)
       .setQueryParameter('hitsPerPage', hits)
       .search()
   }
@@ -229,6 +238,7 @@ function mapStateToProps(state, ownProps) {
     categoriesFetchStatus,
     lat: ownProps.match.params.lat,
     lng: ownProps.match.params.lng,
+    country: ownProps.match.params.country,
     seeAllType: ownProps.match.params.seeAllType,
     wentBack: ownProps.history.action === 'POP',
   }

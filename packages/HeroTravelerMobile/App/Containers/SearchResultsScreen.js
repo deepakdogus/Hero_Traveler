@@ -23,6 +23,8 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
+const MAX_RADIUS = 804672 // = 250 miles in meters
+const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
 
 class SearchResultsScreen extends Component {
   static propTypes = {
@@ -52,30 +54,31 @@ class SearchResultsScreen extends Component {
 
   async componentDidMount() {
     try {
+      const { historyData, addRecentSearch } = this.props
+
       // location
-      const { historyData, location } = this.props
-      const { latitude, longitude } =
-      (historyData.latitude && historyData.longitude)
+      const locationData = this._hasHistoryData()
         ? historyData
-        : await RNGooglePlaces.lookUpPlaceByID(
-            location.placeID,
-          )
+        : await this._getLocationDataFromGoogle()
 
       // guides
-      this.guideHelper = AlgoliaSearchHelper(algoliasearch, GUIDE_INDEX)
+      this.guideHelper = AlgoliaSearchHelper(algoliasearch, GUIDE_INDEX, {
+        disjunctiveFacets: ['locationInfo.country'],
+      })
       this.setupSearchListeners(this.guideHelper, 'guides')
-      this.search(this.guideHelper, MAX_GUIDE_RESULTS, latitude, longitude)
+      this.search(this.guideHelper, MAX_GUIDE_RESULTS, locationData)
 
       // stories
-      this.storyHelper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
+      this.storyHelper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX, {
+        disjunctiveFacets: ['locationInfo.country'],
+      })
       this.setupSearchListeners(this.storyHelper, 'stories')
-      this.search(this.storyHelper, MAX_STORY_RESULTS, latitude, longitude)
+      this.search(this.storyHelper, MAX_STORY_RESULTS, locationData)
 
       // add to search history
-      this.props.addRecentSearch({
-        ...this.props.historyData,
-        latitude,
-        longitude,
+      addRecentSearch({
+        ...historyData,
+        ...locationData,
       })
     }
     catch (err) {
@@ -83,11 +86,26 @@ class SearchResultsScreen extends Component {
     }
   }
 
+  _hasHistoryData = () => {
+    const { latitude, longitude, country } = this.props.historyData
+    if (!latitude || !longitude || !country) return false
+    return true
+  }
+
+  _getLocationDataFromGoogle = async () => {
+    const {
+      latitude,
+      longitude,
+      addressComponents: { country },
+    } = await RNGooglePlaces.lookUpPlaceByID(this.props.location.placeID)
+    return { latitude, longitude, country }
+  }
+
   setupSearchListeners = (helper, type) => {
     helper.on('result', res => {
       const lastSearchResults = {
-          ...this.state.lastSearchResults,
-          [type]: res.hits,
+        ...this.state.lastSearchResults,
+        [type]: res.hits,
       }
       type === 'guides'
         ? this.setState({
@@ -101,11 +119,17 @@ class SearchResultsScreen extends Component {
     })
   }
 
-  search = (helper, hits, latitude, longitude) => {
+  search = (helper, hitCount, { latitude, longitude, country }) => {
+    helper.addDisjunctiveFacetRefinement(
+      'locationInfo.country',
+      `${country}`,
+    )
     helper
     .setQuery('')
     .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-    .setQueryParameter('hitsPerPage', hits)
+    .setQueryParameter('aroundRadius', MAX_RADIUS)
+    .setQueryParameter('aroundPrecision', METER_PRECISION)
+    .setQueryParameter('hitsPerPage', hitCount)
     .search()
   }
 
@@ -140,7 +164,7 @@ class SearchResultsScreen extends Component {
     const isFetchingResults = isFetchingGuideResults || isFetchingStoryResults
 
     const hasResults = !!lastSearchResults.stories.length
-      && !!lastSearchResults.guides.length
+      || !!lastSearchResults.guides.length
 
     return (
       <View style={styles.root}>

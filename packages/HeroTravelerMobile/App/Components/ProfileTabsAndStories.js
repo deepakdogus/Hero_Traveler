@@ -140,7 +140,7 @@ export default class ProfileTabsAndStories extends Component {
         styles.profileTabsAndStoriesHeight,
         editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
       ]}>
-        {(hasNoStories || this.isFetching()) && (
+        {hasNoStories && this.isFetching() && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
@@ -151,7 +151,7 @@ export default class ProfileTabsAndStories extends Component {
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
         )}
-        {isGettingStories && (
+        {hasNoStories && isGettingStories && (
           <View style={styles.spinnerWrapper}>
             <Loader
               style={styles.spinner}
@@ -159,7 +159,7 @@ export default class ProfileTabsAndStories extends Component {
           </View>
         )}
 
-        {!hasNoStories && !isGettingStories && (
+        {!hasNoStories && (
           <ConnectedFeedList
             isStory={isStory}
             isDraftsTab={selectedTab === tabTypes.drafts}

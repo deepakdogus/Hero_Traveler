@@ -118,10 +118,13 @@ class NotificationScreen extends React.Component {
       ),
     )
 
-    if (fetchStatus.fetching) {
-      content = <Loader spinnerColor={Colors.blackoutTint} />
-    }
-    else if (this.state.selectedTab === 1) {
+    // TODO: add back when fetching is tied to notification message subscriptions
+    //
+    // if (fetchStatus.fetching) {
+    //   content = <Loader spinnerColor={Colors.blackoutTint} />
+    // }
+    // else if (this.state.selectedTab === 1) {
+    if (this.state.selectedTab === 1) {
       content = (
         <ThreadList
           threads={threads}
@@ -175,6 +178,7 @@ const mapStateToProps = state => {
   const user = state.entities.users.entities[state.session.userId]
 
   return {
+    state,
     user,
     users,
     stories: state.entities.stories.entities,

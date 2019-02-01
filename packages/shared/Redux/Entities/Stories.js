@@ -108,10 +108,6 @@ export const userRequest = (state, {userId}) => {
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: true, loaded: false}
   )
-  .setIn(
-    ['storiesByUserAndId', userId, 'byId'],
-    []
-  )
 }
 
 export const userSuccess = (state, {userId, userStoriesById}) => {

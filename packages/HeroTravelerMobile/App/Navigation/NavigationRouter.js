@@ -142,6 +142,11 @@ const navToCreateFlow = () => {
   })
 }
 
+const navToActivity = () => {
+  NavActions.tabbar({type: 'reset'})
+  NavActions.activity()
+}
+
 const navToMyFeed = () => {
   NavActions.tabbar({type: 'reset'})
   NavActions.myFeed()
@@ -390,6 +395,7 @@ export default NavActions.create(
           title='Notifications'
           {...darkNavBarProps}
           navigationBarStyle={extraPaddingDarkNavBarProps}
+          onPress={navToActivity}
         />
         <Scene
           key='profile'

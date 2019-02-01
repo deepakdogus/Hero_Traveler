@@ -7,12 +7,10 @@ import { connect } from 'react-redux'
 import PushNotification from 'react-native-push-notification'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
-import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
 import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
-import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 import {
   isActivityIncomplete,
@@ -108,7 +106,7 @@ class NotificationScreen extends React.Component {
 
   render() {
     let content
-    const { activitiesById, activities, threads, fetchStatus } = this.props
+    const { activitiesById, activities, threads } = this.props
     const unseenActivities = _.size(
       _.filter(
         _.map(activitiesById, aid => ({ ...activities[aid] })),
@@ -118,10 +116,13 @@ class NotificationScreen extends React.Component {
       ),
     )
 
-    if (fetchStatus.fetching) {
-      content = <Loader spinnerColor={Colors.blackoutTint} />
-    }
-    else if (this.state.selectedTab === 1) {
+    // TODO: add back when fetching is tied to notification message subscriptions
+    //
+    // if (fetchStatus.fetching) {
+    //   content = <Loader spinnerColor={Colors.blackoutTint} />
+    // }
+    // else if (this.state.selectedTab === 1) {
+    if (this.state.selectedTab === 1) {
       content = (
         <ThreadList
           threads={threads}

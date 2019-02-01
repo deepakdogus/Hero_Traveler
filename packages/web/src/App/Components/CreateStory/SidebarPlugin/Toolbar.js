@@ -21,6 +21,12 @@ const Wrapper = styled.div`
 `
 
 class Toolbar extends React.Component {
+  static propTypes = {
+    children: PropTypes.func,
+    store: PropTypes.object,
+    position: PropTypes.string,
+  }
+
   static defaultProps = {
     children: externalProps => (
       // may be use React.Fragment instead of div to improve perfomance after React 16
@@ -123,10 +129,6 @@ class Toolbar extends React.Component {
       </Wrapper>
     )
   }
-}
-
-Toolbar.propTypes = {
-  children: PropTypes.func,
 }
 
 export default Toolbar

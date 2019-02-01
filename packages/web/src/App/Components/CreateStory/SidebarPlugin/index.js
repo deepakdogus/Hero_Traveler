@@ -14,8 +14,6 @@ import Toolbar from './Toolbar'
 export default (config = {}) => {
   const defaultPostion = 'left'
 
-  // const defaultTheme = { buttonStyles }
-
   const store = createStore({
     isVisible: true,
   })

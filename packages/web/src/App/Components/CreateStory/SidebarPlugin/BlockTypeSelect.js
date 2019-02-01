@@ -80,6 +80,12 @@ const theme = {
 }
 
 class BlockTypeSelect extends React.Component {
+  static propTypes = {
+    children: PropTypes.func,
+    getEditorState: PropTypes.func,
+    setEditorState: PropTypes.func,
+  }
+
   state = {
     transform: 'translate(-50%) scale(0)',
   }
@@ -134,10 +140,6 @@ class BlockTypeSelect extends React.Component {
       </div>
     )
   }
-}
-
-BlockTypeSelect.propTypes = {
-  children: PropTypes.func,
 }
 
 export default BlockTypeSelect

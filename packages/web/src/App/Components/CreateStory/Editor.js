@@ -5,26 +5,19 @@ import {
   Modifier,
   SelectionState,
 } from 'draft-js'
-import 'draft-js/dist/Draft.css'
 import Editor from 'draft-js-plugins-editor'
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
-import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
+import 'draft-js/dist/Draft.css'
 import styled from 'styled-components'
-import {
-  BoldButton,
-  HeadlineOneButton,
-} from 'draft-js-buttons'
 
 import {
   convertFromRaw,
   convertToRaw,
 } from '../../Shared/Lib/draft-js-helpers'
+
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
-import {
-  AddImageButton,
-  AddVideoButton,
-} from './EditorAddMediaButton'
+
+import createSideToolbarPlugin from './SidebarPlugin'
 import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
@@ -36,29 +29,7 @@ margin-top: 20px;
   }
 `
 
-const CustomBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
-  <BlockTypeSelect
-    getEditorState={getEditorState}
-    setEditorState={setEditorState}
-    theme={theme}
-    structure={[
-      BoldButton,
-      AddImageButton,
-      HeadlineOneButton,
-      AddVideoButton,
-    ]}
-  />
-)
-
-CustomBlockTypeSelect.propTypes = {
-  getEditorState: PropTypes.func,
-  setEditorState: PropTypes.func,
-  theme: PropTypes.object,
-}
-
-const sideToolbarPlugin = createSideToolbarPlugin({
-  structure: [CustomBlockTypeSelect],
-})
+const sideToolbarPlugin = createSideToolbarPlugin()
 
 const { SideToolbar } = sideToolbarPlugin
 
@@ -253,7 +224,7 @@ export default class BodyEditor extends React.Component {
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
         />
-        <SideToolbar/>
+          <SideToolbar/>
       </EditorWrapper>
     )
   }

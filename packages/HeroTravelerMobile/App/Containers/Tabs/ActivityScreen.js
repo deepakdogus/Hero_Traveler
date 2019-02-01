@@ -7,12 +7,10 @@ import { connect } from 'react-redux'
 import PushNotification from 'react-native-push-notification'
 
 import UserActions from '../../Shared/Redux/Entities/Users'
-import Loader from '../../Components/Loader'
 import styles from '../Styles/NotificationScreenStyles'
 import ActivityList from '../../Components/ActivityList'
 import Activity from '../../Components/Activity'
 import ThreadList from '../../Components/ThreadList'
-import Colors from '../../Shared/Themes/Colors'
 import NotificationBadge from '../../Components/NotificationBadge'
 import {
   isActivityIncomplete,
@@ -108,7 +106,7 @@ class NotificationScreen extends React.Component {
 
   render() {
     let content
-    const { activitiesById, activities, threads, fetchStatus } = this.props
+    const { activitiesById, activities, threads } = this.props
     const unseenActivities = _.size(
       _.filter(
         _.map(activitiesById, aid => ({ ...activities[aid] })),
@@ -178,7 +176,6 @@ const mapStateToProps = state => {
   const user = state.entities.users.entities[state.session.userId]
 
   return {
-    state,
     user,
     users,
     stories: state.entities.stories.entities,

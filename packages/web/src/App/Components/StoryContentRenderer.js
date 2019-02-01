@@ -72,11 +72,11 @@ const getAtomic = (children, { data, keys }) => {
   */
   return data.map((media, index) => {
     const type = media.type
-    const mediaUrl
-      = type === 'image'
-        ? getImageUrl(media.url, 'contentBlock')
-        : `${getVideoUrlBase()}/${media.url}`
+    const mediaUrl = type === 'image'
+      ? getImageUrl(media.url, 'contentBlock')
+      : `${getVideoUrlBase()}/${media.url}`
     const text = _.get(children, `[${index}][1][0]`, '').trim()
+
     switch (media.type) {
       case 'image':
         return [

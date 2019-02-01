@@ -67,12 +67,6 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
   * `prod_GUIDES`
   * `prod_CATEGORIES`
   * `prod_HASHTAGS`
-* For your development story and guide indices:
-  * go to the index page and click the `Configuration` tab
-  * click `Facets` in the sidebar
-  * Under 'Attributes for Faceting' click `Add an Attribute`
-  * add 'locationInfo.country' and in the dropdown to the right, select `Filter only`
-  * make sure to click the green `Save Settings` button
 
 ## Setting up your ENV
 ### 1. Shell profile

@@ -12,6 +12,7 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 
 import FeedItemGrid from '../Components/FeedItemGrid'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import FeedItemMessage from '../Components/FeedItemMessage'
 import Footer from '../Components/Footer'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
@@ -195,6 +196,11 @@ class SearchResults extends Component {
     )
   }
 
+  _hasResults = () => {
+    const {lastSearchResults: { guides, stories } } = this.state
+    return !!guides.length || !!stories.length
+  }
+
   render() {
     const { lastSearchResults, label, seeAllType, seeAllLabel } = this.state
     return (
@@ -208,7 +214,13 @@ class SearchResults extends Component {
             }
           </ResultTitle>
           <StyledDivider color="light-grey" />
-          {Object.keys(this.typeLabels).map(type => {
+          {!this._hasResults() && (
+            <FeedItemMessage
+              message='Looks like there are no nearby results for this location.'
+            />
+          )}
+          {this._hasResults()
+            && Object.keys(this.typeLabels).map(type => {
             const feedItems = (type === 'guides' || type === 'stories')
               ? lastSearchResults[type]
               : lastSearchResults.stories.filter(feedItem => feedItem.type === type)

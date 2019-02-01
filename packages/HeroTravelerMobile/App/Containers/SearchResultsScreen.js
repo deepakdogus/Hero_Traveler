@@ -88,8 +88,7 @@ class SearchResultsScreen extends Component {
 
   _hasHistoryData = () => {
     const { latitude, longitude, country } = this.props.historyData
-    if (!latitude || !longitude || !country) return false
-    return true
+    return latitude && longitude && country
   }
 
   _getLocationDataFromGoogle = async () => {

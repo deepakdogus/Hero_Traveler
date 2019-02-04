@@ -11,9 +11,6 @@ export default StyleSheet.create({
   profileTabsAndStoriesHeight: {
     height: isIPhoneX() ? Metrics.screenHeight - Metrics.tabBarHeight + 10 : Metrics.screenHeight - 10,
   },
-  profileTabsAndStoriesReadOnlyHeight: {
-    height: isIPhoneX() ? Metrics.screenHeight - 20 : Metrics.screenHeight,
-  },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
   },

@@ -36,7 +36,7 @@ const HeaderOne = styled.h1`
   font-weight: 600;
   font-size: 24px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   &:first-letter {
     text-transform: uppercase;
   }
@@ -72,11 +72,11 @@ const getAtomic = (children, { data, keys }) => {
   */
   return data.map((media, index) => {
     const type = media.type
-    const mediaUrl =
-      type === 'image'
-        ? getImageUrl(media.url, 'contentBlock')
-        : `${getVideoUrlBase()}/${media.url}`
+    const mediaUrl = type === 'image'
+      ? getImageUrl(media.url, 'contentBlock')
+      : `${getVideoUrlBase()}/${media.url}`
     const text = _.get(children, `[${index}][1][0]`, '').trim()
+
     switch (media.type) {
       case 'image':
         return [
@@ -92,7 +92,10 @@ const getAtomic = (children, { data, keys }) => {
         return [
           <Spacer key={0} />,
           <div key={keys[index]}>
-            <Video src={mediaUrl} withPrettyControls />
+            <Video
+              src={mediaUrl}
+              withPrettyControls
+            />
             {text && <Caption>{text}</Caption>}
           </div>,
           <Spacer key={1} />,
@@ -124,9 +127,7 @@ const blocks = {
  * allow active links offiste at this time.
  */
 const entities = {
-  LINK: (children, entity, { key }) => (
-    <StyledStrong key={key}>{children}</StyledStrong>
-  ),
+  LINK: (children, entity, { key }) => <StyledStrong key={key}>{children}</StyledStrong>,
 }
 
 const options = {
@@ -142,21 +143,30 @@ export default class StoryContentRenderer extends React.Component {
     story: PropTypes.object,
   }
 
-  trimSpacers = contentBlocks => {
-    if (!contentBlocks) return null
-    if (!contentBlocks.length) return contentBlocks
+  trimSpacers = contentSections => {
+    if (!contentSections) return null
+    if (!contentSections.length) return contentSections
 
-    const lastBlock = contentBlocks[contentBlocks.length - 1][0]
+    const lastIdx = contentSections.length - 1
+    const lastSection = contentSections[lastIdx]
+    const lastSectionLastIdx = lastSection.length - 1
+    const lastBlock = lastSection[lastSectionLastIdx]
 
-    while (
-      lastBlock.length > 1
-      && _.get(lastBlock, `[${lastBlock.length - 1}].props.spacer`)
-    ) {
-      lastBlock.pop()
-    }
-
-    contentBlocks[contentBlocks.length - 1] = lastBlock
-    return contentBlocks
+    // sections [array] contain blocks [array], which contain block parts [objects]
+    // e.g. [ [[{text}, {spacer}], [{text}, {spacer}]], [[{spacer}, {image}, {spacer}, {spacer}]] ]
+    //
+    // 1. return all but the last section as normal
+    // 2. within the last section, return all but the last block as normal
+    // 3. filter that block to remove spacers after content
+    return [
+      ...contentSections.slice(0, lastIdx),
+      [
+        ...lastSection.slice(0, lastSectionLastIdx),
+        lastBlock.filter(
+          (part, idx) => idx === 0 || !_.get(part, 'props.spacer'),
+        ),
+      ],
+    ]
   }
 
   render() {

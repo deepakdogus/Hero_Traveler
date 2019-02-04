@@ -64,10 +64,9 @@ class CommentsScreen extends React.Component {
   }
 
   handleSend = () => {
-    // blur to hide keyboard
-
     if (this.state.text.trim().length === 0) return
 
+    // blur to hide keyboard
     this.input.blur()
     this.props.storyId
     ? this.props.createComment(this.props.storyId, 'story', this.state.text)
@@ -122,17 +121,15 @@ class CommentsScreen extends React.Component {
             styles.list,
             this.state.isFocused ? {height: listHeight - 295} : {},
           ]}>
-        {comments && comments.map(comment => {
-          return (
-            <Comment
-              avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
-              name={comment.user.profile.fullName}
-              comment={comment.content}
-              timestamp={moment(comment.createdAt).fromNow()}
-              key={comment.createdAt.toString()}
-            />
-          )
-        })}
+        {comments && comments.map(comment => (
+          <Comment
+            avatarUrl={getImageUrl(comment.user.profile.avatar, 'avatar')}
+            name={comment.user.profile.fullName}
+            comment={comment.content}
+            timestamp={moment(comment.createdAt).fromNow()}
+            key={comment.createdAt.toString()}
+          />
+        ))}
         </ScrollView>
         <View>
           <View style={styles.inputGroupWrapper}>

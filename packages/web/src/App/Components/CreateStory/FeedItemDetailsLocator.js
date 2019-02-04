@@ -124,9 +124,12 @@ export default class FeedItemDetailsPlacesAutocomplete extends Component {
                   { suggestion.formattedSuggestion.secondaryText }
                 </StyledAddress>
               </AutocompleteItem>
-              {idx !== suggestions.length - 1 &&
-                <StyledHorizontalDivider color='lighter-grey' opaque/>
-              }
+              {idx !== suggestions.length - 1 && (
+                <StyledHorizontalDivider
+                  color='lighter-grey'
+                  opaque
+                />
+              )}
             </AutocompleteContainer>
           )
         })}

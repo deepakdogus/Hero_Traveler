@@ -137,12 +137,11 @@ export default class ProfileTabsAndStories extends Component {
     const hasNoStories = this.areNoStories()
 
     return (
-      <View style={
-        editable
-          ? [styles.profileTabsAndStoriesHeight, styles.profileTabsAndStoriesRoot]
-          : [styles.profileTabsAndStoriesReadOnlyHeight, styles.profileTabsAndStoriesRootWithMarginForNavbar]
-      }>
-        {(hasNoStories || this.isFetching()) && (
+      <View style={[
+        styles.profileTabsAndStoriesHeight,
+        editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
+      ]}>
+        {hasNoStories && this.isFetching() && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
@@ -153,13 +152,13 @@ export default class ProfileTabsAndStories extends Component {
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
         )}
-        {isGettingStories && (
+        {hasNoStories && isGettingStories && (
           <View style={styles.spinnerWrapper}>
             <Loader spinnerColor={Colors.background} />
           </View>
         )}
 
-        {!hasNoStories && !isGettingStories && (
+        {!hasNoStories && (
           <ConnectedFeedList
             isStory={isStory}
             isDraftsTab={selectedTab === tabTypes.drafts}

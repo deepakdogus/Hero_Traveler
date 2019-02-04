@@ -144,6 +144,7 @@ const images = {
   iconCreatePhoto: require('../Images/ht-icons/icon_create-photo.png'),
   iconCreateVideo: require('../Images/ht-icons/icon_create-video.png'),
   iconCreateAddCover: require('../Images/ht-icons/icon_create-add-cover.png'),
+  iconCreatePlus: require('../Images/ht-icons/icon_create-plus.png'),
   iconNavNotifications: require('../Images/ht-icons/icon_nav-notifications.png'),
   iconActivitySee: require('../Images/ht-icons/icon_activity-see.png'),
   iconActivityDo: require('../Images/ht-icons/icon_activity-do.png'),

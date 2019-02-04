@@ -11,19 +11,26 @@ class GoogleLocator extends React.Component {
     onSelect: PropTypes.func,
     renderChildren: PropTypes.func,
     isSearch: PropTypes.bool,
+    searchOptions: PropTypes.object,
   }
 
   render = () => {
-    const { value, onChange, onSelect, renderChildren, isSearch } = this.props
-    const GoogleLocator = isSearch
-      ? ExtendedPlacesAutocomplete
-      : PlacesAutocomplete
+    const {
+      value,
+      onChange,
+      onSelect,
+      searchOptions,
+      renderChildren,
+      isSearch,
+    } = this.props
+    const GoogleLocator = isSearch ? ExtendedPlacesAutocomplete : PlacesAutocomplete
 
     return (
       <GoogleLocator
         value={value}
         onChange={onChange}
         onSelect={onSelect}
+        searchOptions={searchOptions}
       >
         {renderChildren}
       </GoogleLocator>

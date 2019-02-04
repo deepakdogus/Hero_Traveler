@@ -93,7 +93,7 @@ class ReadOnlyProfileScreen extends Component {
         fetchStatus={storiesFetchStatus}
         guidesFetchStatus={guidesFetchStatus}
         onPressFollow={this.follow}
-        onPressUnfollow={this.unfollow}
+        onPressUnfollowz={this.unfollow}
         isFollowing={_.includes(myFollowedUsers, user.id)}
         style={styles.root}
         refresh={this.initializeData}

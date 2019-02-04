@@ -68,7 +68,7 @@ export default class FeedItem extends Component {
           <View style={styles.titleContainer}>
             {isGuide && (
               <TabIcon name='guide' style={{
-                  view: styles.guideIcon,
+                  view: styles.guideIconView,
                   image: styles.guideIconImage,
                 }}
               />

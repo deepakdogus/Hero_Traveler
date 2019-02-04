@@ -12,6 +12,7 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 
 import FeedItemGrid from '../Components/FeedItemGrid'
 import HorizontalDivider from '../Components/HorizontalDivider'
+import FeedItemMessage from '../Components/FeedItemMessage'
 import Footer from '../Components/Footer'
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
@@ -19,6 +20,8 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
+const MAX_RADIUS = 804672 // = 250 miles in meters
+const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -65,6 +68,7 @@ class SearchResults extends Component {
     wentBack: PropTypes.bool,
     lat: PropTypes.string,
     lng: PropTypes.string,
+    country: PropTypes.string,
     seeAllType: PropTypes.string,
     location: PropTypes.object,
   }
@@ -111,12 +115,16 @@ class SearchResults extends Component {
     })
 
     // guides
-    this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX)
+    this.guideHelper = algoliaSearchHelper(algoliasearch, GUIDE_INDEX, {
+      disjunctiveFacets: ['locationInfo.country'],
+    })
     this.setupSearchListeners(this.guideHelper, 'guides')
     this.search(this.guideHelper, MAX_GUIDE_RESULTS)
 
     // stories
-    this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.storyHelper = algoliaSearchHelper(algoliasearch, STORY_INDEX, {
+      disjunctiveFacets: ['locationInfo.country'],
+    })
     this.setupSearchListeners(this.storyHelper, 'stories')
     this.search(this.storyHelper, MAX_STORY_RESULTS)
   }
@@ -151,12 +159,19 @@ class SearchResults extends Component {
   }
 
   search = (helper, hits) => {
+    const { country, lat, lng } = this.props
+    helper.addDisjunctiveFacetRefinement(
+      'locationInfo.country',
+      `${country}`,
+    )
     helper
-      .setQuery('')
+      .setQuery()
       .setQueryParameter(
         'aroundLatLng',
-        `${this.props.lat}, ${this.props.lng}`,
+        `${lat}, ${lng}`,
       )
+      .setQueryParameter('aroundRadius', MAX_RADIUS)
+      .setQueryParameter('aroundPrecision', METER_PRECISION)
       .setQueryParameter('hitsPerPage', hits)
       .search()
   }
@@ -181,6 +196,11 @@ class SearchResults extends Component {
     )
   }
 
+  _hasResults = () => {
+    const {lastSearchResults: { guides, stories } } = this.state
+    return !!guides.length || !!stories.length
+  }
+
   render() {
     const { lastSearchResults, label, seeAllType, seeAllLabel } = this.state
     return (
@@ -194,7 +214,13 @@ class SearchResults extends Component {
             }
           </ResultTitle>
           <StyledDivider color="light-grey" />
-          {Object.keys(this.typeLabels).map(type => {
+          {!this._hasResults() && (
+            <FeedItemMessage
+              message='Looks like there are no nearby results for this location.'
+            />
+          )}
+          {this._hasResults()
+            && Object.keys(this.typeLabels).map(type => {
             const feedItems = (type === 'guides' || type === 'stories')
               ? lastSearchResults[type]
               : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
@@ -229,6 +255,7 @@ function mapStateToProps(state, ownProps) {
     categoriesFetchStatus,
     lat: ownProps.match.params.lat,
     lng: ownProps.match.params.lng,
+    country: ownProps.match.params.country,
     seeAllType: ownProps.match.params.seeAllType,
     wentBack: ownProps.history.action === 'POP',
   }

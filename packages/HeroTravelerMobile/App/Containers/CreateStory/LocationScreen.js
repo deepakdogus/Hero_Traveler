@@ -52,7 +52,9 @@ class LocationScreen extends Component {
     this.setState({text})
     if (text.length <= 2) return
     this.setState({searching: true})
-    RNGooglePlaces.getAutocompletePredictions(text)
+    RNGooglePlaces.getAutocompletePredictions(text, {
+      type: 'geocode',
+    })
     .then((predictions) => this.setState({searching: false, predictions}))
     .catch(() => this.setState({searching: false}))
   }

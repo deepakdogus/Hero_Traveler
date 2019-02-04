@@ -45,6 +45,7 @@ class SearchList extends Component {
         title: location.primaryText || location.title,
         latitude: location.latitude,
         longitude: location.longitude,
+        country: location.country,
       },
       title: location.primaryText || location.title,
     })

@@ -153,6 +153,30 @@ class SearchResultsScreen extends Component {
 
   _shouldDisplaySection = items => !!items && !!items.length
 
+  renderFeedItemsOfType = () => {
+    const { lastSearchResults } = this.state
+    return Object.keys(this.typeLabels).map((type, idx) => {
+      const feedItems = (type === 'guides' || type === 'stories')
+        ? lastSearchResults[type]
+        : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
+      if (!this._shouldDisplaySection(feedItems)) return null
+
+      return (
+        <FeedItemsOfType
+          key={`${type}-search-grid`}
+          type={type}
+          label={this.typeLabels[type].toUpperCase()}
+          onPressAll={this._navToSeeAll(type, feedItems)}
+          onPressAuthor={this._onPressAuthor}
+          isShowAll={false}
+          showDivider={idx !== 0}
+          feedItems={feedItems}
+          isGuide={type === 'guides'}
+        />
+      )
+    })
+  }
+
   render() {
     const {
       isFetchingGuideResults,
@@ -165,36 +189,23 @@ class SearchResultsScreen extends Component {
     const hasResults = !!lastSearchResults.stories.length
       || !!lastSearchResults.guides.length
 
+    const contentInset = { bottom: 25 }
+    const spinnerColor = Colors.blackoutTint
+
     return (
       <View style={styles.root}>
         {isFetchingResults && (
-          <Loader style={styles.loader} spinnerColor={Colors.blackoutTint} />
+          <Loader
+            style={styles.loader}
+            spinnerColor={spinnerColor}
+          />
         )}
         {!isFetchingResults && hasResults && (
           <ScrollView
             style={styles.scrollView}
-            contentInset={{ bottom: 25 }}
+            contentInset={contentInset}
           >
-            {Object.keys(this.typeLabels).map((type, idx) => {
-              const feedItems = (type === 'guides' || type === 'stories')
-                ? lastSearchResults[type]
-                : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
-              if (!this._shouldDisplaySection(feedItems)) return null
-
-              return (
-                <FeedItemsOfType
-                  key={`${type}-search-grid`}
-                  type={type}
-                  label={this.typeLabels[type].toUpperCase()}
-                  onPressAll={this._navToSeeAll(type, feedItems)}
-                  onPressAuthor={this._onPressAuthor}
-                  isShowAll={false}
-                  showDivider={idx !== 0}
-                  feedItems={feedItems}
-                  isGuide={type === 'guides'}
-                />
-              )
-            })}
+            {this.renderFeedItemsOfType()}
             <View style={styles.spacer}/>
           </ScrollView>
         )}

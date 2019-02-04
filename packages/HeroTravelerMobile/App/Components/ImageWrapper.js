@@ -85,9 +85,8 @@ export default class ImageWrapper extends Component {
     if (limitedHeight) imageProps.style.height = Metrics.maxContentHeight
 
     imageProps.style = imageProps.style || {}
-    // imageProps.style.borderRadius = 20
     return cached
-        ? (<FastImage {...imageProps}/>)
-        : (<BaseComponent {...imageProps} />)
+      ? (<FastImage {...imageProps}/>)
+      : (<BaseComponent {...imageProps} />)
   }
 }

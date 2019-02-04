@@ -153,6 +153,24 @@ export default class FeedItemPreview extends Component {
     return !!locationInfo || locations.length !== 0
   }
 
+  shouldRenderDescription = () => {
+    const {
+      isStory,
+      isFeed,
+      isReadingScreen,
+      feedItem: { description },
+    } = this.props
+    return !!description
+      && !(!isStory && isFeed)
+      && isReadingScreen
+  }
+
+  shouldRenderBookmarks = () => (
+    this.props.showLike
+    && this.props.onPressBookmark
+    && this.props.isStory
+  )
+
   getLocationText = () => {
     const {locationInfo, locations = []} = this.props.feedItem
     if (locationInfo) return displayLocationPreview(locationInfo)
@@ -267,13 +285,14 @@ export default class FeedItemPreview extends Component {
 
   renderBottomSection() {
     const {title, counts, description, coverCaption, draft, type} = this.props.feedItem
-    const {isReadingScreen, isStory, isFeed, isStoryLiked, isGuideLiked} = this.props
+    const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
 
     return (
       <View style={[
-        styles.storyInfoContainer, styles.bottomContainer,
+        styles.storyInfoContainer,
+        styles.bottomContainer,
         !isReadingScreen && styles.roundedBottomContainer,
       ]}>
         {isReadingScreen && !!coverCaption && (
@@ -307,13 +326,10 @@ export default class FeedItemPreview extends Component {
           disabled={!!isReadingScreen}
         >
           {this.renderTitle()}
-          {!!description
-            && !(!isStory && isFeed)
-            && isReadingScreen
-            && (
-              <Text style={storyReadingScreenStyles.description}>
-                {description}
-              </Text>
+          {this.shouldRenderDescription() && (
+            <Text style={storyReadingScreenStyles.description}>
+              {description}
+            </Text>
           )}
         </TouchableOpacity>
         <View style={styles.lastRow}>
@@ -325,9 +341,7 @@ export default class FeedItemPreview extends Component {
 
           {!draft && (
             <View style={styles.rightRow}>
-              {this.props.showLike
-                && this.props.onPressBookmark
-                && this.props.isStory
+              {this.shouldRenderBookmarks()
                 && (
                   <View style={styles.bookmarkContainer}>
                     <TouchableOpacity
@@ -387,7 +401,10 @@ export default class FeedItemPreview extends Component {
     const isReadingScreen = location === 'story' || location === 'guide'
 
     return (
-      <View style={[styles.contentContainer, !isReadingScreen && styles.cardView]}>
+      <View style={[
+        styles.contentContainer,
+        !isReadingScreen && styles.cardView,
+      ]}>
         {isReadingScreen && this.renderUserSection()}
         {isShowCover && (
           <FeedItemCover

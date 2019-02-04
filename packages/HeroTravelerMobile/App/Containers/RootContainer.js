@@ -134,12 +134,9 @@ class RootContainer extends Component {
 
   isLightStatusBarText() {
     const { location } = this.props
-    return location
-      && (
-        location == 'signup'
-        || location === 'launchScreen'
-        || location === 'login'
-      )
+    return location === 'signup'
+      || location === 'launchScreen'
+      || location === 'login'
   }
 
   render () {
@@ -163,7 +160,7 @@ const mapStateToProps = (state) => {
   return {
     started: state.startup.started,
     isLoggedIn: state.login.isLoggedIn,
-    location: location,
+    location: location || '',
   }
 }
 

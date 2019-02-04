@@ -174,8 +174,7 @@ class ProfileView extends React.Component {
     const {editable, location, stories, user, userId, onRefresh} = this.props
     const {selectedTab} = this.state
 
-    let showTooltip
-      = editable && !stories.length && !this.hasCompletedNoStoriesTooltip()
+    let showTooltip = editable && !stories.length && !this.hasCompletedNoStoriesTooltip()
 
     const rootStyles = editable ? styles.flexOne : styles.flexOneReadOnly
 

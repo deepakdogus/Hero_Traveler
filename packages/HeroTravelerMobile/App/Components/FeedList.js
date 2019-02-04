@@ -210,16 +210,28 @@ export default class FeedList extends React.Component {
           refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
         />
-        {renderHeaderContent ? (
-          <NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>
-            {renderHeaderContent}
-          </NativeFeedHeader>
-        ) : null}
-        {renderSectionHeader ? (
-          <NativeFeedHeader headerHeight={sectionContentHeight} sticky={true}>
-            {renderSectionHeader}
-          </NativeFeedHeader>
-        ) : null}
+        {renderHeaderContent
+          ? (
+            <NativeFeedHeader
+              headerHeight={headerContentHeight}
+              sticky={false}
+            >
+              {renderHeaderContent}
+            </NativeFeedHeader>
+          )
+          : null
+        }
+        {renderSectionHeader
+          ? (
+            <NativeFeedHeader
+              headerHeight={sectionContentHeight}
+              sticky={true}
+            >
+              {renderSectionHeader}
+            </NativeFeedHeader>
+          )
+          : null
+        }
         {feedItemViews}
       </NativeFeed>
     )

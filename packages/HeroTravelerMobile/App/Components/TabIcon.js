@@ -179,8 +179,8 @@ const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
-      const increment = activities[key].seen ? 0 : 1
-      return count + increment
+      if (activities[key].seen) return count
+      return count + 1
     }, 0)
 
     /*

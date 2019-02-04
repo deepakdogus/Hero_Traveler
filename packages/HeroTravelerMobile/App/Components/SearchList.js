@@ -65,12 +65,12 @@ class SearchList extends Component {
     })
   }
 
-  _navConditionally = item =>
+  navConditionally = item =>
     item.contentType === 'story'
       ? this._navToStory(item)
       : this._navToSearchResults(item)
 
-  _navToUserProfile = user => {
+  addUserToSearchHistory = user => {
     this.props.addRecentSearch({
       searchType: 'people',
       id: user._id || user.id,
@@ -122,7 +122,7 @@ class SearchList extends Component {
         followUser={followUser}
         unfollowUser={unfollowUser}
         isFollowing={user.isFollowing}
-        navToProfileMixin={this._navToUserProfile}
+        addUserToSearchHistory={this.addUserToSearchHistory}
         styledInset
       />
     )
@@ -189,7 +189,7 @@ class SearchList extends Component {
     if (!this.shouldDisplayRecentPlaces()) return null
     return (
       <ListItem
-        onPress={this._navConditionally(item)}
+        onPress={this.navConditionally(item)}
         text={<Text style={styles.listItemText}>{item.title}</Text>}
         style={styles.searchRowItem}
       />

@@ -97,11 +97,14 @@ class CategoryFeedScreen extends React.Component {
     this.loadData()
   }
 
-  _wrapElt(elt) {
-    return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
-    )
-  }
+  _wrapElt = elt => (
+    <View style={[
+      styles.scrollItemFullScreen,
+      styles.center,
+    ]}>
+      {elt}
+    </View>
+  )
 
   _changeTab = selectedTab => {
     this.setState(
@@ -187,9 +190,11 @@ class CategoryFeedScreen extends React.Component {
     if (fetchStatus.fetching && !refreshing) {
       bottomContent = this.renderNoStories(<Loader />)
     }
-    else if (
-      (selectedTab !== restrictedTabTypes.guides && _.size(storiesById) === 0)
-      || (selectedTab === restrictedTabTypes.guides && _.size(categoryGuidesById) === 0)
+ else if (
+      (selectedTab !== restrictedTabTypes.guides
+        && _.size(storiesById) === 0)
+      || (selectedTab === restrictedTabTypes.guides
+        && _.size(categoryGuidesById) === 0)
     ) {
       bottomContent = this.renderNoStories(
         <NoStoriesMessage
@@ -199,12 +204,14 @@ class CategoryFeedScreen extends React.Component {
         />,
       )
     }
-    else {
+ else {
       bottomContent = (
         <ConnectedFeedList
           isStory={selectedTab !== restrictedTabTypes.guides}
           entitiesById={
-            selectedTab === restrictedTabTypes.guides ? categoryGuidesById : storiesById
+            selectedTab === restrictedTabTypes.guides
+              ? categoryGuidesById
+              : storiesById
           }
           renderSectionHeader={this.renderTabs()}
           sectionContentHeight={40}

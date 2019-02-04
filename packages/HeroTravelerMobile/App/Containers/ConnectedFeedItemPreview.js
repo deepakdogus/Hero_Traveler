@@ -107,19 +107,18 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = true
-  const isShowCover
-    = !isReadingScreen
+  const isShowCover = !isReadingScreen
     || isStory
     || selectedTab === tabTypes.overview
 
-  const selectedStories
-    = isStory || !isReadingScreen
-      ? []
-      : getSelectedStories(
-          entities.stories.entities,
-          feedItem.stories,
-          ownProps.selectedTab,
-        )
+  const selectedStories = isStory || !isReadingScreen
+    ? []
+    : getSelectedStories(
+        entities.stories.entities,
+        feedItem.stories,
+        ownProps.selectedTab,
+      )
+
   const accessToken = _.find(state.session.tokens, { type: 'access' })
 
   const location = state.routes.scene.name

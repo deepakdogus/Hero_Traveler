@@ -55,7 +55,10 @@ export default class TabBar extends Component {
   render() {
     const { largeTabBar } = this.props
     return (
-      <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
+      <View style={[
+        styles.wrapper,
+        largeTabBar && styles.largeWrapper,
+      ]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}

@@ -65,17 +65,17 @@ class SearchPlacesPeople extends Component {
 
   // after we delete a story we need to make sure we purge that story
   // from the story's hits
-  componentWillReceiveProps(nextProps) {
-    const oldStories = this.props.stories
+  componentDidUpdate(prevProps) {
+    const oldStories = prevProps.stories
     const { selectedTabIndex, lastSearchResults } = this.state
     const hits = lastSearchResults ? lastSearchResults.hits : []
     if (
       selectedTabIndex === 0
       && hits.length
-      && this.hasDeletedStory(nextProps)
+      && this.hasDeletedStory(prevProps)
     ) {
       for (let key in oldStories) {
-        if (!nextProps.stories[key]) {
+        if (!this.props.stories[key]) {
           lastSearchResults.hits = hits.filter(hit => {
             return key !== hit._id
           })
@@ -86,9 +86,9 @@ class SearchPlacesPeople extends Component {
   }
 
   // search
-  hasDeletedStory(nextProps) {
-    const oldLength = Object.keys(this.props.stories).length
-    const newLength = Object.keys(nextProps.stories).length
+  hasDeletedStory(prevProps) {
+    const oldLength = Object.keys(prevProps.stories).length
+    const newLength = Object.keys(this.props.stories).length
     return oldLength - newLength === 1
   }
 

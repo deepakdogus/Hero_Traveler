@@ -26,9 +26,9 @@ class FollowFollowingRow extends Component {
   }
 
   _navToProfile = () => {
-    const {sessionUserId, user, navToProfileMixin} = this.props
+    const {sessionUserId, user, addUserToSearchHistory} = this.props
     const userId = user.id || user._id
-    if (navToProfileMixin) navToProfileMixin(user)
+    if (addUserToSearchHistory) addUserToSearchHistory(user)
     if (sessionUserId === userId) navToProfile({ userId })
     else NavActions.readOnlyProfile({ userId })
   }
@@ -47,8 +47,14 @@ class FollowFollowingRow extends Component {
     else if (user.id !== sessionUserId) followingText = 'FOLLOW'
 
     return (
-      <View style={[styles.rowWrapper, styledInset && styles.rowWrapperInset]}>
-        <View style={[styles.row, styledInset && styles.rowWithHorizontalInset]}>
+      <View style={[
+        styles.rowWrapper,
+        styledInset && styles.rowWrapperInset,
+      ]}>
+        <View style={[
+          styles.row,
+          styledInset && styles.rowWithHorizontalInset,
+        ]}>
           <Touchable
             onPress={isSignup ? null : this._navToProfile}
             style={styles.avatarAndName}

@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   top: ${({ top }) => `${top}px` || 'unset'};
   left: ${({ left }) => `${left}px` || 'unset'};
   transform: ${({ transform }) => transform || 'unset'};
+  z-index: 1;
 `
 
 class Toolbar extends React.Component {

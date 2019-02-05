@@ -17,6 +17,7 @@ const PlusButtonWrapper = styled.div`
   width: 36px;
   line-height: 36px;
   text-align: center;
+  background-color: white;
   cursor: pointer;
 `
 

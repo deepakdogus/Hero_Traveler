@@ -14,7 +14,6 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
-  z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     justify-content: space-evenly;
   }

@@ -141,7 +141,7 @@ export default class ProfileTabsAndStories extends Component {
         styles.profileTabsAndStoriesHeight,
         editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
       ]}>
-        {hasNoStories && this.isFetching() && (
+        {hasNoStories && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}

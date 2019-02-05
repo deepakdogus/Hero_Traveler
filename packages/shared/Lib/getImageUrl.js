@@ -3,8 +3,16 @@ import Env from '../../Config/Env'
 import {getVideoUrlBase, isLocalMediaAsset} from './getVideoUrl'
 import metrics from '../Themes/Metrics'
 
-function getImageUrlBase() {
-  return `https://res.cloudinary.com/${Env.cloudName}/image/upload`
+function isFromFacebook(image) {
+  return typeof(image) === 'object'
+    && _.has(image, ['original', 'folders'])
+    && image.original.folders.includes('facebook')
+}
+
+function getImageUrlBase(image) {
+  const base = `https://res.cloudinary.com/${Env.cloudName}/image`
+  if (isFromFacebook(image)) return `${base}/facebook`
+  return `${base}/upload`
 }
 
 function buildParameters(urlParameters) {
@@ -48,6 +56,8 @@ function getUri(image: object|string, type: string): ?string {
     }
 
     const filename = ensureJpgExtension(_.last(path.split('/')))
+    if (isFromFacebook(image)) return filename
+
     // hot fix to avoid search crashing. Need to bulk update algolia
     const folderPath = folders ? folders.join('/') : 'files'
     return `${folderPath}/${filename}`
@@ -187,7 +197,7 @@ export default function getImageUrl(image: object|string, type: string, options:
     imageSize.height = Math.round(options.height * metrics.pixelRatio)
   }
 
-  const base = options.video ? getVideoUrlBase() : getImageUrlBase()
+  const base = options.video ? getVideoUrlBase() : getImageUrlBase(image)
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
   return buildUrl(base, uri, urlParameters)

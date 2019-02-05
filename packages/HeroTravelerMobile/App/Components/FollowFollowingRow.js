@@ -21,7 +21,7 @@ class FollowFollowingRow extends Component {
     isFollowing: PropTypes.bool.isRequired,
     followUser: PropTypes.func.isRequired,
     unfollowUser: PropTypes.func.isRequired,
-    navToProfileMixin: PropTypes.func,
+    addUserToSearchHistory: PropTypes.func,
     styledInset: PropTypes.bool,
   }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {View, Text, StyleSheet} from 'react-native'
 import Colors from '../Shared/Themes/Colors'
 
@@ -44,4 +45,9 @@ export default function NotificationBadge({count, style}) {
       <Text style={styles.text}>{count > 999 ? '999+' : count}</Text>
     </View>
   )
+}
+
+NotificationBadge.propTypes = {
+  count: PropTypes.number,
+  style: PropTypes.number,
 }

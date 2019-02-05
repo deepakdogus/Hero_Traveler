@@ -63,12 +63,14 @@ class ReadingScreenOverlap extends React.Component {
     const { scrollY } = this.state
     if (!targetEntity || !author) {
       return (
-        <View style={[styles.darkRoot]}>
+        <View style={[styles.root, styles.centered]}>
           {!targetEntity && (
             <Loader style={styles.loader} />
           )}
-          { targetEntity && !!targetEntity.error && (
-            <Text>{targetEntity.error}</Text>
+          {targetEntity && !!targetEntity.error && (
+            <Text style={styles.text}>
+              {targetEntity.error}
+            </Text>
           )}
         </View>
       )

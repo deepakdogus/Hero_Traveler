@@ -63,28 +63,6 @@ class SearchPlacesPeople extends Component {
     this.removeSearchListeners(this.helper)
   }
 
-  // after we delete a story we need to make sure we purge that story
-  // from the story's hits
-  componentDidUpdate(prevProps) {
-    const oldStories = prevProps.stories
-    const { selectedTabIndex, lastSearchResults } = this.state
-    const hits = lastSearchResults ? lastSearchResults.hits : []
-    if (
-      selectedTabIndex === 0
-      && hits.length
-      && this.hasDeletedStory(prevProps)
-    ) {
-      for (let key in oldStories) {
-        if (!this.props.stories[key]) {
-          lastSearchResults.hits = hits.filter(hit => {
-            return key !== hit._id
-          })
-          this.setState({ lastSearchResults })
-        }
-      }
-    }
-  }
-
   // search
   hasDeletedStory(prevProps) {
     const oldLength = Object.keys(prevProps.stories).length

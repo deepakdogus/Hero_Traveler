@@ -12,9 +12,8 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: Colors.dividerGrey,
   },
-  darkRoot: {
-    flex: 1,
-    backgroundColor: Colors.background,
+  centered: {
+    alignItems: 'center',
     justifyContent: 'center',
   },
   scrollView: {

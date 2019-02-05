@@ -282,6 +282,15 @@ class CreateStoryDetailScreen extends React.Component {
     return _.map(categories, 'title').join(', ')
   }
 
+  isValid() {
+    const { workingDraft } = this.props
+    return _.every([
+      !!workingDraft,
+      !!workingDraft.locationInfo,
+      !!workingDraft.type,
+    ])
+  }
+
   render () {
     const {workingDraft} = this.props
     const {modalVisible, validationError} = this.state
@@ -290,14 +299,15 @@ class CreateStoryDetailScreen extends React.Component {
       <View style={styles.wrapper}>
           {this.renderErrors()}
           <NavBar
-            title='Story Details'
+            title='STORY DETAILS'
             leftIcon='arrowLeftRed'
             leftTitle='Back'
             onLeft={this._onLeft}
-            leftTextStyle={{paddingLeft: 10}}
+            leftTextStyle={styles.navBarLeftText}
             onRight={this._onRight}
             rightTitle={this.isDraft() ? 'Publish' : 'Save'}
-            rightTextStyle={{color: Colors.red}}
+            rightTextStyle={styles.redText}
+            isRightValid={this.isValid()}
           />
           <ScrollView style={styles.root}>
             <Text style={styles.title}>{this.props.story.title} Details </Text>

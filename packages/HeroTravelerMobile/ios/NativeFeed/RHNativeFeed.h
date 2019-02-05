@@ -25,6 +25,9 @@
 @property(nonatomic, assign) NSInteger currentMinCellIndex;
 @property(nonatomic, assign) NSInteger currentMaxCellIndex;
 
+@property(nonatomic) CGFloat leadingCellSpace;
+@property(nonatomic) CGFloat trailingCellSpace;
+
 @property(nonatomic, assign) NSInteger playingCellIndex;
 
 @property(nonatomic, assign) CGFloat cellSeparatorHeight;

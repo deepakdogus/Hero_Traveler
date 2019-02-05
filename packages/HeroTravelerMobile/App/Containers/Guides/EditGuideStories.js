@@ -116,9 +116,9 @@ class EditGuideStories extends Component {
           <NavBar
             onLeft={this.onLeft}
             leftTitle={'Back'}
-            title={'Guide Stories'}
+            title={'GUIDE STORIES'}
             onRight={this.onDone}
-            rightTitle={'Next'}
+            rightTitle={'Done'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
           />
@@ -180,5 +180,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(EditGuideStories)
 const styles = StyleSheet.create({
   storyWrapper: {
     paddingHorizontal: Metrics.marginHorizontal,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
 })

@@ -1,27 +1,32 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Image } from 'react-native'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 
-import {Metrics, Images} from '../../Shared/Themes'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
+
+import { Metrics } from '../../Shared/Themes'
+import styles from '../Styles/MyFeedScreenStyles'
+
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
-import styles from '../Styles/MyFeedScreenStyles'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
+import SearchPlacesPeople from '../SearchPlacesPeople'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
-  stories: 'stories',
+  following: 'following',
   guides: 'guides',
+  // featured: 'featured',
+  // trending: 'trending',
 }
 
 class MyFeedScreen extends React.Component {
@@ -36,6 +41,7 @@ class MyFeedScreen extends React.Component {
     sync: PropTypes.object,
     fetchStatus: PropTypes.object,
     storiesById: PropTypes.arrayOf(PropTypes.string),
+    stories: PropTypes.object,
     pendingUpdates: PropTypes.object,
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
@@ -48,7 +54,8 @@ class MyFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: tabTypes.stories,
+      selectedTab: tabTypes.following,
+      hasSearchText: false,
     }
   }
 
@@ -80,6 +87,7 @@ class MyFeedScreen extends React.Component {
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.pendingUpdates, nextProps.pendingUpdates),
       this.state.selectedTab !== nextState.selectedTab,
+      this.state.hasSearchText !== nextState.hasSearchText,
     ])
 
     return shouldUpdate
@@ -94,12 +102,27 @@ class MyFeedScreen extends React.Component {
   }
 
   _showNoStories() {
+    let text = ''
+    switch(this.state.selectedTab) {
+      case 'following':
+        text = `You aren't following any users yet.`
+        break
+      case 'guide':
+        text = `There are no guides to display.`
+        break
+      case 'featured':
+      case 'trending':
+        text = `There are no ${this.state.selectedTab} stories to show right now.`
+        break
+      default:
+        text = `There is no content available. Check back later.`
+    }
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <View style={styles.tabWrapper}>
           {this.renderTabs()}
         </View>
-        <NoStoriesMessage text={this.state.selectedTab}/>
+        <NoStoriesMessage text={text}/>
       </View>
     )
   }
@@ -116,7 +139,7 @@ class MyFeedScreen extends React.Component {
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
-        isStory={this.state.selectedTab === tabTypes.stories}
+        isStory={this.state.selectedTab === tabTypes.following}
         feedItem={feedItem}
         height={imageHeight}
         userId={this.props.userId}
@@ -155,16 +178,23 @@ class MyFeedScreen extends React.Component {
   }
 
   render () {
-    let {storiesById, fetchStatus, sync, feedGuidesById} = this.props
-    const {selectedTab} = this.state
+    let {
+      storiesById,
+      fetchStatus,
+      sync,
+      feedGuidesById,
+      stories,
+      user,
+    } = this.props
+    const { selectedTab } = this.state
     let bottomContent
 
-    const isStoriesSelected = selectedTab === tabTypes.stories
+    const isFollowingSelected = selectedTab === tabTypes.following
     const failure = this.getFirstPendingUpdate()
 
     if (
-      (isStoriesSelected && (!storiesById || !storiesById.length))
-      || (!isStoriesSelected && (!feedGuidesById || !feedGuidesById.length))
+      (isFollowingSelected && (!storiesById || !storiesById.length))
+      || (!isFollowingSelected && (!feedGuidesById || !feedGuidesById.length))
     ) {
       let innerContent = this._showNoStories()
       bottomContent = this._wrapElt(innerContent)
@@ -172,10 +202,11 @@ class MyFeedScreen extends React.Component {
     else {
       bottomContent = (
         <ConnectedFeedList
-          isStory={isStoriesSelected}
-          entitiesById={isStoriesSelected ? storiesById : feedGuidesById}
+          isStory={isFollowingSelected}
+          entitiesById={isFollowingSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
+          sectionContentHeight={40}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}
         />
@@ -183,10 +214,11 @@ class MyFeedScreen extends React.Component {
     }
 
     return (
-      <View style={[styles.containerWithTabbar, styles.root]}>
-        <View style={styles.fakeNavBar}>
-          <Image source={Images.whiteLogo} style={styles.logo} />
-        </View>
+      <SearchPlacesPeople
+        stories={stories}
+        user={user}
+        placeholder={`Search`}
+      >
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -196,7 +228,7 @@ class MyFeedScreen extends React.Component {
           resetFailCount={this.props.resetFailCount}
         />
         { bottomContent }
-      </View>
+      </SearchPlacesPeople>
     )
   }
 }
@@ -208,7 +240,6 @@ const mapStateToProps = (state) => {
     error,
   } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
-
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],

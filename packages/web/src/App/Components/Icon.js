@@ -239,7 +239,7 @@ export default class Icon extends React.Component {
       case 'createPlus':
         return Images.iconCreatePlus
       case 'navNotifications':
-        return Images.iconNavNotifications
+        return Images.iconHeaderNotifications
       case 'info':
         return Images.iconInfoDark
       case 'infoLarge':

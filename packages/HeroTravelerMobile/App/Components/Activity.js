@@ -159,7 +159,7 @@ export default class Activity extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    borderBottomColor: '#bdbdbd',
+    borderBottomColor: Colors.navBarText,
     borderBottomWidth: 1,
   },
   container: {
@@ -175,13 +175,13 @@ const styles = StyleSheet.create({
   },
   dateText: {
     marginTop: Metrics.baseMargin / 2,
-    color: '#757575',
+    color: Colors.grey,
   },
   content: {
     marginTop: Metrics.baseMargin / 2,
   },
   contentText: {
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 15,
   },
   description: {

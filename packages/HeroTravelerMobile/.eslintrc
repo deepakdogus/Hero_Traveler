@@ -20,6 +20,7 @@
   ],
   "rules": {
     "no-console": 1,
+    "react/jsx-max-props-per-line": [2, { "maximum" : 1 }],
     "react/jsx-no-bind": 2,
     "react/prop-types": 1,
     "react/no-string-refs": 1,

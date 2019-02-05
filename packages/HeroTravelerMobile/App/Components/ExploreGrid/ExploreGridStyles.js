@@ -7,35 +7,32 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginLeft: 0,
-    marginRight: 0,
+    width: `${Metrics.feedMargin}%`,
+    alignSelf: 'center',
+    marginVertical: (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
   },
-  gridRow: {
-    width: (Metrics.screenWidth) / 3 - 4,
-    height: (Metrics.screenWidth) / 3 - 4,
-    margin: 2,
-    backgroundColor: Colors.transparent
+  gridItem: {
+    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16, // 16 = l/r margin
+    height:Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5 + 30, // to achieve 100 x 105 images + 30 height
+    margin: 8,
+    backgroundColor: Colors.transparent,
   },
-  gridImage: {
-    width: (Metrics.screenWidth) / 3 - 4,
-    height: (Metrics.screenWidth) / 3 - 4,
-  },
-  gridRowText: {
+  gridItemText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 13,
-    color: Colors.snow,
-    backgroundColor: 'rgba(0,0,0,.4)',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    fontWeight: '500',
+    color: Colors.background,
     textAlign: 'center',
-    lineHeight: (Metrics.screenWidth) / 3 - 4,
+    lineHeight: 20,
+    paddingBottom: 10,
+  },
+  gridImage: {
+    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
+    height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5,
   },
   selectedIcon: {
     position: 'absolute',
-    bottom: 5,
-    right: 5,
-  }
+    top: 8,
+    right: 8,
+  },
 })

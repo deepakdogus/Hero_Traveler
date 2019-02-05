@@ -5,9 +5,6 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
+    backgroundColor: Colors.snow,
   },
-  separator: {
-    height: 10,
-    backgroundColor: Colors.feedDividerGrey,
-  }
 })

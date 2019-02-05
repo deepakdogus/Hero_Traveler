@@ -1,22 +1,19 @@
 import _ from 'lodash'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  ScrollView,
+  SectionList,
   View,
   Text,
+  Keyboard,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
+import styles from './Styles/SearchPlacesPeopleStyles'
+
+import FollowFollowingRow from './FollowFollowingRow'
 import Loader from './Loader'
-import List from './List'
 import ListItem from './ListItem'
-import Avatar from './Avatar'
-
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import styles from '../Containers/Styles/ExploreScreenStyles'
-import Colors from '../Shared/Themes/Colors'
 
 const MAX_ITEMS = 5
 
@@ -31,9 +28,13 @@ class SearchList extends Component {
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
     hasSearchText: PropTypes.bool,
+    followUser: PropTypes.func,
+    unfollowUser: PropTypes.func,
+    myFollowedUsers: PropTypes.array,
   }
 
   _navToSearchResults = location => () => {
+    Keyboard.dismiss()
     NavActions.searchResults({
       location,
       userId: this.props.userId,
@@ -64,28 +65,35 @@ class SearchList extends Component {
     })
   }
 
-  _navConditionally = item =>
+  navConditionally = item =>
     item.contentType === 'story'
       ? this._navToStory(item)
       : this._navToSearchResults(item)
 
-  _navToUserProfile = user => () => {
+  addUserToSearchHistory = user => {
     this.props.addRecentSearch({
       searchType: 'people',
-      id: user._id,
+      id: user._id || user.id,
       ...user,
     })
-    if (user._id === this.props.userId) {
-      NavActions.profile({ type: 'jump' })
-    }
-    else {
-      NavActions.readOnlyProfile({
-        userId: user._id,
-      })
-    }
   }
 
-  renderLocationRow = location => {
+  // search results
+  renderSearchTitle = ({ section: { title, data } }) =>
+    (
+      !title
+      || !data
+      || !data.length
+      || (title === 'RECENT SEARCHES' && !this.shouldDisplayRecentPlaces())
+    )
+      ? null
+      : (
+        <View style={styles.searchTitleWrapper}>
+          <Text style={styles.searchTitleText}>{title}</Text>
+        </View>
+      )
+
+  renderLocationRow = ({ item: location }) => {
     return (
       <ListItem
         onPress={this._navToSearchResults(location)}
@@ -95,66 +103,103 @@ class SearchList extends Component {
     )
   }
 
-  renderPlacesRow = story => {
+  renderPlacesRow = ({ item: place }) => {
     return (
       <ListItem
-        onPress={this._navToStory(story)}
-        text={<Text style={styles.listItemText}>{story.title}</Text>}
+        onPress={this._navToStory(place)}
+        text={<Text style={styles.listItemText}>{place.title}</Text>}
         style={styles.searchRowItem}
       />
     )
   }
 
-  renderPeopleRow = user => {
+  renderPeopleRow = ({ item: user }) => {
+    const { userId, followUser, unfollowUser } = this.props
     return (
-      <ListItem
-        onPress={this._navToUserProfile(user)}
-        leftElement={
-          <Avatar
-            avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-            iconColor={Colors.lightGreyAreas}
-          />
-        }
-        text={<Text style={styles.listItemText}>{user.username}</Text>}
-        rightElement={
-          <Icon
-            name="angle-right"
-            color={Colors.whiteAlphaPt3}
-            size={30}
-          />
-        }
+      <FollowFollowingRow
+        sessionUserId={userId}
+        user={user}
+        followUser={followUser}
+        unfollowUser={unfollowUser}
+        isFollowing={user.isFollowing}
+        addUserToSearchHistory={this.addUserToSearchHistory}
+        styledInset
       />
     )
   }
 
-  renderRecentSearchesRow = item => {
+  userIsFollowed = userId => _.includes(this.props.myFollowedUsers, userId)
+
+  //no results
+  hasNoResults = () => {
+    const {
+      isSearching,
+      lastSearchResults,
+      lastLocationPredictions,
+    } = this.props
+    const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const locationHits = lastLocationPredictions || []
+
+    return !isSearching
+      && !searchHits.length
+      && !locationHits.length
+  }
+
+  renderNoResults = () => {
+    const {
+      hasSearchText,
+      query,
+    } = this.props
+    if (!(this.hasNoResults() && hasSearchText && query.length >= 3)) return null
+    return (
+      <View style={styles.noResults}>
+        <Text style={styles.noResultsText}>{'No results'}</Text>
+      </View>
+    )
+  }
+
+  //recent searches
+  shouldDisplayRecent = (type) => {
+    const {
+      searchHistory,
+      hasSearchText,
+      query,
+    } = this.props
+
+    return this.hasNoResults()
+      && !!searchHistory[type].length
+      && (!hasSearchText || query.length < 3)
+  }
+
+  shouldDisplayRecentPlaces = () => this.shouldDisplayRecent('places')
+
+  shouldDisplayRecentPeople = () => this.shouldDisplayRecent('people')
+
+  renderNoRecentSearches = () => {
+    return (
+    <View style={styles.noResults}>
+      <Text style={styles.noResultsText}>
+        {'No recent searches yet. Search for something!'}
+      </Text>
+    </View>
+  )
+}
+
+  renderRecentSearchesRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPlaces()) return null
     return (
       <ListItem
-        onPress={this._navConditionally(item)}
+        onPress={this.navConditionally(item)}
         text={<Text style={styles.listItemText}>{item.title}</Text>}
         style={styles.searchRowItem}
       />
     )
   }
 
-  renderSearchTitle = text => (
-    <View style={styles.searchTitleWrapper}>
-      <Text style={styles.searchTitleText}>{text}</Text>
-    </View>
-  )
-
-  renderResultsSection = (title, items, renderFunc) => (
-    <Fragment>
-      {this.renderSearchTitle(title)}
-      <List items={items} renderRow={renderFunc} />
-    </Fragment>
-  )
-
-  renderNoResults = () => (
-    <View style={styles.noResults}>
-      <Text style={styles.noResultsText}>{'No results'}</Text>
-    </View>
-  )
+  renderRecentPeopleRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPeople()) return null
+    return this.renderPeopleRow({ item })
+  }
 
   render = () => {
     const {
@@ -163,68 +208,69 @@ class SearchList extends Component {
       lastSearchResults,
       lastLocationPredictions,
       searchHistory,
-      hasSearchText,
-      query,
     } = this.props
     const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
-    const locationHits = lastLocationPredictions || []
-
-    const hasNoResults = !isSearching
-      && !searchHits.length
-      && !locationHits.length
-
-    const showRecentPlacesSearches = hasNoResults
-      && !!searchHistory.places.length
-      && (!hasSearchText || query.length < 3)
-
-    const showRecentPeopleSearches = hasNoResults
-      && !!searchHistory.people.length
-      && (!hasSearchText || query.length < 3)
-
-    const showNoResults = hasNoResults && hasSearchText && query.length >= 3
 
     return (
       <View style={styles.scrollWrapper}>
         {isSearching && <Loader style={styles.searchLoader} />}
         {!isSearching && selectedTabIndex === 0 && (
-          <ScrollView>
-            {!!locationHits.length &&
-              this.renderResultsSection(
-                'LOCATIONS',
-                lastLocationPredictions,
-                this.renderLocationRow,
-              )}
-            {!!searchHits.length &&
-              this.renderResultsSection(
-                'STORIES',
-                searchHits,
-                this.renderPlacesRow,
-              )}
-            {showRecentPlacesSearches &&
-              this.renderResultsSection(
-                'RECENT SEARCHES',
-                searchHistory.places,
-                this.renderRecentSearchesRow,
-              )}
-            {!showRecentPlacesSearches && showNoResults && this.renderNoResults()}
-          </ScrollView>
+          <SectionList
+            keyboardDismissMode={'on-drag'}
+            keyboardShouldPersistTaps={'handled'}
+            renderSectionHeader={this.renderSearchTitle}
+            sections={[
+              {
+                title: 'LOCATIONS',
+                data: lastLocationPredictions || [],
+                renderItem: this.renderLocationRow,
+                keyExtractor: item => item.placeID,
+               },
+              {
+                title: 'STORIES',
+                data: searchHits || [],
+                renderItem: this.renderPlacesRow,
+                keyExtractor: item => item.id,
+              },
+              {
+                title: 'RECENT SEARCHES',
+                data: searchHistory.places || [],
+                renderItem: this.renderRecentSearchesRow,
+                keyExtractor: item => item.id,
+              },
+            ]}
+            ListFooterComponent={this.renderNoResults}
+          />
         )}
         {!isSearching && selectedTabIndex === 1 && (
-          <ScrollView>
-            {searchHits.length > 0 && (
-              <List
-                items={searchHits}
-                renderRow={this.renderPeopleRow}
-              />
-            )}
-            {showRecentPeopleSearches && (
-              <List
-                items={searchHistory.people}
-                renderRow={this.renderPeopleRow}
-              />
-            )}
-            {!showRecentPeopleSearches && showNoResults && this.renderNoResults()}
-          </ScrollView>
+          <SectionList
+            keyboardDismissMode={'on-drag'}
+            keyboardShouldPersistTaps={'handled'}
+            renderSectionHeader={this.renderSearchTitle}
+            sections={[
+              {
+                title: 'RESULTS',
+                data: searchHits.map(user => ({
+                  ...user,
+                  id: user._id, // normalize `_id` from algolia to `id` for db
+                  isFollowing: this.userIsFollowed(user._id),
+                })),
+                renderItem: this.renderPeopleRow,
+                keyExtractor: item => item._id,
+              },
+              {
+                title: 'RECENT SEARCHES',
+                data: searchHistory.people.map(user => ({
+                  ...user,
+                  isFollowing: this.userIsFollowed(user.id),
+                })),
+                renderItem: this.renderRecentPeopleRow,
+                keyExtractor: item => item._id,
+                ListEmptyComponent: this.renderNoRecentSearches,
+              },
+            ]}
+            ListFooterComponent={this.renderNoResults}
+          />
         )}
       </View>
     )

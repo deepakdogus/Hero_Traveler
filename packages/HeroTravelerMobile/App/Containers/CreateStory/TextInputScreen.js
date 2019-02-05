@@ -69,7 +69,7 @@ class TextInputScreen extends Component {
           leftTextStyle={{paddingLeft: 10}}
           onRight={this._done}
           rightTitle='Done'
-          rightTextStyle={{color: Colors.red}}
+          rightTextStyle={styles.redText}
         />
         <View style={styles.root}>
           <TextInput

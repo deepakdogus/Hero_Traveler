@@ -130,10 +130,10 @@ class ProfileEditScreen extends React.Component {
   _selectAvatar = () => {
     NavActions.mediaSelectorScreen({
       mediaType: 'photo',
-      title: 'Edit Avatar',
-      titleStyle: {color: Colors.white},
+      title: 'EDIT AVATAR',
+      titleStyle: {color: Colors.background},
       leftTitle: 'Cancel',
-      leftTextStyle: {color: Colors.white},
+      leftTextStyle: {color: Colors.background},
       onLeft: () => NavActions.pop(),
       rightTitle: 'Done',
       rightIcon: 'none',
@@ -179,14 +179,13 @@ class ProfileEditScreen extends React.Component {
     )
   }
 
-
   render() {
-    const {user, handleSubmit} = this.props;
+    const {user, handleSubmit} = this.props
 
     return (
       <View style={styles.flexOne}>
         <NavBar
-          title='Edit Profile'
+          title='EDIT PROFILE'
           leftTitle='Cancel'
           onLeft={this._onLeft}
           rightTitle='Save'
@@ -194,7 +193,7 @@ class ProfileEditScreen extends React.Component {
           style={styles.navbarStyle}
         />
         <View style={styles.gradientWrapper}>
-          <ScrollView style={styles.flexOne}>
+          <ScrollView style={[styles.flexOne, styles.topBorder]}>
             <View style={styles.flexOne}>
 
               {this.renderAvatar()}

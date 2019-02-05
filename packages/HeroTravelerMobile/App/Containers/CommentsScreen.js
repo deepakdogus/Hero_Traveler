@@ -113,7 +113,10 @@ class CommentsScreen extends React.Component {
     : comments = comments['guide'][guideId]
 
     return (
-      <View style={[styles.containerWithNavbar]}>
+      <View style={[
+        styles.containerWithNavbar,
+        styles.listContainer]}
+      >
         <ScrollView
           ref={this._setRef}
           onContentSizeChange={this._onContentSizeChange}

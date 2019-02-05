@@ -62,6 +62,7 @@ export default class FeedItem extends Component {
             cached
             source={{uri: coverUrl}}
             style={styles.image}
+            resizeMode='cover'
           />
           {isVideo && this.renderPlayButton()}
           <View style={styles.titleContainer}>

@@ -54,7 +54,7 @@ class EditableCoverMedia extends Component {
     this.props.clearError({error: null})
     NavActions.mediaSelectorScreen({
       mediaType: this.props.mediaType,
-      title: 'Add Cover',
+      title: 'ADD COVER',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',

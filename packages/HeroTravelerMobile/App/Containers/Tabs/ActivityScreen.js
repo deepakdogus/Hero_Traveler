@@ -146,24 +146,22 @@ class NotificationScreen extends React.Component {
     }
 
     return (
-      <ScrollView style={styles.containerWithNavbar}>
+      <ScrollView style={styles.scrollItemFullScreen}>
         <View style={styles.tabs}>
-          <View style={styles.tabnav}>
+          {/* <View style={styles.tabnav}>
             <Tab
               notificationCount={unseenActivities}
               selected={this.state.selectedTab === 0}
               onPress={this._setSelectedTab}
               text="ACTIVITY"
             />
-            {
-              // <Tab
-              //   notificationCount={0}
-              //   selected={this.state.selectedTab === 1}
-              //   onPress={() => this.setState({selectedTab: 1})}
-              //   text='INBOX'
-              // />
-            }
-          </View>
+            <Tab
+              notificationCount={0}
+              selected={this.state.selectedTab === 1}
+              onPress={() => this.setState({selectedTab: 1})}
+              text='INBOX'
+            />
+          </View> */}
           <View style={styles.tabContent}>{content}</View>
         </View>
       </ScrollView>

@@ -74,7 +74,6 @@ class CreateGuide extends SharedCreateGuide {
     })
   }
 
-
   updateGuide = updates => {
     const newGuide = Object.assign({}, this.state.guide, updates)
     this.setState({
@@ -106,7 +105,7 @@ class CreateGuide extends SharedCreateGuide {
     if (!locations.length) return
     return locations.map(location => {
       return location.name
-    }).join(", ")
+    }).join(', ')
   }
 
   getCategoriesValue = () => {
@@ -114,7 +113,7 @@ class CreateGuide extends SharedCreateGuide {
     if (!categories.length) return
     return categories.map(category => {
       return category.title
-    }).join(", ")
+    }).join(', ')
   }
 
   isShowTooltip = () => {
@@ -131,7 +130,6 @@ class CreateGuide extends SharedCreateGuide {
     })
     this.props.completeTooltip(tooltips)
   }
-
 
   togglePrivacy = () => {
     this.updateGuide({ isPrivate: !this.state.guide.isPrivate })
@@ -158,7 +156,7 @@ class CreateGuide extends SharedCreateGuide {
             tintColor={Colors.blackoutTint}
           />
         )}
-        {!creating &&
+        {!creating && (
           <ScrollView
             keyboardShouldPersistTaps="handled"
             bounces={false}
@@ -171,8 +169,8 @@ class CreateGuide extends SharedCreateGuide {
               isRightValid={this.isGuideValid() && !creating ? true : false}
               onRight={onDone}
               rightTitle={this.isExistingGuide() ? 'Next' : 'Create'}
-              rightTextStyle={storyCoverStyles.navBarRightTextStyle}
-              style={storyCoverStyles.navBarStyle}
+              rightTextStyle={styles.rightTextStyle}
+              style={[storyCoverStyles.navBarStyle, styles.bottomBorder]}
             />
             <View style={styles.coverHeight}>
               {!!error && (
@@ -238,7 +236,7 @@ class CreateGuide extends SharedCreateGuide {
                 label={'Verified'}
                 onPress={this.togglePrivacy}
               />
-              {this.isShowTooltip() &&
+              {this.isShowTooltip() && (
                 <Tooltip
                   position='bottom-center'
                   style={{
@@ -249,10 +247,10 @@ class CreateGuide extends SharedCreateGuide {
                   text={'Verified Guides are trips you’ve taken, not ones you are planning. Other users will only see Guides that are verified.'}
                   onDismiss={this._completeTooltip}
                 />
-              }
+              )}
             </Form>
           </ScrollView>
-        }
+        )}
       </View>
     )
   }

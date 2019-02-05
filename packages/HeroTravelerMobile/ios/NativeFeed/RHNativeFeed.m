@@ -25,9 +25,9 @@
   RCTEventDispatcher *_eventDispatcher;
   NSArray* visibleCells;
   NSArray* visibleViews;
-  
+
   RHCustomScrollView* _scrollView;
-  
+
   CGFloat _cellSeparatorHeight;
 
   NSHashTable *_scrollListeners;
@@ -36,7 +36,7 @@
   NSTimeInterval _lastScrollDispatchTime;
   NSMutableArray<NSValue *> *_cachedChildFrames;
   BOOL _allowNextScrollNoMatterWhat;
-  
+
   CGRect _lastClippedToRect;
   NSArray* _cellTemplatesViews;
 
@@ -45,14 +45,14 @@
   RHNativeFeedPrefetcher* prefetcher;
 
   RHDisposable* dispatchCellRangeDisposable;
-  
+
   BOOL storyInfosChanged;
   CGRect lastCalculatedBounds;
   CGFloat lastCellSeperatorHeight;
   NSInteger lastPreloadAheadCells;
   NSInteger lastPreloadBehindCells;
   NSUInteger lastNumLoadedCells;
-  
+
   BOOL heightsChanged;
   CGFloat lastTotalHeaderHeight;
   CGFloat lastBackingViewSeperatorHeight;
@@ -61,7 +61,7 @@
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
 {
   RCTAssertParam(eventDispatcher);
-  
+
   if ((self = [super initWithFrame:CGRectZero])) {
     _eventDispatcher = eventDispatcher;
 
@@ -72,7 +72,7 @@
     _scrollView.delegate = self;
     _scrollView.delaysContentTouches = NO;
     _scrollView.canCancelContentTouches = YES;
-    
+
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
     // `contentInsetAdjustmentBehavior` is only available since iOS 11.
     // We set the default behavior to "never" so that iOS
@@ -97,9 +97,9 @@
     _scrollListeners = [NSHashTable weakObjectsHashTable];
 
     [self addSubview:_scrollView];
-    
+
     _cellTemplatesViews = @[];
-    
+
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_scrollView
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -124,7 +124,7 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTrailing
                                                     multiplier:1 constant:0]];
-    
+
     [_scrollView
      addObserver:self
      forKeyPath:@"contentOffset"
@@ -179,21 +179,21 @@
 
   [self setContentSize];
   [self recalculateVisibleCells];
-  
+
   NSMutableSet* imagesToPrefetch = [NSMutableSet set];
 
   for (RHStoryInfo* storyInfo in _storyInfos)
   {
     NSURL* storyImage = storyInfo.headerImage;
-    
+
     if (!storyImage)
     {
       continue;
     }
-    
+
     [imagesToPrefetch addObject:storyImage];
   }
-  
+
   [prefetcher invalidate];
   prefetcher = [[RHNativeFeedPrefetcher alloc] initWithImagesToPrefetch:[NSSet setWithSet:imagesToPrefetch] delegate:self];
 }
@@ -209,7 +209,7 @@
   if ([keyPath isEqualToString:@"contentOffset"])
   {
     [self recalculateVisibleCells];
-    
+
     CGFloat totalNonStickyHeaderHeights = 0.f;
     for (UIView* subview in self.subviews)
     {
@@ -228,14 +228,14 @@
         }
       }
     }
-    
+
     if (totalNonStickyHeaderHeights > 1.f)
     {
       CGFloat a = _scrollView.contentOffset.y / totalNonStickyHeaderHeights;
       a = MIN(a, 1.f);
       a = MAX(a, 0.f);
       a = 1.f - a;
-      
+
       for (UIView* subview in self.subviews)
       {
         if ([subview isKindOfClass:[RHNativeFeedHeader class]])
@@ -281,7 +281,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     {
       continue;
     }
-    
+
     if (refreshControl && refreshControl.refreshing) {
       refreshControl.frame = (CGRect){_scrollView.contentOffset, {_scrollView.frame.size.width, refreshControl.frame.size.height}};
     }
@@ -316,32 +316,41 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void) recalculateBackingView
 {
   CGFloat headerHeight = [self getTotalHeaderHeight];
-  
+
   if (fabs(lastTotalHeaderHeight - headerHeight) < 1.f && !heightsChanged && fabs(lastBackingViewSeperatorHeight - _cellSeparatorHeight) < 1.f)
   {
     return;
   }
-  
+
   for (UIView* view in _cellTemplatesViews)
   {
     [view removeFromSuperview];
   }
-  
+
   NSMutableArray* newTemplates = [@[] mutableCopy];
 
   heightsChanged = NO;
   lastBackingViewSeperatorHeight = _cellSeparatorHeight;
   lastTotalHeaderHeight = headerHeight;
+
+  CGFloat leadingViewY = headerHeight - self.leadingCellSpace;
+  CGRect leadingViewRect = CGRectMake(0, leadingViewY, self.bounds.size.width, self.leadingCellSpace);
+  UIView* leadingView = [[UIView alloc] initWithFrame:leadingViewRect];
+  leadingView.backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
+  leadingView.userInteractionEnabled = YES;
+  [_scrollView insertSubview:leadingView atIndex:0];
+  [newTemplates addObject:leadingView];
+
   CGFloat yOffset = headerHeight;
-  
+
   for (RHStoryInfo* storyInfo in _storyInfos)
   {
     CGFloat cellHeight = storyInfo.height;
-    
+
     if (cellHeight >= 1.f)
     {
       CGSize backingSize = CGSizeMake(self.bounds.size.width, cellHeight);
-      
+
       CGRect backingViewFrame = CGRectMake(0, yOffset, backingSize.width, backingSize.height+_cellSeparatorHeight);
       UIImageView* backingView = [[UIImageView alloc] initWithFrame:backingViewFrame];
       backingView.image = [RHNativeFeedBackingView backingImageSized:backingSize withSeperator:_cellSeparatorHeight];
@@ -353,7 +362,15 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
     yOffset += cellHeight + _cellSeparatorHeight;
   }
-  
+
+  CGFloat trailingViewY = yOffset;
+  CGRect trailingViewRect = CGRectMake(0, trailingViewY, self.bounds.size.width, self.trailingCellSpace);
+  UIView* trailingView = [[UIView alloc] initWithFrame:trailingViewRect];
+  trailingView.backgroundColor = [UIColor colorWithWhite:0.935f alpha:1.f];
+  trailingView.userInteractionEnabled = YES;
+  [_scrollView insertSubview:trailingView atIndex:0];
+  [newTemplates addObject:trailingView];
+
   _cellTemplatesViews = [NSArray arrayWithArray:newTemplates];
 }
 
@@ -391,8 +408,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       totalHeaderHeight += view.frame.size.height;
     }
   }
-  
-  return totalHeaderHeight;
+
+  return totalHeaderHeight + self.leadingCellSpace;
 }
 
 - (CGFloat) getTotalCellHeight
@@ -402,14 +419,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     totalCellHeight += storyInfo.height + _cellSeparatorHeight;
   }
-  
+
   return totalCellHeight;
 }
 
 - (void) setContentSize
 {
   NSUInteger numLoadedCells = [self numLoadedCells];
-  
+
   CGFloat totalLoadedCellHeight = 0.f;
   NSInteger cellNum = 0;
   for (RHStoryInfo* storyInfo in _storyInfos)
@@ -418,20 +435,20 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     {
       break;
     }
-    
+
     totalLoadedCellHeight += storyInfo.height + _cellSeparatorHeight;
     cellNum += 1;
   }
 
   _scrollView.contentSize = CGSizeMake(self.bounds.size.width,
-                                       [self getTotalHeaderHeight] + totalLoadedCellHeight);
-  
+                                       [self getTotalHeaderHeight] + totalLoadedCellHeight + self.trailingCellSpace);
+
   for (RHNativeFeedItem* view in _scrollView.subviews)
   {
     if ([view isKindOfClass:[RHNativeFeedItem class]])
     {
       BOOL willBeHidden = view.cellNum >= numLoadedCells;
-      
+
       if (view.hidden && !willBeHidden)
       {
         view.hidden = willBeHidden;
@@ -451,7 +468,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   {
     [((RCTVideo*) view) applyModifiers];
   }
-  
+
   for (UIView* subview in [[view subviews] copy])
   {
     [self recursivelyReapplyModifiers:subview];
@@ -473,9 +490,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   CGRect visibleBounds = self.bounds;
   visibleBounds.origin = contentOffset;
-  
+
   CGRect boundsOverlapWithLastCalculation = CGRectIntersection(visibleBounds, lastCalculatedBounds);
-  
+
   CGFloat boundsDiff = fabs(boundsOverlapWithLastCalculation.size.height - visibleBounds.size.height);
 
   CGFloat heightChange = fabs(lastCellSeperatorHeight-_cellSeparatorHeight);
@@ -487,20 +504,20 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     [self recalculateBackingView];
     return;
   }
-  
+
   storyInfosChanged = NO;
   lastCalculatedBounds = visibleBounds;
   lastCellSeperatorHeight = _cellSeparatorHeight;
   lastPreloadAheadCells = _numPreloadAheadCells;
   lastPreloadBehindCells = _numPreloadBehindCells;
   lastNumLoadedCells = numLoadedCells;
-  
+
   NSInteger minCell = NSIntegerMax;
   NSInteger maxCell = NSIntegerMin;
   NSInteger playingCell = 0;
 
   NSUInteger numCells = _storyInfos.count;
-  
+
   if (!_onVisibleCellsChanged)
   {
     minCell = -2;
@@ -520,42 +537,42 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     for (int i = 0; i < numCells; i++)
     {
       RHStoryInfo* storyInfo = _storyInfos[i];
-      
+
       CGRect cellFrame = CGRectMake(0, curY, visibleBounds.size.width, storyInfo.height);
       CGRect cellIntersection = CGRectIntersection(visibleBounds, cellFrame);
-      
+
       CGFloat intersectionSize = cellIntersection.size.width * cellIntersection.size.height;
       if (intersectionSize > maxIntersectionSize)
       {
         maxIntersectionSize = intersectionSize;
         playingCell = i;
       }
-      
+
       if (cellIntersection.size.height > 0.5f && cellIntersection.size.width > 0.5f)
       {
         if (i < minCell)
         {
           minCell = i;
         }
-        
+
         if (i > maxCell)
         {
           maxCell = i;
         }
       }
-      
+
       curY += storyInfo.height + _cellSeparatorHeight;
     }
-    
+
     minCell = MAX(minCell-_numPreloadBehindCells, 0);
     maxCell = MIN(maxCell+1+_numPreloadAheadCells, numCells);
   }
-  
+
   if (minCell > maxCell)
   {
     minCell = maxCell;
   }
-  
+
   if (minCell == self.currentMinCellIndex && maxCell == self.currentMaxCellIndex)
   {
     return;
@@ -564,14 +581,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   RHDisposable* disposable = [[RHDisposable alloc] init];
   dispatchCellRangeDisposable.isCancelled = YES;
   dispatchCellRangeDisposable = disposable;
-  
+
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)),
                  dispatch_get_main_queue(), ^{
                    if (disposable.isCancelled)
                    {
                      return;
                    }
-                   
+
                    if (self.currentMinCellIndex != self.lastSentMinCellIndex || self.currentMaxCellIndex != self.lastSentMaxCellIndex || playingCell != self.playingCellIndex)
                    {
                      self.lastSentMinCellIndex = self.currentMinCellIndex;
@@ -596,10 +613,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                      }
                    }
                  });
-  
+
   self.currentMinCellIndex = minCell;
   self.currentMaxCellIndex = maxCell;
-  
+
   [self setContentSize];
   [self recalculateBackingView];
 }
@@ -610,7 +627,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   for (RHStoryInfo* storyInfo in _storyInfos)
   {
     NSURL* storyImage = storyInfo.headerImage;
-    
+
     if (!storyImage || [loadedStoryImages containsObject:storyImage])
     {
       i++;
@@ -620,7 +637,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       break;
     }
   }
-  
+
   return i;
 }
 
@@ -696,19 +713,19 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
    */
   if (_allowNextScrollNoMatterWhat ||
       (_scrollEventThrottle > 0 && _scrollEventThrottle < (now - _lastScrollDispatchTime))) {
-    
+
     if (_DEPRECATED_sendUpdatedChildFrames) {
       // Calculate changed frames
       RCT_SEND_SCROLL_EVENT(onScroll, (@{@"updatedChildFrames": [self calculateChildFramesData]}));
     } else {
       RCT_SEND_SCROLL_EVENT(onScroll, nil);
     }
-    
+
     // Update dispatch time
     _lastScrollDispatchTime = now;
     _allowNextScrollNoMatterWhat = NO;
   }
-  
+
   RCT_FORWARD_SCROLL_EVENT(scrollViewDidScroll:scrollView);
   [self recalculateVisibleCells];
 }
@@ -720,20 +737,20 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
   if (!clipView) {
     return;
   }
-  
+
   static const CGFloat leeway = 1.0;
-  
+
   const CGSize contentSize = _scrollView.contentSize;
   const CGRect bounds = _scrollView.bounds;
   const BOOL scrollsHorizontally = contentSize.width > bounds.size.width;
   const BOOL scrollsVertically = contentSize.height > bounds.size.height;
-  
+
   const BOOL shouldClipAgain =
   CGRectIsNull(_lastClippedToRect) ||
   !CGRectEqualToRect(_lastClippedToRect, bounds) ||
   (scrollsHorizontally && (bounds.size.width < leeway || fabs(_lastClippedToRect.origin.x - bounds.origin.x) >= leeway)) ||
   (scrollsVertically && (bounds.size.height < leeway || fabs(_lastClippedToRect.origin.y - bounds.origin.y) >= leeway));
-  
+
   if (shouldClipAgain) {
     const CGRect clipRect = CGRectInset(clipView.bounds, -leeway, -leeway);
     [self react_updateClippedSubviewsWithClipRect:clipRect relativeToView:clipView];
@@ -747,7 +764,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
   NSMutableArray<NSDictionary *> *updatedChildFrames = [NSMutableArray new];
   [[self reactSubviews] enumerateObjectsUsingBlock:
    ^(UIView *subview, NSUInteger idx, __unused BOOL *stop) {
-     
+
      // Check if new or changed
      CGRect newFrame = subview.frame;
      BOOL frameChanged = NO;
@@ -758,7 +775,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
        frameChanged = YES;
        self->_cachedChildFrames[idx] = [NSValue valueWithCGRect:newFrame];
      }
-     
+
      // Create JS frame object
      if (frameChanged) {
        [updatedChildFrames addObject: @{
@@ -770,7 +787,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
                                         }];
      }
    }];
-  
+
   return updatedChildFrames;
 }
 
@@ -824,7 +841,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
   // Fire a final scroll event
   _allowNextScrollNoMatterWhat = YES;
   [self scrollViewDidScroll:scrollView];
-  
+
   // Fire the end deceleration event
   RCT_SEND_SCROLL_EVENT(onMomentumScrollEnd, nil);
   RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndDecelerating:scrollView);
@@ -836,7 +853,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
   // Fire a final scroll event
   _allowNextScrollNoMatterWhat = YES;
   [self scrollViewDidScroll:scrollView];
-  
+
   // Fire the end deceleration event
   RCT_SEND_SCROLL_EVENT(onMomentumScrollEnd, nil);
   RCT_FORWARD_SCROLL_EVENT(scrollViewDidEndScrollingAnimation:scrollView);

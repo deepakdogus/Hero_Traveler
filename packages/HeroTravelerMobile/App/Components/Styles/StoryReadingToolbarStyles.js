@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   root: {
@@ -14,24 +15,28 @@ export default StyleSheet.create({
   wrapper: {
     flexGrow: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: isIPhoneX() ? 'flex-start' : 'center',
+    marginTop: isIPhoneX() ? 10 : 0,
   },
   text: {
     color: Colors.navBarText,
-    marginLeft: Metrics.baseMargin/2,
+    marginLeft: Metrics.baseMargin / 2,
     marginRight: Metrics.baseMargin,
   },
   likeTool: {
     width: '20%',
     alignItems: 'center',
+    marginTop: isIPhoneX() ? 5 : 0,
   },
   commentTool: {
     width: '20%',
     alignItems: 'center',
+    marginTop: isIPhoneX() ? 5 : 0,
   },
   bookmarkTool: {
     width: '20%',
     alignItems: 'center',
+    marginTop: isIPhoneX() ? 5 : 0,
   },
   shareTool: {
     width: '20%',
@@ -44,8 +49,9 @@ export default StyleSheet.create({
   flagIcon: {
     width: 19,
     height: 23,
+    marginTop: isIPhoneX() ? 5 : 0,
   },
   shareIcon: {
     marginBottom: 2,
-  }
+  },
 })

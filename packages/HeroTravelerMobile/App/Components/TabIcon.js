@@ -1,13 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {View, Image} from 'react-native'
+import { View, Image } from 'react-native'
 import _ from 'lodash'
-import {connect} from 'react-redux'
-import {Images} from '../Shared/Themes'
+import { connect } from 'react-redux'
+import { Images } from '../Shared/Themes'
 
 import NotificationBadge from './NotificationBadge'
 
 class TabIcon extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array,
+    ]),
+    notificationCount: PropTypes.number,
+    selected: PropTypes.bool,
+  }
 
   getIconSource(name) {
     switch (name) {
@@ -67,8 +76,12 @@ class TabIcon extends React.Component {
         return Images.iconLoginEmail
       case 'myFeed':
         return Images.iconNavHome
+      case 'myFeed-active':
+        return Images.iconNavHomeActive
       case 'activity':
         return Images.iconNavActivity
+      case 'activity-active':
+        return Images.iconNavActivityActive
       case 'tag':
         return Images.iconTag
       case 'hashtag':
@@ -79,10 +92,14 @@ class TabIcon extends React.Component {
         return Images.iconCost
       case 'explore':
         return Images.iconNavExplore
+      case 'explore-active':
+        return Images.iconNavExploreActive
       case 'createMenuStory':
         return Images.iconCreateMenuStory
       case 'createStory':
         return Images.iconNavCreate
+      case 'createStory-active':
+        return Images.iconNavCreateActive
       case 'close':
         return Images.iconContentXWhite
       case 'closeDark':
@@ -117,38 +134,44 @@ class TabIcon extends React.Component {
         return Images.iconErrorExclamation
       case 'info':
         return Images.iconInfoDark
+      case 'profile-active':
+        return Images.iconNavProfileActive
       case 'guide':
         return Images.iconGuide
+      case 'guide-alt':
+        return Images.iconGuideAlt
+      case 'activity-see':
+        return Images.iconActivitySee
+      case 'activity-do':
+        return Images.iconActivityDo
+      case 'activity-eat':
+        return Images.iconActivityEat
+      case 'activity-stay':
+        return Images.iconActivityStay
       case 'profile':
       default:
         return Images.iconNavProfile
     }
   }
 
-  static propTypes = {
-    name: PropTypes.string,
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.array,
-    ]),
-    notificationCount: PropTypes.number,
-  }
+  getTabStyle = name =>
+    'myFeed explore createStory activity profile'.indexOf(name) !== -1
+      ? { transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }] }
+      : {}
 
   render() {
-    const { style = {}, name, notificationCount } = this.props
+    const { style = {}, name, notificationCount, selected, defaultScale } = this.props
     return (
-      <View
-        style={style.view}
-      >
+      <View style={style.view}>
         <Image
-          source={this.getIconSource(name)}
-          style={style.image || {}}
+          source={this.getIconSource(`${name}${selected ? '-active' : ''}`)}
+          style={[style.image, !defaultScale && this.getTabStyle(name)]}
         />
-        {name === 'activity' && notificationCount > 0 &&
+        {name === 'activity' && notificationCount > 0 && (
           <NotificationBadge count={notificationCount} />
-        }
+        )}
       </View>
-    );
+    )
   }
 }
 
@@ -156,15 +179,15 @@ const mapStateToProps = (state, props) => {
   if (props.name === 'activity') {
     const activities = state.entities.users.activities
     const unseenActivityCount = _.keys(activities).reduce((count, key) => {
-      const increment = activities[key].seen ? 0 : 1;
-      return count + increment;
+      if (activities[key].seen) return count
+      return count + 1
     }, 0)
 
     /*
       We will need a similar logic once we add message threads.
       So notificationCount will be unseenActivityCount + unreadThreadCount
     */
-    return { notificationCount: unseenActivityCount}
+    return { notificationCount: unseenActivityCount }
   }
   return {
     notificationCount: 0,
@@ -175,4 +198,7 @@ const mapDispatchToProps = () => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabIcon)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TabIcon)

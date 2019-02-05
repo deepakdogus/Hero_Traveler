@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native'
 
-import styles, { feedItemHeight } from './Styles/ProfileViewStyles'
+import styles, { feedItemHeight } from './Styles/ProfileTabsAndStoriesStyles'
 import { Colors } from '../Shared/Themes'
 import ConnectedFeedList from '../Containers/ConnectedFeedList'
 import Loader from './Loader'
@@ -42,6 +42,7 @@ export default class ProfileTabsAndStories extends Component {
         activeTab={selectedTab}
         onClickTab={selectTab}
         tabStyle={styles.tabStyle}
+        largeTabBar
       />
     )
   }
@@ -114,7 +115,7 @@ export default class ProfileTabsAndStories extends Component {
     // change.
     const {user, editable} = this.props
 
-    let height = editable ? 237 : 219
+    let height = editable ? 216 : 198
     height += hasBadge(user.role) ? 21 : 0
     height += this.props.error ? 27 : 0
     return height
@@ -153,9 +154,7 @@ export default class ProfileTabsAndStories extends Component {
         )}
         {hasNoStories && isGettingStories && (
           <View style={styles.spinnerWrapper}>
-            <Loader
-              style={styles.spinner}
-              spinnerColor={Colors.background} />
+            <Loader spinnerColor={Colors.background} />
           </View>
         )}
 
@@ -168,6 +167,7 @@ export default class ProfileTabsAndStories extends Component {
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}
+            sectionContentHeight={50}
             renderSectionHeader={this.renderTabs()}
             renderFeedItem={this.renderFeedItem}
             pagingIsDisabled

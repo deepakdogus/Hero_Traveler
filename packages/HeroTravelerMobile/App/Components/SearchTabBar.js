@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text } from 'react-native'
-import styles from '../Containers/Styles/ExploreScreenStyles'
+import styles from './Styles/SearchPlacesPeopleStyles'
 
 const Tab = ({text, onPress, selected}) => {
   const containerStyle = [styles.tab, selected ? styles.tabSelected : null]

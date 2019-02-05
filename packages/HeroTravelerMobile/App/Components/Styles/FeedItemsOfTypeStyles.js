@@ -19,7 +19,7 @@ export default StyleSheet.create({
   label: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
-    fontSize: 18,
+    fontSize: 20,
     letterSpacing: .7,
     fontWeight: '600',
     marginBottom: Metrics.baseMargin,
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   seeAll: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.redHighlights,
-    fontSize: 13,
+    fontSize: 15,
     letterSpacing: .7,
     textAlign: 'center',
     fontWeight: '600',

@@ -159,7 +159,7 @@ class ProfileView extends React.Component {
   hasCompletedNoStoriesTooltip() {
     return isTooltipComplete(
       TooltipTypes.PROFILE_NO_STORIES,
-      this.props.user.introTooltips
+      this.props.user.introTooltips,
     )
   }
 
@@ -174,12 +174,12 @@ class ProfileView extends React.Component {
     const {editable, location, stories, user, userId, onRefresh} = this.props
     const {selectedTab} = this.state
 
-    let showTooltip = editable &&
-      !stories.length && !this.hasCompletedNoStoriesTooltip()
+    let showTooltip = editable && !stories.length && !this.hasCompletedNoStoriesTooltip()
+
+    const rootStyles = editable ? styles.flexOne : styles.flexOneReadOnly
 
     return (
-      <View style={styles.flexOne}>
-        <View style={styles.gradientWrapper}>
+      <View style={rootStyles}>
           <ProfileTabsAndStories
             editable={editable}
             isStory={selectedTab !== TabTypes.guides}
@@ -196,21 +196,20 @@ class ProfileView extends React.Component {
             error={this.getProfileTabsAndStoriesError()}
             onRefresh={onRefresh}
           />
-        </View>
-        {this.state.error &&
+        {this.state.error && (
           <ShadowButton
             style={styles.errorButton}
             onPress={this._clearError}
             text={this.state.error}
           />
-        }
-        {showTooltip &&
+        )}
+        {showTooltip && (
           <Tooltip
             position='bottom-center'
             text={"Looks like you don't have any stories.\nPublish your first story now!"}
             onDismiss={this._completeTooltip}
           />
-        }
+        )}
       </View>
     )
   }

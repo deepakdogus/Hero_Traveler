@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../../Shared/Themes'
 
 export const feedItemWidth = (Metrics.screenWidth - 2 * Metrics.section - Metrics.section) / 2
-export const feedItemHeight = feedItemWidth / 16 * 9
+export const feedItemHeight = feedItemWidth / 1.375 // aspect ratio = 1.375:1
 
 export default StyleSheet.create({
   feedItemView: {
@@ -12,6 +12,7 @@ export default StyleSheet.create({
   image: {
     height: feedItemHeight,
     width: feedItemWidth,
+    borderRadius: 3,
   },
   titleContainer: {
     flex: 1,
@@ -23,14 +24,14 @@ export default StyleSheet.create({
   title: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.background,
-    fontSize: 13,
+    fontSize: 15,
     letterSpacing: .7,
     fontWeight: '600',
   },
   author: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.redHighlights,
-    fontSize: 10,
+    fontSize: 13,
     letterSpacing: .7,
   },
   playButtonAbsolute: {

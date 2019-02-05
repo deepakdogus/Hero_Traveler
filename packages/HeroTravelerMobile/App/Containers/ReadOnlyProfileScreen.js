@@ -80,6 +80,8 @@ class ReadOnlyProfileScreen extends Component {
       )
     }
 
+    if (!user || !user.profile) return null
+
     return (
       <ProfileView
         user={user}

@@ -22,6 +22,9 @@ RCT_EXPORT_SHADOW_PROPERTY(storyInfos, NSArray)
 //@property(nonatomic, assign) NSInteger numPreloadBehindCells;
 //@property(nonatomic, assign) NSInteger numPreloadAheadCells;
 
+RCT_EXPORT_SHADOW_PROPERTY(leadingCellSpace, CGFloat)
+RCT_EXPORT_SHADOW_PROPERTY(trailingCellSpace, CGFloat)
+
 RCT_EXPORT_VIEW_PROPERTY(numPreloadBehindCells, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(numPreloadAheadCells, NSInteger)
 

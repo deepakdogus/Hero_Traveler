@@ -6,7 +6,6 @@ import styles from './Styles/StoryReadingToolbarStyles'
 import TabIcon from './TabIcon'
 
 export default class StoryReadingToolbarComponent extends Component {
-
   static propTypes = {
     onPressLike: PropTypes.func,
     onPressComment: PropTypes.func,
@@ -130,7 +129,7 @@ export default class StoryReadingToolbarComponent extends Component {
     const flagComponent = this.renderInViewOrTouch(
       flagContainer,
       styles.shareTool,
-      onPressFlag
+      onPressFlag,
     )
 
     return (
@@ -147,5 +146,4 @@ export default class StoryReadingToolbarComponent extends Component {
       </View>
     )
   }
-
 }

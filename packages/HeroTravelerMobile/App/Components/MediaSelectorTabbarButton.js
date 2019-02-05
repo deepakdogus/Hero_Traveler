@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity, Text } from 'react-native'
 import styles from '../Containers/Styles/MediaSelectorScreenStyles'
-import { Colors } from '../Shared/Themes'
 
 export default class MediaSelectorTabbarButton extends React.Component {
   static propTypes = {
@@ -23,11 +22,11 @@ export default class MediaSelectorTabbarButton extends React.Component {
       >
         <Text style={[
           styles.tabbarText,
-          this.props.isActive ? {} : { color: Colors.grey }
-        ]}>{this.props.text}</Text>
+          !this.props.isActive && styles.tabbarTextNotSelected,
+        ]}>
+          {this.props.text}
+        </Text>
       </TouchableOpacity>
     )
   }
 }
-
-

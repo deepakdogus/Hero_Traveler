@@ -1,19 +1,19 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export const styles = StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
     backgroundColor: Colors.snow,
-    marginTop: Metrics.navBarHeight - 15,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 15 : Metrics.navBarHeight,
     borderStyle: 'solid',
     borderTopWidth: 1,
     borderColor: Colors.dividerGrey,
   },
-  darkRoot: {
-    flex: 1,
-    backgroundColor: Colors.background,
+  centered: {
+    alignItems: 'center',
     justifyContent: 'center',
   },
   scrollView: {
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   divider: {
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderStyle: 'solid',
     borderColor: Colors.dividerGrey,
     marginBottom: 25,
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   locationDetails: {
     fontSize: 13,
-    fontWeight: '400'
+    fontWeight: '400',
   },
   locationMap: {
     flex: 1,
@@ -55,10 +55,10 @@ export const styles = StyleSheet.create({
   // StoryContent component
   storyContentWrapper: {
     backgroundColor: Colors.snow,
-    paddingBottom: Metrics.tabBarHeight + Metrics.section
+    paddingBottom: Metrics.tabBarHeight + Metrics.section,
   },
   storyContentImage: {
-    marginBottom: Metrics.section
+    marginBottom: Metrics.section,
   },
   videoWrapper: {
     position: 'relative',
@@ -98,24 +98,24 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
     fontWeight: '300',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontSize: 15,
     fontFamily: Fonts.type.base,
     color: Colors.grey,
   },
   mediaPlaceholder: {
-    backgroundColor: Colors.lightGreyAreas
+    backgroundColor: Colors.lightGreyAreas,
   },
   mediaViewWrapper: {
     flex: 1,
-    marginVertical: 25
+    marginVertical: 25,
   },
   tagLabel: {
     fontWeight: '800',
     fontSize: 15,
     color: Colors.background,
     fontFamily: Fonts.type.base,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     height: 19,
     lineHeight: 17,
   },
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.redHighlights,
     fontFamily: Fonts.type.base,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     height: 19,
     lineHeight: 17,
   },
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.background,
     fontFamily: Fonts.type.base,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     height: 19,
     lineHeight: 17,
   },
@@ -142,7 +142,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.background,
     fontFamily: Fonts.type.base,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     height: 19,
     lineHeight: 17,
   },
@@ -164,9 +164,9 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionLabel: {
-    width: "100%",
+    width: '100%',
     fontFamily: Fonts.type.sourceSansPro,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontWeight: '600',
     color: Colors.background,
     flexWrap: 'nowrap',
@@ -177,23 +177,23 @@ export const styles = StyleSheet.create({
   sectionText: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontSize: 15,
     color: Colors.grey,
   },
   sectionTextHighlight: {
-    color: Colors.redHighlights
+    color: Colors.redHighlights,
   },
   iconWrapper: {
     flexShrink: 1,
     marginRight: Metrics.section,
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   icon: {
     width: 24,
     height: 24,
-    resizeMode: "contain"
+    resizeMode: 'contain',
   },
   loader: {
     flex: 1,
@@ -232,7 +232,7 @@ export const styles = StyleSheet.create({
   },
   addToGuideTooltip: {
     position: 'absolute',
-    bottom: Metrics.tabBarHeight + (Metrics.baseMargin * 3) + 44,
+    bottom: Metrics.tabBarHeight + Metrics.baseMargin * 3 + 44,
     right: 14,
     backgroundColor: Colors.backgroundOpaque,
     borderRadius: 5,
@@ -252,20 +252,20 @@ export const styles = StyleSheet.create({
     borderRightColor: 'transparent',
   },
   addToGuideTooltipText: {
-    color: Colors.white,
+    color: Colors.snow,
     fontFamily: Fonts.type.sourceSansPro,
     letterSpacing: 0.7,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   tabStyle: {
-    width: Metrics.screenWidth/4
+    width: Metrics.screenWidth / 4,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
     fontSize: 18,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     color: Colors.grey,
     marginBottom: 15,
   },
@@ -275,8 +275,8 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   toolbarPadding: {
-    height: Metrics.tabBarHeight
-  }
+    height: Metrics.tabBarHeight,
+  },
 })
 
 export const rendererStyles = StyleSheet.flatten({
@@ -285,7 +285,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontWeight: '400',
     fontFamily: Fonts.type.base,
     color: Colors.grey,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     paddingHorizontal: 15,
     marginBottom: Metrics.section,
   },
@@ -294,7 +294,7 @@ export const rendererStyles = StyleSheet.flatten({
     fontWeight: '600',
     fontFamily: Fonts.type.base,
     color: Colors.background,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     paddingHorizontal: 15,
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
@@ -335,5 +335,5 @@ export const translations = {
       plusButtonY + scrollOffset + 1,
     ],
     outputRange: [0, 1, 1],
-  }
+  },
 }

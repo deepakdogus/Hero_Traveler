@@ -22,4 +22,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.doubleBaseMargin,
     flexDirection: 'column'
   },
+  redText: {
+    color: Colors.red,
+  },
 })

@@ -138,9 +138,9 @@ class StoryCoverScreen extends Component {
   merely revert the values
   */
   isSavedDraft = () => {
-    return this.props.originalDraft &&
-      this.props.originalDraft.id &&
-      this.props.originalDraft.id === this.props.workingDraft.id
+    return this.props.originalDraft
+      && this.props.originalDraft.id
+      && this.props.originalDraft.id === this.props.workingDraft.id
   }
 
   _onLeftYes = () => {
@@ -401,14 +401,14 @@ class StoryCoverScreen extends Component {
         ]}>
           {renderProps.message}
         </Text>
-        { renderProps.renderButtton &&
+        { renderProps.renderButtton && (
           <TouchableOpacity
             style={styles.modalBtn}
             onPress={renderProps.closeModal}
           >
             <Text style={styles.modalBtnText}>Close</Text>
           </TouchableOpacity>
-        }
+        )}
       </Modal>
     )
   }
@@ -641,7 +641,7 @@ class StoryCoverScreen extends Component {
           bounces={false}
         >
           <NavBar
-            title='Save'
+            title='SAVE'
             onTitle={this._onTitle}
             onLeft={this._onLeft}
             leftTitle='Close'
@@ -653,12 +653,13 @@ class StoryCoverScreen extends Component {
             style={styles.navBarStyle}
           />
           <View style={this._getCoverStyle()}>
-              {error &&
+              {error && (
                 <ShadowButton
                   style={styles.errorButton}
                   onPress={this.clearError}
-                  text={error} />
-              }
+                  text={error}
+                />
+              )}
               <EditableCoverMedia
                 isPhoto={this.isPhotoType()}
                 media={coverImage || coverVideo}
@@ -670,7 +671,7 @@ class StoryCoverScreen extends Component {
               />
             </View>
             <View style={styles.titlesWrapper}>
-              {!this.hasNoCover() &&
+              {!this.hasNoCover() && (
                 <TextInput
                   style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
                   placeholder='Add a caption...'
@@ -679,7 +680,7 @@ class StoryCoverScreen extends Component {
                   returnKeyType='done'
                   blurOnSubmit
                 />
-              }
+              )}
               <TextInput
                 style={[
                   styles.titleInput,
@@ -712,16 +713,16 @@ class StoryCoverScreen extends Component {
             <View style={styles.editorWrapper}>
               {this.renderEditor()}
             </View>
-          {showIntroTooltip &&
-          <Tooltip
-            type='image-edit'
-            onDismiss={this._completeIntroTooltip}
-            dimBackground={true}
-          />
-        }
           {<View style={styles.toolbarAvoiding}></View>}
         </ScrollView>
-        {this.editor &&
+        {showIntroTooltip && (
+            <Tooltip
+              type='image-edit'
+              onDismiss={this._completeIntroTooltip}
+              dimBackground={true}
+            />
+        )}
+        {this.editor && (
           <KeyboardTrackingView
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
@@ -734,7 +735,7 @@ class StoryCoverScreen extends Component {
             />
             }
           </KeyboardTrackingView>
-        }
+        )}
         {this.state.activeModal === 'cancel' && this.renderCancel()}
         {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && !!this.props.error)
           && this.renderFailModal()
@@ -742,35 +743,35 @@ class StoryCoverScreen extends Component {
         {this.state.activeModal === 'existingUpdateWarning' && (
           this.renderExistingUpdateModal()
         )}
-        {this.isUploading() &&
+        {this.isUploading() && (
           <Loader
             style={styles.loading}
             text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
             textStyle={styles.loadingText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {this.state.updating &&
+        )}
+        {this.state.updating && (
           <Loader
             style={styles.loading}
             text='Saving progress...'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {this.hasNoDraft() && !this.props.error &&
+        )}
+        {this.hasNoDraft() && !this.props.error && (
           <Loader
             style={styles.loading}
             text='Initializing Draft'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {validationError &&
+        )}
+        {validationError && (
           <Tooltip
             onPress={this.clearError}
             position='title'
             text={validationError}
             onDismiss={this._dismissTooltip}
           />
-        }
+        )}
       </View>
     )
   }

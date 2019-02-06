@@ -176,26 +176,30 @@ class ProfileView extends React.Component {
 
     let showTooltip = editable && !stories.length && !this.hasCompletedNoStoriesTooltip()
 
-    const rootStyles = editable ? styles.flexOne : styles.flexOneReadOnly
+    const rootStyles = editable
+      ? [
+          styles.flexOne,
+          styles.containerWithTabbar,
+      ] : styles.flexOneReadOnly
 
     return (
       <View style={rootStyles}>
-          <ProfileTabsAndStories
-            editable={editable}
-            isStory={selectedTab !== TabTypes.guides}
-            renderProfileInfo={this.renderProfileInfo}
-            feedItemsById={this.getFeedItemsById()}
-            fetchStatus={this.getFetchStatus()}
-            tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
-            selectTab={this.selectTab}
-            selectedTab={selectedTab}
-            user={user}
-            sessionUserId={userId}
-            showTooltip={showTooltip}
-            location={location}
-            error={this.getProfileTabsAndStoriesError()}
-            onRefresh={onRefresh}
-          />
+        <ProfileTabsAndStories
+          editable={editable}
+          isStory={selectedTab !== TabTypes.guides}
+          renderProfileInfo={this.renderProfileInfo}
+          feedItemsById={this.getFeedItemsById()}
+          fetchStatus={this.getFetchStatus()}
+          tabTypes={editable ? TabTypes : ViewOnlyTabTypes}
+          selectTab={this.selectTab}
+          selectedTab={selectedTab}
+          user={user}
+          sessionUserId={userId}
+          showTooltip={showTooltip}
+          location={location}
+          error={this.getProfileTabsAndStoriesError()}
+          onRefresh={onRefresh}
+        />
         {this.state.error && (
           <ShadowButton
             style={styles.errorButton}

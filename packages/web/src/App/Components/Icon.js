@@ -245,13 +245,16 @@ export default class Icon extends React.Component {
       case 'infoLarge':
         return Images.iconInfoDarkLarge
       default:
-        return Images.iconNavProfile
+        return Images.iconHeaderProfile
     }
   }
 
   render() {
     return (
-      <StyledIcon src={this.getIconName(this.props.name)} {...this.props}/>
+      <StyledIcon
+        src={this.getIconName(this.props.name)}
+        {...this.props}
+      />
     )
   }
 }

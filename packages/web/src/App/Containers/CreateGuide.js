@@ -240,7 +240,7 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
   dispatchMapping.uploadMedia = (file, callback) => {
-    dispatch(StoryCreateActions.uploadMedia(file, callback))
+    dispatch(StoryCreateActions.uploadMedia(file, callback, 'image'))
   }
   return dispatchMapping
 }

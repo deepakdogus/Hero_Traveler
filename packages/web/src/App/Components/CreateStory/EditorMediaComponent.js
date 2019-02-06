@@ -37,6 +37,10 @@ const StyledRow = styled(Row)`
   top: -20px;
 `
 
+const CenteredRow = styled(Row)`
+  width: 100%;
+`
+
 export default class MediaComponent extends EditorBlock {
   static propTypes = {
     offsetKey: PropTypes.string,
@@ -108,15 +112,34 @@ export default class MediaComponent extends EditorBlock {
 
   render() {
     const {offsetKey, direction} = this.props
-    const {text} = this.props.blockProps
+    const {text, type, url} = this.props.blockProps
     const className = cx({
       'public/DraftStyleDefault/block': true,
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     })
 
-    const {url} = this.props.blockProps
-    if (!url) return <div data-offset-key={offsetKey} className={className}/>
+    if (type === 'loader') {
+      return (
+        <MediaWrapper
+          data-offset-key={offsetKey}
+          className={className}
+        >
+          <CenteredRow center="xs">
+            <Loader />
+          </CenteredRow>
+        </MediaWrapper>
+      )
+    }
+
+    if (!url) {
+      return (
+        <div
+          data-offset-key={offsetKey}
+          className={className}
+        />
+      )
+    }
 
     return (
       <MediaWrapper

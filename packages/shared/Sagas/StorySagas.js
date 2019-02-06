@@ -155,7 +155,7 @@ export const extractUploadData = (uploadData) => {
 }
 
 // to be used on web only to deal with orientation
-export function * uploadMedia(api, {uri, callback, mediaType}) {
+export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
   const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
     mediaType,

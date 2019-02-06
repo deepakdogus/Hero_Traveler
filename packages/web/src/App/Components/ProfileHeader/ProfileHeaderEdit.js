@@ -217,6 +217,7 @@ export default class ProfileHeaderEdit extends React.Component {
     error: PropTypes.object,
     updateUser: PropTypes.func,
     removeAvatar: PropTypes.func,
+    toProfileView: PropTypes.func,
     uploadMediaAsset: PropTypes.func,
     uploadMedia: PropTypes.func,
     updating: PropTypes.bool,

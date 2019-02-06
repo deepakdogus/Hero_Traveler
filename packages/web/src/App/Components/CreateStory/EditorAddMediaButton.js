@@ -6,6 +6,7 @@ import uploadFile, {
 } from '../../Utils/uploadFile'
 import {
   insertAtomicBlock,
+  removeMedia,
 } from '../../Shared/Lib/draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
@@ -29,32 +30,31 @@ class AddMediaButton extends React.Component {
   }
 
   uploadFile = (event) => {
+    const {getEditorState, type} = this.props
+    const loaderUpdate = insertAtomicBlock(
+      getEditorState(),
+      'loader',
+      'url', // need to pass dummy URL for EditorMediaComponent
+    )
+    const loaderKey = loaderUpdate.getSelection().getFocusKey()
+    this.props.setEditorState(loaderUpdate)
+
     uploadFile(event, this, (file) => {
       if (!file) return
-      const {getEditorState, type} = this.props
 
       const updateCall = (cloudinaryFile) => {
-        let update
-        if (cloudinaryFile) {
-          const formattedFile = extractUploadData(cloudinaryFile)
-          update = insertAtomicBlock(
-            getEditorState(),
-            type,
-            formattedFile.url,
-            formattedFile.height,
-            formattedFile.width,
-          )
-        }
-        else update = insertAtomicBlock(getEditorState(), type, file.uri)
-        this.props.setEditorState(update)
+        const formattedFile = extractUploadData(cloudinaryFile)
+        const update = insertAtomicBlock(
+          loaderUpdate,
+          type,
+          formattedFile.url,
+          formattedFile.height,
+          formattedFile.width,
+        )
+        const removedLoaderUpdate = removeMedia(loaderKey, update)
+        this.props.setEditorState(removedLoaderUpdate)
       }
-
-      if (file.type.includes('video')) {
-        updateCall()
-      }
-      else {
-        this.props.uploadMedia(file.uri, updateCall)
-      }
+      this.props.uploadMedia(file.uri, updateCall, type)
     })
   }
 
@@ -116,8 +116,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    uploadMedia: (file, callback) => dispatch(
-      StoryCreateActions.uploadMedia(file, callback),
+    uploadMedia: (file, callback, mediaType) => dispatch(
+      StoryCreateActions.uploadMedia(file, callback, mediaType),
     ),
   }
 }

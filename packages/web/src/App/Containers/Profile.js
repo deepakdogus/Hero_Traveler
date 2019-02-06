@@ -240,7 +240,8 @@ function mapDispatchToProps(dispatch, ownProps) {
     uploadMediaAsset: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
     removeAvatar: (userId) => dispatch(UserActions.removeAvatar(userId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    uploadMedia: (file, callback) => dispatch(StoryCreateActions.uploadMedia(file, callback)),
+    uploadMedia: (file, callback) =>
+      dispatch(StoryCreateActions.uploadMedia(file, callback, 'image')),
   }
 }
 

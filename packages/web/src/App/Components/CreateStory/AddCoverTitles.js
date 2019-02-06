@@ -183,7 +183,7 @@ function isNewStory(props, nextProps) {
 export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
     isPendingUpdateOverride: PropTypes.bool,
@@ -197,6 +197,7 @@ export default class AddCoverTitles extends React.Component {
       coverCaption: props.workingDraft.coverCaption || '',
       textAreaHeight: { height: '50px'},
       textAreaBreakCharIdx: 0,
+      isUploading: false,
     }
 
     this.textAreaRef = null
@@ -204,26 +205,25 @@ export default class AddCoverTitles extends React.Component {
 
   _setTextAreaRef = (ref) => this.textAreaRef = ref
 
+  getOnSuccess = coverType => {
+    const isVideo = coverType === 'video'
+    return cloudinaryFile => {
+      this.setState({ isUploading: false })
+      this.props.onInputChange({
+        coverVideo: isVideo ? cloudinaryFile : null,
+        coverImage: isVideo ? null : cloudinaryFile,
+        coverType,
+      })
+    }
+  }
+
   _onCoverChange = (event) => {
+    this.setState({ isUploading: true })
     uploadFile(event, this, (file) => {
       if (!file) return
-      if (file.type.includes('video')) {
-        this.props.onInputChange({
-          'coverVideo': file,
-          'coverImage': null,
-          'coverType': 'video',
-        })
-      }
-      else {
-        const onSuccess = (cloudinaryFile) => {
-          this.props.onInputChange({
-            'coverVideo': null,
-            'coverImage': cloudinaryFile,
-            'coverType': 'image',
-          })
-        }
-        this.props.uploadImage(file.uri, onSuccess)
-      }
+      const coverType = file.type.includes('video') ? 'video' : 'image'
+      const onSuccess = this.getOnSuccess(coverType)
+      this.props.uploadMedia(file.uri, onSuccess, coverType)
     })
   }
 
@@ -288,7 +288,7 @@ export default class AddCoverTitles extends React.Component {
   }
 
   renderUploadButton() {
-    const {isGuide} = this.props
+    const { isGuide } = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
 
@@ -369,9 +369,11 @@ export default class AddCoverTitles extends React.Component {
           </LimitedWidthContainer>
         )}
         <Wrapper hasMediaAsset={hasMediaAsset}>
-          <ButtonsHorizontalCenter>
-            {this.renderUploadButton()}
-          </ButtonsHorizontalCenter>
+          {!this.state.isUploading && (
+            <ButtonsHorizontalCenter>
+              {this.renderUploadButton()}
+            </ButtonsHorizontalCenter>
+          )}
         </Wrapper>
         {hasMediaAsset && !isGuide && (
           <StyledCoverCaptionInput

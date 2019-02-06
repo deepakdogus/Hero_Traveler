@@ -155,17 +155,18 @@ export const extractUploadData = (uploadData) => {
 }
 
 // to be used on web only to deal with orientation
-export function * uploadImage(api, {uri, callback}) {
+export function * uploadMedia(api, {uri, callback, mediaType}) {
   const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
-    'image',
+    mediaType,
   )
+
   if (typeof cloudinaryImage.data === "string") {
     cloudinaryImage.data = JSON.parse(cloudinaryImage.data)
   }
 
   if (cloudinaryImage.data.error) {
-    yield put(StoryCreateActions.uploadImageFailure(cloudinaryImage.data.error))
+    yield put(StoryCreateActions.uploadMediaFailure(cloudinaryImage.data.error))
   }
   else {
     callback(cloudinaryImage.data)

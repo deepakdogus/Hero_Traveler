@@ -59,7 +59,7 @@ class Profile extends ContainerWithFeedList {
     unfollowUser: PropTypes.func,
     reroute: PropTypes.func,
     uploadMedia: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMediaAsset: PropTypes.func,
     openGlobalModal: PropTypes.func,
   }
 
@@ -128,7 +128,7 @@ class Profile extends ContainerWithFeedList {
       userUpdating,
       updateUser,
       removeAvatar,
-      uploadImage,
+      uploadMediaAsset,
       uploadMedia,
       openGlobalModal,
       pendingDrafts,
@@ -163,9 +163,9 @@ class Profile extends ContainerWithFeedList {
           toProfileView={this._toProfileReroute}
           updateUser={updateUser}
           removeAvatar={removeAvatar}
-          uploadMedia={uploadMedia}
+          uploadMediaAsset={uploadMediaAsset}
           openGlobalModal={openGlobalModal}
-          uploadImage={uploadImage}
+          uploadMedia={uploadMedia}
           sessionUserId={sessionUserId}
         />
         {!isEdit &&
@@ -237,10 +237,10 @@ function mapDispatchToProps(dispatch, ownProps) {
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
       dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
     reroute: (path) => dispatch(push(path)),
-    uploadMedia: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
+    uploadMediaAsset: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
     removeAvatar: (userId) => dispatch(UserActions.removeAvatar(userId)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
+    uploadMedia: (file, callback) => dispatch(StoryCreateActions.uploadMedia(file, callback)),
   }
 }
 

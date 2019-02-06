@@ -82,14 +82,14 @@ import {
   deleteStory,
   flagStory,
   getGuideStories,
-  uploadImage,
+  uploadMedia,
   watchPendingUpdates,
   syncPendingUpdates,
   getDeletedStories,
 } from './StorySagas'
 
 import {
-  uploadMedia,
+  uploadMediaAsset,
 } from './MediaUploadSagas'
 
 import {
@@ -171,7 +171,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
-    takeLatest(StoryCreateTypes.UPLOAD_IMAGE, uploadImage, heroAPI),
+    takeLatest(StoryCreateTypes.UPLOAD_MEDIA, uploadMedia, heroAPI),
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
@@ -205,7 +205,7 @@ export default function * root () {
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
 
     // Media Upload
-    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMediaAsset, heroAPI),
 
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),

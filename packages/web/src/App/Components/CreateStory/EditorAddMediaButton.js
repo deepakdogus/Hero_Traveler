@@ -21,7 +21,7 @@ const HiddenInput = styled.input`
 
 class AddMediaButton extends React.Component {
   static propTypes = {
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     getEditorState: PropTypes.func,
     setEditorState: PropTypes.func,
     type: PropTypes.string,
@@ -53,7 +53,7 @@ class AddMediaButton extends React.Component {
         updateCall()
       }
       else {
-        this.props.uploadImage(file.uri, updateCall)
+        this.props.uploadMedia(file.uri, updateCall)
       }
     })
   }
@@ -116,8 +116,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    uploadImage: (file, callback) => dispatch(
-      StoryCreateActions.uploadImage(file, callback),
+    uploadMedia: (file, callback) => dispatch(
+      StoryCreateActions.uploadMedia(file, callback),
     ),
   }
 }

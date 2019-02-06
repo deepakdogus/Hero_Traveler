@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import Env from '../../Config/Env'
 
 export function getVideoUrlBase() {
@@ -14,7 +15,9 @@ export function isLocalMediaAsset(asset) {
   )
 }
 
-export function getVideoUrlFromString(video: string, stream = true): ?string {
+// all transformations we do here should match the cloudinary presets
+// if they do not the url will fail for large videos
+export function getVideoUrlFromString(video: string, stream = true, createdAt): ?string {
   if (isLocalMediaAsset(video)) {
     return video
   }
@@ -24,9 +27,13 @@ export function getVideoUrlFromString(video: string, stream = true): ?string {
     // Strip extension
     let baseFilename = video.substr(0, video.lastIndexOf('.')) || video
     return `${getVideoUrlBase()}/sp_full_hd/${baseFilename}.m3u8`
-  } else {
-    return `${getVideoUrlBase()}/vc_auto/${video}`
   }
+
+  // 10 minute buffer for cloudinary eager transformation to complete
+  const tenMinutesAgo = moment().subtract({minutes: 10})
+  const isTenMinutesOld = moment(createdAt).isBefore(tenMinutesAgo)
+  if (!isTenMinutesOld) return `${getVideoUrlBase()}/${video}`
+  return `${getVideoUrlBase()}/q_auto/${video}`
 }
 
 export default function getVideoUrl(video: object, stream = true): ?string {
@@ -42,12 +49,5 @@ export default function getVideoUrl(video: object, stream = true): ?string {
 
   if (!_.has(video, 'original')) return undefined
 
-  // if a video is under 10 minutes long we force the mp4 version
-  // this ensures we have enough time to prepare all the streamingFormats
-  // const streamBufferTime = moment().subtract(10, 'minutes')
-  // const timeFromBuffer = streamBufferTime.to(moment(video.createdAt))
-  // const bufferHasPassed = timeFromBuffer.split(" ")[2] === 'ago'
-
-  return getVideoUrlFromString(video.original.path, stream)
-  // return getVideoUrlFromString(video.original.path, bufferHasPassed && stream)
+  return getVideoUrlFromString(video.original.path, stream, video.createdAt)
 }

@@ -204,7 +204,7 @@ class Guide extends Component {
       feedItems: this.getStoriesByType(type.toLowerCase()),
       onClickShowAll: this.onClickTab,
       showLabel: true,
-      // guideId: this.props.match.params.guideId,
+      guideId: this.props.match.params.guideId,
     }
   }
 

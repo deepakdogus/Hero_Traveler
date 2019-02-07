@@ -8,11 +8,13 @@ import VerticalCenter from './VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Avatar from './Avatar'
 import RoundedButton from './RoundedButton'
+import HorizontalDivider from './HorizontalDivider'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};
   min-height: 90px;
   display: flex;
+  flex-direction: column;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: ${props => props.responsiveMargin ? props.responsiveMargin : '0'};
     min-height: 70px;
@@ -50,6 +52,11 @@ const ProfileDetail = styled(UserName)`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.grey};
+`
+
+const StyledDivider = styled(HorizontalDivider)`
+  width: 100%;
+  margin: 12px 0;
 `
 
 export const LeftProps = {
@@ -108,13 +115,13 @@ export default class FollowFollowingRow extends Component {
   renderImage = () => {
     const {user} = this.props
     return (
-        <Avatar
-          avatarUrl={getImageUrl(_.get(user, 'profile.avatar'), 'avatarLarge')}
-          size='larger'
-          type='profile'
-          onClick={this.getOnclick()}
-          responsiveProps={AvatarResponsiveStyle}
-        />
+      <Avatar
+        avatarUrl={getImageUrl(_.get(user, 'profile.avatar'), 'avatarLarge')}
+        size='larger'
+        type='profile'
+        onClick={this.getOnclick()}
+        responsiveProps={AvatarResponsiveStyle}
+      />
     )
   }
 
@@ -173,6 +180,7 @@ export default class FollowFollowingRow extends Component {
           leftProps={LeftProps}
           rowProps={RowProps}
         />
+        <StyledDivider color="lighter-grey"/>
       </Container>
     )
   }

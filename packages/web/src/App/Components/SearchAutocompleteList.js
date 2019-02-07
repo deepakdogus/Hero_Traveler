@@ -1,22 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 
 import AutocompleteRow from './SearchAutocompleteRow'
-
-const Container = styled.div`
-  max-width: 800px;
-  padding: 0 30px;
-  margin: 0 auto 50px;
-`
-
-const ListTitle = styled.p`
-  font-weight: 600;
-  font-size: 20px;
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props => props.theme.Colors.background};
-  letter-spacing: 0.7px;
-`
+import { ItemContainer, ListTitle } from '../Containers/Search'
 
 class SearchAutocompleteList extends Component {
   static propTypes = {
@@ -30,8 +16,8 @@ class SearchAutocompleteList extends Component {
     if (!autocompleteItems.length) return null
 
     return (
-      <Container>
-        <ListTitle>{label}</ListTitle>
+      <ItemContainer>
+        {label && <ListTitle>{label}</ListTitle>}
         {autocompleteItems.map((item, idx) => {
           if (!item) return null
           return (
@@ -43,7 +29,7 @@ class SearchAutocompleteList extends Component {
             />
           )
         })}
-      </Container>
+      </ItemContainer>
     )
   }
 }

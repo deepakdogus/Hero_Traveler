@@ -133,14 +133,16 @@ class SearchPlacesPeople extends Component {
 
       if (selectedTabIndex === 0) {
         this.setState({ searchingGoogle: true })
-        RNGooglePlaces.getAutocompletePredictions(inputText)
-          .then(predictions =>
-            this.setState({
-              searchingGoogle: false,
-              lastLocationPredictions: predictions,
-            }),
-          )
-          .catch(() => this.setState({ searchingGoogle: false }))
+        RNGooglePlaces.getAutocompletePredictions(inputText, {
+          type: 'geocode',
+        })
+        .then(predictions =>
+          this.setState({
+            searchingGoogle: false,
+            lastLocationPredictions: predictions,
+          }),
+        )
+        .catch(() => this.setState({ searchingGoogle: false }))
       }
     }, 300)()
   }

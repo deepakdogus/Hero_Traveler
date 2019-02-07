@@ -382,23 +382,23 @@ class FeedItemPreview extends Component {
             onClick={guideId ? this.noop : this.navToFeedItem}
             src={imageUrl}
           >
-            <StyledOverlay
-              overlayColor='black'
-              onClick={this.navToFeedItem}
-            >
+            <StyledOverlay overlayColor='black' >
               {isGuideAuthor && (
                 <CloseXContainer onClick={this.openRemoveStoryModal}>
-                  <DeleteIcon size='small' name='closeBlack' />
+                  <DeleteIcon
+                    size='small'
+                    name='closeBlack'
+                  />
                 </CloseXContainer>
               )}
             </StyledOverlay>
           </ImageContainer>
           <StoryInfoContainer>
             {isList && (
-                <TopRow>
-                  {!isStory && <GuideIcon name='guide' />}
-                  {!isStory && <GuideIconText>Guide</GuideIconText>}
-                </TopRow>
+              <TopRow>
+                {!isStory && <GuideIcon name='guide' />}
+                {!isStory && <GuideIconText>Guide</GuideIconText>}
+              </TopRow>
             )}
             <MiddleRow>
               {isList

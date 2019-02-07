@@ -177,10 +177,10 @@ class SearchResults extends Component {
   }
 
   _onClickShowAll = (seeAllType, seeAllLabel) => {
-    const { lat, lng, reroute } = this.props
+    const { lat, lng, country, reroute } = this.props
     return () => {
       this.setState({seeAllType, seeAllLabel})
-      reroute(`/results/${lat}/${lng}/${seeAllType}?t=${
+      reroute(`/results/${country}/${lat}/${lng}/${seeAllType}?t=${
         encodeURIComponent(this.state.label)
       }`)
     }

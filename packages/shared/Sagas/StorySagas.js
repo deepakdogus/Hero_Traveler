@@ -4,6 +4,7 @@ import {
   select,
 } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {
@@ -19,6 +20,7 @@ import CloudinaryAPI, {
   moveVideoToPreCache,
   moveVideosFromPrecacheToCache,
 } from '../../Services/CloudinaryAPI'
+import UXActions from '../../Redux/UXRedux'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
@@ -154,7 +156,7 @@ export const extractUploadData = (uploadData) => {
   return baseObject
 }
 
-// to be used on web only to deal with orientation
+// used exclusively by web to immediately upload cloudinary assets
 export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
   const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
@@ -164,9 +166,20 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
   if (typeof cloudinaryImage.data === "string") {
     cloudinaryImage.data = JSON.parse(cloudinaryImage.data)
   }
-
-  if (cloudinaryImage.data.error) {
-    yield put(StoryCreateActions.uploadMediaFailure(cloudinaryImage.data.error))
+  const failureMessage = _.get(cloudinaryImage, 'data.error')
+    || _.get(cloudinaryImage, 'problem')
+  if (failureMessage) {
+    callback(null, failureMessage)
+    yield [
+      put(StoryCreateActions.uploadMediaFailure(failureMessage)),
+      put(UXActions.openGlobalModal(
+        'error',
+        {
+          title: 'Upload Failure',
+          message: 'There was a problem uploading your file. Please retry.',
+        }
+      ))
+    ]
   }
   else {
     callback(cloudinaryImage.data)

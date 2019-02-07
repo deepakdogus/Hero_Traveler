@@ -17,6 +17,8 @@ import FlagStory from './Modals/FlagStory'
 import DeleteFeedItem from './Modals/DeleteFeedItem'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
+import ErrorModal from './Modals/ErrorModal'
+
 // Right Modals
 import RightModal from './RightModal'
 import Settings from './Modals/Settings'
@@ -223,6 +225,15 @@ export default class HeaderModals extends React.Component {
         >
           <EmailVerificationConfirmation />
         </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'error'}
+          contentLabel="Error Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ErrorModal closeModal={closeGlobalModal} />
+        </Modal>
+
         <RightModal
           isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'

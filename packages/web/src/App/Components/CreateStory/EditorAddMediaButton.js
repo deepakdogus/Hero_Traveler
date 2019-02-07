@@ -42,17 +42,23 @@ class AddMediaButton extends React.Component {
     uploadFile(event, this, (file) => {
       if (!file) return
 
-      const updateCall = (cloudinaryFile) => {
-        const formattedFile = extractUploadData(cloudinaryFile)
-        const update = insertAtomicBlock(
-          loaderUpdate,
-          type,
-          formattedFile.url,
-          formattedFile.height,
-          formattedFile.width,
-        )
-        const removedLoaderUpdate = removeMedia(loaderKey, update)
-        this.props.setEditorState(removedLoaderUpdate)
+      const updateCall = (cloudinaryFile, failure) => {
+        let cleanedEditorState
+        if (failure) {
+          cleanedEditorState = removeMedia(loaderKey, loaderUpdate)
+        }
+        else {
+          const formattedFile = extractUploadData(cloudinaryFile)
+          const update = insertAtomicBlock(
+            loaderUpdate,
+            type,
+            formattedFile.url,
+            formattedFile.height,
+            formattedFile.width,
+          )
+          cleanedEditorState = removeMedia(loaderKey, update)
+        }
+        this.props.setEditorState(cleanedEditorState)
       }
       this.props.uploadMedia(file.uri, updateCall, type)
     })

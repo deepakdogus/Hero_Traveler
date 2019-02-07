@@ -220,7 +220,7 @@ export default class AddCoverTitles extends React.Component {
   _onCoverChange = (event) => {
     this.setState({ isUploading: true })
     uploadFile(event, this, (file) => {
-      if (!file) return
+      if (!file) return this.setState({ isUploading: false })
       const coverType = file.type.includes('video') ? 'video' : 'image'
       const onSuccess = this.getOnSuccess(coverType)
       this.props.uploadMedia(file.uri, onSuccess, coverType)

@@ -289,14 +289,16 @@ export default class ProfileHeaderEdit extends React.Component {
   uploadImageToBrowser = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
-      const onSuccess = (cloudinaryFile) => {
-        this.setState({
-          loadedImage: cloudinaryFile,
-          photoType: 'avatar',
-          modal: 'photoEditor',
-        })
+      const callback = cloudinaryFile => {
+        if (cloudinaryFile) {
+          return this.setState({
+            loadedImage: cloudinaryFile,
+            photoType: 'avatar',
+            modal: 'photoEditor',
+          })
+        }
       }
-      this.props.uploadMedia(file.uri, onSuccess)
+      this.props.uploadMedia(file.uri, callback)
     })
   }
 

@@ -217,14 +217,11 @@ class Search extends Component {
     }, 300)()
   }
 
-  resetSearchText = () => {
-    // if (!this.state.algoliaResults.hits) return
-
+  resetSearchText = () =>
     this.setState({
       inputText: '',
       algoliaResults: {},
     })
-  }
 
   reinitializeQuery() {
     const { searchHistory } = this.props
@@ -252,7 +249,7 @@ class Search extends Component {
       })
       return this.helper.setQuery(textValue).search()
     }
-    else {
+ else {
       this.setState({ activeTab, algoliaResults: {} })
     }
   }
@@ -278,7 +275,7 @@ class Search extends Component {
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  navToLocationResults = async ({ id, description }) => {
+  navToLocationResults = async ({ id, description, secondaryText }) => {
     const { reroute, addRecentSearch } = this.props
     let { name: title, country, latitude: lat, longitude: lng } = await formatLocationWeb(
       description,
@@ -296,6 +293,7 @@ class Search extends Component {
         lat,
         lng,
         description,
+        secondaryText,
       })
       reroute({
         pathname: `/results/${country}/${lat}/${lng}`,
@@ -332,6 +330,7 @@ class Search extends Component {
     const formattedLocations = suggestions.map(suggestion => ({
       id: suggestion.id,
       title: suggestion.formattedSuggestion.mainText,
+      secondaryText: suggestion.formattedSuggestion.secondaryText,
       description: suggestion.description,
     }))
     if (formattedLocations.length)
@@ -408,6 +407,11 @@ class Search extends Component {
     </Container>
   )
 
+  /* The `react-places-autocomplete` package rerenders the child based on the search
+   * input. We pass all search components through GoogleLocator so we don't have to
+   * duplicate the Header Input; props to its children will only change as a result of
+   * modified entry on the Places tab due to shouldFetchSuggestions conditional
+   */
   render = () => {
     const { inputText, activeTab } = this.state
     return (
@@ -416,8 +420,8 @@ class Search extends Component {
         onChange={this.inputFieldChange}
         shouldFetchSuggestions={activeTab === 'PLACES'}
         renderChildren={this.renderChildren}
-        isSearch
         searchOptions={{ types: ['geocode'] }}
+        isSearch
       />
     )
   }

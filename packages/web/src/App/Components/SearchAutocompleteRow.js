@@ -4,16 +4,27 @@ import styled from 'styled-components'
 
 import HorizontalDivider from '../Components/HorizontalDivider'
 
-const SearchTitle = styled.p`
-  font-weight: 400;
+const AutocompleteRow = styled.div`
+  cursor: pointer;
+`
+
+const TextContainer = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+`
+
+const PrimaryText = styled.span`
+  font-weight: 600;
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props => props.theme.Colors.grey};
+  color: ${props => props.theme.Colors.background};
   letter-spacing: 0.7px;
 `
 
-const AutocompleteRow = styled.div`
-  cursor: pointer;
+const SecondaryText = styled(PrimaryText)`
+  font-weight: 400;
+  color: ${props => props.theme.Colors.grey};
 `
 
 class SearchAutocompleteRow extends Component {
@@ -32,7 +43,17 @@ class SearchAutocompleteRow extends Component {
         onClick={this.handleClick}
       >
         {!idx && <HorizontalDivider color="light-grey" />}
-        <SearchTitle>{item.title}</SearchTitle>
+        <TextContainer>
+          <PrimaryText>
+            {`${item.title}${item.secondaryText ? ',' : ''}`}
+          </PrimaryText>
+          <span>&nbsp;</span>
+          {item.secondaryText && (
+            <SecondaryText>
+              {item.secondaryText.replace(/, USA/g, '')}
+            </SecondaryText>
+          )}
+        </TextContainer>
         <HorizontalDivider color="light-grey" />
       </AutocompleteRow>
     )

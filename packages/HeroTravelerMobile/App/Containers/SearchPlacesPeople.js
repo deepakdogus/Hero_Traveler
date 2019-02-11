@@ -27,7 +27,6 @@ const algoliasearch = algoliasearchModule(
   env.SEARCH_API_KEY,
 )
 
-const STORY_INDEX = env.SEARCH_STORY_INDEX
 const USERS_INDEX = env.SEARCH_USER_INDEX
 
 class SearchPlacesPeople extends Component {
@@ -47,7 +46,7 @@ class SearchPlacesPeople extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      lastSearchResults: null,
+      lastPeopleSearchResults: null,
       lastLocationPredictions: null,
       selectedTabIndex: null,
       inputText: '',
@@ -55,7 +54,7 @@ class SearchPlacesPeople extends Component {
   }
 
   componentWillMount() {
-    this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.helper = AlgoliaSearchHelper(algoliasearch, USERS_INDEX)
     this.setupSearchListeners(this.helper)
   }
 
@@ -64,17 +63,11 @@ class SearchPlacesPeople extends Component {
   }
 
   // search
-  hasDeletedStory(prevProps) {
-    const oldLength = Object.keys(prevProps.stories).length
-    const newLength = Object.keys(this.props.stories).length
-    return oldLength - newLength === 1
-  }
-
   setupSearchListeners(helper) {
     helper.on('result', res => {
       this.setState({
         searchingAlgolia: false,
-        lastSearchResults: res,
+        lastPeopleSearchResults: res,
       })
     })
     helper.on('search', () => {
@@ -87,10 +80,6 @@ class SearchPlacesPeople extends Component {
     helper.removeAllListeners('search')
   }
 
-  getSearchIndex(selectedTabIndex) {
-    return selectedTabIndex === 0 ? STORY_INDEX : USERS_INDEX
-  }
-
   changeIndex(newIndex) {
     this.removeSearchListeners(this.helper)
     this.helper = this.helper.setIndex(newIndex)
@@ -99,10 +88,11 @@ class SearchPlacesPeople extends Component {
   }
 
   _changeQuery = e => {
-    const helper = this.helper
     const inputText = e.nativeEvent.text
     const hasSearchText = inputText.length > 0
     const { selectedTabIndex } = this.state
+
+    // if notTab is selected, select the Places tab and continue
     if (selectedTabIndex === null) {
       this.setState({
         selectedTabIndex: 0,
@@ -111,16 +101,15 @@ class SearchPlacesPeople extends Component {
       })
     }
 
-    if (_.isString(inputText) && inputText.length === 0) {
-      this.setState({
-        lastSearchResults: null,
-        lastLocationPredictions: null,
-        searchingAlgolia: false,
-        hasSearchText,
-      })
-      return
-    }
+    // do not search when the search query is empty
+    if (_.isString(inputText) && inputText.length === 0) return this.setState({
+      lastPeopleSearchResults: null,
+      lastLocationPredictions: null,
+      searchingAlgolia: false,
+      hasSearchText,
+    })
 
+    // do not search when under 3 characters query length
     if (_.isString(inputText) && inputText.length < 3) {
       if (hasSearchText && !this.state.hasSearchText) {
         this.setState({ hasSearchText })
@@ -129,8 +118,7 @@ class SearchPlacesPeople extends Component {
     }
 
     _.debounce(() => {
-      helper.setQuery(inputText).search()
-
+      // query Google PlacesAutocomplete API for Places
       if (selectedTabIndex === 0) {
         this.setState({ searchingGoogle: true })
         RNGooglePlaces.getAutocompletePredictions(inputText, {
@@ -144,22 +132,24 @@ class SearchPlacesPeople extends Component {
         )
         .catch(() => this.setState({ searchingGoogle: false }))
       }
+
+      // query Algolia for People
+      if (selectedTabIndex === 1) this.helper.setQuery(inputText).search()
     }, 300)()
   }
 
   _changeTab = selectedTabIndex => {
-    this.changeIndex(this.getSearchIndex(selectedTabIndex))
     const textValue = this._searchInput._lastNativeText
-    if (textValue && textValue.length >= 3) {
+    if (selectedTabIndex === 1 && textValue && textValue.length >= 3) {
       this.setState({
         searchingAlgolia: true,
         selectedTabIndex,
-        lastSearchResults: null,
+        lastPeopleSearchResults: null,
       })
       this.helper.search()
     }
     else {
-      this.setState({ selectedTabIndex, lastSearchResults: null })
+      this.setState({ selectedTabIndex, lastPeopleSearchResults: null })
     }
   }
 
@@ -174,7 +164,7 @@ class SearchPlacesPeople extends Component {
 
   checkClearResults = text => {
     if (text.length <= 2) {
-      this.setState({ lastSearchResults: null })
+      this.setState({ lastPeopleSearchResults: null })
     }
   }
 
@@ -182,7 +172,7 @@ class SearchPlacesPeople extends Component {
     this._searchInput.setNativeProps({ text: '' })
     this.setState({
       hasSearchText: false,
-      lastSearchResults: null,
+      lastPeopleSearchResults: null,
       lastLocationPredictions: null,
     })
   }
@@ -191,7 +181,7 @@ class SearchPlacesPeople extends Component {
     this._searchInput.setNativeProps({ text: '' })
     this.setState({
       selectedTabIndex: null,
-      lastSearchResults: null,
+      lastPeopleSearchResults: null,
       lastLocationPredictions: null,
       hasSearchText: false,
     })
@@ -215,15 +205,16 @@ class SearchPlacesPeople extends Component {
       myFollowedUsers,
     } = this.props
     const {
-      lastSearchResults,
+      lastPeopleSearchResults,
       lastLocationPredictions,
       selectedTabIndex,
       hasSearchText,
       searchingGoogle,
       searchingAlgolia,
     } = this.state
-    const showSearch
-      = lastSearchResults || lastLocationPredictions || selectedTabIndex !== null
+    const showSearch = lastPeopleSearchResults
+      || lastLocationPredictions
+      || selectedTabIndex !== null
     // TODO: remove conditional navBarBorder when you want to display the tab bar;
     // uncomment the renderTab() line
 
@@ -305,7 +296,7 @@ class SearchPlacesPeople extends Component {
             />
             <SearchList
               selectedTabIndex={selectedTabIndex}
-              lastSearchResults={lastSearchResults}
+              lastPeopleSearchResults={lastPeopleSearchResults}
               lastLocationPredictions={lastLocationPredictions}
               isSearching={searchingAlgolia || searchingGoogle}
               userId={user.id}

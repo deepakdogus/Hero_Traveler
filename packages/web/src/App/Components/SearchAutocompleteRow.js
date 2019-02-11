@@ -37,7 +37,7 @@ class SearchAutocompleteRow extends Component {
   handleClick = () => this.props.navigate(this.props.item)
 
   render = () => {
-    const { idx, item } = this.props
+    const { idx, item: { title, secondaryText} } = this.props
     return (
       <AutocompleteRow
         onClick={this.handleClick}
@@ -45,12 +45,16 @@ class SearchAutocompleteRow extends Component {
         {!idx && <HorizontalDivider color="light-grey" />}
         <TextContainer>
           <PrimaryText>
-            {`${item.title}${item.secondaryText ? ',' : ''}`}
+            {title}
+            {secondaryText && secondaryText.indexOf(', ') !== -1
+              ? ','
+              : ''
+            }
           </PrimaryText>
           <span>&nbsp;</span>
-          {item.secondaryText && (
+          {secondaryText && secondaryText.indexOf(', ') !== -1 && (
             <SecondaryText>
-              {item.secondaryText.replace(/, USA/g, '')}
+              {secondaryText.substr(0, secondaryText.lastIndexOf(','))}
             </SecondaryText>
           )}
         </TextContainer>

@@ -44,6 +44,7 @@ class SearchList extends Component {
         contentType: 'location',
         id: location.placeID || location.id,
         title: location.primaryText || location.title,
+        secondaryText: location.secondaryText,
         latitude: location.latitude,
         longitude: location.longitude,
         country: location.country,
@@ -76,14 +77,28 @@ class SearchList extends Component {
       )
 
   renderLocationRow = ({ item: location }) => {
+    const TextContainer = (
+      <View style={styles.textContainer}>
+        <Text style={styles.listItemText}>
+          {location.primaryText || location.title}
+          {location.secondaryText && location.secondaryText.indexOf(', ') !== -1
+            ? ','
+            : ''
+          }
+          &nbsp;
+        </Text>
+        {!!location.secondaryText && location.secondaryText.indexOf(', ') !== -1 && (
+          <Text style={styles.listItemSecondaryText}>
+            {location.secondaryText.substr(0, location.secondaryText.lastIndexOf(','))}
+          </Text>
+        )}
+      </View>
+    )
+
     return (
       <ListItem
         onPress={this.navToSearchResults(location)}
-        text={(
-          <Text style={styles.listItemText}>
-            {location.primaryText || location.title}
-          </Text>
-        )}
+        text={TextContainer}
         style={styles.searchRowItem}
       />
     )

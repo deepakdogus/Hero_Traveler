@@ -297,10 +297,16 @@ class Search extends Component {
       })
       reroute({
         pathname: `/results/${country}/${lat}/${lng}`,
-        search: `?t=${title}`,
+        search: `?t=${title}${secondaryText && secondaryText.indexOf(', ') !== -1
+          ? `, ${this.formatSecondaryText(secondaryText)}`
+          : ''
+        }`,
       })
     }
   }
+
+  formatSecondaryText = secondaryText =>
+    secondaryText.substr(0, secondaryText.lastIndexOf(','))
 
   renderActiveTab = suggestions => {
     const { activeTab } = this.state

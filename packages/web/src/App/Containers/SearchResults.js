@@ -41,8 +41,8 @@ const ContentWrapper = styled.div`
 
 const ResultTitle = styled.div`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 700;
-  font-size: 40px;
+  font-weight: 600;
+  font-size: 25px;
   color: ${props => props.theme.Colors.background};
   text-align: center;
   margin-bottom: 20px;

@@ -28,7 +28,7 @@ export default class FeedItemCover extends Component {
     showPlayButton: PropTypes.bool,
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
-    locationText: PropTypes.string,
+    title: PropTypes.string,
     isFeed: PropTypes.bool,
     isReadingScreen: PropTypes.bool,
     isGuide: PropTypes.bool,
@@ -140,9 +140,7 @@ export default class FeedItemCover extends Component {
     return this.renderImageWithUrl(false, imageUrl)
   }
 
-  _onPress = () => {
-    return this.props.onPress(this.props.locationText)
-  }
+  _onPress = () => this.props.onPress(this.props.title)
 
   _tapVideoWrapper() {
     const {onPress, isFeed} = this.props

@@ -35,6 +35,12 @@ class SearchList extends Component {
 
   navToSearchResults = location => () => {
     Keyboard.dismiss()
+
+    let title = location.primaryText || location.title
+    title += location.secondaryText && location.secondaryText.indexOf(', ') !== -1
+      ? `, ${this.formatSecondaryText(location.secondaryText)}`
+      : ''
+
     NavActions.searchResults({
       location,
       userId: this.props.userId,
@@ -49,7 +55,7 @@ class SearchList extends Component {
         longitude: location.longitude,
         country: location.country,
       },
-      title: location.primaryText || location.title,
+      title,
     })
   }
 
@@ -60,6 +66,9 @@ class SearchList extends Component {
       ...user,
     })
   }
+
+  formatSecondaryText = secondaryText =>
+    secondaryText.substr(0, secondaryText.lastIndexOf(','))
 
   // search results
   renderSearchTitle = ({ section: { title, data } }) =>
@@ -76,20 +85,20 @@ class SearchList extends Component {
         </View>
       )
 
-  renderLocationRow = ({ item: location }) => {
+  renderLocationRow = ({ item, item: {title, primaryText, secondaryText} }) => {
     const TextContainer = (
       <View style={styles.textContainer}>
         <Text style={styles.listItemText}>
-          {location.primaryText || location.title}
-          {location.secondaryText && location.secondaryText.indexOf(', ') !== -1
+          {primaryText || title}
+          {secondaryText && secondaryText.indexOf(', ') !== -1
             ? ','
             : ''
           }
           &nbsp;
         </Text>
-        {!!location.secondaryText && location.secondaryText.indexOf(', ') !== -1 && (
+        {!!secondaryText && secondaryText.indexOf(', ') !== -1 && (
           <Text style={styles.listItemSecondaryText}>
-            {location.secondaryText.substr(0, location.secondaryText.lastIndexOf(','))}
+            {this.formatSecondaryText(secondaryText)}
           </Text>
         )}
       </View>
@@ -97,7 +106,7 @@ class SearchList extends Component {
 
     return (
       <ListItem
-        onPress={this.navToSearchResults(location)}
+        onPress={this.navToSearchResults(item)}
         text={TextContainer}
         style={styles.searchRowItem}
       />

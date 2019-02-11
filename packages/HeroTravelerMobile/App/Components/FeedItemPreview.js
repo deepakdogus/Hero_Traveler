@@ -197,7 +197,10 @@ export default class FeedItemPreview extends Component {
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
-              <TouchableOpacity onPress={this._touchUser} style={styles.profileButton}>
+              <TouchableOpacity
+                onPress={this._touchUser}
+                style={styles.profileButton}
+              >
                 {hasBadge(user.role) && (
                   <TabIcon
                     name={roleToIconName[user.role]}
@@ -418,7 +421,7 @@ export default class FeedItemPreview extends Component {
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}
             shouldEnableAutoplay={this.shouldEnableAutoplay()}
-            locationText={this.getLocationText()}
+            title={this.props.feedItem.title}
             isReadingScreen={isReadingScreen}
             isGuide={!isStory}
             style={styles.feedItemCover}

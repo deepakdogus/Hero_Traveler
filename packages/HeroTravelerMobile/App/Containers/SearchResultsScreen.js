@@ -32,6 +32,7 @@ class SearchResultsScreen extends Component {
     userId: PropTypes.string,
     addRecentSearch: PropTypes.func,
     historyData: PropTypes.object,
+    title: PropTypes.string,
   }
 
   state = {
@@ -57,9 +58,9 @@ class SearchResultsScreen extends Component {
       const { historyData, addRecentSearch } = this.props
 
       // location
-      const locationData = this._hasHistoryData()
+      const locationData = this.hasHistoryData()
         ? historyData
-        : await this._getLocationDataFromGoogle()
+        : await this.getLocationDataFromGoogle()
 
       // guides
       this.guideHelper = AlgoliaSearchHelper(algoliasearch, GUIDE_INDEX, {
@@ -86,12 +87,12 @@ class SearchResultsScreen extends Component {
     }
   }
 
-  _hasHistoryData = () => {
+  hasHistoryData = () => {
     const { latitude, longitude, country } = this.props.historyData
     return latitude && longitude && country
   }
 
-  _getLocationDataFromGoogle = async () => {
+  getLocationDataFromGoogle = async () => {
     const {
       latitude,
       longitude,
@@ -132,26 +133,21 @@ class SearchResultsScreen extends Component {
     .search()
   }
 
-  _navToSeeAll = (type, feedItems) => {
-    const { location, historyData, userId} = this.props
-    const title = location.primaryText || historyData.title
+  navToSeeAll = (type, feedItems) => () => NavActions.searchResultsSeeAll({
+    feedItemType: type,
+    typeLabels: this.typeLabels,
+    feedItems,
+    userId: this.props.userId,
+    title: `${this.props.title} - ${this.typeLabels[type]}`,
+  })
 
-    return () => NavActions.searchResultsSeeAll({
-      feedItemType: type,
-      typeLabels: this.typeLabels,
-      feedItems,
-      userId,
-      title: `${title} - ${this.typeLabels[type]}`,
-    })
-  }
-
-  _onPressAuthor = (authorId) => {
+  onPressAuthor = (authorId) => {
     const { userId } = this.props
     if (authorId === userId) navToProfile()
     else NavActions.readOnlyProfile({userId: authorId})
   }
 
-  _shouldDisplaySection = items => !!items && !!items.length
+  shouldDisplaySection = items => !!items && !!items.length
 
   renderFeedItemsOfType = () => {
     const { lastSearchResults } = this.state
@@ -159,15 +155,15 @@ class SearchResultsScreen extends Component {
       const feedItems = (type === 'guides' || type === 'stories')
         ? lastSearchResults[type]
         : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
-      if (!this._shouldDisplaySection(feedItems)) return null
+      if (!this.shouldDisplaySection(feedItems)) return null
 
       return (
         <FeedItemsOfType
           key={`${type}-search-grid`}
           type={type}
           label={this.typeLabels[type].toUpperCase()}
-          onPressAll={this._navToSeeAll(type, feedItems)}
-          onPressAuthor={this._onPressAuthor}
+          onPressAll={this.navToSeeAll(type, feedItems)}
+          onPressAuthor={this.onPressAuthor}
           isShowAll={false}
           showDivider={idx !== 0}
           feedItems={feedItems}

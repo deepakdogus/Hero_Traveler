@@ -144,6 +144,13 @@ class Header extends React.Component {
       openGlobalModal('login')
     }
     if (
+      !prevProps.isLoggedIn && this.props.isLoggedIn
+      && prevProps.globalModalThatIsOpen === 'login'
+    ) {
+      this.closeModal()
+      reroute('/feed')
+    }
+    if (
       prevProps.globalModalThatIsOpen === 'documentation'
       && !globalModalThatIsOpen
       && !isLoggedIn
@@ -209,10 +216,6 @@ class Header extends React.Component {
 
   _resetCreateStore = () => {
     this.props.resetCreateStore(this.props.originalDraft.id)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
   }
 
   // name correspond to icon name and button name

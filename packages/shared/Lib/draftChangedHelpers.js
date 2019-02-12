@@ -63,6 +63,7 @@ const isDraftJSContentSame = (workingDraft, comparisonDraft) => {
       return _.isEqual(workingBlock, comparisonBlock)
     }
     return workingBlock.text === comparisonBlock.text
+    && _.isEqual(workingBlock.inlineStyleRanges, comparisonBlock.inlineStyleRanges)
   })
 }
 

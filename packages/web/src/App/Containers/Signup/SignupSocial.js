@@ -9,7 +9,6 @@ import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import RoundedButton from '../../Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
-// import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
 import FollowFollowingRow from '../../Components/FollowFollowingRow'
 
 const Container = styled.div`
@@ -28,8 +27,8 @@ const NavLinkContainer = styled(SocialContainer)`
 `
 
 /*
-Title and Subtitle are indentical in SignupSocial and SignupTopics
-Possibly refactor into separate file or add styles to themes
+Title and Subtitle are also used in SignupTopics
+Take note when you make changes
 */
 export const Title = styled.p`
   margin-top:0;

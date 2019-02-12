@@ -11,7 +11,10 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import { Images } from '../../Shared/Themes'
 import ImageWrapper from '../../Components/ImageWrapper'
 import NavButton from '../../Navigation/NavButton'
-import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../../Shared/Lib/userFormValidation'
+import {
+  validate as validateOriginal,
+  asyncValidate as asyncValidateOriginal,
+} from '../../Shared/Lib/userFormValidation'
 
 import styles from './SignupChangeUsernameStyles'
 
@@ -20,18 +23,17 @@ const asyncValidate = (values) => {
 }
 
 const validate = (values) => {
-  return validateOriginal(values, null, ["username"])
+  return validateOriginal(values, null, ['username'])
 }
 
 class SignupChangeUsername extends React.Component {
-
   validationTimeout = null
 
   constructor(props) {
     super(props)
     this.state = {
-      newUsername: "",
-      error: null
+      newUsername: '',
+      error: null,
     }
   }
 
@@ -46,10 +48,11 @@ class SignupChangeUsername extends React.Component {
       let validationError = validate(values)
       if (Object.keys(validationError).length > 0) {
         reject(validationError[Object.keys(validationError)[0]])
-      } else {
+      }
+      else {
         asyncValidate(values).then(() => {
           resolve()
-        }).catch((err) =>  {
+        }).catch((err) => {
           reject(err[Object.keys(err)[0]])
         })
       }
@@ -59,7 +62,7 @@ class SignupChangeUsername extends React.Component {
   onChangeText = (username) => {
     this.setState({
       newUsername: username,
-      error: null
+      error: null,
     })
   }
 
@@ -84,8 +87,8 @@ class SignupChangeUsername extends React.Component {
         }).catch((e) => {
           this.setState({error: e})
         }).finally(() => {
-          this.setState({submitting: false});
-        });
+          this.setState({submitting: false})
+        })
       })
     }
   }
@@ -124,18 +127,17 @@ class SignupChangeUsername extends React.Component {
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              {this.state.error &&
+              {this.state.error && (
                 <View style={styles.errorView}>
                   <Text style={styles.error}>{this.state.error}</Text>
                 </View>
-              }
+              )}
             </View>
           </View>
         </View>
       </ImageWrapper>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {

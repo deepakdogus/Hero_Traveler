@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
+import {Actions as NavActions} from 'react-native-router-flux'
 
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
@@ -63,6 +64,9 @@ class MyFeedScreen extends React.Component {
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
+    }
+    if (this.props.user.usernameIsTemporary === true) {
+      NavActions.signupFlow()
     }
     SplashScreen.hide()
   }

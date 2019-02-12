@@ -7,26 +7,25 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import {
   Container,
   Title,
-  Text
+  Text,
 } from './Shared'
 import { Row } from '../FlexboxGrid'
 import FormInput from '../FormInput'
 import {
   Field,
   reduxForm,
-  formValueSelector
+  formValueSelector,
 } from 'redux-form'
 import {
   validate,
-  asyncValidate
+  asyncValidate,
 } from '../../Shared/Lib/userFormValidation'
 
-const StyledUsernameText = styled(Title)`
-  font-size: 20px;
+const Prompt = styled(Text)`
+  margin: 0 0 25px;
 `
 
 class ChangeTempUsername extends React.Component{
-
   static propTypes = {
     closeModal: PropTypes.func,
     username: PropTypes.string,
@@ -48,7 +47,7 @@ class ChangeTempUsername extends React.Component{
   _handleSubmit = (e) => {
     e.preventDefault()
     const attrs = {
-      username: this.props.username
+      username: this.props.username,
     }
     this.props.updateUser(attrs)
   }
@@ -59,14 +58,12 @@ class ChangeTempUsername extends React.Component{
       submitting,
       pristine,
       updating,
-      user,
     } = this.props
 
     return(
       <Container>
-        <Title>Change Temp Username</Title>
-        <Text>Do you want to change your username?</Text>
-        <StyledUsernameText>{user.username}</StyledUsernameText>
+        <Title>Sign Up</Title>
+        <Prompt>Let&#39;s start by choosing your username</Prompt>
         <form onSubmit={this._handleSubmit}>
           <Field
             name={'username'}
@@ -76,22 +73,16 @@ class ChangeTempUsername extends React.Component{
           />
           <Row center='xs'>
             <RoundedButton
-              text="No"
-              margin='small'
-              type='blackWhite'
-              onClick={this.props.closeModal}
-            />
-            <RoundedButton
-              text='Yes'
+              text='Save'
               margin='small'
               type='submit'
-              disabled={invalid|| submitting || pristine}
+              disabled={invalid || submitting || pristine}
             />
           </Row>
         </form>
-        {(!invalid && updating) &&
+        {(!invalid && updating) && (
           <Text>Updating Username...</Text>
-        }
+        )}
       </Container>
     )
   }
@@ -123,5 +114,5 @@ export default reduxForm({
   asyncBlurFields: ['username'],
   initialValues: {
     username: '',
-  }
+  },
 })(connect(mapStateToProps, mapDispatchToProps)(ChangeTempUsername))

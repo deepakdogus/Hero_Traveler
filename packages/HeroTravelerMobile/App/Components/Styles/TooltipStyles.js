@@ -1,19 +1,20 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Fonts } from '../../Shared/Themes/'
-import Metrics from '../../Themes/Metrics'
+import { Colors, Fonts, Metrics } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
-
   /* Background */
 
   backgroundOverlay: {
     position: 'absolute',
     bottom: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   backgroundOverlayFullScreen: {
-    bottom:0, top: 0, left: 0, right: 0,
+    bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
     flex: 1,
   },
   backgroundOverlayDimmed: {
@@ -25,19 +26,20 @@ export default StyleSheet.create({
   container: {
     width: Metrics.screenWidth,
     position: 'absolute',
-    top: 0, left: 0,
+    top: 0,
+    left: 0,
     marginTop: 5,
     shadowColor: 'black',
-    shadowOpacity: .25,
-    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 1,
   },
   textContainer: {
-    maxWidth: Metrics.screenWidth * .75,
+    maxWidth: Metrics.screenWidth * 0.75,
     borderRadius: 5,
     backgroundColor: 'white',
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: Colors.steel,
     borderWidth: 1,
   },
   tip: {
@@ -52,10 +54,10 @@ export default StyleSheet.create({
     borderRightColor: 'transparent',
     borderBottomWidth: 6,
     borderBottomColor: 'white',
-    shadowColor: '#ccc',
+    shadowColor: Colors.steel,
     shadowOpacity: 1,
     shadowRadius: 0,
-    shadowOffset: {width: 0, height: -1}
+    shadowOffset: { width: 0, height: -1 },
   },
   text: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -75,42 +77,42 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     shadowColor: 'black',
-    shadowOpacity: .2,
+    shadowOpacity: 0.2,
     shadowRadius: 30,
   },
   imageEditIconContainer: {
     height: 95,
     width: 95,
     borderWidth: 3,
-    borderColor: "#ffffff",
+    borderColor: Colors.snow,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#bdbdbd',
+    backgroundColor: Colors.grey,
   },
   imageEditIconCamera: {},
   imageEditIconBullseye: {
-    marginBottom: -10
+    marginBottom: -10,
   },
   imageEditIconPointer: {
     backgroundColor: 'transparent',
-    marginRight: -8
+    marginRight: -8,
   },
   imageEditText: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.white,
-    marginTop: 10
+    color: Colors.snow,
+    marginTop: 10,
   },
   imageEditButton: {
     height: 36,
     borderRadius: 16,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   imageEditButtonText: {
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     fontSize: 16,
-  }
-});
+  },
+})

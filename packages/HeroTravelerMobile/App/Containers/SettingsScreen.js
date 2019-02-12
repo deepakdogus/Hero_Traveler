@@ -32,7 +32,7 @@ const Row = ({icon, text, textStyle, connected, hideAngleRight, onPress}) => {
             <Text style={styles.isConnectedText}>Connected</Text>
           </View>
         }
-        {!hideAngleRight && <Icon name='angle-right' size={15} color={'#757575'} />}
+        {!hideAngleRight && <Icon name='angle-right' size={15} color={Colors.grey} />}
       </TouchableOpacity>
     </View>
   )

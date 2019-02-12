@@ -9,26 +9,25 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "row",
-
+    flexDirection: 'row',
   },
   column: {
-    flexDirection: "column",
-    width: "65%"
+    flexDirection: 'column',
+    width: '65%',
   },
   previewImage: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   gradient: {
     paddingHorizontal: Metrics.doubleBaseMargin,
-    paddingVertical: Metrics.doubleBaseMargin
+    paddingVertical: Metrics.doubleBaseMargin,
   },
   bold: {
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 14,
-    fontWeight: "200",
+    fontWeight: '200',
     fontFamily: Fonts.type.montserrat,
     marginLeft: 10,
   },
@@ -36,48 +35,47 @@ export default StyleSheet.create({
     fontSize: 12,
     color: Colors.charcoal,
     fontFamily: Fonts.type.sourceSansPro,
-    letterSpacing:0.7,
+    letterSpacing: 0.7,
     marginLeft: 30,
   },
-  date: {
-  },
+  date: {},
   placeHolderContent: {
     fontSize: 12,
     color: Colors.charcoal,
     fontFamily: Fonts.type.sourceSansPro,
-    letterSpacing:0.7,
+    letterSpacing: 0.7,
     marginLeft: 10,
   },
   divider: {
     height: 1,
     width: 300,
-    backgroundColor: "#fff",
-    opacity: 0.5
+    backgroundColor: Colors.snow,
+    opacity: 0.5,
   },
   detailContainer: {
     width: 300,
     marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   avatar: {
     height: 36,
     width: 36,
     borderRadius: 18,
-    marginRight: 10
+    marginRight: 10,
   },
   username: {
-    color: "#e0e0e0",
-    fontWeight: "300",
+    color: Colors.lightGrey,
+    fontWeight: '300',
     fontSize: 15,
-    fontFamily: Fonts.type.sourceSansPro
+    fontFamily: Fonts.type.sourceSansPro,
   },
   tagline: {
     ...Fonts.style.h1,
-    color: Colors.steel
-  }
+    color: Colors.steel,
+  },
 })

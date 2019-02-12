@@ -14,9 +14,13 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import HeaderModals from '../Components/HeaderModals'
 import { sizes } from '../Themes/Metrics'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import {
+  haveFieldsChanged,
+  hasChangedSinceSave,
+} from '../Shared/Lib/draftChangedHelpers'
 import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
@@ -42,6 +46,7 @@ class Header extends React.Component {
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string,
     currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
+    currentUsernameIsTemporary: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
@@ -49,6 +54,7 @@ class Header extends React.Component {
     attemptLogout: PropTypes.func,
     attemptChangePassword: PropTypes.func,
     attemptGetUserFeed: PropTypes.func,
+    attemptGetUserGuides: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
@@ -61,6 +67,7 @@ class Header extends React.Component {
     activities: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
+    draftToBeSaved: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     pathname: PropTypes.string,
@@ -100,33 +107,49 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentUserId } = this.props
+    const {
+      attemptGetUserFeed,
+      attemptGetUserGuides,
+      currentUserId,
+      currentUsernameIsTemporary,
+      globalModalThatIsOpen,
+      isLoggedIn,
+      openGlobalModal,
+      pathname,
+      reroute,
+      signedUp,
+    } = this.props
 
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(
-        currentUserId,
-        {
-          perPage: itemsPerQuery,
-          page: 1,
-        },
-      )
+      attemptGetUserFeed(currentUserId, {
+        perPage: itemsPerQuery,
+        page: 1,
+      })
+      attemptGetUserGuides(currentUserId)
+      if (currentUsernameIsTemporary) {
+        openGlobalModal('changeTempUsername')
+      }
     }
-    if (!prevProps.signedUp && this.props.signedUp) {
-      this.props.reroute('/signup/topics')
+    if (!prevProps.signedUp && signedUp) {
+      reroute('/signup/topics')
     }
-    if (prevProps.pathname !== this.props.pathname) {
+    if (prevProps.pathname !== pathname) {
       window.scrollTo({
         top: 0,
         behavior: 'instant',
       })
     }
-    if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+    if (prevProps.isLoggedIn && !isLoggedIn) {
+      reroute('/')
+      openGlobalModal('login')
     }
-    if (prevProps.globalModalThatIsOpen === 'documentation' && !this.props.globalModalThatIsOpen && !this.props.isLoggedIn) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+    if (
+      prevProps.globalModalThatIsOpen === 'documentation'
+      && !globalModalThatIsOpen
+      && !isLoggedIn
+    ) {
+      reroute('/')
+      openGlobalModal('login')
     }
   }
 
@@ -164,15 +187,23 @@ class Header extends React.Component {
   }
 
   openSaveEditsModal = path => {
+    const {workingDraft, originalDraft, draftToBeSaved, pathname} = this.props
+
     if (
-      this.props.workingDraft
-      && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+      pathname.includes('editStory')
+      && workingDraft
+      && haveFieldsChanged(workingDraft, originalDraft)
+      // extra check to ensure we dont show modal after they click save and nav away
+      // without making further edits to the draft
+      && hasChangedSinceSave(workingDraft, draftToBeSaved)
     ) {
       this.setState({
         nextPathAfterSave: path,
       })
       this.props.openGlobalModal('saveEdits')
+    }
+    else {
+      this.props.reroute(path)
     }
   }
 
@@ -185,7 +216,7 @@ class Header extends React.Component {
   }
 
   // name correspond to icon name and button name
-  openModal = (event) => {
+  openModal = event => {
     const name = event.target.name
     let modalToOpen
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
@@ -230,7 +261,11 @@ class Header extends React.Component {
 
     return (
       <div>
-        <StyledGrid fluid fixed hasBlackBackground={hasBlackBackground}>
+        <StyledGrid
+          fluid
+          fixed
+          hasBlackBackground={hasBlackBackground}
+        >
           {isLoggedIn && (
             <HeaderLoggedIn
               userId={currentUserId}
@@ -310,10 +345,12 @@ function mapStateToProps(state) {
     currentUserProfile: currentUser && currentUser.profile,
     currentUserEmail: currentUser && currentUser.email,
     currentUserNotificationTypes: currentUser && currentUser.notificationTypes,
+    currentUsernameIsTemporary: currentUser && currentUser.usernameIsTemporary,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
+    draftToBeSaved: state.storyCreate.draftToBeSaved,
     pathname: pathname,
     signedUp: state.signup.signedUp,
   }
@@ -325,6 +362,7 @@ function mapDispatchToProps(dispatch) {
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
+    attemptGetUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: route => dispatch(push(route)),

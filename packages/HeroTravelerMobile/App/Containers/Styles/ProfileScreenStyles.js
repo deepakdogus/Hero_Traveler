@@ -7,11 +7,11 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
-    height: Metrics.screenHeight + Metrics.tabBarHeight
+    height: Metrics.screenHeight + Metrics.tabBarHeight,
   },
   avatarImage: {
     width: avatarImageSize,
     height: avatarImageSize,
-    borderRadius: avatarImageSize/2
-  }
+    borderRadius: avatarImageSize / 2,
+  },
 })

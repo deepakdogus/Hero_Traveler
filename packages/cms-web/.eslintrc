@@ -33,6 +33,10 @@
       "functions": "always-multiline"
     }],
     "constructor-super": "error",
+    "max-len": ['error', {
+      "code": 90,
+      "tabWidth": 2,
+    }],
     "no-dupe-args": "error",
     "no-dupe-class-members": "error",
     "no-dupe-keys": "error",

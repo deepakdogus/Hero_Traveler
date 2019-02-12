@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {
   ScrollView,
   View,
-  Text
+  Text,
 } from 'react-native'
 import {connect} from 'react-redux'
 import _ from 'lodash'
@@ -22,13 +22,13 @@ class SignupTopicsScreen extends React.Component {
     areCategoriesLoaded: PropTypes.bool,
     selectCategory: PropTypes.func,
     unselectCategory: PropTypes.func,
-    selectedCategories: PropTypes.arrayOf(PropTypes.string)
+    selectedCategories: PropTypes.arrayOf(PropTypes.string),
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      selectedCategories: {}
+      selectedCategories: {},
     }
   }
 
@@ -41,29 +41,32 @@ class SignupTopicsScreen extends React.Component {
 
     if (this.props.areCategoriesLoaded) {
       content = (
+      <ScrollView>
         <ExploreGrid
           onPress={this._toggleCategory}
-          categories={_.values(this.props.categories).map(c => {
+          categories={_.values(this.props.categories).map(category => {
             return {
-              ...c,
-              selected: this.getIsSelected(c)
+              ...category,
+              selected: this.getIsSelected(category),
             }
           })} />
+        </ScrollView>
       )
-    } else {
+    }
+    else {
       content = (
         <Text>No categories yet</Text>
       )
     }
 
     return (
-      <ScrollView style={[styles.containerWithNavbar, styles.root]}>
+      <View style={[styles.containerWithNavbar, styles.root]}>
         <View style={styles.header}>
           <Text style={styles.title}>WELCOME!</Text>
           <Text style={styles.subtitle}>Select topics to follow</Text>
         </View>
         {content}
-      </ScrollView>
+      </View>
     )
   }
 
@@ -75,7 +78,8 @@ class SignupTopicsScreen extends React.Component {
     const isSelected = this.getIsSelected(category)
     if (!isSelected) {
       this.props.selectCategory(category.id)
-    } else {
+    }
+    else {
       this.props.unselectCategory(category.id)
     }
   }
@@ -85,7 +89,7 @@ const mapStateToProps = (state) => {
   return {
     categories: state.entities.categories.entities,
     areCategoriesLoaded: state.entities.categories.fetchStatus.loaded,
-    selectedCategories: state.signup.selectedCategories
+    selectedCategories: state.signup.selectedCategories,
   }
 }
 

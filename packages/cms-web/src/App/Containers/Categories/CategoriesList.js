@@ -77,11 +77,6 @@ const columns = [{
   sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
 },
 {
-  title: 'Created By',
-  dataIndex: 'createdBy',
-  sorter: true,
-},
-{
   title: '# Of Stories',
   render: (item) => {
     return (

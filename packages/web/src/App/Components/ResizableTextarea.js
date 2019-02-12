@@ -24,6 +24,7 @@ export default class ResizableTextarea extends React.Component {
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
     textProps: PropTypes.string,
+    maxLength: PropTypes.number,
   }
 
   static defaultProps = {
@@ -83,6 +84,7 @@ export default class ResizableTextarea extends React.Component {
         placeholder={this.state.placeholder}
         onChange={this._handleChange}
         textProps={this.props.textProps}
+        maxLength={this.props.maxLength}
       />
     )
   }

@@ -1,9 +1,13 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Metrics, Fonts, } from '../../Shared/Themes'
+import { Colors, Metrics, Fonts } from '../../Shared/Themes'
 
 export default StyleSheet.create({
   list: {
     paddingHorizontal: Metrics.baseMargin,
+  },
+  bottomBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.feedDividerGrey,
   },
   searchBarIcon: {
     color: Colors.grey,
@@ -35,6 +39,8 @@ export default StyleSheet.create({
     height: 415,
   },
   fieldWrapper: {
+    borderTopColor: Colors.navBarText,
+    borderTopWidth: 1,
     borderBottomColor: Colors.navBarText,
     borderBottomWidth: 1,
     marginVertical: Metrics.baseMargin,
@@ -65,5 +71,8 @@ export default StyleSheet.create({
   },
   tooltipTip: {
     left: 20,
-  }
+  },
+  rightTextStyle: {
+    paddingRight: 20,
+  },
 })

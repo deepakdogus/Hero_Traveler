@@ -7,7 +7,7 @@ const Sidebar = styled.div`
   position: absolute;
   right: 10px;
   top: 75px;
-  background-color: ${props => props.theme.Colors.white};
+  background-color: ${props => props.theme.Colors.snow};
   box-shadow: ${props => `0px 2px 6px 0px ${props.theme.Colors.backgroundTintLow}`};
   border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
   padding: 20px 0px 20px 40px;

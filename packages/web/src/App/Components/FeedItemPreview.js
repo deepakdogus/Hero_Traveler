@@ -29,6 +29,7 @@ import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 
 const Text = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
@@ -285,8 +286,10 @@ class FeedItemPreview extends Component {
   }
 
   navToFeedItem = () => {
-    const storyOrGuide = this.props.isStory ? 'story' : 'guide'
-    this.props.reroute(`/${storyOrGuide}/${this.props.feedItem.id}`)
+    const { isStory, feedItem } = this.props
+    const storyOrGuide = isStory ? 'story' : 'guide'
+    if (isLocalDraft(feedItem.id)) this.props.reroute(`/editStory/${feedItem.id}/cover`)
+    else this.props.reroute(`/${storyOrGuide}/${feedItem.id}`)
   }
 
   navToUserProfile = () => {
@@ -349,9 +352,12 @@ class FeedItemPreview extends Component {
     const isGuideAuthor = !!guideId && sessionUserId === this.props.author.id
 
     /*
-     * in cases where the author is retrieved from algolia, author is equal to
-     * the author username, so it is currently necessary to recreate an empty
-     * author object to avoid access errors
+     * in cases where story/guide is retrieved from algolia, author prop will be
+     * undefined, so it is currently necessary to recreate an empty
+     * author object to avoid access errors. Thus, no algolia derived story/
+     * guide results will have avatar or role. If these are needed:
+     *  1) perform an author check in lifecycle method
+     *  2) make api call to get story/guide by authorId (authorId in feedItem)
      */
     let author = {username: '', profile: {avatar: ''}, role: ''}
     if (this.props.author) author = this.props.author
@@ -476,19 +482,16 @@ const mapStateToProps = (state, ownProps) => {
 
   let feedItemProps = null
   if (feedItem) {
-    /* TODO: unify author prop on algolia upon deprecating pre-Places Search
-     * versions of the RN app
+    /* TODO: fix author logic to better accomodate cases where author
+     * is not in redux (i.e., when coming from an algolia query)
      *
-     * algolia story author = username (historical reasons)
-     * algolia story authorId = id (the quick fix solution)
-     * algolia guide author = id
-     *
-     * author = id matches existing structure when pulling from the server,
-     * so algolia story index author prop should eventually be patched to id
+     * author will be undefined when algolia results are passed as a feedItem:
+     *  - algolia story author = username (historical reasons)
+     *  - algolia guide author = username (for consistency across algolia)
      *
      */
     feedItemProps = {
-      author: entities.users.entities[feedItem.authorId ? feedItem.authorId : feedItem.author],
+      author: entities.users.entities[feedItem.author],
       isBookmarked: isStoryBookmarked(entities.users, sessionUserId, feedItem.id),
     }
     feedItemProps.isLiked = isStory

@@ -1,26 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ListView } from 'react-native'
+import { ListView, StyleSheet } from 'react-native'
 
 export default class List extends React.Component {
   static propTypes = {
     items: PropTypes.array,
-    renderRow: PropTypes.func.isRequired
+    renderRow: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(props.items)
+      dataSource: ds.cloneWithRows(props.items),
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.items.length !== this.props.items.length) {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-      this.setState({dataSource: ds.cloneWithRows(nextProps.items)})
-    }
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    this.setState({dataSource: ds.cloneWithRows(nextProps.items)})
   }
 
   render () {
@@ -28,8 +26,19 @@ export default class List extends React.Component {
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this.props.renderRow}
-        style={[{flex: 1}, this.props.style]}
+        root={styles.root}
+        contentContainerStyle={styles.listView}
       />
     )
   }
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+  listView: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+})

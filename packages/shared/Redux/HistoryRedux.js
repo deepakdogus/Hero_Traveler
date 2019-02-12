@@ -4,7 +4,8 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  addRecentSearch: ['search']
+  addRecentSearch: ['search'],
+  removeRecentSearch: ['id']
 })
 
 const INITIAL_STATE = Immutable({
@@ -24,9 +25,8 @@ export const addRecentSearch = (state, action) => {
   let updatedSearch = [
     action.search,
     ...recentSearches.filter(
-      search => search.id !== id
-      && (searchType === 'people'
-      || search.title !== title)
+      search =>
+        search.id !== id && (searchType === 'people' || search.title !== title)
     )
   ]
   if (updatedSearch.length >= MAX_RECENT_SEARCHES) {
@@ -46,6 +46,18 @@ export const addRecentSearch = (state, action) => {
     }
   )
 }
+
+export const removeRecentStorySearch = (state, { storyId }) =>
+  state.setIn(
+    ['places'],
+    state.getIn(['places'], storyId).filter(id => id !== storyId)
+  )
+
+export const removeRecentUserSearch = (state, { userId }) =>
+  state.setIn(
+    ['people'],
+    state.getIn(['people'], userId).filter(id => id !== userId)
+  )
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_RECENT_SEARCH]: addRecentSearch

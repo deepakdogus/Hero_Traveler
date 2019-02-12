@@ -1,15 +1,30 @@
-import { call, put, select } from 'redux-saga/effects'
+import {
+  call,
+  put,
+  select,
+} from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
-import UserActions, {isInitialAppDataLoaded, isStoryLiked, isStoryBookmarked} from '../Redux/Entities/Users'
+import UserActions, {
+  isInitialAppDataLoaded,
+  isStoryLiked,
+  isStoryBookmarked,
+} from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
+import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
 import {getNewCover} from '../Redux/helpers/coverUpload'
-import CloudinaryAPI, { moveVideoToPreCache, moveVideosFromPrecacheToCache } from '../../Services/CloudinaryAPI'
+import CloudinaryAPI, {
+  moveVideoToPreCache,
+  moveVideosFromPrecacheToCache,
+} from '../../Services/CloudinaryAPI'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
+import hasConnection from '../../Lib/hasConnection'
+import { currentUserId } from './SessionSagas'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)
 const isStoryLikedSelector = ({entities}, userId, storyId) => isStoryLiked(entities.users, userId, storyId)
@@ -164,13 +179,16 @@ export function * createCover(api, draft, isGuide){
     : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
+
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   // Web and mobile receive two different responses.
   if (typeof cloudinaryCover.data === "string") {
     cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   }
-  if (cloudinaryCover.data.error) return cloudinaryCover.data
+
+  if (_.get(cloudinaryCover, 'data.error')) return cloudinaryCover.data
+  if (_.get(cloudinaryCover, 'error')) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
   else draft.coverVideo = cloudinaryCover.data
   if (!isGuide) yield put(StoryCreateActions.incrementSyncProgress())
@@ -222,21 +240,21 @@ function * uploadAtomicAssets(draft){
   return promise
 }
 
-function * publishDraftErrorHandling(draft, response){
+function * saveDraftErrorHandling(draft, response){
   let err = new Error('Failed to publish story')
   // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
   //       methods, maybe Object.assign(err, response) is better?
   err.status = response.status
   err.problem = response.problem
 
-  yield put(StoryCreateActions.publishDraftFailure(err))
+  yield put(StoryCreateActions.saveDraftFailure(err))
 
   yield [
-    put(StoryActions.addDraft(draft)),
-    put(StoryActions.addBackgroundFailure(
+    put(PendingUpdatesActions.addPendingUpdate(
       draft,
       'Failed to publish',
-      'publishLocalDraft',
+      'saveLocalDraft',
+      'failed',
     )),
     put(StoryCreateActions.syncError()),
   ]
@@ -249,11 +267,12 @@ function * updateDraftErrorHandling(draft, response){
   err.problem = response.problem
   yield [
     put(StoryCreateActions.updateDraftFailure(err)),
-    put(StoryActions.addBackgroundFailure(
+    put(PendingUpdatesActions.addPendingUpdate(
       draft,
       'Failed to update',
       'updateDraft',
-    ))
+      'failed',
+    )),
   ]
 }
 
@@ -275,51 +294,49 @@ function getSyncProgressSteps(story){
   return steps
 }
 
-export function * publishLocalDraft (api, action) {
-  const {draft} = action
+export function * saveLocalDraft (api, action) {
+  const {draft, saveAsDraft = false} = action
+  draft.draft = saveAsDraft
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draft.id)),
-    put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Publishing Story'))
+    put(PendingUpdatesActions.addPendingUpdate(
+      draft,
+      'Failed to publish',
+      'saveLocalDraft',
+      'retrying',
+    )),
+    put(StoryCreateActions.initializeSyncProgress(
+      getSyncProgressSteps(draft),
+      `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
+    )),
   ]
+
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
-    yield publishDraftErrorHandling(draft, coverResponse.error)
+    yield saveDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
   if (atomicResponse && atomicResponse.error){
-    yield publishDraftErrorHandling(draft, atomicResponse.error)
+    yield saveDraftErrorHandling(draft, atomicResponse.error)
     return
   }
-  yield put(StoryCreateActions.publishDraft(draft))
-}
 
-export function * publishDraft (api, action) {
-  const {draft} = action
-  const draftStoryId = draft.id
   const response = yield call(api.createStory, draft)
   if (response.ok) {
-    moveVideosFromPrecacheToCache(draftStoryId)
+    moveVideosFromPrecacheToCache(draft.id)
     const stories = {}
     const story = response.data.story
     story.author = story.author.id
     stories[story.id] = story
     yield [
-      put(StoryCreateActions.publishDraftSuccess(draft)),
-      put(StoryActions.addUserStory(stories, draft.id)),
+      put(StoryCreateActions.saveDraftSuccess(draft, story)),
+      put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
-    return
-  } else yield publishDraftErrorHandling(draft, response)
-}
-
-export function * registerDraft (api, action) {
-  const response = yield call(api.createDraft)
-  if (response.ok) {
-    const {data: draft} = response
-    yield put(StoryCreateActions.registerDraftSuccess(draft))
-  } else {
-    yield put(StoryCreateActions.registerDraftFailure(new Error('Failed to initialize draft')))
+    if (!saveAsDraft) yield put(StoryActions.addUserStory(stories, draft.id))
+  }
+  else {
+    yield saveDraftErrorHandling(draft, response)
   }
 }
 
@@ -336,7 +353,12 @@ export function * discardDraft (api, action) {
 export function * updateDraft (api, action) {
   const {draftId, draft, updateStoryEntity} = action
   yield [
-    put(StoryActions.setRetryingBackgroundFailure(draftId)),
+    put(PendingUpdatesActions.addPendingUpdate(
+      draft,
+      'Failed to update',
+      'updateDraft',
+      'retrying',
+    )),
     put(StoryCreateActions.initializeSyncProgress(getSyncProgressSteps(draft), 'Saving Story')),
   ]
 
@@ -361,7 +383,7 @@ export function * updateDraft (api, action) {
     }
     yield [
       put(StoryCreateActions.updateDraftSuccess(story)),
-      put(StoryActions.removeBackgroundFailure(story.id)),
+      put(PendingUpdatesActions.removePendingUpdate(story.id)),
     ]
   } else yield updateDraftErrorHandling(draft, draftId)
 }
@@ -475,7 +497,11 @@ export function * loadDrafts(api) {
     ]
     yield put(StoryActions.loadDraftsSuccess(result))
   } else {
-    yield put(StoryActions.loadDraftsFailure(new Error('Failed to load drafts')))
+    const userId = yield select(currentUserId)
+    yield put(StoryActions.loadDraftsFailure(
+      new Error('Failed to load drafts'),
+      userId,
+    ))
   }
 }
 
@@ -505,5 +531,65 @@ export function * deleteStory(api, {userId, storyId}){
       put(GuideActions.deleteStoryFromGuides(storyId)),
       put(UserActions.removeActivities(storyId, 'story')),
     ]
+  }
+}
+
+export function * getDeletedStories(api, {userId}) {
+  const response = yield call(api.getUsersDeletedStories, userId)
+  if (response.ok) {
+    yield [
+      put(PendingUpdatesActions.checkIfDeleted(response.data)),
+      put(StoryActions.removeDeletedStories(response.data)),
+    ]
+  }
+}
+
+let firstCall = true
+export function * watchPendingUpdates() {
+  // adding delay to give time to rehydrate
+  yield call(delay, 5 * 1000)
+  // resetting pendingUpdates status on app launch to ensure no updates are
+  // permanently set as retrying
+  yield put(PendingUpdatesActions.resetStatuses())
+  yield call(delay, 5 * 1000)
+  while(true) {
+    // triggers sync immediately then every 30 seconds
+    const numSeconds = firstCall ? 1 : 30
+    if (firstCall) firstCall = false
+    yield call(delay, numSeconds * 1000)
+    yield put(StoryActions.syncPendingUpdates())
+  }
+}
+
+function getIsEditing({routes}) {
+  const webCheck = _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
+  const sceneName = _.get(routes, 'scene.name', '')
+  const mobileCheck = sceneName.indexOf('createStory') !== -1
+    || sceneName === 'mediaSelectorScreen'
+    || sceneName === 'locationSelectorScreen'
+    || sceneName === 'tagSelectorScreen'
+    || _.get(routes, 'scene.title', '') === 'TRAVEL TIPS'
+  return webCheck || mobileCheck
+}
+
+function getNextPendingUpdate(state) {
+  const {pendingUpdates, updateOrder} = state.pendingUpdates
+  const nextUpdateKey = updateOrder.find(key => pendingUpdates[key].failCount < 5)
+  return nextUpdateKey ? pendingUpdates[nextUpdateKey] : {}
+}
+
+export function * syncPendingUpdates(api) {
+  const isEditing = yield select(getIsEditing)
+  const isConnected = yield hasConnection()
+  if (!isEditing && isConnected) {
+    const {failedMethod, story, status} = yield select(getNextPendingUpdate)
+    if (status === 'retrying') return
+    if (failedMethod && story) {
+      const mutableStory = Immutable.asMutable(story, {deep: true})
+      if (failedMethod === 'updateDraft') {
+        yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))
+      }
+      else yield put(StoryCreateActions[failedMethod](mutableStory, mutableStory.draft))
+    }
   }
 }

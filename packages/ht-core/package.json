@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.59",
+    "@hero/ht-util": "^0.0.60",
     "algoliasearch": "^3.22.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.23.0",

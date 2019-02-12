@@ -1,75 +1,38 @@
-import {Colors, Metrics, Fonts} from '../../Shared/Themes/'
+import { Colors, Metrics, Fonts } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default {
   container: {
-    flex: 1
+    flex: 1,
   },
   navBar: {
-    backgroundColor: Colors.background,
-    borderBottomWidth: 0,
-    height: Metrics.navBarHeight
-  },
-  navBarTitle: {
-    color: Colors.navBarText
-  },
-  navBarClear: {
     backgroundColor: Colors.clear,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    paddingTop: isIPhoneX() ? 15 : 0,
   },
-  navBarWhite: {
-    height: Metrics.navBarHeight - 15,
-    backgroundColor: Colors.snow,
-    borderStyle: 'solid',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.dividerGrey,
+  navBarFixedHeight: {
+    height: isIPhoneX() ? Metrics.navBarHeight + 15 : Metrics.navBarHeight,
+    paddingTop: isIPhoneX() ? 15 : 0,
+    backgroundColor: Colors.clear,
   },
   tabBar: {
-    backgroundColor: Colors.tabBar,
+    backgroundColor: Colors.snow,
+    height: Metrics.tabBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
-  tabBarActive: {
-    backgroundColor: Colors.sectionHighlight,
+  tabBarItemContainer: {
+    height: Metrics.tabBarHeight,
+    justifyContent: isIPhoneX() ? 'flex-start' : 'center',
   },
   navText: {
     fontFamily: Fonts.type.montserrat,
+    color: Colors.background,
     fontSize: 16,
-    color: Colors.navBarText
   },
   navTitle: {
-    fontFamily: Fonts.type.montserrat,
-    color: Colors.snow,
-    fontSize: 18
-  },
-  navBarBack: {
-    tintColor: 'white'
-  },
-  browseGuest: {
-    fontSize: 12,
-    color: Colors.snow
-  },
-  doneFollow: {
-    color: Colors.red,
-  },
-  redHighlightTint: {
-    tintColor: Colors.redHighlights,
-  },
-  signupTopicsRight: {
-    color: Colors.red,
-    paddingRight: 20,
-  },
-  buttonRed: {
-    tintColor: Colors.red,
-  },
-  buttonGrey: {
-    tintColor: Colors.navBarText,
-  },
-  createStory: {
-    view: {
-      width: Math.round(Metrics.screenWidth / 5),
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }
+    fontSize: 13,
+    fontWeight: '600',
   },
   storyTitle: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -77,5 +40,44 @@ export default {
     letterSpacing: .7,
     fontSize: 15,
     color: Colors.background,
+  },
+  navBarBack: {
+    tintColor: Colors.redHighlights,
+    transform: [{scaleX: 0.75}, {scaleY: 0.75}],
+    marginRight: 50,
+  },
+  backButtonWithText: {
+    tintColor: Colors.navBarText,
+    marginRight: 0,
+  },
+  browseGuest: {
+    fontSize: 12,
+    color: Colors.snow,
+  },
+  buttonGrey: {
+    tintColor: Colors.navBarText,
+  },
+  buttonGreyText: {
+    color: Colors.navBarText,
+    fontSize: 16,
+    paddingBottom: 2.5,
+    fontFamily: Fonts.type.montserrat,
+  },
+  createStory: {
+    view: {
+      width: Math.round(Metrics.screenWidth / 5),
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent:  'center',
+      alignItems: isIPhoneX() ? 'flex-start' : 'center',
+    },
+    image: {
+      transform: [{scaleX: 0.5}, {scaleY: 0.5}],
+    },
+  },
+  tabIcon: {
+    image: {
+      transform: [{scaleX: 0.5}, {scaleY: 0.5}],
+    },
   },
 }

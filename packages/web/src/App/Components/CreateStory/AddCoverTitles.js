@@ -176,8 +176,8 @@ const StyledRow = styled(Row)`
 `
 
 function isNewStory(props, nextProps) {
-  return (!props.workingDraft && nextProps.workingDraft) ||
-  (props.workingDraft.id !== nextProps.workingDraft.id)
+  return (!props.workingDraft && nextProps.workingDraft)
+  || (props.workingDraft.id !== nextProps.workingDraft.id)
 }
 
 export default class AddCoverTitles extends React.Component {
@@ -186,6 +186,7 @@ export default class AddCoverTitles extends React.Component {
     uploadImage: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
+    isPendingUpdateOverride: PropTypes.bool,
   }
 
   constructor(props) {
@@ -256,14 +257,12 @@ export default class AddCoverTitles extends React.Component {
     }
 
     // set line break index so deleting first char of a newline reduces height
-    const textAreaBreakCharIdx =
-      this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
+    const textAreaBreakCharIdx = this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
         ? this.state.title.length + 1
         : this.state.textAreaBreakCharIdx
 
-    const textAreaHeight =
-      event.target.value.length >= this.state.title.length ||
-      event.target.value.length >= this.state.textAreaBreakCharIdx
+    const textAreaHeight = event.target.value.length >= this.state.title.length
+      || event.target.value.length >= this.state.textAreaBreakCharIdx
         ? { height: `${this.textAreaRef.scrollHeight}px` }
         : { height: `${this.textAreaRef.scrollHeight - 50 || 50}px` }
 
@@ -275,13 +274,15 @@ export default class AddCoverTitles extends React.Component {
     this._onTextChange(event)
   }
 
-  // add this to properly set the value of the titleInput
   componentWillReceiveProps(nextProps) {
-    const workingDraft = {nextProps}
-    if (isNewStory(this.props, nextProps)){
+    const { workingDraft, isPendingUpdateOverride } = nextProps
+    if (
+      isNewStory(this.props, nextProps)
+      || (!this.props.isPendingUpdateOverride && isPendingUpdateOverride)
+    ) {
       this.setState({
         title: workingDraft.title,
-        description: workingDraft.title,
+        description: workingDraft.description,
       })
     }
   }
@@ -354,10 +355,10 @@ export default class AddCoverTitles extends React.Component {
         <StyledRow center="xs">
           <Loader />
         </StyledRow>
-        {!coverVideo &&
+        {!coverVideo && (
           <ImageWrapper image={coverImage}/>
-        }
-        {coverVideo &&
+        )}
+        {coverVideo && (
           <LimitedWidthContainer>
             <Video
               src={coverVideo}
@@ -366,13 +367,13 @@ export default class AddCoverTitles extends React.Component {
               withPrettyControls
             />
           </LimitedWidthContainer>
-          }
+        )}
         <Wrapper hasMediaAsset={hasMediaAsset}>
           <ButtonsHorizontalCenter>
             {this.renderUploadButton()}
           </ButtonsHorizontalCenter>
         </Wrapper>
-        {hasMediaAsset && !isGuide &&
+        {hasMediaAsset && !isGuide && (
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add a caption'
@@ -381,9 +382,9 @@ export default class AddCoverTitles extends React.Component {
             value={this.state.coverCaption}
             maxLength={100}
           />
-        }
+        )}
         {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
-        {!isGuide &&
+        {!isGuide && (
           <TitleInputsWrapper>
             <StyledTitleTextArea
               type='text'
@@ -407,7 +408,7 @@ export default class AddCoverTitles extends React.Component {
               hasMediaAsset={hasMediaAsset}
             />
           </TitleInputsWrapper>
-        }
+        )}
       </RelativeWrapper>
     )
   }

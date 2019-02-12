@@ -1,17 +1,21 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.lightGreyAreas
+    backgroundColor: Colors.lightGreyAreas,
+    marginTop: isIPhoneX() ? Metrics.navBarHeight + 20 : Metrics.navBarHeight,
+    borderTopWidth: 1,
+    borderTopColor: Colors.navBarText,
   },
   separator: {
     height: 35,
   },
   inputContainer: {
     height: 50,
-    backgroundColor: Colors.snow
+    backgroundColor: Colors.snow,
   },
   input: {
     padding: Metrics.baseMargin,
@@ -19,32 +23,32 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: 15,
-    color: '#757575',
+    color: Colors.grey,
     fontWeight: '300',
     flexGrow: 2,
-    marginLeft: Metrics.baseMargin
+    marginLeft: Metrics.baseMargin,
   },
   rowWrapper: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.navBarText,
-    backgroundColor: Colors.snow
+    backgroundColor: Colors.snow,
   },
   buttonWrapper: {
     flexDirection:'row',
     justifyContent: 'center',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 40
+    paddingTop: 40,
  },
   submitButton: {
     width: '50%',
-    height: Metrics.tabBarHeight/1.4,
+    height: 40,
     marginHorizontal: 0,
     marginLeft: 15,
   },
   cancelButton: {
     width: '25%',
-    height: Metrics.tabBarHeight/1.4,
+    height: 40,
     borderWidth: 1,
     borderColor: Colors.blackoutTint,
     backgroundColor: Colors.transparent,
@@ -62,6 +66,6 @@ export default StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
 })

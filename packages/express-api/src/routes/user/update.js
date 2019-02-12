@@ -68,7 +68,11 @@ export default async function updateUser(req) {
         (err.message && err.message.indexOf("username already taken") != -1)
       ) {
         return Promise.reject(Error("This username is taken"));
-      } else {
+      }
+      else if (err && err.message.startsWith('User validation failed: bio')) {
+        return Promise.reject(Error("Bio is longer than allowed length"))
+      }
+      else {
         return Promise.reject(Error("User could not be updated"));
       }
     });

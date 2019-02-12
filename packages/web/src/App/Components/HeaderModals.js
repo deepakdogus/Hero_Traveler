@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import Login from './Modals/HeaderModals/Login'
 import Signup from './Modals/HeaderModals/Signup'
 import SaveEdits from './Modals/HeaderModals/SaveEdits'
+import ExistingUpdateWarning from './Modals/HeaderModals/ExistingUpdateWarning'
 import ResetPasswordRequest from './Modals/HeaderModals/ResetPasswordRequest'
 import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
@@ -174,6 +175,14 @@ export default class HeaderModals extends React.Component {
             attemptLogout={attemptLogout}
             resetCreateStore={resetCreateStore}
           />
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'existingUpdateWarning'}
+          contentLabel="Existing Draft"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ExistingUpdateWarning closeModal={closeGlobalModal} />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'deleteFeedItem'}

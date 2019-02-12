@@ -269,7 +269,7 @@ export default class NewTextBlock extends PureComponent {
               this.isCaptionable() && styles.placeholderStyle,
             ]}
             onLayout={this.onLayout}
-            placeholderTextColor={'#757575'}
+            placeholderTextColor={Colors.grey}
             autoFocus={this.props.autoFocus}
             selection={inputSelection}
             onBlur={this.onBlur}

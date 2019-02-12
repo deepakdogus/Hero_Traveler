@@ -84,7 +84,8 @@ class Login extends Component {
     if (loginReduxError === 'Unauthorized' || loginReduxError === 'CLIENT_ERROR') {
       loginReduxError = 'Invalid username or password'
     }
-    else if (loginReduxError === 'TIMEOUT_ERROR' || loginReduxError === 'NETWORK_ERROR' ) {
+    else if (loginReduxError === 'TIMEOUT_ERROR' ||
+      loginReduxError === 'NETWORK_ERROR' ) {
       loginReduxError = 'Unable to login, check your connection...'
     }
 
@@ -92,8 +93,15 @@ class Login extends Component {
       <LoginWrapper>
         <Title>Login</Title>
           <form onSubmit={this.onAttemptLogin}>
-            <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>
-            <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
+            <StyledInput
+              placeholder='Username OR Email'
+              onChange={this.setUserIdentifier}
+            />
+            <StyledInput
+              placeholder='Password'
+              onChange={this.setPassword}
+              type='password'
+            />
             {loginReduxFetching &&
               <LoginFetchingText>Signing In ...</LoginFetchingText>
             }

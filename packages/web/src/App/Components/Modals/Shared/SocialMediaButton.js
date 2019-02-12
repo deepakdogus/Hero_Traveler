@@ -28,7 +28,7 @@ const SocialMediaText = styled.p`
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .2px;
-  color: ${props => props.theme.Colors.white};
+  color: ${props => props.theme.Colors.snow};
   margin: 7px 0;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `

@@ -33,7 +33,7 @@ const StyledIcon = styled.img`
   width: ${props => getSize};
   height: ${props => getSize};
   margin: ${props => props.center ? 'auto' : 0};
-  cursor: ${props => props.onClick ? 'pointer' : 'auto'}
+  cursor: ${props => props.onClick ? 'pointer' : 'auto'};
 `
 
 export default class Icon extends React.Component {
@@ -236,8 +236,10 @@ export default class Icon extends React.Component {
         return Images.iconCreateVideo
       case 'createAddCover':
         return Images.iconCreateAddCover
+      case 'createPlus':
+        return Images.iconCreatePlus
       case 'navNotifications':
-        return Images.iconNavNotifications
+        return Images.iconHeaderNotifications
       case 'info':
         return Images.iconInfoDark
       case 'infoLarge':

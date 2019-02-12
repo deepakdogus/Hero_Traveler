@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {
     RefreshControl,
     requireNativeComponent,
-    Alert,
 } from 'react-native'
 import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
@@ -38,6 +37,7 @@ export default class FeedList extends React.Component {
     renderSectionHeader: PropTypes.object,
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
+    sectionContentHeight: PropTypes.number,
     style: PropTypes.number,
     sessionError: PropTypes.string,
     clearSessionError: PropTypes.func,
@@ -120,8 +120,11 @@ export default class FeedList extends React.Component {
     let feedItemViews = []
 
     const {
-      targetEntities, renderSectionHeader,
-      renderHeaderContent, headerContentHeight,
+      targetEntities,
+      renderSectionHeader,
+      sectionContentHeight,
+      renderHeaderContent,
+      headerContentHeight,
     } = this.props
 
     const imageOptions = {
@@ -135,10 +138,6 @@ export default class FeedList extends React.Component {
 
     const entitiesInfo = targetEntities.map((entity) => {
       let totalPadding = Metrics.feedCell.padding
-
-      if (entity && entity.description && !entity.locations) {
-        totalPadding += Metrics.feedCell.descriptionPadding
-      }
 
       if (entity && entity.coverImage) {
         return {
@@ -183,7 +182,6 @@ export default class FeedList extends React.Component {
     return (
       <NativeFeed
         style={[styles.container, this.props.style]}
-        cellSeparatorHeight={Metrics.feedCell.separator}
         storyInfos={entitiesInfo}
         numPreloadBehindCells={2}
         numPreloadAheadCells={3}
@@ -204,26 +202,36 @@ export default class FeedList extends React.Component {
         onTouchMove={this.scrollResponderHandleTouchMove}
         onTouchStart={this.scrollResponderHandleTouchStart}
         onTouchCancel={this.scrollResponderHandleTouchCancel}
+        leadingCellSpace={1} // leadingCellSpace must be at least 1 for trailing space to appear
+        trailingCellSpace={20}
       >
         <RefreshControl
           enabled={this.props.refreshing}
           refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
         />
-        {
-          renderHeaderContent ?
-          (<NativeFeedHeader headerHeight={headerContentHeight} sticky={false}>{
-            renderHeaderContent}
-          </NativeFeedHeader>) :
-          null
+        {renderHeaderContent
+          ? (
+            <NativeFeedHeader
+              headerHeight={headerContentHeight}
+              sticky={false}
+            >
+              {renderHeaderContent}
+            </NativeFeedHeader>
+          )
+          : null
         }
-        { renderSectionHeader ?
-          (<NativeFeedHeader headerHeight={50} sticky={true}>
-            {renderSectionHeader}
-          </NativeFeedHeader>) :
-          null
+        {renderSectionHeader
+          ? (
+            <NativeFeedHeader
+              headerHeight={sectionContentHeight}
+              sticky={true}
+            >
+              {renderSectionHeader}
+            </NativeFeedHeader>
+          )
+          : null
         }
-
         {feedItemViews}
       </NativeFeed>
     )

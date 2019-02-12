@@ -65,17 +65,21 @@ const StoryVideo = enhanceStoryVideo((props) => {
 
 const atomicHandler = (item: Object): any => {
   if (_.get(item, 'data.type')) {
-    // if backgroundFailure getRelativeHeight returns NaN so adding failsafe
+    // if pendingDraft getRelativeHeight returns NaN so adding failsafe
     const width = Metrics.screenWidth
     const height = Math.min(
       getRelativeHeight(width, item.data),
       Metrics.maxContentHeight,
     ) || Metrics.maxContentHeight
 
+    /* eslint-disable no-case-declarations */
     switch (item.data.type) {
       case 'image':
         return (
-          <View key={item.key} style={styles.mediaViewWrapper}>
+          <View
+            key={item.key}
+            style={styles.mediaViewWrapper}
+          >
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
             <ImageWrapper
                 style={{width, height}}
@@ -99,9 +103,17 @@ const atomicHandler = (item: Object): any => {
         })
 
         return (
-          <View key={item.key} style={styles.mediaViewWrapper}>
+          <View
+            key={item.key}
+            style={styles.mediaViewWrapper}
+          >
             <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
-            <StoryVideo path={url} downloadPath={downloadUrl} thumbnailPath={thumbnailUrl} height={height}/>
+            <StoryVideo
+              path={url}
+              downloadPath={downloadUrl}
+              thumbnailPath={thumbnailUrl}
+              height={height}
+            />
             </View>
             {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
           </View>
@@ -109,6 +121,7 @@ const atomicHandler = (item: Object): any => {
       default:
         return null
     }
+    /* eslint-enable no-case-declarations */
   }
 
   return null
@@ -229,22 +242,22 @@ class StoryReadingScreen extends React.Component {
       <Fragment>
         <View style={styles.divider}/>
         <View style={styles.content}>
-          {!!story.draftjsContent &&
+          {!!story.draftjsContent && (
             <RNDraftJSRender
               contentState={draftjsContent}
               customStyles={rendererStyles}
               atomicHandler={atomicHandler}
             />
-          }
-          {!!this.props.story.hashtags &&
+          )}
+          {!!this.props.story.hashtags && (
             this.renderHashtags()
-          }
-          {!!story.videoDescription &&
+          )}
+          {!!story.videoDescription && (
             <View style={styles.videoDescription}>
               <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
             </View>
-          }
-          {this.hasLocationInfo() &&
+          )}
+          {this.hasLocationInfo() && (
             <View style={styles.locationWrapper}>
               <MapView
                 style={styles.locationMap}
@@ -261,7 +274,7 @@ class StoryReadingScreen extends React.Component {
                 }} />
               </MapView>
             </View>
-          }
+          )}
           <ReadingDetails targetEntity={story} />
         </View>
       </Fragment>
@@ -305,7 +318,10 @@ class StoryReadingScreen extends React.Component {
     if (!showNextTooltip) return null
 
     return (
-      <TouchableOpacity key={'tooltip'} onPress={this.dismissTooltip}>
+      <TouchableOpacity
+        key={'tooltip'}
+        onPress={this.dismissTooltip}
+      >
         <Animated.View
           style={[
             { opacity: tooltipOpacity },

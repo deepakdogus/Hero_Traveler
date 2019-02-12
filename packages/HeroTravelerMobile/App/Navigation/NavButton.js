@@ -5,7 +5,6 @@ import TabIcon from '../Components/TabIcon'
 import Styles from './Styles/NavButtonStyles'
 
 export default class NavButton extends React.Component {
-
   static propTypes = {
     iconName: PropTypes.string,
     text: PropTypes.string,
@@ -13,13 +12,14 @@ export default class NavButton extends React.Component {
     onLeft: PropTypes.func,
   }
 
-  render () {
-    const {iconName, onRight, onLeft, text, style = {}} = this.props
+  render() {
+    const { onRight, onLeft, iconName, text, style = {} } = this.props
     const TabIconInstance = (
       <TabIcon
-        name={ this.props.iconName }
-        style={{image: [Styles.image, style.icon || {} ] }}
-      />)
+        name={iconName}
+        style={{ image: [Styles.image, style.icon || {}], view: Styles.view }}
+      />
+    )
 
     return (
       <TouchableOpacity
@@ -27,8 +27,12 @@ export default class NavButton extends React.Component {
         style={Styles.touchableOpacity}
       >
         {onLeft && TabIconInstance}
-        <Text style={[ Styles.navButtonText, style.text || {} ]}>{ text }</Text>
-        {onRight && TabIconInstance}
+        <Text
+          style={[Styles.navButtonText, style.text || {}]}
+        >
+          {text}
+        </Text>
+        {onRight && iconName && TabIconInstance}
       </TouchableOpacity>
     )
   }

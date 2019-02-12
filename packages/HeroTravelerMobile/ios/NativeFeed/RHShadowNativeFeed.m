@@ -44,6 +44,8 @@
     totalHeaderHeight += header.headerHeight;
   }
   
+  totalHeaderHeight += _leadingCellSpace;
+  
   for (RHShadowNativeFeedItem* shadowView in [self reactSubviews])
   {
     if (![shadowView isKindOfClass:[RHShadowNativeFeedItem class]])
@@ -80,7 +82,7 @@
       yPos += ((RHStoryInfo*)_storyInfos[i]).height + _cellSeparatorHeight;
     }
     
-    height = shadowView.cellNum < _storyInfos.count ? ((RHStoryInfo*)_storyInfos[shadowView.cellNum]).height : height;
+    height = shadowView.cellNum < _storyInfos.count ? (((RHStoryInfo*)_storyInfos[shadowView.cellNum]).height) : height;
     
     CGRect childFrame = {{
       x,
@@ -108,6 +110,8 @@
     RHNativeFeed *view = (RHNativeFeed *)viewRegistry[self.reactTag];
     view.storyInfos = self.storyInfos;
     view.cellSeparatorHeight = self.cellSeparatorHeight;
+    view.leadingCellSpace = self.leadingCellSpace;
+    view.trailingCellSpace = self.trailingCellSpace;
     [view recalculateBackingView];
   }];
   

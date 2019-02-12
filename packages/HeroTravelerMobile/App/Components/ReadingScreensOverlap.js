@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Animated,
-  RefreshControl
+  RefreshControl,
 } from 'react-native'
 
 import formatCount from '../Shared/Lib/formatCount'
@@ -58,18 +58,20 @@ class ReadingScreenOverlap extends React.Component {
       author, user, isLiked, isBookmarked, renderBody, animatedViews,
       onPressLike, onPressBookmark, onPressComment, onPressShare,
       fetching, getTargetEntity, targetEntity, flagTargetEntity,
-      selectedTab, isStory
+      selectedTab, isStory,
     } = this.props
     const { scrollY } = this.state
     if (!targetEntity || !author) {
       return (
-        <View style={[styles.darkRoot]}>
-          {!targetEntity &&
+        <View style={[styles.root, styles.centered]}>
+          {!targetEntity && (
             <Loader style={styles.loader} />
-          }
-          { targetEntity && !!targetEntity.error &&
-            <Text>{targetEntity.error}</Text>
-          }
+          )}
+          {targetEntity && !!targetEntity.error && (
+            <Text style={styles.text}>
+              {targetEntity.error}
+            </Text>
+          )}
         </View>
       )
     }
@@ -81,17 +83,17 @@ class ReadingScreenOverlap extends React.Component {
         <Animated.ScrollView
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: true },
           )}
           scrollEventThrottle={16}
           style={[styles.scrollView]}
         >
-          {!targetEntity.draft &&
-          <RefreshControl
-            refreshing={fetching || false}
-            onRefresh={getTargetEntity}
-          />
-          }
+          {!targetEntity.draft && (
+            <RefreshControl
+              refreshing={fetching || false}
+              onRefresh={getTargetEntity}
+            />
+          )}
           <ConnectedFeedItemPreview
             isFeed={false}
             isStory={isStory}

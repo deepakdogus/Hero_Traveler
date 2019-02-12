@@ -12,10 +12,10 @@ import UXActions from '../Redux/UXRedux'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 
-/*global branch*/
-
-// If we don't explicity prevent 'fixed' from being passed to Grid, we get an error about unknown prop on div element
-// because apparently react-flexbox-grid passes all props down to underlying React elements
+// If we don't explicity prevent 'fixed' from being passed to Grid,
+// we get an error about unknown prop on div element
+// because apparently react-flexbox-grid passes all props down
+// to underlying React elements
 const StyledGrid = styled(({ fixed, hasBlackBackground, ...rest }) => <Grid {...rest} />)`
   padding: 15px;
   z-index: 3;
@@ -86,7 +86,8 @@ class Header extends React.Component {
   }
 
   handleScroll = event => {
-    // If header is transparent, it should mark itself as "engaged" so we know to style it differently (aka black background)
+    // If header is transparent, it should mark itself as "engaged"
+    // so we know to style it differently (aka black background)
     if (!this.props.blackHeader) {
       if (window.scrollY > 65 && !this.state.navbarEngaged) {
         this.setState({ navbarEngaged: true })

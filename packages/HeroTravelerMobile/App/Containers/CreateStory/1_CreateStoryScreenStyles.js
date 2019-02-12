@@ -6,14 +6,14 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
   addPhotoText: {
     margin: 20,
-    flex: 1
+    flex: 1,
   },
   lightBg: {
-    backgroundColor: Colors.lightGreyAreas
+    backgroundColor: Colors.lightGreyAreas,
   },
   photoOverlay: {
     backgroundColor: Colors.photoOverlay,
@@ -23,10 +23,10 @@ export default StyleSheet.create({
     bottom: 100,
     width: Metrics.screenWidth,
     height: Metrics.screenHeight,
-    opacity: 0.4
+    opacity: 0.4,
   },
   baseTextColor: {
-    color: Colors.background
+    color: Colors.background,
   },
   lightText: {
     color: Colors.snow,
@@ -37,7 +37,7 @@ export default StyleSheet.create({
   buttonText: {
     ...Fonts.style.buttonText,
     marginTop: Metrics.baseMargin,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   logoImage: {
     width: 250,
@@ -90,17 +90,17 @@ export default StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   loadingText: {
-    color: Colors.white
+    color: Colors.snow,
   },
   wrapper: {
     height: 300,
     backgroundColor: Colors.background,
     position: 'absolute',
-    left:  Metrics.screenWidth * -.8,
+    left: Metrics.screenWidth * -0.8,
     bottom: 0,
     width: Metrics.screenWidth,
-  }
+  },
 })

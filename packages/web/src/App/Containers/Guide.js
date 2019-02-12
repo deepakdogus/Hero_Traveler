@@ -175,7 +175,7 @@ class Guide extends Component {
 
   // onClickTab is the generic way we are dealing with TabBar clicks
   // in the future we will refactor so it immediately gives text
-  // GuideStoriesOfType however also needs to trigger this so adding selectedTab
+  // FeedItemsOfType however also needs to trigger this so adding selectedTab
   onClickTab = (event, selectedTab) => {
     let tab = _.get(event, 'target.innerHTML', selectedTab)
     if (this.state.activeTab !== tab) {
@@ -193,7 +193,7 @@ class Guide extends Component {
     return activeTab === 'OVERVIEW' || activeTab === type
   }
 
-  getGuideStoriesOfTypeProps(type) {
+  getFeedItemsOfTypeProps(type) {
     if (type === 'OVERVIEW') return {}
     const label = type === 'STAY' ? `PLACES TO STAY` : `THINGS TO ${type}`
     // onClickShowAll={this.onClickTab}
@@ -280,14 +280,14 @@ class Guide extends Component {
             </MetaInfoContainer>
           )}
           {this.shouldDisplay('SEE') && (
-            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('SEE')} />
+            <FeedItemGrid {...this.getFeedItemsOfTypeProps('SEE')} />
           )}
-          {this.shouldDisplay('DO') && <FeedItemGrid {...this.getGuideStoriesOfTypeProps('DO')} />}
+          {this.shouldDisplay('DO') && <FeedItemGrid {...this.getFeedItemsOfTypeProps('DO')} />}
           {this.shouldDisplay('EAT') && (
-            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('EAT')} />
+            <FeedItemGrid {...this.getFeedItemsOfTypeProps('EAT')} />
           )}
           {this.shouldDisplay('STAY') && (
-            <FeedItemGrid {...this.getGuideStoriesOfTypeProps('STAY')} />
+            <FeedItemGrid {...this.getFeedItemsOfTypeProps('STAY')} />
           )}
           <FeedItemActionBar
             isStory={false}

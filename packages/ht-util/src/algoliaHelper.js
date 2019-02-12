@@ -115,21 +115,27 @@ function deleteStoryFromIndex(storyId) {
 
 // guides
 function formatGuideSearchObject(guide) {
+  const _geoloc = []
+  const locationInfo = []
+  guide.locations.forEach(({latitude: lat, longitude: lng, country}) => {
+    _geoloc.push({lat, lng})
+    locationInfo.push({country})
+  })
+
   return {
     _id: guide._id,
     id: guide._id,
     objectID: guide._id,
-    author: guide.author.id,
+    author: guide.author.username,
+    authorId: guide.author.id,
     title: guide.title,
     description: guide.description,
     coverImage: guide.coverImage,
     coverVideo: guide.coverVideo,
     cost: guide.cost,
     duration: guide.duration,
-    _geoloc: guide.locations.map(location => ({
-      lat: location.latitude,
-      lng: location.longitude,
-    }))
+    _geoloc,
+    locationInfo,
   }
 }
 

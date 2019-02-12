@@ -132,16 +132,21 @@ class RootContainer extends Component {
     NavActions.guide({ guideId, title })
   }
 
-  isDarkBar() {
-    const location = this.props.location
-    return location === 'profile' || location === 'readOnlyProfile' ||
-    location === 'story' || location === 'guide'
+  isLightStatusBarText() {
+    const { location } = this.props
+    return location === 'signup'
+      || location === 'launchScreen'
+      || location === 'login'
   }
 
   render () {
     return (
       <View style={styles.applicationView}>
-        <StatusBar barStyle={this.isDarkBar() ? 'dark-content' : 'light-content'} />
+        <StatusBar barStyle={
+          this.isLightStatusBarText()
+            ? 'light-content'
+            : 'dark-content'
+          } />
         <ConnectedRouter scenes={NavigationScenes} />
       </View>
     )
@@ -155,7 +160,7 @@ const mapStateToProps = (state) => {
   return {
     started: state.startup.started,
     isLoggedIn: state.login.isLoggedIn,
-    location: location,
+    location: location || '',
   }
 }
 

@@ -29,20 +29,28 @@ const isEqual = (firstItem, secondItem) => {
   }
 }
 
-const isFieldSame = (field, workingDraft, originalDraft) => {
-  return isEqual(workingDraft[field], originalDraft[field])
+const isFieldSame = (field, workingDraft, comparisonDraft) => {
+  // special check when comparing to draftToSave when nav to different route
+  if (field === 'tripDate' && !workingDraft.tripDate) return true
+  return isEqual(workingDraft[field], comparisonDraft[field])
 }
 
-const haveFieldsChanged = (workingDraft, originalDraft) => {
-  if(!workingDraft || !originalDraft) return
+const haveFieldsChanged = (workingDraft, comparisonDraft) => {
+  if (!workingDraft || !comparisonDraft) return
 
   return !_.every(
-    fieldsToCheck.map(field => isFieldSame(field, workingDraft, originalDraft))
+    fieldsToCheck.map(field => isFieldSame(field, workingDraft, comparisonDraft))
   )
+}
+
+const hasChangedSinceSave = (workingDraft, draftToBeSaved) => {
+  return !draftToBeSaved
+    || (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
 }
 
 
 export {
   isFieldSame,
   haveFieldsChanged,
+  hasChangedSinceSave,
 }

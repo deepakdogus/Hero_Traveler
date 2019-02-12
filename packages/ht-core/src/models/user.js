@@ -260,7 +260,7 @@ UserSchema.statics = {
       })
     })
   },
-  createFromFacebookData(fbid, email, name, pictureUrl) {
+  createFromFacebookData(fbid, email, name) {
     // trim the name to be 10 characters long max
     const trimmedName = name.slice(0, 9).trim()
     // Make a semi-random username for the user:

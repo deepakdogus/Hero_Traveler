@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   ScrollView,
-  Text
+  Text,
 } from 'react-native'
 
 import styles from './Styles/PrivacyScreenStyles'
@@ -9,7 +9,7 @@ import styles from './Styles/PrivacyScreenStyles'
 export default class PrivacyScreen extends React.Component {
   render () {
     return (
-      <ScrollView style={styles.scrollViewWrapper} contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView style={styles.root}>
         <Text style={styles.headerText}>
           Privacy Policy
         </Text>

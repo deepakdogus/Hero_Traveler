@@ -23,7 +23,8 @@ import {
   Metrics,
   Colors,
 } from '../../Shared/Themes'
-import { getStoryImageUrl } from '../../Components/GuideStoriesOfType'
+
+import { getFeedItemImageURL } from '../../Components/FeedItemsOfType'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 
 const deleteBtnParams = {
@@ -115,9 +116,9 @@ class EditGuideStories extends Component {
           <NavBar
             onLeft={this.onLeft}
             leftTitle={'Back'}
-            title={'Guide Stories'}
+            title={'GUIDE STORIES'}
             onRight={this.onDone}
-            rightTitle={'Next'}
+            rightTitle={'Done'}
             rightTextStyle={storyCoverStyles.navBarRightTextStyle}
             style={storyCoverStyles.navBarStyle}
           />
@@ -125,8 +126,7 @@ class EditGuideStories extends Component {
             {!!stories.length && this.renderToolTip(stories.length === 1)}
             {!!stories.length &&
               stories.map((story, idx) => {
-
-                const coverUrl = getStoryImageUrl(
+                const coverUrl = getFeedItemImageURL(
                   story,
                   videoImageUrlOptions,
                   imageUrlOptions,
@@ -149,7 +149,7 @@ class EditGuideStories extends Component {
                 )
               })
             }
-            
+
           </View>
         </ScrollView>
       </View>
@@ -180,6 +180,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(EditGuideStories)
 const styles = StyleSheet.create({
   storyWrapper: {
     paddingHorizontal: Metrics.marginHorizontal,
-  }
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
+  },
 })
-

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Colors, Metrics, Fonts } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   containerWithNavbarAndTabbar: {
@@ -7,24 +8,24 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
   },
   camera: {
-    flex: 1
+    flex: 1,
   },
   leftCameraControls: {
     marginTop: Metrics.section,
     marginLeft: Metrics.section,
   },
   cameraControl: {
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   flipCamera: {
-    marginTop: Metrics.doubleBaseMargin
+    marginTop: Metrics.doubleBaseMargin,
   },
   flash: {
-    marginLeft: Metrics.baseMargin
+    marginLeft: Metrics.baseMargin,
   },
   cameraShutterButton: {
     alignItems: 'center',
-    marginBottom: 40 + Metrics.section,
+    marginBottom: isIPhoneX() ? 20 + Metrics.tabBarHeight : 40 + Metrics.section,
     backgroundColor: Colors.clear,
   },
   videoProgressWrapper: {
@@ -39,28 +40,28 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: Colors.red
+    backgroundColor: Colors.red,
   },
   videoProgressTextWrapper: {
     marginTop: Metrics.baseMargin,
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
   videoProgressText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: 16,
     color: Colors.snow,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   notAuthorizedWrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   notAuthorizedText: {
     ...ApplicationStyles.screen.titleText,
     color: Colors.navBarText,
-    textAlign: "center",
+    textAlign: 'center',
     padding: 20,
-  }  
+  },
 })

@@ -106,8 +106,8 @@ class AppRoot extends Component {
         <Route path='/profile/:userId/view' component={Profile} />
         <AuthRoute path='/profile/:userId/edit' component={Profile}/>
         <Route path='/search' component={Search} />
-        <Route exact path='/results/:lat/:lng' component={SearchResults} />
-        <Route exact path='/results/:lat/:lng/:seeAllType' component={SearchResults} />
+        <Route exact path='/results/:country/:lat/:lng' component={SearchResults} />
+        <Route exact path='/results/:country/:lat/:lng/:seeAllType' component={SearchResults} />
       </div>
     )
   }

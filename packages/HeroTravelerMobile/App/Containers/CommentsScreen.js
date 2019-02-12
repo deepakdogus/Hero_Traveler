@@ -8,7 +8,7 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {Colors} from '../Shared/Themes'
 import styles, { listHeight } from './Styles/CommentsScreenStyles'
-import CommentActions from '../Shared/Redux/Entities/Comments';
+import CommentActions from '../Shared/Redux/Entities/Comments'
 
 const Comment = ({avatarUrl, name, comment, timestamp}) => {
   return (
@@ -64,10 +64,9 @@ class CommentsScreen extends React.Component {
   }
 
   handleSend = () => {
+    if (this.state.text.trim().length === 0) return
+
     // blur to hide keyboard
-
-    if (this.state.text.trim().length=== 0) return
-
     this.input.blur()
     this.props.storyId
     ? this.props.createComment(this.props.storyId, 'story', this.state.text)
@@ -114,24 +113,26 @@ class CommentsScreen extends React.Component {
     : comments = comments['guide'][guideId]
 
     return (
-      <View style={[styles.containerWithNavbar]}>
+      <View style={[
+        styles.containerWithNavbar,
+        styles.listContainer]}
+      >
         <ScrollView
           ref={this._setRef}
           onContentSizeChange={this._onContentSizeChange}
           style={[
             styles.list,
-            this.state.isFocused ? {height: listHeight - 295} : {}
+            this.state.isFocused ? {height: listHeight - 295} : {},
           ]}>
-        {comments && comments.map(comment => {
-          return(
-            <Comment
-              avatar={getImageUrl(comment.user.profile.avatar, 'avatar')}
-              name={comment.user.profile.fullName}
-              comment={comment.content}
-              timestamp={moment(comment.createdAt).fromNow()}
-              key={comment.createdAt.toString()}
-            />
-            )})}
+        {comments && comments.map(comment => (
+          <Comment
+            avatarUrl={getImageUrl(comment.user.profile.avatar, 'avatar')}
+            name={comment.user.profile.fullName}
+            comment={comment.content}
+            timestamp={moment(comment.createdAt).fromNow()}
+            key={comment.createdAt.toString()}
+          />
+        ))}
         </ScrollView>
         <View>
           <View style={styles.inputGroupWrapper}>

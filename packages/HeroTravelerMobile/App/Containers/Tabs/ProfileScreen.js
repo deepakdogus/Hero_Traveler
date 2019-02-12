@@ -7,15 +7,16 @@ import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../../Shared/Redux/Entities/Stories'
 import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import { getPendingDraftsIds } from '../../Shared/Lib/getPendingDrafts'
 
 const VideoManager = NativeModules.VideoManager
 
 class ProfileScreen extends React.Component {
-
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = _.some([
       this.props.user !== nextProps.user,
       this.props.draftsById !== nextProps.draftsById,
+      this.props.pendingDraftsIds !== nextProps.pendingDraftsIds,
       this.props.userStoriesById !== nextProps.userStoriesById,
       this.props.userStoriesFetchStatus !== nextProps.userStoriesFetchStatus,
       this.props.userBookmarksById !== nextProps.userBookmarksById,
@@ -36,6 +37,8 @@ class ProfileScreen extends React.Component {
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
     this.props.getGuides(this.props.user.id)
+    this.props.loadDrafts()
+    this.props.getDeletedStories(this.props.user.id)
   }
 
   componentDidUpdate(prevProps) {
@@ -43,7 +46,10 @@ class ProfileScreen extends React.Component {
       this.props.guideIds !== prevProps.guideIds
       || this.props.userStoriesById !== prevProps.userStoriesById
     ) {
-      VideoManager.cleanDrafts(this.props.draftsById)
+      VideoManager.cleanDrafts([
+        ...this.props.draftsById,
+        ...this.props.pendingDraftsIds,
+      ])
     }
   }
 
@@ -52,7 +58,8 @@ class ProfileScreen extends React.Component {
       case TabTypes.stories:
         return this.props.getStories(this.props.user.id)
       case TabTypes.drafts:
-        return
+        this.props.getDeletedStories(this.props.user.id)
+        return this.props.loadDrafts()
       case TabTypes.bookmarks:
         return this.props.loadBookmarks(this.props.user.id)
     }
@@ -66,6 +73,7 @@ class ProfileScreen extends React.Component {
     const {
       user,
       draftsById,
+      pendingDraftsIds,
       userStoriesById,
       userStoriesFetchStatus,
       accessToken,
@@ -88,6 +96,7 @@ class ProfileScreen extends React.Component {
         user={user}
         stories={userStoriesById}
         drafts={draftsById}
+        pendingDraftsIds={pendingDraftsIds}
         bookmarks={userBookmarksById}
         guideIds={guideIds}
         onSelectTab={this._selectTab}
@@ -119,6 +128,7 @@ const mapStateToProps = (state) => {
     userStoriesById: getByUser(stories, userId),
     draftsFetchStatus: {loaded: true},
     draftsById: stories.drafts.byId,
+    pendingDraftsIds: getPendingDraftsIds(state.pendingUpdates),
     userBookmarksById: getByBookmarks(users, userId),
     userBookmarksFetchStatus: getBookmarksFetchStatus(stories, userId),
     guideIds: guides.guideIdsByUserId ? guides.guideIdsByUserId[userId] : [],
@@ -133,6 +143,8 @@ const mapDispatchToProps = (dispatch) => {
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    loadDrafts: () => dispatch(StoryActions.loadDrafts()),
+    getDeletedStories: (userId) => dispatch(StoryActions.getDeletedStories(userId)),
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
   }

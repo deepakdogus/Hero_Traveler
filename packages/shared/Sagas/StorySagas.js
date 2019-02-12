@@ -23,7 +23,7 @@ import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
-import hasConnection from '../../Lib/hasConnection'
+import hasConnection from '../Lib/hasConnection'
 import { currentUserId } from './SessionSagas'
 
 const hasInitialAppDataLoaded = ({entities}, userId) => isInitialAppDataLoaded(entities.users, userId)

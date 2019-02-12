@@ -1,6 +1,7 @@
-import immutablePersistenceTransform from '../Shared/Services/ImmutablePersistenceTransform'
+import immutablePersistenceTransform from
+  '../Shared/Services/ImmutablePersistenceTransform'
 // import { AsyncStorage } from 'react-native'
-import { asyncLocalStorage } from "redux-persist/storages"
+import { asyncLocalStorage } from 'redux-persist/storages'
 
 const REDUX_PERSIST = {
   active: true,

@@ -11,7 +11,7 @@ import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 
 import AdminStoryActions from '../../Shared/Redux/Admin/Stories'
-import EditStoryForm from '../../Components/Stories/EditStoryForm'
+import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
 
 const Wrapper = styled.div``
 
@@ -144,7 +144,9 @@ class EditStory extends React.Component {
             <TrStyled>
               <TdStyledGrey>Link</TdStyledGrey>
               <TdStyled>
-                <a href={`https://herotraveler.com/stories/${record.id}`}>{truncate(`herotraveler.com/stories/${record.id}`, 20)}</a>
+                <a href={`https://herotraveler.com/stories/${record.id}`}>
+                  {truncate(`herotraveler.com/stories/${record.id}`, 20)}
+                </a>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -154,7 +156,9 @@ class EditStory extends React.Component {
             <TrStyled>
               <TdStyledGrey>Author</TdStyledGrey>
               <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>{get(record, 'author.username')}</Link>
+                <Link to={`/users/${get(record, 'author.id')}`}>
+                  {get(record, 'author.username')}
+                </Link>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -216,7 +220,8 @@ class EditStory extends React.Component {
           <Divider/>
           <Row gutter={16}>
             <Col xs={24} md={12}>
-              <EditStoryForm
+              <EditStoryOrGuideForm
+                type="story"
                 record={record}
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}

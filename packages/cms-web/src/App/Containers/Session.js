@@ -18,13 +18,16 @@ function addToken(key, cookies, tokens){
     value: token,
     type: name,
   }
-  // unable to retrieve expire date from cookie so setting it short so it'll refresh automatically
+  // unable to retrieve expire date from cookie so setting
+  // it short so it'll refresh automatically
   if (name === 'access') formattedToken.expiresIn = defaultExpiration
   tokens.push(formattedToken)
 }
 
 function isNewToken(oldTokenOfType, token) {
-  return !oldTokenOfType || (oldTokenOfType && oldTokenOfType.value !== token.value && token.expiresIn !== defaultExpiration)
+  return !oldTokenOfType ||
+    (oldTokenOfType && oldTokenOfType.value !== token.value &&
+      token.expiresIn !== defaultExpiration)
 }
 
 class Session extends Component {
@@ -97,7 +100,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resumeSession: (userId, tokens) => dispatch(SessionActions.resumeSession(userId, tokens)),
+    resumeSession: (userId, tokens) =>
+      dispatch(SessionActions.resumeSession(userId, tokens)),
   }
 }
 

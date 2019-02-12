@@ -22,13 +22,13 @@ const metrics = {
     small: 20,
     medium: 30,
     large: 45,
-    xl: 50
+    xl: 50,
   },
   images: {
     small: 20,
     medium: 40,
     large: 60,
-    logo: 200
+    logo: 200,
   },
   rightModalWidth: 570,
   pixelRatio: 1,
@@ -37,7 +37,7 @@ const metrics = {
         height: 415,
     },
     feed: {
-      imageTypeHeight: 390,
+      imageTypeHeight: 415,
       // videoTypeHeight: 282,
       videoTypeHeight: platformSpecificMetrics.screenWidth * 9 / 16,
     },
@@ -45,9 +45,7 @@ const metrics = {
   feedCell: {
     imageCellHeight: 390, // Should be imageTypeHeight
     videoCellHeight: platformSpecificMetrics.screenWidth * 9 / 16, // Should be videoTypeHeight
-    padding: 68 + 90, // The heights of the top bar and bottom bar in feed
-    descriptionPadding: 34, // Only accomodates for a single line :/
-    separator: 10,
+    padding: 152, // The heights of the bottom bar in feed
   },
 }
 

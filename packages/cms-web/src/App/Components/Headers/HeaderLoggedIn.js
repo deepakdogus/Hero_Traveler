@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
 import {
   Row,
   Col,

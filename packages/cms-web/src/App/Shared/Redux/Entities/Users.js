@@ -129,7 +129,7 @@ export const suggestionsFailure = (state, {error}) => {
   })
 }
 
-export const receive = (state, {users = {}}) => {
+export const receive = (state, { users = {} }) => {
   return state.merge({entities: users}, {deep: true})
 }
 
@@ -422,7 +422,7 @@ export const fetchActivitiesFailure = (state, {error}) => {
   return state.merge({fetchStatus: fetchingError(), error})
 }
 
-export const receiveActivities = (state, {activities}) => {
+export const receiveActivities = (state, { activities = {} }) => {
   return state.merge({activities}, {deep: true})
 }
 

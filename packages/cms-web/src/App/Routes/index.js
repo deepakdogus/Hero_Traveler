@@ -40,8 +40,16 @@ class AppRoot extends Component {
             <Route exact path='/stories/:id' component={EditStoryPage} />
             <Route exact path='/guides' component={GuidesPage} />
             <Route exact path='/guides/:id' component={EditGuidePage} />
-            <Route exact path='/categories/:categoryId/stories' component={StoriesInCategory} />
-            <Route exact path='/categories/:categoryId/guides' component={GuidesInCategory} />
+            <Route
+              exact
+              path='/categories/:categoryId/stories'
+              component={StoriesInCategory}
+            />
+            <Route
+              exact
+              path='/categories/:categoryId/guides'
+              component={GuidesInCategory}
+            />
           </RouterWrapper>
         </AuthChecker>
       </div>

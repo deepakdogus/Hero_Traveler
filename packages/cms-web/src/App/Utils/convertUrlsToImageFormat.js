@@ -1,38 +1,31 @@
+const preparePicData = (fileData) => {
+  const format = fileData.format === 'jpg' || 'jpeg' ? 'jpeg' : fileData.format
+  const preFn = fileData.public_id.substring(fileData.public_id.lastIndexOf('/') + 1)
+  const filename = `${preFn}.${fileData.format}`
+  const imageName = filename.split(' ').join('-')
+  return {
+    filename: filename,
+    path: `v${fileData.version}/${fileData.public_id.split('/')[0]}/${imageName}`,
+    folders: [`v${fileData.version}`, fileData.public_id.split('/')[0]],
+    width: fileData.width,
+    height: fileData.height,
+    meta: {
+      mimeType: `${fileData.resource_type}/${format}`,
+    },
+  }
+}
+
 export default function convertUrlsToImageFormat(thumbnail, heroImage, altText){
   const result = {
     altText,
   }
   if (thumbnail) {
-    const thumbFormat = thumbnail.format === 'jpg' || 'jpeg' ? 'jpeg' : thumbnail.format
-    const thumbnailName = `${thumbnail.public_id.substring(thumbnail.public_id.lastIndexOf('/') + 1)}.${thumbnail.format}`
-    const thumbnailDashSpacedImageName = thumbnailName.split(' ').join('-')
     result.versions = {
-      thumbnail240: {
-        filename: thumbnailName,
-        path: `v${thumbnail.version}/${thumbnail.public_id.split('/')[0]}/${thumbnailDashSpacedImageName}`,
-        folders: [`v${thumbnail.version}`, thumbnail.public_id.split('/')[0]],
-        width: thumbnail.width,
-        height: thumbnail.height,
-        meta: {
-          mimeType: `${thumbnail.resource_type}/${thumbFormat}`,
-        },
-      },
+      thumbnail240: preparePicData(thumbnail),
     }
   }
   if (heroImage) {
-    const heroImageName = `${heroImage.public_id.substring(heroImage.public_id.lastIndexOf('/') + 1)}.${heroImage.format}`
-    const heroDashSpacedImageName = heroImageName.split(' ').join('-')
-    const heroFormat = heroImage.format === 'jpg' || 'jpeg' ? 'jpeg' : heroImage.format
-    result.original = {
-      filename: heroImageName,
-      path: `v${heroImage.version}/${heroImage.public_id.split('/')[0]}/${heroDashSpacedImageName}`,
-      folders: [`v${heroImage.version}`, heroImage.public_id.split('/')[0]],
-      width: heroImage.width,
-      height: heroImage.height,
-      meta: {
-        mimeType: `${heroImage.resource_type}/${heroFormat}`,
-      },
-    }
+    result.original = preparePicData(heroImage)
   }
   return result
 }

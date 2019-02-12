@@ -10,7 +10,7 @@ require('dotenv').config()
 
 ReactDOM.render(
   <Root />,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
 
 register()

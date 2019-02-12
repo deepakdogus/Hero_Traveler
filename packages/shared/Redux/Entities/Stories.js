@@ -38,7 +38,7 @@ const { Types, Creators } = createActions({
   deleteStorySuccess: ['userId', 'storyId'],
   removeDeletedStories: ['deleteStories'],
   getGuideStories: ['guideId'],
-  receiveStoriesByGuide: ['guideId', 'storiesByGuide']
+  receiveStoriesByGuide: ['guideId', 'storiesByGuide'],
   getDeletedStories: ['userId'],
   syncPendingUpdates: null
 })

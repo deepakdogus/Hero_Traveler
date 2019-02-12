@@ -57,34 +57,34 @@ class EditCategoryForm extends React.Component {
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please input title' }],
           })(
-            <Input placeholder="title" />
+            <Input placeholder="title" />,
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Thumbnail Image">
           {getFieldDecorator('thumbnail', {
           })(
-            <SingleImageUpload />
+            <SingleImageUpload />,
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Hero Image">
           {getFieldDecorator('heroImage', {
           })(
-            <SingleImageUpload />
+            <SingleImageUpload />,
           )}
         </FormItem>
 
         <FormItem {...formItemLayout} label="Category Interstitial Image (App)">
             {getFieldDecorator('interstitialImage', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Category Sponsor Logo (Website)">
             {getFieldDecorator('categorySponsorLogo', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
@@ -92,7 +92,7 @@ class EditCategoryForm extends React.Component {
             {getFieldDecorator('sponsorLink', {
               rules: [],
             })(
-              <Input placeholder="Add a link to a profile or website" />
+              <Input placeholder="Add a link to a profile or website" />,
             )}
           </FormItem>
         
@@ -101,13 +101,23 @@ class EditCategoryForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Feature category in Explore page</Checkbox>
+            <Checkbox>Feature category in Explore page</Checkbox>,
           )}
         </FormItem>
         <FormItem>
           <div>
-            <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>
-            <ButtonStyled type="default" onClick={this.props.handleCancel}>Cancel</ButtonStyled>
+            <ButtonStyled
+              type="primary"
+              htmlType="submit"
+              loading={formLoading}>
+              Save Changes
+            </ButtonStyled>
+            <ButtonStyled
+              type="default"
+              onClick={this.props.handleCancel}>
+              Cancel
+            </ButtonStyled>
+
             <br/>
             {this.props.onDelete && <ButtonStyled
               disabled={record.isDeleted}

@@ -119,10 +119,12 @@ class EditCategory extends React.Component {
       values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
     }
     if (categorySponsorLogo && categorySponsorLogo.public_id) {
-      values.categorySponsorLogo = convertUrlsToImageFormat(undefined, categorySponsorLogo, 'categorySponsorLogo')
+      values.categorySponsorLogo =
+        convertUrlsToImageFormat(undefined, categorySponsorLogo, 'categorySponsorLogo')
     }
     if (interstitialImage && interstitialImage.public_id) {
-      values.interstitialImage = convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
+      values.interstitialImage =
+        convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
     }
     new Promise((resolve, reject) => {
       putCategory({
@@ -156,13 +158,17 @@ class EditCategory extends React.Component {
             <TrStyled>
               <TdStyledGrey>Link</TdStyledGrey>
               <TdStyled>
-                <a href={`https://herotraveler.com/categories/${record.id}`}>{truncate(`herotraveler.com/categories/${record.id}`, 20)}</a>
+                <a href={`https://herotraveler.com/categories/${record.id}`}>
+                  {truncate(`herotraveler.com/categories/${record.id}`, 20)}
+                </a>
               </TdStyled>
             </TrStyled>
             <TrStyled>
               <TdStyledGrey>Created By</TdStyledGrey>
               <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>{get(record, 'author.username')}</Link>
+                <Link to={`/users/${get(record, 'author.id')}`}>
+                  {get(record, 'author.username')}
+                </Link>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -252,9 +258,12 @@ function mapDispatchToProps(dispatch) {
   return {
     getCategory: (id) => dispatch(AdminCategoryActions.adminGetCategory(id)),
     putCategory: (payload) => dispatch(AdminCategoryActions.adminPutCategory(payload)),
-    deleteCategory: (payload) => dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
-    uploadHeroImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryHeroImage(payload)),
-    uploadChannelImage: (payload) => dispatch(AdminCategoryActions.adminUploadCategoryChannelImage(payload)),
+    deleteCategory: (payload) =>
+      dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
+    uploadHeroImage: (payload) =>
+      dispatch(AdminCategoryActions.adminUploadCategoryHeroImage(payload)),
+    uploadChannelImage: (payload) =>
+      dispatch(AdminCategoryActions.adminUploadCategoryChannelImage(payload)),
   }
 }
 

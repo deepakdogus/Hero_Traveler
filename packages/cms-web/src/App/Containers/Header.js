@@ -153,7 +153,8 @@ function mapDispatchToProps(dispatch) {
     attemptLogout: tokens => dispatch(SessionActions.logout(tokens)),
     reroute: route => dispatch(push(route)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+    openGlobalModal: (modalName, params) =>
+      dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

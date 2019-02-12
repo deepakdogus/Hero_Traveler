@@ -18,7 +18,7 @@ import { AdminGuideTypes } from '../Redux/Admin/Guides'
 import { AdminStoryTypes } from '../Redux/Admin/Stories'
 import { AdminStatsTypes } from '../Redux/Admin/Stats'
 // Entities
-import { StoryTypes } from '../Redux/Entities/Stories'
+import StoryActions, { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
@@ -74,9 +74,7 @@ import {
   getStory,
   getUserFeed,
   getLikesAndBookmarks,
-  registerDraft,
-  publishLocalDraft,
-  publishDraft,
+  saveLocalDraft,
   discardDraft,
   updateDraft,
   getUserStories,
@@ -91,6 +89,9 @@ import {
   flagStory,
   getGuideStories,
   uploadImage,
+  watchPendingUpdates,
+  syncPendingUpdates,
+  getDeletedStories,
 } from './StorySagas'
 
 import {
@@ -184,10 +185,9 @@ function * watchRefreshTokens() {
   }
 }
 
-
 export default function * root () {
   yield [
-    fork(watchRefreshTokens),
+    fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
@@ -210,9 +210,7 @@ export default function * root () {
     takeLatest(SessionTypes.REFRESH_SESSION, refreshSession, heroAPI),
 
     // Drafts and story creation
-    takeLatest(StoryCreateTypes.PUBLISH_LOCAL_DRAFT, publishLocalDraft, heroAPI),
-    takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),
-    takeLatest(StoryCreateTypes.REGISTER_DRAFT, registerDraft, heroAPI),
+    takeLatest(StoryCreateTypes.SAVE_LOCAL_DRAFT, saveLocalDraft, heroAPI),
     takeLatest(StoryCreateTypes.DISCARD_DRAFT, discardDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
@@ -233,6 +231,8 @@ export default function * root () {
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),
+    takeLatest(StoryTypes.SYNC_PENDING_UPDATES, syncPendingUpdates, heroAPI),
+    takeLatest(StoryTypes.GET_DELETED_STORIES, getDeletedStories, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
@@ -295,5 +295,7 @@ export default function * root () {
 
     takeLatest(AdminStatsTypes.ADMIN_GET_TOTAL_STATS, adminGetTotalStats, heroAPI),
     takeLatest(AdminStatsTypes.ADMIN_GET_NEW_STATS, adminGetNewStats, heroAPI),
+    
+    fork(watchRefreshTokens),
   ]
 }

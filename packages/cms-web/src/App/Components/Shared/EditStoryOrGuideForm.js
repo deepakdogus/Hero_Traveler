@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import capitalize from 'lodash/capitalize'
 
 const FormItem = Form.Item
 
@@ -11,7 +12,7 @@ const ButtonStyled = styled(Button)`
   margin-right: 10px;
 `
 
-class EditGuideForm extends React.Component {
+class EditStoryOrGuideForm extends React.Component {
   state = {
   }
 
@@ -21,7 +22,8 @@ class EditGuideForm extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         onSubmit(values)
-      } else {
+      }
+      else {
         message.error('Form was not submitted: please fix errors')
       }
     })
@@ -31,7 +33,8 @@ class EditGuideForm extends React.Component {
     const {
       formLoading,
       isDeleting,
-      record
+      record,
+      type,
     } = this.props
 
     const { getFieldDecorator } = this.props.form
@@ -54,7 +57,7 @@ class EditGuideForm extends React.Component {
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please input title' }],
           })(
-            <Input placeholder="title" />
+            <Input placeholder="title" />,
           )}
         </FormItem>
         
@@ -62,7 +65,7 @@ class EditGuideForm extends React.Component {
           {getFieldDecorator('sponsor', {
             rules: [],
           })(
-            <Input placeholder="sponsored by" />
+            <Input placeholder="sponsored by" />,
           )}
         </FormItem>
 
@@ -71,7 +74,7 @@ class EditGuideForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Feature</Checkbox>
+            <Checkbox>Feature</Checkbox>,
           )}
         </FormItem>
         <FormItem>
@@ -79,7 +82,7 @@ class EditGuideForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Pin</Checkbox>
+            <Checkbox>Pin</Checkbox>,
           )}
         </FormItem>
         <FormItem>
@@ -87,13 +90,24 @@ class EditGuideForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Flag</Checkbox>
+            <Checkbox>Flag</Checkbox>,
           )}
         </FormItem>
         <FormItem>
           <div>
-            <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>
-            <ButtonStyled type="default" onClick={this.props.handleCancel}>Cancel</ButtonStyled>
+            <ButtonStyled
+              type="primary"
+              htmlType="submit"
+              loading={formLoading}
+            >
+              Save Changes
+            </ButtonStyled>
+            <ButtonStyled
+              type="default"
+              onClick={this.props.handleCancel}
+            >
+              Cancel
+            </ButtonStyled>
             <br/>
             <ButtonStyled
               disabled={record.isDeleted}
@@ -102,7 +116,7 @@ class EditGuideForm extends React.Component {
               loading={isDeleting}
               onClick={this.props.onDelete}
             >
-              Delete Guide
+              Delete {capitalize(`${type}`)}
             </ButtonStyled>
           </div>
         </FormItem>
@@ -111,7 +125,8 @@ class EditGuideForm extends React.Component {
   }
 }
 
-EditGuideForm.propTypes = {
+EditStoryOrGuideForm.propTypes = {
+  type: PropTypes.string.isRequired,
   record: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   handleCancel: PropTypes.func.isRequired,
@@ -121,6 +136,7 @@ EditGuideForm.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
 }
 
-const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
+const mapPropsToFields = ({ record }) =>
+  mapValues(record, value => Form.createFormField({ value }))
 
-export default Form.create({ mapPropsToFields })(EditGuideForm)
+export default Form.create({ mapPropsToFields })(EditStoryOrGuideForm)

@@ -30,7 +30,8 @@ class UserItemsTable extends React.Component {
         title: 'Date Published',
         dataIndex: 'createdAt',
         render: v => (<span>{moment(v).format('YYYY/MM/DD')}</span>),
-        sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        sorter: (a, b) => 
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
       },
       {
         title: 'id',

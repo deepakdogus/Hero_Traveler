@@ -24,7 +24,8 @@ const INITIAL_STATE = Immutable({
   },
 })
 
-export const openGlobalModal = (state, {modalName, params = {} }) => state.merge({modalName, params})
+export const openGlobalModal = (state, {modalName, params = {} }) =>
+  state.merge({modalName, params})
 
 export const updateGlobalModalParams = (state, {params = {}}) => state.merge({params})
 

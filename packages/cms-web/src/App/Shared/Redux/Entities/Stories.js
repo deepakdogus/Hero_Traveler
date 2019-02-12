@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import changeCountOfType from '../helpers/changeCountOfTypeHelper'
+import isLocalDraft from '../../Lib/isLocalDraft'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -19,12 +20,10 @@ const { Types, Creators } = createActions({
   fromCategoryFailure: ['categoryId', 'error'],
   loadDrafts: null,
   loadDraftsSuccess: ['draftsById'],
-  loadDraftsFailure: ['error'],
+  loadDraftsFailure: ['error', 'userId'],
   addDraft: ['draft'],
   removeDraft: ['draftId'],
-  addBackgroundFailure: ['story', 'error', 'failedMethod'],
-  removeBackgroundFailure: ['storyId'],
-  setRetryingBackgroundFailure: ['storyId'],
+  resetDrafts: null,
   changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
   storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
@@ -37,8 +36,11 @@ const { Types, Creators } = createActions({
   addUserStory: ['stories', 'draftId'],
   deleteStory: ['userId', 'storyId'],
   deleteStorySuccess: ['userId', 'storyId'],
+  removeDeletedStories: ['deleteStories'],
   getGuideStories: ['guideId'],
-  receiveStoriesByGuide: ['guideId', 'storiesByGuide']
+  receiveStoriesByGuide: ['guideId', 'storiesByGuide'],
+  getDeletedStories: ['userId'],
+  syncPendingUpdates: null
 })
 
 export const StoryTypes = Types
@@ -58,7 +60,6 @@ export const INITIAL_STATE = Immutable({
   storiesByUserAndId: {},
   storiesByGuide: {},
   storiesByCategoryAndId: {},
-  backgroundFailures: {},
   fetchStatus: initialFetchStatus(),
   userStoriesFetchStatus: initialFetchStatus(),
   userBookmarksFetchStatus: initialFetchStatus(),
@@ -108,10 +109,6 @@ export const userRequest = (state, {userId}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
     {fetching: true, loaded: false}
-  )
-  .setIn(
-    ['storiesByUserAndId', userId, 'byId'],
-    []
   )
 }
 
@@ -210,7 +207,7 @@ export const failure = (state, {error}) =>
     deep: true
   })
 
-export const updateEntities = (state, {stories = {}}) => {
+export const updateEntities = (state, { stories = {} }) => {
   return state.merge({entities: stories}, {deep: true})
 }
 
@@ -252,7 +249,7 @@ export const loadDrafts = (state) => {
         fetching: true,
         loaded: false
       },
-      byId: []
+      byId: state.drafts.byId,
     }
   })
 }
@@ -269,9 +266,9 @@ export const loadDraftsSuccess = (state, {draftsById}) => {
   })
 }
 
-export const loadDraftsFailure = (state, {error}) => {
+export const loadDraftsFailure = (state, {error, userId}) => {
   const derivedById = _.values(state.entities).filter(story => {
-    return story.draft
+    return story.draft && story.author === userId
   }).map(story => story.id)
   return state.merge({
     drafts: {
@@ -306,34 +303,15 @@ export const addDraft = (state, {draft}) => {
 // if local id removes from story entities if present
 // removes from drafts.byId
 export const removeDraft = (state, {draftId}) => {
-  if (draftId.substring(0,6) === 'local-') state = state.setIn(['entities'], state.entities.without(draftId))
-  state = removeBackgroundFailure(state, {storyId: draftId})
+  if (isLocalDraft(draftId)) state = state.setIn(['entities'], state.entities.without(draftId))
   const path = ['drafts', 'byId']
   return state.setIn(path, state.getIn(path, draftId).filter(id => {
     return id !== draftId
   }))
 }
 
-export const addBackgroundFailure = (state, {story, error, failedMethod}) => {
-  const failureObj = {}
-  failureObj[story.id] = {
-    story,
-    error,
-    failedMethod,
-    status: 'failed',
-  }
-  return state.merge({backgroundFailures: failureObj}, {deep: true})
-}
-
-export const removeBackgroundFailure = (state, {storyId}) => {
-  return  state.setIn(['backgroundFailures'], state.backgroundFailures.without(storyId))
-}
-
-export const setRetryingBackgroundFailure = (state, {storyId}) => {
-  if (state.backgroundFailures[storyId]){
-    return state.setIn(['backgroundFailures', storyId, 'status'], 'retrying')
-  }
-  return state
+export const resetDrafts = (state, {storyId}) => {
+  return state.setIn(['drafts'], INITIAL_STATE.drafts)
 }
 
 export const deleteStory = (state, {userId, storyId}) => {
@@ -347,6 +325,19 @@ export const deleteStorySuccess = (state, {userId, storyId}) => {
   const story = state.entities[storyId]
   const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']
   return newState.setIn(path, _.without(state.getIn(path), storyId))
+}
+
+export const removeDeletedStories = (state, {deleteStories = [ {} ] }) => {
+  return deleteStories.reduce((workingState, story) => {
+    const cachedStory = state.entities[story.id]
+    if (cachedStory) {
+      return deleteStorySuccess(state, {
+        userId: cachedStory.author,
+        storyId: story.id,
+      })
+    }
+    return workingState
+  }, state)
 }
 
 /* ------------- Selectors ------------- */
@@ -393,9 +384,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOAD_DRAFTS_FAILURE]: loadDraftsFailure,
   [Types.ADD_DRAFT]: addDraft,
   [Types.REMOVE_DRAFT]: removeDraft,
-  [Types.ADD_BACKGROUND_FAILURE]: addBackgroundFailure,
-  [Types.REMOVE_BACKGROUND_FAILURE]: removeBackgroundFailure,
-  [Types.SET_RETRYING_BACKGROUND_FAILURE]: setRetryingBackgroundFailure,
+  [Types.REMOVE_DELETED_STORIES]: removeDeletedStories,
+  [Types.RESET_DRAFTS]: resetDrafts,
   [Types.CHANGE_COUNT_OF_TYPE]: changeCountOfType,
   [Types.RECEIVE_STORIES]: updateEntities,
   [Types.ADD_USER_STORY]: addUserStory,

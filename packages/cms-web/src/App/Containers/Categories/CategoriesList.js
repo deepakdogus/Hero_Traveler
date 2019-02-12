@@ -111,7 +111,10 @@ const columns = [{
 },
 {
   title: 'Image',
-  render: (item) => (<SquareImg src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder} />),
+  render: (item) =>
+    (<SquareImg
+      src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder}
+    />),
 },
 {
   title: 'Edit',
@@ -378,8 +381,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategories: (params) => dispatch(AdminCategoriesActions.adminGetCategories(params)),
-    restoreCategories: (payload) => dispatch(AdminCategoriesActions.adminRestoreCategories(payload)),
+    getCategories: (params) =>
+      dispatch(AdminCategoriesActions.adminGetCategories(params)),
+    restoreCategories: (payload) =>
+      dispatch(AdminCategoriesActions.adminRestoreCategories(payload)),
   }
 }
 

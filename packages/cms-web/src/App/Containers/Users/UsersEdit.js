@@ -121,16 +121,24 @@ class EditUser extends React.Component {
     this.setState({
       formSubmitting: true,
     })
-    const { channelThumbnail, channelHeroImage, channelSponsorLogo, interstitialImage } = values
+    const {
+      channelThumbnail,
+      channelHeroImage,
+      channelSponsorLogo,
+      interstitialImage,
+    } = values
     if ((channelThumbnail && channelThumbnail.public_id) ||
         (channelHeroImage && channelHeroImage.public_id)) {
-      values.channelImage = convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
+      values.channelImage =
+        convertUrlsToImageFormat(channelThumbnail, channelHeroImage, 'channelImage')
     }
     if (channelSponsorLogo && channelSponsorLogo.public_id) {
-      values.channelSponsorLogo = convertUrlsToImageFormat(undefined, channelSponsorLogo, 'channelSponsorLogo')
+      values.channelSponsorLogo =
+        convertUrlsToImageFormat(undefined, channelSponsorLogo, 'channelSponsorLogo')
     }
     if (interstitialImage && interstitialImage.public_id) {
-      values.interstitialImage = convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
+      values.interstitialImage =
+        convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
     }
     
     new Promise((resolve, reject) => {
@@ -165,7 +173,9 @@ class EditUser extends React.Component {
             <TrStyled>
               <TdStyledGrey>Link</TdStyledGrey>
               <TdStyled>
-                <a href={`https://herotraveler.com/profile/${record.id}`}>{truncate(`herotraveler.com/profile/${record.id}`, 20)}</a>
+                <a href={`https://herotraveler.com/profile/${record.id}`}>
+                  {truncate(`herotraveler.com/profile/${record.id}`, 20)}
+                </a>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -270,8 +280,10 @@ function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
   const list = [...get(state, ['admin','users', 'list'], [])]
   const record = find(list, { id }) || {}
-  const stories = filter(values(get(state, 'entities.stories.entities', [])), { author: id })
-  const guides = filter(values(get(state, 'entities.guides.entities', [])), { author: id })
+  const stories =
+    filter(values(get(state, 'entities.stories.entities', [])), { author: id })
+  const guides =
+    filter(values(get(state, 'entities.guides.entities', [])), { author: id })
   return {
     record,
     isLoading: state.admin.users.isLoading,

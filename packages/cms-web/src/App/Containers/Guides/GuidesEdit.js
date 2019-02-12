@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminGuideActions from '../../Shared/Redux/Admin/Guides'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
-import EditGuideForm from '../../Components/Guides/EditGuideForm'
+import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
 import StoriesInGuideTable from '../../Components/Stories/StoriesInGuideTable'
 
 const Wrapper = styled.div``
@@ -148,7 +148,9 @@ class EditGuide extends React.Component {
             <TrStyled>
               <TdStyledGrey>Link</TdStyledGrey>
               <TdStyled>
-                <a href={`https://herotraveler.com/stories/${record.id}`}>{truncate(`herotraveler.com/stories/${record.id}`, 20)}</a>
+                <a href={`https://herotraveler.com/stories/${record.id}`}>
+                  {truncate(`herotraveler.com/stories/${record.id}`, 20)}
+                </a>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -158,7 +160,9 @@ class EditGuide extends React.Component {
             <TrStyled>
               <TdStyledGrey>Author</TdStyledGrey>
               <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>{get(record, 'author.username')}</Link>
+                <Link to={`/users/${get(record, 'author.id')}`}>
+                  {get(record, 'author.username')}
+                </Link>
               </TdStyled>
             </TrStyled>
             <TrStyled>
@@ -215,7 +219,8 @@ class EditGuide extends React.Component {
           <Divider/>
           <Row gutter={16}>
             <Col xs={24} md={12}>
-              <EditGuideForm
+              <EditStoryOrGuideForm
+                type="guide"
                 record={record}
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
@@ -247,6 +252,7 @@ EditGuide.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   stories: PropTypes.array,
   id: PropTypes.string.isRequired,
+  getStories: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

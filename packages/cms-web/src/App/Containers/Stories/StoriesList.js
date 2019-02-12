@@ -322,7 +322,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getStories: (params) => dispatch(AdminStoriesActions.adminGetStories(params)),
-    restoreStories: (payload) => dispatch(AdminStoriesActions.adminRestoreStories(payload)),
+    restoreStories: (payload) =>
+      dispatch(AdminStoriesActions.adminRestoreStories(payload)),
   }
 }
 

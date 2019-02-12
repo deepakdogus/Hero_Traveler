@@ -70,18 +70,23 @@ class EditUserForm extends React.Component {
           {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input username' }],
           })(
-            <Input placeholder="username" />
+            <Input placeholder="username" />,
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Email">
           {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input email' }],
           })(
-            <Input placeholder="email" />
+            <Input placeholder="email" />,
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
-          <Button className="login-form-forgot" onClick={this.resetPassword}>Resend Password Reset Email</Button>
+          <Button
+            className="login-form-forgot"
+            onClick={this.resetPassword}
+          >
+            Resend Password Reset Email
+          </Button>
         </FormItem>
         <FormItem {...formItemLayout} label="Role">
           {getFieldDecorator('role', {
@@ -94,7 +99,7 @@ class EditUserForm extends React.Component {
               <Option value="contributor">Contributor</Option>
               <Option value="founding member">Founding Member</Option>
               <Option value="fellow">Fellow</Option>
-            </Select>
+            </Select>,
           )}
         </FormItem>
         
@@ -103,7 +108,7 @@ class EditUserForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Featured User</Checkbox>
+            <Checkbox>Featured User</Checkbox>,
           )}
         </FormItem>
         <FormItem>
@@ -111,7 +116,7 @@ class EditUserForm extends React.Component {
             valuePropName: 'checked',
             initialValue: false,
           })(
-            <Checkbox>Make this user a channel</Checkbox>
+            <Checkbox>Make this user a channel</Checkbox>,
           )}
         </FormItem>
         {getFieldValue('isChannel') && <div>
@@ -122,28 +127,28 @@ class EditUserForm extends React.Component {
           <FormItem {...formItemLayout} label="Channel Thumbnail Image">
             {getFieldDecorator('channelThumbnail', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Channel Hero Image">
             {getFieldDecorator('channelHeroImage', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Channel Interstitial Image (App)">
             {getFieldDecorator('interstitialImage', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Channel Sponsor Logo (Website)">
             {getFieldDecorator('channelSponsorLogo', {
             })(
-              <SingleImageUpload />
+              <SingleImageUpload />,
             )}
           </FormItem>
 
@@ -151,7 +156,7 @@ class EditUserForm extends React.Component {
             {getFieldDecorator('sponsorLink', {
               rules: [],
             })(
-              <Input placeholder="Add a link to a profile or website" />
+              <Input placeholder="Add a link to a profile or website" />,
             )}
           </FormItem>
 
@@ -159,8 +164,18 @@ class EditUserForm extends React.Component {
         </div>}
         <FormItem>
           <div>
-            <ButtonStyled type="primary" htmlType="submit" loading={formLoading}>Save Changes</ButtonStyled>
-            <ButtonStyled type="default" onClick={this.props.handleCancel}>Cancel</ButtonStyled>
+            <ButtonStyled type="primary"
+              htmlType="submit"
+              loading={formLoading}
+            >
+              Save Changes
+            </ButtonStyled>
+            <ButtonStyled
+              type="default"
+              onClick={this.props.handleCancel}
+            >
+              Cancel
+            </ButtonStyled>
             <br/>
             <ButtonStyled
               disabled={record.isDeleted}
@@ -189,15 +204,15 @@ EditUserForm.propTypes = {
   resetPasswordRequest: PropTypes.func.isRequired,
 }
 
-// const mapPropsToFields = ({ record }) => mapValues(record, value => Form.createFormField({ value }))
-
 const mapPropsToFields = ({ record }) => {
   const values = mapValues(record, (value, key) => {
     if (key === 'channelImage') return undefined
     return Form.createFormField({ value })
   })
-  values['channelThumbnail'] = Form.createFormField({ value: get(record, 'channelImage') })
-  values['channelHeroImage'] = Form.createFormField({ value: get(record, 'channelImage') })
+  values['channelThumbnail'] =
+    Form.createFormField({ value: get(record, 'channelImage') })
+  values['channelHeroImage'] =
+    Form.createFormField({ value: get(record, 'channelImage') })
   return values
 }
 

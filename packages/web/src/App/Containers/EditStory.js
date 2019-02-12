@@ -384,7 +384,7 @@ class EditStory extends Component {
         />
         <Modal
           isOpen={!!error.title}
-          contentLabel="Signup Modal"
+          contentLabel="Error Modal"
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >

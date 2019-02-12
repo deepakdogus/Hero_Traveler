@@ -25,7 +25,6 @@ import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
-import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -90,7 +89,6 @@ class HeaderLoggedIn extends React.Component {
     closeGlobalModal: PropTypes.func,
     activities: PropTypes.objectOf(PropTypes.object),
     activitiesById: PropTypes.arrayOf(PropTypes.string),
-    haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
   }
@@ -162,7 +160,6 @@ class HeaderLoggedIn extends React.Component {
         reroute={reroute}
         attemptLogout={attemptLogout}
         globalModalParams={globalModalParams}
-        haveFieldsChanged={haveFieldsChanged}
         workingDraft={workingDraft}
         originalDraft={originalDraft}
         openSaveEditsModal={openSaveEditsModal}
@@ -179,6 +176,7 @@ class HeaderLoggedIn extends React.Component {
       workingDraft,
       originalDraft,
       openSaveEditsModal,
+      reroute
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
@@ -191,7 +189,7 @@ class HeaderLoggedIn extends React.Component {
             pathname={pathname}
             openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
-            haveFieldsChanged={haveFieldsChanged}
+            reroute={reroute}
             workingDraft={workingDraft}
             originalDraft={originalDraft}
           >
@@ -206,7 +204,7 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
+                reroute={reroute}
                 workingDraft={workingDraft}
                 originalDraft={originalDraft}
               >
@@ -218,7 +216,7 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
+                reroute={reroute}
                 workingDraft={workingDraft}
                 originalDraft={originalDraft}
               >
@@ -233,7 +231,7 @@ class HeaderLoggedIn extends React.Component {
               pathname={pathname}
               openSaveEditsModal={openSaveEditsModal}
               isMenuLink={false}
-              haveFieldsChanged={haveFieldsChanged}
+              reroute={reroute}
               workingDraft={workingDraft}
               originalDraft={originalDraft}
             />

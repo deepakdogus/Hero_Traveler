@@ -41,9 +41,10 @@ const styleMap = {
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
-    value: PropTypes.object,
+    onInputChange: PropTypes.func,
     setGetEditorState: PropTypes.func,
     storyId: PropTypes.string,
+    value: PropTypes.object,
   }
 
   constructor(props) {
@@ -208,6 +209,12 @@ export default class BodyEditor extends React.Component {
     this.setState({editorState})
   }
 
+  onBlur = (event) => {
+    this.props.onInputChange({
+      draftjsContent: this.getEditorStateAsObject(),
+    })
+  }
+
   focus = () => this.editor.focus()
   setEditorRef = (ref) => this.editor = ref
 
@@ -223,6 +230,7 @@ export default class BodyEditor extends React.Component {
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
+          onBlur={this.onBlur}
         />
           <SideToolbar/>
       </EditorWrapper>

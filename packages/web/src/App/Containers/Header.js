@@ -46,6 +46,7 @@ class Header extends React.Component {
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string,
     currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
+    currentUsernameIsTemporary: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
@@ -106,35 +107,56 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentUserId } = this.props
+    const {
+      attemptGetUserFeed,
+      attemptGetUserGuides,
+      currentUserId,
+      currentUsernameIsTemporary,
+      globalModalThatIsOpen,
+      isLoggedIn,
+      openGlobalModal,
+      pathname,
+      reroute,
+      signedUp,
+    } = this.props
 
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(currentUserId, {
+      attemptGetUserFeed(currentUserId, {
         perPage: itemsPerQuery,
         page: 1,
       })
-      this.props.attemptGetUserGuides(currentUserId)
+      attemptGetUserGuides(currentUserId)
+      if (currentUsernameIsTemporary) {
+        openGlobalModal('changeTempUsername')
+      }
     }
-    if (!prevProps.signedUp && this.props.signedUp) {
-      this.props.reroute('/signup/topics')
+    if (!prevProps.signedUp && signedUp) {
+      reroute('/signup/topics')
     }
-    if (prevProps.pathname !== this.props.pathname) {
+    if (prevProps.pathname !== pathname) {
       window.scrollTo({
         top: 0,
         behavior: 'instant',
       })
     }
-    if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+    if (prevProps.isLoggedIn && !isLoggedIn) {
+      reroute('/')
+      openGlobalModal('login')
+    }
+    if (
+      !prevProps.isLoggedIn && this.props.isLoggedIn
+      && prevProps.globalModalThatIsOpen === 'login'
+    ) {
+      this.closeModal()
+      reroute('/feed')
     }
     if (
       prevProps.globalModalThatIsOpen === 'documentation'
-      && !this.props.globalModalThatIsOpen
-      && !this.props.isLoggedIn
+      && !globalModalThatIsOpen
+      && !isLoggedIn
     ) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+      reroute('/')
+      openGlobalModal('login')
     }
   }
 
@@ -194,10 +216,6 @@ class Header extends React.Component {
 
   _resetCreateStore = () => {
     this.props.resetCreateStore(this.props.originalDraft.id)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
   }
 
   // name correspond to icon name and button name
@@ -330,6 +348,7 @@ function mapStateToProps(state) {
     currentUserProfile: currentUser && currentUser.profile,
     currentUserEmail: currentUser && currentUser.email,
     currentUserNotificationTypes: currentUser && currentUser.notificationTypes,
+    currentUsernameIsTemporary: currentUser && currentUser.usernameIsTemporary,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,

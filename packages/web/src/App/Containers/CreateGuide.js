@@ -177,7 +177,7 @@ class CreateGuide extends SharedCreateGuide {
           <AddCoverTitles
             onInputChange={this.updateGuide}
             workingDraft={this.state.guide}
-            uploadImage={this.props.uploadImage}
+            uploadMedia={this.props.uploadMedia}
             isGuide
           />
           <FeedItemDetails
@@ -239,8 +239,8 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   }
   dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
-  dispatchMapping.uploadImage = (file, callback) => {
-    dispatch(StoryCreateActions.uploadImage(file, callback))
+  dispatchMapping.uploadMedia = (file, callback) => {
+    dispatch(StoryCreateActions.uploadMedia(file, callback, 'image'))
   }
   return dispatchMapping
 }

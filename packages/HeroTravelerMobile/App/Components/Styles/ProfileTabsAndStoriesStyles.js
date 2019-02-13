@@ -9,7 +9,8 @@ export const feedItemHeight = Metrics.screenHeight - coverInnerHeight - tabNavEd
 
 export default StyleSheet.create({
   profileTabsAndStoriesHeight: {
-    height: isIPhoneX() ? Metrics.screenHeight - Metrics.tabBarHeight + 10 : Metrics.screenHeight - 10,
+    // height: isIPhoneX() ? Metrics.screenHeight - Metrics.tabBarHeight + 10 : Metrics.screenHeight - 10,
+    flex: 1,
   },
   profileTabsAndStoriesRoot: {
     marginTop: 20,
@@ -37,9 +38,6 @@ export default StyleSheet.create({
   },
   spinnerWrapper: {
     marginTop: Metrics.doubleSection,
-  },
-  feedList: {
-    marginBottom: Metrics.tabBarHeight + Metrics.baseMargin,
   },
   storyTitleStyle: {
     fontSize: 18,

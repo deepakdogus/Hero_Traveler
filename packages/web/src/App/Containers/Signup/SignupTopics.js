@@ -56,9 +56,6 @@ class SignupTopics extends Component {
   componentDidMount() {
     this.props.loadCategories()
     this.props.getSelectedCategories()
-    if (this.props.user.usernameIsTemporary) {
-      this._openChangeTempUsernameModal()
-    }
   }
 
   getIsSelected = (categoryId) => {

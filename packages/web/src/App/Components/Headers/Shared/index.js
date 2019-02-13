@@ -137,9 +137,9 @@ export const SearchNav = (props) => {
   const {
     pathname,
     openSaveEditsModal,
-    haveFieldsChanged,
     workingDraft,
     originalDraft,
+    reroute,
   } = props
 
   return (
@@ -149,7 +149,7 @@ export const SearchNav = (props) => {
         pathname={pathname}
         openSaveEditsModal={openSaveEditsModal}
         isMenuLink={false}
-        haveFieldsChanged={haveFieldsChanged}
+        reroute={reroute}
         workingDraft={workingDraft}
         originalDraft={originalDraft}
         noBorder={true}
@@ -177,7 +177,7 @@ MenuLink.propTypes = {
 SearchNav.propTypes = {
   pathname: PropTypes.string,
   openSaveEditsModal: PropTypes.func,
-  haveFieldsChanged: PropTypes.func,
+  reroute: PropTypes.func,
   workingDraft: PropTypes.object,
   originalDraft: PropTypes.object,
 }

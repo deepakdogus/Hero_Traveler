@@ -52,6 +52,7 @@ const images = {
   iconNavCreateActive: require('../Images/ht-icons/icon_nav-create-active.png'),
   iconNavProfile: require('../Images/ht-icons/icon_nav-profile.png'),
   iconNavProfileActive: require('../Images/ht-icons/icon_nav-profile-active.png'),
+  iconHeaderProfile: require('../Images/ht-icons/icon_profile.png'),
   iconDefaultProfile: require('../Images/ht-icons/icon_profile-default-avatar.png'),
   iconDefaultProfileLarge: require('../Images/ht-icons/icon_profile-default-avatar-large.png'),
   iconSquareFacebookOutline: require('../Images/ht-icons/story-actions-fb.png'),

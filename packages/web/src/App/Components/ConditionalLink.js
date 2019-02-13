@@ -1,8 +1,10 @@
+import _ from 'lodash'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {MenuLink} from './Headers/Shared'
+import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
 
 const Container = styled.div`
   margin: 0;
@@ -37,16 +39,14 @@ const ShouldEditLogo = styled.div`
   }}
 `
 
-
 export default class ConditionalLink extends React.Component{
-
   static propTypes = {
     to: PropTypes.string,
     pathname: PropTypes.string,
     onClick: PropTypes.func,
     openSaveEditsModal: PropTypes.func,
     isMenuLink: PropTypes.bool,
-    haveFieldsChanged: PropTypes.func,
+    reroute: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     children: PropTypes.any,
@@ -54,15 +54,16 @@ export default class ConditionalLink extends React.Component{
   }
 
   _handleOpenSaveEditsModal = () => {
-    this.props.openSaveEditsModal(this.props.to)
+    const {workingDraft, originalDraft, to, openSaveEditsModal, reroute} = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft)) {
+      return openSaveEditsModal(to)
+    }
+    return reroute(to)
   }
 
   getShouldOpenSaveEditsModal = () => {
-    const {pathname, haveFieldsChanged, workingDraft, originalDraft} = this.props
-    if (!haveFieldsChanged) return false
+    const {pathname} = this.props
     return pathname.includes('editStory')
-    && (pathname.includes('editStory')
-    && haveFieldsChanged(workingDraft, originalDraft))
   }
 
   _renderOpenSaveEditsLinkContainer = () => {
@@ -86,7 +87,8 @@ export default class ConditionalLink extends React.Component{
 
     if (this.getShouldOpenSaveEditsModal()) {
       return this._renderOpenSaveEditsLinkContainer()
-    } else {
+    }
+    else {
       const ChosenLink = isMenuLink ? MenuLink : Link
       const props = {to}
       if (isMenuLink) props.exact = true

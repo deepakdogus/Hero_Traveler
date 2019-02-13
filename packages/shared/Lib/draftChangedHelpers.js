@@ -2,17 +2,18 @@ import _ from 'lodash'
 
 //we need two arrays, because we don't have all the fields yet for web
 const fieldsToCheck = [
-  'title',
-  'description',
+  'categories',
   'coverCaption',
   'coverImage',
   'coverVideo',
-  'tripDate',
-  'location',
-  'type',
-  'categories',
+  'description',
+  'draftjsContent',
   'hashtags',
+  'location',
+  'title',
   'travelTips',
+  'tripDate',
+  'type',
 ]
 
 const isEqual = (firstItem, secondItem) => {
@@ -32,12 +33,42 @@ const isEqual = (firstItem, secondItem) => {
 const isFieldSame = (field, workingDraft, comparisonDraft) => {
   // special check when comparing to draftToSave when nav to different route
   if (field === 'tripDate' && !workingDraft.tripDate) return true
+  if (field === 'draftjsContent')
+    return isDraftJSContentSame(workingDraft, comparisonDraft)
   return isEqual(workingDraft[field], comparisonDraft[field])
 }
 
-const haveFieldsChanged = (workingDraft, comparisonDraft) => {
-  if (!workingDraft || !comparisonDraft) return
+const isDraftJSContentSame = (workingDraft, comparisonDraft) => {
+  const path = 'draftjsContent.blocks'
+  const workingContent = _.merge({}, _.get(workingDraft, path))
+  const comparisonContent = _.merge({}, _.get(comparisonDraft, path))
 
+  const workingLen = Object.keys(workingContent).length
+  const comparisonLen = Object.keys(comparisonContent).length
+  const isNewUntouchedContent = workingLen === 1
+    && comparisonLen === 0
+    && workingContent[0].type === 'unstyled'
+    && workingContent[0].text === ''
+
+  if (isNewUntouchedContent) return true
+  if (workingLen !== comparisonLen) return false
+
+  return Object.keys(workingContent).every(key => {
+    const workingBlock = workingContent[key]
+    const comparisonBlock = comparisonContent[key]
+    const baseCheck = workingBlock.key === comparisonBlock.key
+      && workingBlock.type === comparisonBlock.type
+    if (!baseCheck) return false
+    if (workingBlock.type === 'atomic') {
+      return _.isEqual(workingBlock, comparisonBlock)
+    }
+    return workingBlock.text === comparisonBlock.text
+    && _.isEqual(workingBlock.inlineStyleRanges, comparisonBlock.inlineStyleRanges)
+  })
+}
+
+const haveFieldsChanged = (workingDraft, comparisonDraft) => {
+  if (!workingDraft || !comparisonDraft || _.isEqual(comparisonDraft, {})) return
   return !_.every(
     fieldsToCheck.map(field => isFieldSame(field, workingDraft, comparisonDraft))
   )

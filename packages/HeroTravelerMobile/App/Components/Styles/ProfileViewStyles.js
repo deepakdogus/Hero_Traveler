@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 import { isIPhoneX } from '../../Themes/Metrics'
 
 const avatarImageSize = 95
@@ -9,6 +9,7 @@ const avatarImageSize = 95
 
 export default StyleSheet.create({
   // ProfileView
+  ...ApplicationStyles.screen,
   errorButton: {
     position: 'absolute',
     top: 125,

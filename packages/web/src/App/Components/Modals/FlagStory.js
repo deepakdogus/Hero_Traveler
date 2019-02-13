@@ -24,13 +24,12 @@ export default class FlagStory extends React.Component {
     this.props.closeModal()
   }
 
-
   _dontFlagAndReroute = () => {
     this.props.closeModal()
   }
 
   render(){
-    return(
+    return (
       <Container>
         <Title>Flag Story:</Title>
         <Text>Are you sure you want to flag this story?</Text>

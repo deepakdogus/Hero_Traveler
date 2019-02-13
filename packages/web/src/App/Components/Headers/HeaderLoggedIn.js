@@ -25,7 +25,6 @@ import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import ConditionalLink from '../ConditionalLink'
-import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -90,7 +89,6 @@ class HeaderLoggedIn extends React.Component {
     closeGlobalModal: PropTypes.func,
     activities: PropTypes.objectOf(PropTypes.object),
     activitiesById: PropTypes.arrayOf(PropTypes.string),
-    haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
   }
@@ -162,7 +160,6 @@ class HeaderLoggedIn extends React.Component {
         reroute={reroute}
         attemptLogout={attemptLogout}
         globalModalParams={globalModalParams}
-        haveFieldsChanged={haveFieldsChanged}
         workingDraft={workingDraft}
         originalDraft={originalDraft}
         openSaveEditsModal={openSaveEditsModal}
@@ -179,23 +176,30 @@ class HeaderLoggedIn extends React.Component {
       workingDraft,
       originalDraft,
       openSaveEditsModal,
+      reroute
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
 
     return (
-      <StyledRow between="xs" middle="xs">
+      <StyledRow
+        between="xs"
+        middle="xs"
+      >
         <Col>
           <ConditionalLink
             to="/"
             pathname={pathname}
             openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
-            haveFieldsChanged={haveFieldsChanged}
+            reroute={reroute}
             workingDraft={workingDraft}
             originalDraft={originalDraft}
           >
-            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            <Logo
+              src={logo}
+              alt={'Hero Traveler Logo'}
+            />
           </ConditionalLink>
         </Col>
         <LoggedInDesktopContainer>
@@ -206,7 +210,7 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
+                reroute={reroute}
                 workingDraft={workingDraft}
                 originalDraft={originalDraft}
               >
@@ -218,7 +222,7 @@ class HeaderLoggedIn extends React.Component {
                 pathname={pathname}
                 openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
+                reroute={reroute}
                 workingDraft={workingDraft}
                 originalDraft={originalDraft}
               >
@@ -227,19 +231,25 @@ class HeaderLoggedIn extends React.Component {
             </Row>
           </Col>
         </LoggedInDesktopContainer>
-        <Col smOffset={2} lg={5}>
-          <Row end='xs' middle='xs'>
+        <Col
+          smOffset={2}
+          lg={5}
+        >
+          <Row
+            end='xs'
+            middle='xs'
+          >
             <SearchNav
               pathname={pathname}
               openSaveEditsModal={openSaveEditsModal}
               isMenuLink={false}
-              haveFieldsChanged={haveFieldsChanged}
+              reroute={reroute}
               workingDraft={workingDraft}
               originalDraft={originalDraft}
             />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
-              {!this.props.pathname.includes('editStory') &&
+              {!this.props.pathname.includes('editStory') && (
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
                 <WrappedNavLink
                   to='/editStory/new'
@@ -252,14 +262,14 @@ class HeaderLoggedIn extends React.Component {
                     margin='none'
                   />
                 </WrappedNavLink>
-              }
+              )}
               <NotificationButtonContainer>
-                {notificationsCount > 0 &&
+                {notificationsCount > 0 && (
                   <NotificationsBadge
                     count={notificationsCount}
                     onClick={this.openNotifications}
                   />
-                }
+                )}
                 <StyledRoundedNotificationButton
                   type='headerButton'
                   height='32px'
@@ -286,17 +296,17 @@ class HeaderLoggedIn extends React.Component {
                     imageTextProps={AvatarImageTextStyles}
                   />
                 </StyledRoundedAvatarButton>
-                  {globalModal === 'profileMenu' &&
+                  {globalModal === 'profileMenu' && (
                     this.renderProfileMenu()
-                  }
+                  )}
             </LoggedInDesktopContainer>
             <HamburgerIcon
               name='hamburger'
               onClick={this._openHamburgerMenu}
             />
-            {globalModal === 'hamburgerMenu' &&
+            {globalModal === 'hamburgerMenu' && (
               this.renderProfileMenu()
-            }
+            )}
           </Row>
         </Col>
       </StyledRow>

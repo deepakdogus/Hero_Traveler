@@ -122,7 +122,7 @@ class ProfileEditScreen extends React.Component {
       profile: {
         tempCover: undefined,
         tempAvatar: undefined,
-      }
+      },
     })
     NavActions.pop()
   }
@@ -137,16 +137,16 @@ class ProfileEditScreen extends React.Component {
       onLeft: () => NavActions.pop(),
       rightTitle: 'Done',
       rightIcon: 'none',
-      onSelectMedia: this._handleUpdateAvatarPhoto
+      onSelectMedia: this._handleUpdateAvatarPhoto,
     })
   }
 
   renderAvatar() {
-    const user = this.props.user;
+    const user = this.props.user
 
-    const avatarUrl = (user.profile.tempAvatar) ?
-      getImageUrl(user.profile.tempAvatar, 'avatar') :
-      getImageUrl(user.profile.avatar, 'avatar')
+    const avatarUrl = (user.profile.tempAvatar)
+      ? getImageUrl(user.profile.tempAvatar, 'avatarLarge')
+      : getImageUrl(user.profile.avatar, 'avatarLarge')
 
     return (
       <View style={styles.profileWrapper}>

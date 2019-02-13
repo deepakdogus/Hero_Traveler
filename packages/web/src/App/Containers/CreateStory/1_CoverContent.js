@@ -13,7 +13,7 @@ class CreateStoryCoverContent extends Component {
     workingDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     setGetEditorState: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     isPendingUpdateOverride: PropTypes.bool,
   }
 
@@ -40,7 +40,7 @@ class CreateStoryCoverContent extends Component {
         <AddCoverTitles
           onInputChange={this.onInputChange}
           workingDraft={this.props.workingDraft}
-          uploadImage={this.props.uploadImage}
+          uploadMedia={this.props.uploadMedia}
           isPendingUpdateOverride={this.props.isPendingUpdateOverride}
         />
         <BodyEditor
@@ -63,7 +63,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
+    uploadMedia: (file, callback, mediaType) =>
+      dispatch(StoryCreateActions.uploadMedia(file, callback, mediaType)),
   }
 }
 

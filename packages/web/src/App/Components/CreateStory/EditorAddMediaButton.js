@@ -6,6 +6,7 @@ import uploadFile, {
 } from '../../Utils/uploadFile'
 import {
   insertAtomicBlock,
+  removeMedia,
 } from '../../Shared/Lib/draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
@@ -21,7 +22,7 @@ const HiddenInput = styled.input`
 
 class AddMediaButton extends React.Component {
   static propTypes = {
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     getEditorState: PropTypes.func,
     setEditorState: PropTypes.func,
     type: PropTypes.string,
@@ -29,32 +30,37 @@ class AddMediaButton extends React.Component {
   }
 
   uploadFile = (event) => {
+    const {getEditorState, type} = this.props
+    const loaderUpdate = insertAtomicBlock(
+      getEditorState(),
+      'loader',
+      'url', // need to pass dummy URL for EditorMediaComponent
+    )
+    const loaderKey = loaderUpdate.getSelection().getFocusKey()
+    this.props.setEditorState(loaderUpdate)
+
     uploadFile(event, this, (file) => {
       if (!file) return
-      const {getEditorState, type} = this.props
 
-      const updateCall = (cloudinaryFile) => {
-        let update
-        if (cloudinaryFile) {
+      const updateCall = (cloudinaryFile, failure) => {
+        let cleanedEditorState
+        if (failure) {
+          cleanedEditorState = removeMedia(loaderKey, loaderUpdate)
+        }
+        else {
           const formattedFile = extractUploadData(cloudinaryFile)
-          update = insertAtomicBlock(
-            getEditorState(),
+          const update = insertAtomicBlock(
+            loaderUpdate,
             type,
             formattedFile.url,
             formattedFile.height,
             formattedFile.width,
           )
+          cleanedEditorState = removeMedia(loaderKey, update)
         }
-        else update = insertAtomicBlock(getEditorState(), type, file.uri)
-        this.props.setEditorState(update)
+        this.props.setEditorState(cleanedEditorState)
       }
-
-      if (file.type.includes('video')) {
-        updateCall()
-      }
-      else {
-        this.props.uploadImage(file.uri, updateCall)
-      }
+      this.props.uploadMedia(file.uri, updateCall, type)
     })
   }
 
@@ -116,8 +122,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    uploadImage: (file, callback) => dispatch(
-      StoryCreateActions.uploadImage(file, callback),
+    uploadMedia: (file, callback, mediaType) => dispatch(
+      StoryCreateActions.uploadMedia(file, callback, mediaType),
     ),
   }
 }

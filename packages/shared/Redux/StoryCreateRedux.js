@@ -27,8 +27,8 @@ const { Types, Creators } = createActions({
   incrementSyncProgress: ['steps'],
   syncError: null,
   resetSync: null,
-  uploadImage: ['uri', 'callback'],
-  uploadImageFailure: ['error'],
+  uploadMedia: ['uri', 'callback', 'mediaType'],
+  uploadMediaFailure: ['error'],
 })
 
 export const StoryCreateTypes = Types
@@ -203,7 +203,7 @@ export const editStoryFailure = (state, {error, cachedStory}) => {
   })
 }
 
-export const uploadImageInit = (state) => {
+export const uploadMediaInit = (state) => {
   return state.merge({
     imageUpload: {
       ...initialImageUpload,
@@ -211,7 +211,7 @@ export const uploadImageInit = (state) => {
   })
 }
 
-export const uploadImageFailure = (state, {error, id}) => {
+export const uploadMediaFailure = (state, {error, id}) => {
   return state.merge({
     imageUpload: {
       error,
@@ -242,6 +242,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.INCREMENT_SYNC_PROGRESS]: incrementSyncProgress,
   [Types.SYNC_ERROR]: syncError,
   [Types.RESET_SYNC]: resetSync,
-  [Types.UPLOAD_IMAGE]: uploadImageInit,
-  [Types.UPLOAD_IMAGE_FAILURE]: uploadImageFailure
+  [Types.UPLOAD_MEDIA]: uploadMediaInit,
+  [Types.UPLOAD_MEDIA_FAILURE]: uploadMediaFailure,
 })

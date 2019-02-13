@@ -1,4 +1,5 @@
 const mb = 1000 * 1000
+const maxMB = 75
 const cloudinaryPixelLimit = 25000000 // 25 megapixels
 
 function isImage(file) {
@@ -10,12 +11,12 @@ function isVideo(file) {
 }
 
 function isValidSize(file) {
-  return (isVideo(file) && file.size < 100 * mb)
+  return (isVideo(file) && file.size < maxMB * mb)
   || (isImage(file) && file.size < 20 * mb)
 }
 
 function uploadAlert(onload) {
-  alert('We are sorry, the file you uploaded is in an unsupported format. We accept PNG and JPG images up to 20MB and 5000x5000 pixels; and MP4, MOV videos up to 60 seconds long and 100MB')
+  alert(`We are sorry, the file you uploaded is in an unsupported format. We accept PNG and JPG images up to 20MB and 5000x5000 pixels; and MP4, MOV videos up to 60 seconds long and ${maxMB}MB`)
   onload()
 }
 

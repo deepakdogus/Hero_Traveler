@@ -23,7 +23,6 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
-const MAX_RADIUS = 804672 // = 250 miles in meters
 const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
 
 class SearchResultsScreen extends Component {
@@ -87,6 +86,12 @@ class SearchResultsScreen extends Component {
     }
   }
 
+  componentWillUnmount () {
+    // avoids not showing new results/showing deleted stories
+    this.guideHelper.clearCache()
+    this.storyHelper.clearCache()
+  }
+
   hasHistoryData = () => {
     const { latitude, longitude, country } = this.props.historyData
     return latitude && longitude && country
@@ -127,7 +132,6 @@ class SearchResultsScreen extends Component {
     helper
     .setQuery('')
     .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-    .setQueryParameter('aroundRadius', MAX_RADIUS)
     .setQueryParameter('aroundPrecision', METER_PRECISION)
     .setQueryParameter('hitsPerPage', hitCount)
     .search()

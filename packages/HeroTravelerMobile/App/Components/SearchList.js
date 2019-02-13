@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
+import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
+
 import styles from './Styles/SearchPlacesPeopleStyles'
 
 import FollowFollowingRow from './FollowFollowingRow'
@@ -37,8 +39,8 @@ class SearchList extends Component {
     Keyboard.dismiss()
 
     let title = location.primaryText || location.title
-    title += location.secondaryText && location.secondaryText.indexOf(', ') !== -1
-      ? `, ${this.formatSecondaryText(location.secondaryText)}`
+    title += hasSecondaryText(location.secondaryText)
+      ? `, ${formatSecondaryText(location.secondaryText)}`
       : ''
 
     NavActions.searchResults({
@@ -67,9 +69,6 @@ class SearchList extends Component {
     })
   }
 
-  formatSecondaryText = secondaryText =>
-    secondaryText.substr(0, secondaryText.lastIndexOf(','))
-
   // search results
   renderSearchTitle = ({ section: { title, data } }) =>
     (
@@ -90,15 +89,12 @@ class SearchList extends Component {
       <View style={styles.textContainer}>
         <Text style={styles.listItemText}>
           {primaryText || title}
-          {secondaryText && secondaryText.indexOf(', ') !== -1
-            ? ','
-            : ''
-          }
+          {hasSecondaryText(secondaryText) ? ',' : ''}
           &nbsp;
         </Text>
         {!!secondaryText && secondaryText.indexOf(', ') !== -1 && (
           <Text style={styles.listItemSecondaryText}>
-            {this.formatSecondaryText(secondaryText)}
+            {formatSecondaryText(secondaryText)}
           </Text>
         )}
       </View>

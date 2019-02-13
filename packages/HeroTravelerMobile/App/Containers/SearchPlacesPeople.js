@@ -92,7 +92,7 @@ class SearchPlacesPeople extends Component {
     const hasSearchText = inputText.length > 0
     const { selectedTabIndex } = this.state
 
-    // if notTab is selected, select the Places tab and continue
+    // if no tab is selected, select the Places tab and continue
     if (selectedTabIndex === null) {
       this.setState({
         selectedTabIndex: 0,

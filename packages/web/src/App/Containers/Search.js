@@ -9,6 +9,7 @@ import env from '../Config/Env'
 import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
+import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
 import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
@@ -297,16 +298,12 @@ class Search extends Component {
       })
       reroute({
         pathname: `/results/${country}/${lat}/${lng}`,
-        search: `?t=${title}${secondaryText && secondaryText.indexOf(', ') !== -1
-          ? `, ${this.formatSecondaryText(secondaryText)}`
-          : ''
+        search: `?t=${title}${
+          hasSecondaryText(secondaryText) ? `, ${formatSecondaryText(secondaryText)}` : ''
         }`,
       })
     }
   }
-
-  formatSecondaryText = secondaryText =>
-    secondaryText.substr(0, secondaryText.lastIndexOf(','))
 
   renderActiveTab = suggestions => {
     const { activeTab } = this.state

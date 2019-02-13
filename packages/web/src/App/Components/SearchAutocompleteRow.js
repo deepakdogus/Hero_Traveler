@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
+
 import HorizontalDivider from '../Components/HorizontalDivider'
 
 const AutocompleteRow = styled.div`
@@ -46,15 +48,12 @@ class SearchAutocompleteRow extends Component {
         <TextContainer>
           <PrimaryText>
             {title}
-            {secondaryText && secondaryText.indexOf(', ') !== -1
-              ? ','
-              : ''
-            }
+            {hasSecondaryText(secondaryText) ? ',' : ''}
           </PrimaryText>
           <span>&nbsp;</span>
-          {secondaryText && secondaryText.indexOf(', ') !== -1 && (
+          {hasSecondaryText(secondaryText) && (
             <SecondaryText>
-              {secondaryText.substr(0, secondaryText.lastIndexOf(','))}
+              {formatSecondaryText(secondaryText)}
             </SecondaryText>
           )}
         </TextContainer>

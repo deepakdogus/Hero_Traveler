@@ -7,6 +7,9 @@ import {
 import {
   getUserStories, deleteStory
 } from '../story'
+import {
+  getUserGuides, deleteGuide
+} from '../guide'
 import {algoliaHelper} from '@hero/ht-util'
 import _ from 'lodash'
 
@@ -20,6 +23,16 @@ export default function deleteUser(user) {
         return deleteStory(story.id)
       })
     )
+  })
+  .then(() => {
+    return getUserGuides(user.id)
+    .then(guides => {
+      return Promise.all(
+        _.map(guides, (guide) => {
+          return deleteGuide(guide.id)
+        })
+      )
+    })
   })
   .then(() => {
     return deleteAllHelper([

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { Row, Col, Spin, message } from 'antd'
@@ -14,54 +13,19 @@ import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
 import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
-const Wrapper = styled.div``
-
-const Breadcrumbs = styled.div``
-
-const MainWrapper = styled.div`
-  max-width: 900px;
-  margin: 0 auto;
-`
-
-const Title = styled.h1`
-  font-weight: bold;
-`
-
-const SmallTitle = styled.h3`
-  font-weight: bold;
-`
-
-const Divider = styled.hr`
-  border-bottom: 2px solid black;
-  width: 100%;
-`
-
-const TableStyled = styled.table`
-  border: 1px solid black;
-  width: 100%;
-`
-
-const TrStyled = styled.tr`
-  border: 1px solid black;
-`
-
-const TdStyledGrey = styled.td`
-  border: 1px solid black;
-  text-align: center;
-  padding: 5px 15px;
-  background-color: #efefef;
-`
-
-const TdStyled = styled.td`
-  border: 1px solid black;
-  padding: 5px 15px;
-  text-align: center;
-  min-width: 200px;
-`
-
-const Centered = styled.div`
-  text-align: center;
-`
+import {
+  Wrapper,
+  Breadcrumbs,
+  MainWrapper,
+  Title,
+  SmallTitle,
+  Divider,
+  TableStyled,
+  TrStyled,
+  TdStyledGrey,
+  TdStyled,
+  Centered,
+} from '../../Components/Shared/StyledEditComponents'
 
 class EditCategory extends React.Component {
   state = {

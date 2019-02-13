@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Table, Input, Icon, Select, Button } from 'antd'
+import { Table, Input, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
@@ -11,45 +10,16 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminGuidesActions from '../../Shared/Redux/Admin/Guides'
 
-const Option = Select.Option
-
-const Wrapper = styled.div``
-
-const TopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 50px;
-`
-
-const Header = styled.div`
-  display: flex;
-`
-
-const SearchContainer = styled.div`
-  display: flex;
-`
-
-const LeftSpaceDiv = styled.div`
-  margin-left: 20px;
-`
-
-const MiddleRow = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`
-
-const Divider = styled.hr`
-  border-bottom: 2px solid black;
-  width: 100%;
-  margin-bottom: 50px;
-`
-
-const Tab = styled.div`
-  cursor: pointer;
-  font-weight: ${props => props.active ? 'bold' : 'regular'};
-  color: ${props => props.active ? 'black' : '#008dff'};
-`
+import {
+  Wrapper,
+  TopRow,
+  Header,
+  Divider,
+  SearchContainer,
+  LeftSpaceDiv,
+  MiddleRow,
+  Tab,
+} from '../../Components/Shared/StyledListComponents'
 
 const columns = [{
   title: 'Title',
@@ -110,13 +80,7 @@ class GuidesInCategoryList extends React.Component {
   }
 
   componentDidMount(){
-    const { categoryId } = get(this.props, 'match.params', {})
-    //get user GuidesInCategoryList on signUp and reset signUp redux
-    this.props.getGuides({
-      query: {
-        categories: categoryId,
-      },
-    })
+    this._showActive()
   }
 
   onChange = (pagination, filters, sorter) => {
@@ -145,11 +109,42 @@ class GuidesInCategoryList extends React.Component {
     })
   }, 300)
 
-  _showAll = () => {
+  _showActive = () => {
     const { getGuides, params } = this.props
+    const { categoryId } = get(this.props, 'match.params', {})
     getGuides({
       ...params,
-      query: undefined,
+      query: {
+        categories: categoryId,
+        isDeleted: {$in: [null, false]},
+      },
+    })
+    this.setState({
+      activeTab: 'active',
+    })
+  }
+
+  _showActive = () => {
+    const { getGuides, categoryId, params } = this.props
+    getGuides({
+      ...params,
+      query: {
+        categories: categoryId,
+        isDeleted: {$in: [null, false]},
+      },
+    })
+    this.setState({
+      activeTab: 'active',
+    })
+  }
+
+  _showAll = () => {
+    const { getGuides, categoryId, params } = this.props
+    getGuides({
+      ...params,
+      query: {
+        categories: categoryId,
+      },
     })
     this.setState({
       activeTab: 'all',
@@ -157,10 +152,11 @@ class GuidesInCategoryList extends React.Component {
   }
 
   _showDeleted = () => {
-    const { getGuides, params } = this.props
+    const { getGuides, categoryId, params } = this.props
     getGuides({
       ...params,
       query: {
+        categories: categoryId,
         isDeleted: true,
       },
     })
@@ -170,10 +166,11 @@ class GuidesInCategoryList extends React.Component {
   }
 
   _showFlagged = () => {
-    const { getGuides, params } = this.props
+    const { getGuides, categoryId, params } = this.props
     getGuides({
       ...params,
       query: {
+        categories: categoryId,
         flagged: true,
       },
     })
@@ -239,8 +236,8 @@ class GuidesInCategoryList extends React.Component {
         <Divider/>
         
         <MiddleRow>
-          <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
-            All {this.state.activeTab === 'all' && <span>({total})</span>}
+          <Tab active={this.state.activeTab === 'active'} onClick={this._showActive}>
+            Active {this.state.activeTab === 'active' && <span>({total})</span>}
           </Tab>
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
@@ -254,6 +251,13 @@ class GuidesInCategoryList extends React.Component {
           <LeftSpaceDiv>
             <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
               Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
+            </Tab>
+          </LeftSpaceDiv>
+          <LeftSpaceDiv> | 
+          </LeftSpaceDiv>
+          <LeftSpaceDiv>
+            <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
+              All {this.state.activeTab === 'all' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
         </MiddleRow>
@@ -275,13 +279,16 @@ GuidesInCategoryList.propTypes = {
   list: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   params: PropTypes.object.isRequired,
+  categoryId: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
   getGuides: PropTypes.func.isRequired,
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const newList = [...state.admin.guides.list]
+  const { categoryId } = get(ownProps, 'match.params', {})
   return {
+    categoryId,
     list: newList,
     total: state.admin.guides.total,
     params: state.admin.guides.params,

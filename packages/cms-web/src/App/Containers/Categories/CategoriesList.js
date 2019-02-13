@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Table, Input, Icon, Select, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
@@ -13,57 +12,21 @@ import AdminCategoriesActions from '../../Shared/Redux/Admin/Categories'
 import Images from '../../Themes/Images'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 
+import {
+  Wrapper,
+  TopRow,
+  Header,
+  FilterRow,
+  SearchContainer,
+  LeftSpaceDiv,
+  LeftSpaceSpan,
+  MiddleRow,
+  ActionRow,
+  Tab,
+  SquareImg,
+} from '../../Components/Shared/StyledListComponents'
+
 const Option = Select.Option
-
-const Wrapper = styled.div``
-
-const TopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 50px;
-`
-
-const Header = styled.div`
-  display: flex;
-`
-
-const SearchContainer = styled.div`
-  display: flex;
-`
-
-const LeftSpaceDiv = styled.div`
-  margin-left: 20px;
-`
-
-const MiddleRow = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`
-
-const FilterRow = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`
-
-const Tab = styled.div`
-  cursor: pointer;
-  font-weight: ${props => props.active ? 'bold' : 'regular'};
-  color: ${props => props.active ? 'black' : '#008dff'};
-`
-
-const ActionRow = styled.div`
-  margin-bottom: 16px;
-`
-
-const LeftSpaceSpan = styled.div`
-  margin-left: 20px;
-`
-
-const SquareImg = styled.img`
-  height: 90px;
-  width: 90px;
-`
 
 const columns = [{
   title: 'Title',
@@ -131,8 +94,7 @@ class CategoriesList extends React.Component {
   }
 
   componentDidMount(){
-    const { getCategories } = this.props 
-    getCategories()
+    this._showActive()
   }
 
   onChange = (pagination, filters, sorter) => {
@@ -160,6 +122,19 @@ class CategoriesList extends React.Component {
       search: text,
     })
   }, 300)
+
+  _showActive = () => {
+    const { getCategories, params } = this.props
+    getCategories({
+      ...params,
+      query: {
+        isDeleted: {$in: [null, false]},
+      },
+    })
+    this.setState({
+      activeTab: 'active',
+    })
+  }
 
   _showAll = () => {
     const { getCategories, params } = this.props
@@ -296,14 +271,21 @@ class CategoriesList extends React.Component {
         </TopRow>
         
         <MiddleRow>
-          <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
-            All {this.state.activeTab === 'all' && <span>({total})</span>}
+          <Tab active={this.state.activeTab === 'active'} onClick={this._showActive}>
+            Active {this.state.activeTab === 'active' && <span>({total})</span>}
           </Tab>
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
             <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
               Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
+            </Tab>
+          </LeftSpaceDiv>
+          <LeftSpaceDiv> | 
+          </LeftSpaceDiv>
+          <LeftSpaceDiv>
+            <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
+              All {this.state.activeTab === 'all' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
         </MiddleRow>

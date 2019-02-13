@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Table, Input, Icon, Select, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
@@ -10,52 +9,20 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminUserActions from '../../Shared/Redux/Admin/Users'
 
+import {
+  Wrapper,
+  TopRow,
+  Header,
+  SearchContainer,
+  LeftSpaceDiv,
+  LeftSpaceSpan,
+  MiddleRow,
+  FilterRow,
+  ActionRow,
+  Tab,
+} from '../../Components/Shared/StyledListComponents'
+
 const Option = Select.Option
-
-const Wrapper = styled.div``
-
-const TopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 50px;
-`
-
-const Header = styled.div`
-  display: flex;
-`
-
-const SearchContainer = styled.div`
-  display: flex;
-`
-
-const LeftSpaceDiv = styled.div`
-  margin-left: 20px;
-`
-
-const LeftSpaceSpan = styled.div`
-  margin-left: 20px;
-`
-
-const MiddleRow = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`
-
-const FilterRow = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`
-
-const ActionRow = styled.div`
-  margin-bottom: 16px;
-`
-
-const Tab = styled.div`
-  cursor: pointer;
-  font-weight: ${props => props.active ? 'bold' : 'regular'};
-  color: ${props => props.active ? 'black' : '#008dff'};
-`
 
 const columns = [{
   title: 'Username',
@@ -104,8 +71,7 @@ class UsersList extends React.Component {
   }
 
   componentDidMount(){
-    const { getUsers } = this.props 
-    getUsers()
+    this._showActive()
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -159,6 +125,19 @@ class UsersList extends React.Component {
     })
     this.setState({
       activeTab: 'deleted',
+    })
+  }
+
+  _showActive = () => {
+    const { getUsers, params } = this.props
+    getUsers({
+      ...params,
+      query: {
+        isDeleted: {$in: [null, false]},
+      },
+    })
+    this.setState({
+      activeTab: 'active',
     })
   }
 
@@ -257,14 +236,22 @@ class UsersList extends React.Component {
         </TopRow>
         
         <MiddleRow>
-          <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
-            All {this.state.activeTab === 'all' && <span>({total})</span>}
+          
+          <Tab active={this.state.activeTab === 'active'} onClick={this._showActive}>
+            Active {this.state.activeTab === 'active' && <span>({total})</span>}
           </Tab>
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
           <LeftSpaceDiv>
             <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
               Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
+            </Tab>
+          </LeftSpaceDiv>
+          <LeftSpaceDiv> | 
+          </LeftSpaceDiv>
+          <LeftSpaceDiv>
+            <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
+              All {this.state.activeTab === 'all' && <span>({total})</span>}
             </Tab>
           </LeftSpaceDiv>
         </MiddleRow>

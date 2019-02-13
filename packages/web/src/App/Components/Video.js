@@ -51,18 +51,23 @@ class Video extends React.Component {
     const {src, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
 
+    if (withPrettyControls && usingChrome) {
+      return (
+        <VideoWithControls
+          ref={this.setRef}
+          onError={this.showErrorAlert}
+          autoPlay={type === 'cover'}
+          controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+        >
+          <source
+            src={src}
+            type='video/webm'
+          />
+        </VideoWithControls>
+      )
+    }
+
     return (
-      withPrettyControls && usingChrome
-      ?
-      <VideoWithControls
-        ref={this.setRef}
-        onError={this.showErrorAlert}
-        autoPlay={type === 'cover'}
-        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-      >
-        <source src={src} type='video/webm' />
-      </VideoWithControls>
-    :
       <VideoWrapper>
         <StyledVideo
           autoplay

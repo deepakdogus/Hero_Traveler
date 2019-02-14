@@ -207,15 +207,15 @@ export default class RNDraftJs extends Component {
 
   // will refactor later - for now mirroring NewEditor flow
   insertImage = (url, height, width) => {
-    this.insertAtomicBlock('image', url, height, width)
+    this.insertAtomicBlock({type: 'image', url, height, width})
   }
 
   insertVideo = (url, height, width) => {
-    this.insertAtomicBlock('video', url, height, width)
+    this.insertAtomicBlock({type: 'video', url, height, width})
   }
 
-  insertAtomicBlock = (type, url, height, width) => {
-    this.onChange(insertAtomicBlock(this.state.editorState, type, url, height, width))
+  insertAtomicBlock = (options) => {
+    this.onChange(insertAtomicBlock(this.state.editorState, options))
   }
 
   toggleHeader = () => {

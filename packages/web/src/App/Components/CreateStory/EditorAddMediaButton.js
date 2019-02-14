@@ -31,14 +31,20 @@ class AddMediaButton extends React.Component {
     const {getEditorState, type} = this.props
     const loaderUpdate = insertAtomicBlock(
       getEditorState(),
-      'loader',
-      'url', // need to pass dummy URL for EditorMediaComponent
+      {
+        type: 'loader',
+        url: 'url', // need to pass dummy URL for EditorMediaComponent
+      },
     )
     const loaderKey = loaderUpdate.getSelection().getFocusKey()
     this.props.setEditorState(loaderUpdate)
 
     uploadFile(event, this, (file) => {
-      if (!file) return
+      if (!file) {
+        const cleanedEditorState = removeMedia(loaderKey, loaderUpdate)
+        this.props.setEditorState(cleanedEditorState)
+        return
+      }
 
       const updateCall = (cloudinaryFile, failure) => {
         let cleanedEditorState
@@ -49,10 +55,12 @@ class AddMediaButton extends React.Component {
           const formattedFile = extractUploadData(cloudinaryFile)
           const update = insertAtomicBlock(
             loaderUpdate,
-            type,
-            formattedFile.url,
-            formattedFile.height,
-            formattedFile.width,
+            {
+              type,
+              url: formattedFile.url,
+              height: formattedFile.height,
+              width: formattedFile.width,
+            },
           )
           cleanedEditorState = removeMedia(loaderKey, update)
         }

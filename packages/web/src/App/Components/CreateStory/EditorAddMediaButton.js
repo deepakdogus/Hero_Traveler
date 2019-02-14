@@ -4,10 +4,8 @@ import PropTypes from 'prop-types'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import {
-  insertAtomicBlock,
-  removeMedia,
-} from '../../Shared/Lib/draft-js-helpers'
+import { insertAtomicBlock } from '../../Shared/Lib/draft-js-helpers'
+import { removeMedia } from '../../Lib/web-draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'

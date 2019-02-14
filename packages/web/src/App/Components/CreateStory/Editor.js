@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {
   EditorState,
-  createSelectionWithFocus,
 } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import 'draft-js/dist/Draft.css'
@@ -11,8 +10,11 @@ import styled from 'styled-components'
 import {
   convertFromRaw,
   convertToRaw,
-  removeMedia,
 } from '../../Shared/Lib/draft-js-helpers'
+import {
+  removeMedia,
+  createSelectionWithFocus,
+ } from '../../Lib/web-draft-js-helpers'
 
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'

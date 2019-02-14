@@ -133,8 +133,12 @@ class SearchResults extends Component {
   }
 
   componentWillUnmount() {
-    this.removeSearchListeners(this.storyHelper)
     this.removeSearchListeners(this.guideHelper)
+    this.removeSearchListeners(this.storyHelper)
+
+    // avoids not showing new results/showing deleted stories
+    this.guideHelper.clearCache()
+    this.storyHelper.clearCache()
   }
 
   removeSearchListeners = helper => {

@@ -1,22 +1,13 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import FollowFollowingRow from './FollowFollowingRow'
-
-const Container = styled.div`
-  max-width: 800px;
-  padding: 0 30px;
-  margin: 55px auto 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 35px auto 0;
-    padding: 0 15px;
-  }
-`
+import { ItemContainer, ListTitle } from '../Containers/Search'
 
 export default class SearchResultsPeople extends Component {
   static propTypes = {
+    label: PropTypes.text,
     userSearchResults: PropTypes.object,
     userFollowing: PropTypes.object,
     userId: PropTypes.string,
@@ -31,7 +22,7 @@ export default class SearchResultsPeople extends Component {
   }
 
   render() {
-    const {userFollowing, userId, userSearchResults} = this.props
+    const {label, userFollowing, userId, userSearchResults} = this.props
     const users = userSearchResults.hits || userSearchResults.people || []
     const renderedUsers = users.map((user, index)=> {
       const isFollowing = _.get(userFollowing, `${userId}.byId`)
@@ -46,14 +37,16 @@ export default class SearchResultsPeople extends Component {
           onFollowClick={isFollowing ? this.props.unfollowUser : this.props.followUser}
           onProfileClick={this.props.navToUserProfile}
           userId={userId}
+          divider={index !== 0 && index !== users.length}
         />
       )
     })
 
     return (
-      <Container>
+      <ItemContainer>
+        {label && <ListTitle>{label}</ListTitle>}
         {renderedUsers}
-      </Container>
+      </ItemContainer>
     )
   }
 }

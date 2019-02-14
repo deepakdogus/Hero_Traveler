@@ -53,7 +53,7 @@ function addUserToIndex(user) {
   return algoliaAction(userIndex, 'addObject', formatUserSearchObject(user))
 }
 
-// only used for patch normally but because it works
+// for patches only
 function addUsersToIndex(users) {
   return algoliaAction(userIndex, 'addObjects', users.map(formatUserSearchObject))
 }
@@ -100,6 +100,12 @@ function addStoryToIndex(story) {
   return algoliaAction(storyIndex, 'addObject', formatStorySearchObject(story))
 }
 
+// for patches only
+function addMultipleStoriesToIndex(stories) {
+  const formattedStories = stories.map(formatStorySearchObject)
+  return algoliaAction(storyIndex, 'addObjects', formattedStories)
+}
+
 function updateStoryIndex(story) {
   return algoliaAction(storyIndex, 'partialUpdateObject', formatStorySearchObject(story))
 }
@@ -143,6 +149,11 @@ function addGuideToIndex(guide) {
   return algoliaAction(guideIndex, 'addObject', formatGuideSearchObject(guide))
 }
 
+function addMultipleGuidesToIndex(guides) {
+  const formattedGuides = guides.map(formatGuideSearchObject)
+  return algoliaAction(guideIndex, 'addObjects', formattedGuides)
+}
+
 function updateGuideIndex(guide) {
   return algoliaAction(guideIndex, 'partialUpdateObject', formatGuideSearchObject(guide))
 }
@@ -173,10 +184,12 @@ export default {
   updateUsersIndex,
   deleteUserFromIndex,
   addStoryToIndex,
+  addMultipleStoriesToIndex,
   updateStoryIndex,
   updateMultipleStories,
   deleteStoryFromIndex,
   addGuideToIndex,
+  addMultipleGuidesToIndex,
   updateGuideIndex,
   updateMultipleGuides,
   deleteGuideFromIndex,

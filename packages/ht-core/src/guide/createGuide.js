@@ -39,21 +39,16 @@ export async function parseAndInsertStoryCategories(categories) {
 }
 
 export default async function createGuide(guideData, assetFormater) {
-  const {coverImage, coverVideo} = guideData
-  // lets us know which Story method to follow and how to handle media assets
-  let newGuide
-
   const guideObject = {
     ...guideData,
     categories: await parseAndInsertStoryCategories(guideData.categories)
   }
-
   await addCover(guideObject, assetFormater)
-  guideData.id = undefined
-  newGuide = await Guide.create(guideObject)
-  newGuide = await Guide.get({_id: newGuide.id})
-  algoliaHelper.addGuideToIndex(newGuide)
+  const newGuide = await Guide.create(guideObject)
+  const populatedGuide = await Guide.get({_id: newGuide.id})
 
-  return newGuide
+  if (!populatedGuide.isPrivate) algoliaHelper.addGuideToIndex(populatedGuide)
+
+  return populatedGuide
 }
 

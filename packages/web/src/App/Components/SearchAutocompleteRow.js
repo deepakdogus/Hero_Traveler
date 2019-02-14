@@ -2,18 +2,31 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import HorizontalDivider from '../Components/HorizontalDivider'
+import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
-const SearchTitle = styled.p`
-  font-weight: 400;
-  font-size: 16px;
-  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
-  color: ${props => props.theme.Colors.grey};
-  letter-spacing: 0.7px;
-`
+import HorizontalDivider from '../Components/HorizontalDivider'
 
 const AutocompleteRow = styled.div`
   cursor: pointer;
+`
+
+const TextContainer = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+`
+
+const PrimaryText = styled.span`
+  font-weight: 600;
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
+`
+
+const SecondaryText = styled(PrimaryText)`
+  font-weight: 400;
+  color: ${props => props.theme.Colors.grey};
 `
 
 class SearchAutocompleteRow extends Component {
@@ -26,13 +39,24 @@ class SearchAutocompleteRow extends Component {
   handleClick = () => this.props.navigate(this.props.item)
 
   render = () => {
-    const { idx, item } = this.props
+    const { idx, item: { title, secondaryText} } = this.props
     return (
       <AutocompleteRow
         onClick={this.handleClick}
       >
         {!idx && <HorizontalDivider color="light-grey" />}
-        <SearchTitle>{item.title}</SearchTitle>
+        <TextContainer>
+          <PrimaryText>
+            {title}
+            {hasSecondaryText(secondaryText) ? ',' : ''}
+          </PrimaryText>
+          <span>&nbsp;</span>
+          {hasSecondaryText(secondaryText) && (
+            <SecondaryText>
+              {formatSecondaryText(secondaryText)}
+            </SecondaryText>
+          )}
+        </TextContainer>
         <HorizontalDivider color="light-grey" />
       </AutocompleteRow>
     )

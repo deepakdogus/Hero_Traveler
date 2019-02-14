@@ -3,11 +3,29 @@ import _ from 'lodash'
 import { algoliaHelper } from '@hero/ht-util'
 import { parseAndInsertStoryCategories, addCover } from '../story/createStory'
 
-function hasNewCover(guide) {
-  return (
-    (guide.coverImage && !guide.coverImage._id) ||
-    (guide.coverVideo && !guide.coverVideo._id)
-  )
+const hasNewCover = guide => (
+  (guide.coverImage && !guide.coverImage._id)
+  || (guide.coverVideo && !guide.coverVideo._id)
+)
+
+
+const updateAlgoliaIndex = (guide, updatedGuide) => {
+    // guide changed from private to public
+    if (guide.isPrivate && !updatedGuide.isPrivate) {
+      return algoliaHelper.addGuideToIndex(updatedGuide)
+    }
+
+    // guide changed from public to private
+    if (!guide.isPrivate && updatedGuide.isPrivate) {
+      return algoliaHelper.deleteGuideFromIndex(updatedGuide.id)
+    }
+
+    // guide remained public through update
+    if (!guide.isPrivate && !updatedGuide.isPrivate) {
+      return algoliaHelper.updateGuideIndex(updatedGuide)
+    }
+
+    // guide remained private through update implicitly handled (no indexing)
 }
 
 export default async function updateGuide(attrs, assetFormater) {
@@ -22,7 +40,7 @@ export default async function updateGuide(attrs, assetFormater) {
 
   await guide.update(attrs)
   const updatedGuide = await Guide.get({ _id: attrs.id })
-  algoliaHelper.updateGuideIndex(updatedGuide)
+  updateAlgoliaIndex(guide, updatedGuide)
 
   return updatedGuide
 }

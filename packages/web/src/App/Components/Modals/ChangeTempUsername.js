@@ -2,20 +2,23 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import {
+  Field,
+  reduxForm,
+  formValueSelector,
+} from 'redux-form'
+import _ from 'lodash'
+
 import RoundedButton from '../RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {
   Container,
   Title,
   Text,
+  ErrorMessage,
 } from './Shared'
 import { Row } from '../FlexboxGrid'
 import FormInput from '../FormInput'
-import {
-  Field,
-  reduxForm,
-  formValueSelector,
-} from 'redux-form'
 import {
   validate,
   asyncValidate,
@@ -36,10 +39,11 @@ class ChangeTempUsername extends React.Component{
     pristine: PropTypes.bool,
     fetching: PropTypes.bool,
     updateUser: PropTypes.func,
+    error: PropTypes.string,
   }
 
   componentDidUpdate(prevProps) {
-    if (!!prevProps.updating && prevProps.updating && !this.props.updating) {
+    if (!this.props.user.usernameIsTemporary) {
       this.props.closeModal()
     }
   }
@@ -58,6 +62,7 @@ class ChangeTempUsername extends React.Component{
       submitting,
       pristine,
       updating,
+      error,
     } = this.props
 
     return(
@@ -83,6 +88,9 @@ class ChangeTempUsername extends React.Component{
         {(!invalid && updating) && (
           <Text>Updating Username...</Text>
         )}
+        {error && (
+          <ErrorMessage>{error}</ErrorMessage>
+        )}
       </Container>
     )
   }
@@ -97,6 +105,7 @@ function mapStateToProps(state) {
     user,
     username: selector(state, 'username'),
     updating: state.entities.users.updating,
+    error: _.get(state, 'entities.users.error.message'),
   }
 }
 

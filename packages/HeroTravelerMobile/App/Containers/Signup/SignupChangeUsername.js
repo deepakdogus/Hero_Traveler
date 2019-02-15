@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
-  TextInput
+  TextInput,
 } from 'react-native'
 import {connect} from 'react-redux'
+import _ from 'lodash'
 
 import { Actions as NavActions } from 'react-native-router-flux'
 import UserActions from '../../Shared/Redux/Entities/Users'
@@ -29,6 +31,11 @@ const validate = (values) => {
 class SignupChangeUsername extends React.Component {
   validationTimeout = null
 
+  static propTypes = {
+    user: PropTypes.object,
+    updateUser: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -37,10 +44,18 @@ class SignupChangeUsername extends React.Component {
     }
   }
 
-  componentDidMount() {
+  conditionalNavForward = () => {
     if (!this.props.user.usernameIsTemporary) {
       NavActions.signupFlow_changeEmail()
     }
+  }
+
+  componentDidMount() {
+    this.conditionalNavForward()
+  }
+
+  componentDidUpdate(){
+    this.conditionalNavForward()
   }
 
   runValidations(values) {
@@ -83,7 +98,6 @@ class SignupChangeUsername extends React.Component {
       this.setState({submitting: true}, () => {
         this.runValidations({username: this.state.newUsername}).then(() => {
           this.updateUser()
-          NavActions.signupFlow_changeEmail()
         }).catch((e) => {
           this.setState({error: e})
         }).finally(() => {
@@ -93,7 +107,12 @@ class SignupChangeUsername extends React.Component {
     }
   }
 
+  getErrorMessage = () => {
+    return this.state.error || _.get(this, 'props.error.message')
+  }
+
   render () {
+    const error = this.getErrorMessage()
     return (
       <ImageWrapper
         background={true}
@@ -127,9 +146,9 @@ class SignupChangeUsername extends React.Component {
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              {this.state.error && (
+              {error && (
                 <View style={styles.errorView}>
-                  <Text style={styles.error}>{this.state.error}</Text>
+                  <Text style={styles.error}>{error}</Text>
                 </View>
               )}
             </View>
@@ -143,6 +162,7 @@ class SignupChangeUsername extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.entities.users.entities[state.session.userId],
+    error: state.entities.users.error,
   }
 }
 

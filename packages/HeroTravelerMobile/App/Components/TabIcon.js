@@ -130,6 +130,8 @@ class TabIcon extends React.Component {
         return Images.iconFounderBadge
       case 'fellow':
         return Images.iconFellowBadge
+      case 'local':
+        return Images.iconLocalBadge
       case 'error':
         return Images.iconErrorExclamation
       case 'info':

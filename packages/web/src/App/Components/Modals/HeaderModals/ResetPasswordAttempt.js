@@ -7,7 +7,7 @@ import LoginActions from '../../../Shared/Redux/LoginRedux'
 import UXActions from '../../../Redux/UXRedux'
 import RoundedButton from '../../RoundedButton'
 import { Row } from '../../FlexboxGrid'
-import { Container, Title, StyledInput, ErrorMessage } from '../../Modals/Shared'
+import { Container, Title, StyledInput, ErrorMessage, RightModalCloseX } from '../../Modals/Shared'
 import { FieldConstraints } from '../../../Shared/Lib/userFormValidation'
 
 class ResetPasswordAttempt extends React.Component {
@@ -19,13 +19,14 @@ class ResetPasswordAttempt extends React.Component {
     error: PropTypes.string,
     openGlobalModal: PropTypes.func,
     reroute: PropTypes.func,
-  };
+    closeModal: PropTypes.func,
+  }
 
   state = {
     newPassword: '',
     confirmPassword: '',
     passwordError: '',
-  };
+  }
 
   componentDidUpdate = prevProps => {
     const { fetching, error, reroute, openGlobalModal, path } = this.props
@@ -33,14 +34,14 @@ class ResetPasswordAttempt extends React.Component {
       reroute(path)
       openGlobalModal('resetPasswordSuccess')
     }
-  };
+  }
 
   _handleChange = e => {
     e.preventDefault()
     this.setState({
       [e.target.name]: e.target.value,
     })
-  };
+  }
 
   _handleSubmit = e => {
     e.preventDefault()
@@ -64,37 +65,41 @@ class ResetPasswordAttempt extends React.Component {
     if (!passwordError) {
       this.props.resetPasswordAttempt(this.props.resetToken, this.state.newPassword)
     }
-  };
+  }
 
   render() {
     const errorText = this.state.passwordError || this.props.error
 
     return (
       <Container>
+        <RightModalCloseX
+          name='closeDark'
+          onClick={this.props.closeModal}
+        />
         <Title>Reset Password</Title>
         <form onSubmit={this._handleSubmit}>
           <StyledInput
-            name="newPassword"
-            placeholder="New Password"
-            type="password"
+            name='newPassword'
+            placeholder='New Password'
+            type='password'
             value={this.state.newPassword}
             onChange={this._handleChange}
           />
           <StyledInput
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            type="password"
+            name='confirmPassword'
+            placeholder='Confirm Password'
+            type='password'
             value={this.state.confirmPassword}
             onChange={this._handleChange}
           />
           {errorText && <ErrorMessage>{errorText}</ErrorMessage>}
-          <Row center="xs">
+          <Row center='xs'>
             <RoundedButton
-              text="Submit"
-              width="100%"
-              margin="none"
-              height="39px"
-              type="submit"
+              text='Submit'
+              width='100%'
+              margin='none'
+              height='39px'
+              type='submit'
             />
           </Row>
         </form>

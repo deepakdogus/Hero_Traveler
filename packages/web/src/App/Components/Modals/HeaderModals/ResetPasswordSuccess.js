@@ -1,40 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 
 import UXActions from '../../../Redux/UXRedux'
 import RoundedButton from '../../RoundedButton'
 import { Row } from '../../FlexboxGrid'
-import { Container, Title } from '../../Modals/Shared'
+import { Container, Title, Text } from '../../Modals/Shared'
 
 class ResetPasswordSuccess extends React.Component {
   static propTypes = {
-    path: PropTypes.string,
     openGlobalModal: PropTypes.func,
-    reroute: PropTypes.func,
-  };
+  }
 
-  _handleOkay = e => {
+  _handleConfirm = e => {
     e.preventDefault()
 
-    const { reroute, openGlobalModal, path } = this.props
-    reroute(path)
+    const { openGlobalModal } = this.props
     openGlobalModal('login')
-  };
+  }
 
   render() {
     return (
       <Container>
-        <Title>Your password has been updated.</Title>
-
-        <Row center="xs">
+        <Title>Success</Title>
+        <Text>
+          Your password has been updated.
+        </Text>
+        <Row center='xs'>
           <RoundedButton
-            onClick={this._handleOkay}
-            text="OK"
-            width="100%"
-            margin="none"
-            height="39px"
+            onClick={this._handleConfirm}
+            text='LOGIN'
+            width='100%'
+            margin='none'
+            height='39px'
           />
         </Row>
       </Container>
@@ -42,20 +40,13 @@ class ResetPasswordSuccess extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    path: state.ux.params.path,
-  }
-}
-
 function mapDispatchToProps(dispatch) {
   return {
-    reroute: path => dispatch(push(path)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ResetPasswordSuccess)

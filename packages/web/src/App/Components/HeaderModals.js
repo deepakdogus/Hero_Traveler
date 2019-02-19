@@ -154,7 +154,7 @@ export default class HeaderModals extends React.Component {
           contentLabel="Reset Password Modal"
           style={customModalStyles}
         >
-          <ResetPasswordAttempt />
+          <ResetPasswordAttempt closeModal={closeGlobalModal}/>
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'resetPasswordSuccess'}

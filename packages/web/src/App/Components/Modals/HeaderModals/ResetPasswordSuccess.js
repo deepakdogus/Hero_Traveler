@@ -15,12 +15,6 @@ class ResetPasswordSuccess extends React.Component {
     reroute: PropTypes.func,
   };
 
-  componentDidUpdate = prevProps => {
-    const { reroute, openGlobalModal, path } = this.props
-    reroute(path)
-    openGlobalModal('login')
-  };
-
   _handleOkay = e => {
     e.preventDefault()
 

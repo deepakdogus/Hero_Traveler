@@ -254,7 +254,7 @@ class EditStory extends Component {
     })
   }
 
-  cleanDraft(draft){
+  cleanDraft = (draft) => {
     const {workingDraft, originalDraft, draftIdToDBId} = this.props
     const cleanedDraft = _.merge({}, draft)
     if (!isFieldSame('title', workingDraft, originalDraft)) {
@@ -267,9 +267,17 @@ class EditStory extends Component {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.getEditorState()
+    cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
     if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
+  }
+
+  removeLoaders(draftjsContent) {
+    draftjsContent.blocks = draftjsContent.blocks.filter(block => {
+      return block.type !== 'atomic'
+        || (block.type === 'atomic' && _.get(block, 'data.type') !== 'loader')
+    })
+    return draftjsContent
   }
 
   // this only saves it at the redux level

@@ -1,5 +1,13 @@
 import { delay } from 'redux-saga'
-import { takeLatest, take, fork, race, call, put } from 'redux-saga/effects'
+import {
+  call,
+  fork,
+  put,
+  race,
+  take,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
 
@@ -171,7 +179,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
-    takeLatest(StoryCreateTypes.UPLOAD_MEDIA, uploadMedia, heroAPI),
+    takeEvery(StoryCreateTypes.UPLOAD_MEDIA, uploadMedia, heroAPI),
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),

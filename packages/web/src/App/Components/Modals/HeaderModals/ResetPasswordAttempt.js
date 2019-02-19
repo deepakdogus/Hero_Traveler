@@ -7,15 +7,8 @@ import LoginActions from '../../../Shared/Redux/LoginRedux'
 import UXActions from '../../../Redux/UXRedux'
 import RoundedButton from '../../RoundedButton'
 import { Row } from '../../FlexboxGrid'
-import {
-  Container,
-  Title,
-  StyledInput,
-  ErrorMessage,
-} from '../../Modals/Shared'
-import {
-  FieldConstraints,
-} from '../../../Shared/Lib/userFormValidation'
+import { Container, Title, StyledInput, ErrorMessage, RightModalCloseX } from '../../Modals/Shared'
+import { FieldConstraints } from '../../../Shared/Lib/userFormValidation'
 
 class ResetPasswordAttempt extends React.Component {
   static propTypes = {
@@ -26,52 +19,51 @@ class ResetPasswordAttempt extends React.Component {
     error: PropTypes.string,
     openGlobalModal: PropTypes.func,
     reroute: PropTypes.func,
+    closeModal: PropTypes.func,
   }
 
   state = {
     newPassword: '',
     confirmPassword: '',
-    passwordError: ''
+    passwordError: '',
   }
 
-  componentDidUpdate = (prevProps) => {
-    const {
-      fetching,
-      error,
-      reroute,
-      openGlobalModal,
-      path,
-    } = this.props
+  componentDidUpdate = prevProps => {
+    const { fetching, error, reroute, openGlobalModal, path } = this.props
     if (prevProps.fetching && !fetching && !error) {
       reroute(path)
-      openGlobalModal('login')
+      openGlobalModal('resetPasswordSuccess')
     }
   }
 
-  _handleChange = (e) => {
+  _handleChange = e => {
     e.preventDefault()
     this.setState({
-    [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
-  _handleSubmit = (e) => {
+  _handleSubmit = e => {
     e.preventDefault()
     const { newPassword, confirmPassword } = this.state
     let passwordError = ''
     if (!newPassword || !confirmPassword) {
-        passwordError ='Both Fields Must Be Filled Out'
-    } else if (newPassword.length < FieldConstraints.PASSWORD_MIN_LENGTH || newPassword.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
-        passwordError = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
-    } else if (newPassword !== confirmPassword) {
+      passwordError = 'Both Fields Must Be Filled Out'
+    }
+    else if (
+      newPassword.length < FieldConstraints.PASSWORD_MIN_LENGTH
+      || newPassword.length > FieldConstraints.PASSWORD_MAX_LENGTH
+    ) {
+      passwordError = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${
+        FieldConstraints.PASSWORD_MAX_LENGTH
+      } characters long`
+    }
+    else if (newPassword !== confirmPassword) {
       passwordError = 'Passwords do not match'
     }
-    this.setState({passwordError})
+    this.setState({ passwordError })
     if (!passwordError) {
-      this.props.resetPasswordAttempt(
-        this.props.resetToken,
-        this.state.newPassword,
-      )
+      this.props.resetPasswordAttempt(this.props.resetToken, this.state.newPassword)
     }
   }
 
@@ -80,6 +72,10 @@ class ResetPasswordAttempt extends React.Component {
 
     return (
       <Container>
+        <RightModalCloseX
+          name='closeDark'
+          onClick={this.props.closeModal}
+        />
         <Title>Reset Password</Title>
         <form onSubmit={this._handleSubmit}>
           <StyledInput
@@ -96,9 +92,7 @@ class ResetPasswordAttempt extends React.Component {
             value={this.state.confirmPassword}
             onChange={this._handleChange}
           />
-          {errorText &&
-            <ErrorMessage>{errorText}</ErrorMessage>
-          }
+          {errorText && <ErrorMessage>{errorText}</ErrorMessage>}
           <Row center='xs'>
             <RoundedButton
               text='Submit'
@@ -125,10 +119,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    reroute: (path) => dispatch(push(path)),
+    reroute: path => dispatch(push(path)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
-    resetPasswordAttempt: (password, token) => dispatch(LoginActions.resetPassword(password, token)),
+    resetPasswordAttempt: (password, token) =>
+      dispatch(LoginActions.resetPassword(password, token)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordAttempt)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResetPasswordAttempt)

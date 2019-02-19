@@ -11,6 +11,7 @@ import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ExistingUpdateWarning from './Modals/HeaderModals/ExistingUpdateWarning'
 import ResetPasswordRequest from './Modals/HeaderModals/ResetPasswordRequest'
 import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
+import ResetPasswordSuccess from './Modals/HeaderModals/ResetPasswordSuccess'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
 import Contributor from './Modals/HeaderModals/Contributor'
 import FlagStory from './Modals/FlagStory'
@@ -156,6 +157,13 @@ export default class HeaderModals extends React.Component {
           <ResetPasswordAttempt />
         </Modal>
         <Modal
+          isOpen={globalModalThatIsOpen === 'resetPasswordSuccess'}
+          contentLabel="Reset Password Success Modal"
+          style={customModalStyles}
+        >
+          <ResetPasswordSuccess />
+        </Modal>
+        <Modal
           isOpen={globalModalThatIsOpen === 'contributor'}
           contentLabel='Contributor'
           onRequestClose={closeModal}
@@ -297,7 +305,10 @@ export default class HeaderModals extends React.Component {
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={currentUserProfile}/>
+          <Inbox
+            closeModal={closeModal}
+            profile={currentUserProfile}
+          />
         </RightModal>
       </Container>
     )

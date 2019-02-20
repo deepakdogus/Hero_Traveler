@@ -74,6 +74,7 @@ class Header extends React.Component {
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    pendingMediaUploads: PropTypes.number,
   }
 
   constructor(props) {
@@ -194,15 +195,23 @@ class Header extends React.Component {
   }
 
   openSaveEditsModal = path => {
-    const {workingDraft, originalDraft, draftToBeSaved, pathname} = this.props
+    const {
+      draftToBeSaved,
+      originalDraft,
+      pathname,
+      pendingMediaUploads,
+      workingDraft,
+    } = this.props
 
     if (
-      pathname.includes('editStory')
-      && workingDraft
-      && haveFieldsChanged(workingDraft, originalDraft)
-      // extra check to ensure we dont show modal after they click save and nav away
-      // without making further edits to the draft
-      && hasChangedSinceSave(workingDraft, draftToBeSaved)
+      pendingMediaUploads || (
+        pathname.includes('editStory')
+        && workingDraft
+        && haveFieldsChanged(workingDraft, originalDraft)
+        // extra check to ensure we dont show modal after they click save and nav away
+        // without making further edits to the draft
+        && hasChangedSinceSave(workingDraft, draftToBeSaved)
+      )
     ) {
       this.setState({
         nextPathAfterSave: path,
@@ -257,6 +266,7 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
+      pendingMediaUploads,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -316,6 +326,7 @@ class Header extends React.Component {
             activitiesById={activitiesById}
             markSeen={markSeen}
             nextPathAfterSave={this.state.nextPathAfterSave}
+            pendingMediaUploads={pendingMediaUploads}
             reroute={reroute}
             resetCreateStore={this._resetCreateStore}
             flagStory={flagStory}
@@ -356,6 +367,7 @@ function mapStateToProps(state) {
     draftToBeSaved: state.storyCreate.draftToBeSaved,
     pathname: pathname,
     signedUp: state.signup.signedUp,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
   }
 }
 

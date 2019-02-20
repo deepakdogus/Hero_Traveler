@@ -134,25 +134,13 @@ export const MenuLink = (props) => {
 }
 
 export const SearchNav = (props) => {
-  const {
-    pathname,
-    openSaveEditsModal,
-    workingDraft,
-    originalDraft,
-    reroute,
-  } = props
-
   return (
     <StyledButtonWrapper>
       <ConditionalLink
         to='/search'
-        pathname={pathname}
-        openSaveEditsModal={openSaveEditsModal}
         isMenuLink={false}
-        reroute={reroute}
-        workingDraft={workingDraft}
-        originalDraft={originalDraft}
         noBorder={true}
+        {...props}
       >
         <StyledRoundedSearchButton
           type='headerButton'
@@ -180,4 +168,5 @@ SearchNav.propTypes = {
   reroute: PropTypes.func,
   workingDraft: PropTypes.object,
   originalDraft: PropTypes.object,
+  pendingMediaUploads: PropTypes.number,
 }

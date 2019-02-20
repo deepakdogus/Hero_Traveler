@@ -17,9 +17,24 @@ export default class SaveEdits extends React.Component {
     attemptLogout: PropTypes.func,
     resetCreateStore: PropTypes.func,
     params: PropTypes.object,
+    pendingMediaUploads: PropTypes.number,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isPending: !!props.params.isPending,
+    }
+  }
+
+  componentDidUpdate = () => {
+    if (this.state.isPending && this.props.pendingMediaUploads === 0) {
+      setTimeout(() => this.saveAndReroute(), 200)
+    }
   }
 
   saveAndReroute = () => {
+    if (this.props.pendingMediaUploads !== 0) return this.setState({isPending: true})
     this.props.params.updateDraft()
     this._reroute()
   }
@@ -50,8 +65,8 @@ export default class SaveEdits extends React.Component {
     : 'Do you want to save your changes before you leave?'
   }
 
-  render(){
-    return(
+  renderSaveWarning = () => {
+    return (
       <Container>
         <Title>{ this._renderModalMessage() }</Title>
         <Text>Any unsaved changes will be discarded.</Text>
@@ -70,5 +85,19 @@ export default class SaveEdits extends React.Component {
         </Row>
       </Container>
     )
+  }
+
+  renderPendingSaves = () => {
+    return (
+      <Container>
+        <Title>Saving</Title>
+        <Text>Please wait while we process your media uploads</Text>
+      </Container>
+    )
+  }
+
+  render() {
+    if (this.state.isPending) return this.renderPendingSaves()
+    return this.renderSaveWarning()
   }
 }

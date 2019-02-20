@@ -91,6 +91,7 @@ class HeaderLoggedIn extends React.Component {
     activitiesById: PropTypes.arrayOf(PropTypes.string),
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
+    pendingMediaUploads: PropTypes.number,
   }
 
   componentDidMount() {
@@ -176,10 +177,19 @@ class HeaderLoggedIn extends React.Component {
       workingDraft,
       originalDraft,
       openSaveEditsModal,
-      reroute
+      reroute,
+      pendingMediaUploads,
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
+    const conditionalLinkParams = {
+      pathname,
+      openSaveEditsModal,
+      reroute,
+      workingDraft,
+      originalDraft,
+      pendingMediaUploads,
+    }
 
     return (
       <StyledRow
@@ -189,12 +199,8 @@ class HeaderLoggedIn extends React.Component {
         <Col>
           <ConditionalLink
             to="/"
-            pathname={pathname}
-            openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
-            reroute={reroute}
-            workingDraft={workingDraft}
-            originalDraft={originalDraft}
+            {...conditionalLinkParams}
           >
             <Logo
               src={logo}
@@ -207,24 +213,16 @@ class HeaderLoggedIn extends React.Component {
             <Row middle="xs">
               <ConditionalLink
                 to='/feed/'
-                pathname={pathname}
-                openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                reroute={reroute}
-                workingDraft={workingDraft}
-                originalDraft={originalDraft}
+                {...conditionalLinkParams}
               >
                 My Feed
               </ConditionalLink>
               <Divider>&nbsp;</Divider>
               <ConditionalLink
                 to='/'
-                pathname={pathname}
-                openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                reroute={reroute}
-                workingDraft={workingDraft}
-                originalDraft={originalDraft}
+                {...conditionalLinkParams}
               >
                 Explore
               </ConditionalLink>
@@ -240,12 +238,8 @@ class HeaderLoggedIn extends React.Component {
             middle='xs'
           >
             <SearchNav
-              pathname={pathname}
-              openSaveEditsModal={openSaveEditsModal}
               isMenuLink={false}
-              reroute={reroute}
-              workingDraft={workingDraft}
-              originalDraft={originalDraft}
+              {...conditionalLinkParams}
             />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
@@ -318,9 +312,10 @@ function mapStateToProps(state, ownProps) {
   let {users} = state.entities
   let profileAvatar = _.get(users, `entities[${ownProps.userId}].profile.avatar`)
   return {
-    profileAvatar,
     globalModal: state.ux.modalName,
     globalModalParams: state.ux.params,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
+    profileAvatar,
   }
 }
 

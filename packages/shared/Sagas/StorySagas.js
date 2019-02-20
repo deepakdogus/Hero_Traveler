@@ -183,6 +183,7 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
   }
   else {
     callback(cloudinaryImage.data)
+    yield put(StoryCreateActions.uploadMediaSuccess())
   }
 }
 

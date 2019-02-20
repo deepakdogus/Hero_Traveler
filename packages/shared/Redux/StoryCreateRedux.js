@@ -27,7 +27,9 @@ const { Types, Creators } = createActions({
   incrementSyncProgress: ['steps'],
   syncError: null,
   resetSync: null,
+  pendingMediaUploads: 0,
   uploadMedia: ['uri', 'callback', 'mediaType'],
+  uploadMediaSuccess: null,
   uploadMediaFailure: ['error'],
 })
 
@@ -57,6 +59,7 @@ export const INITIAL_STATE = Immutable({
     loaded: false,
     fetching: false
   },
+  pendingMediaUploads: 0,
   imageUpload: {
     ...initialImageUpload
   },
@@ -205,14 +208,22 @@ export const editStoryFailure = (state, {error, cachedStory}) => {
 
 export const uploadMediaInit = (state) => {
   return state.merge({
+    pendingMediaUploads: state.pendingMediaUploads + 1,
     imageUpload: {
       ...initialImageUpload,
     }
   })
 }
 
+export const uploadMediaSuccess = (state) => {
+  return state.merge({
+    pendingMediaUploads: state.pendingMediaUploads - 1,
+  })
+}
+
 export const uploadMediaFailure = (state, {error, id}) => {
   return state.merge({
+    pendingMediaUploads: state.pendingMediaUploads - 1,
     imageUpload: {
       error,
     }
@@ -243,5 +254,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SYNC_ERROR]: syncError,
   [Types.RESET_SYNC]: resetSync,
   [Types.UPLOAD_MEDIA]: uploadMediaInit,
+  [Types.UPLOAD_MEDIA_SUCCESS]: uploadMediaSuccess,
   [Types.UPLOAD_MEDIA_FAILURE]: uploadMediaFailure,
 })

@@ -88,6 +88,7 @@ export default class HeaderModals extends React.Component {
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
+    pendingMediaUploads: PropTypes.number,
   }
 
   closeGlobalModal = () => {
@@ -114,6 +115,7 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
+      pendingMediaUploads,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -176,6 +178,7 @@ export default class HeaderModals extends React.Component {
             closeModal={closeGlobalModal}
             attemptLogout={attemptLogout}
             resetCreateStore={resetCreateStore}
+            pendingMediaUploads={pendingMediaUploads}
           />
         </Modal>
         <Modal
@@ -297,7 +300,10 @@ export default class HeaderModals extends React.Component {
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={currentUserProfile}/>
+          <Inbox
+            closeModal={closeModal}
+            profile={currentUserProfile}
+          />
         </RightModal>
       </Container>
     )

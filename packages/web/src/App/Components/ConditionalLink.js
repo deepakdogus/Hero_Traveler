@@ -51,11 +51,19 @@ export default class ConditionalLink extends React.Component{
     originalDraft: PropTypes.object,
     children: PropTypes.any,
     noBorder: PropTypes.bool,
+    pendingMediaUploads: PropTypes.number,
   }
 
   _handleOpenSaveEditsModal = () => {
-    const {workingDraft, originalDraft, to, openSaveEditsModal, reroute} = this.props
-    if (haveFieldsChanged(workingDraft, originalDraft)) {
+    const {
+      openSaveEditsModal,
+      originalDraft,
+      pendingMediaUploads,
+      reroute,
+      to,
+      workingDraft,
+    } = this.props
+    if (haveFieldsChanged(workingDraft, originalDraft) || pendingMediaUploads) {
       return openSaveEditsModal(to)
     }
     return reroute(to)

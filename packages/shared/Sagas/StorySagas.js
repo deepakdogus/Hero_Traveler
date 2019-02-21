@@ -158,16 +158,16 @@ export const extractUploadData = (uploadData) => {
 
 // used exclusively by web to immediately upload cloudinary assets
 export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
-  const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
+  const cloudinaryMedia = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
     mediaType,
   )
 
-  if (typeof cloudinaryImage.data === "string") {
-    cloudinaryImage.data = JSON.parse(cloudinaryImage.data)
+  if (typeof cloudinaryMedia.data === "string") {
+    cloudinaryMedia.data = JSON.parse(cloudinaryMedia.data)
   }
-  const failureMessage = _.get(cloudinaryImage, 'data.error')
-    || _.get(cloudinaryImage, 'problem')
+  const failureMessage = _.get(cloudinaryMedia, 'data.error')
+    || _.get(cloudinaryMedia, 'problem')
   if (failureMessage) {
     callback(null, failureMessage)
     yield [
@@ -182,7 +182,7 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
     ]
   }
   else {
-    callback(cloudinaryImage.data)
+    callback(cloudinaryMedia.data)
     yield put(StoryCreateActions.uploadMediaSuccess())
   }
 }

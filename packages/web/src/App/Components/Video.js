@@ -21,7 +21,8 @@ const StyledVideo = styled.video`
 class Video extends React.Component {
   static propTypes = {
     src: PropTypes.string,
-    type: PropTypes.oneOf(['cover', 'preview']),
+    webmSrc: PropTypes.string,
+    mp4Src: PropTypes.oneOf(['cover', 'preview']),
     noControls: PropTypes.bool,
     withPrettyControls: PropTypes.bool,
     onError: PropTypes.func,
@@ -48,7 +49,7 @@ class Video extends React.Component {
   setRef = (ref) => this.videoRef = ref
 
   render() {
-    const {src, type, withPrettyControls } = this.props
+    const {src, mp4Src, webmSrc, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
 
     if (withPrettyControls && usingChrome) {
@@ -59,9 +60,21 @@ class Video extends React.Component {
           autoPlay={type === 'cover'}
           controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
         >
+          {webmSrc && (
+            <source
+              src={webmSrc}
+              type='video/webm'
+            />
+          )}
+          {mp4Src && (
+            <source
+              src={mp4Src}
+              type='video/mp4'
+            />
+          )}
           <source
             src={src}
-            type='video/webm'
+            type='video/mp4'
           />
         </VideoWithControls>
       )
@@ -71,10 +84,25 @@ class Video extends React.Component {
       <VideoWrapper>
         <StyledVideo
           autoplay
-          src={src}
-          type={type}
           controls={!this.props.noControls}
-        />
+        >
+         {webmSrc && (
+            <source
+              src={webmSrc}
+              type='video/webm'
+            />
+          )}
+          {mp4Src && (
+            <source
+              src={mp4Src}
+              type='video/mp4'
+            />
+          )}
+          <source
+            src={src}
+            type='video/mp4'
+          />
+        </StyledVideo>
       </VideoWrapper>
     )
   }

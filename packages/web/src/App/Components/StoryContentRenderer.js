@@ -70,40 +70,39 @@ const getAtomic = (children, { data, keys }) => {
     this seems a pretty precarious to get the text.
     TODO: See if we can find a better way to isolate the text
   */
-  return data.map((media, index) => {
-    const type = media.type
-    const mediaUrl = type === 'image'
-      ? getImageUrl(media.url, 'contentBlock')
-      : `${getVideoUrlBase()}/${media.url}`
+  return data.map((mediaBlock, index) => {
     const text = _.get(children, `[${index}][1][0]`, '').trim()
+    let media
 
-    switch (media.type) {
-      case 'image':
-        return [
-          <Spacer key={0} />,
-          <div key={keys[index]}>
-            <StyledImage src={mediaUrl} />
-            {text && <Caption>{text}</Caption>}
-          </div>,
-          <Spacer key={1} />,
-          <Spacer key={2} />,
-        ]
-      case 'video':
-        return [
-          <Spacer key={0} />,
-          <div key={keys[index]}>
-            <Video
-              src={mediaUrl}
-              withPrettyControls
-            />
-            {text && <Caption>{text}</Caption>}
-          </div>,
-          <Spacer key={1} />,
-          <Spacer key={2} />,
-        ]
-      default:
-        return null
+    if (mediaBlock.type === 'image') {
+      media = (<StyledImage src={getImageUrl(mediaBlock.url, 'contentBlock')} />)
     }
+    else if (mediaBlock.type === 'video') {
+      const videoKey = mediaBlock.url.split('.')[0]
+      const originalSrc = `${getVideoUrlBase()}/${mediaBlock.url}`
+      const webmSrc = `${getVideoUrlBase()}/vc_vp8/${videoKey}.webm`
+      const mp4Src = `${getVideoUrlBase()}/vc_auto/${videoKey}.mp4`
+      media = (
+        <Video
+          src={originalSrc}
+          webmSrc={webmSrc}
+          mp4Src={mp4Src}
+          withPrettyControls
+        />
+
+      )
+    }
+    else return null
+
+    return [
+      <Spacer key={0} />,
+      <div key={keys[index]}>
+        {media}
+        {text && <Caption>{text}</Caption>}
+      </div>,
+      <Spacer key={1} />,
+      <Spacer key={2} />,
+    ]
   })
 }
 

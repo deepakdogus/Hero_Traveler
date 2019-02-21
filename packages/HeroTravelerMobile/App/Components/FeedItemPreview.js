@@ -325,7 +325,7 @@ export default class FeedItemPreview extends Component {
           </Text>
         )}
         <TouchableOpacity
-          onPress={this._onPress(title)}
+          onPress={this._onPress(this.getLocationText())}
           disabled={!!isReadingScreen}
         >
           {this.renderTitle()}

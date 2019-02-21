@@ -3,7 +3,8 @@ import Promise from 'bluebird'
 import {Constants, algoliaHelper} from '@hero/ht-util'
 
 import {User, UserDevice, Image} from '../models'
-import {welcomeEmail, subscribeMailchimp} from '../utils/emailService'
+import {welcomeEmail} from '../utils/emailService'
+import {subscribeMailchimp} from '../utils/mailchimpService'
 
 const {
   ACCOUNT_TYPE_EMAIL,

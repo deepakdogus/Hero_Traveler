@@ -9,7 +9,7 @@ import {
   CloseXContainer,
 } from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getVideoUrl, { getVideoUrls } from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
@@ -344,10 +344,19 @@ export default class AddCoverTitles extends React.Component {
     : getVideoUrl(workingDraft.coverVideo, false)
   }
 
+  getVideoSrcs() {
+    const { workingDraft } = this.props
+    if (workingDraft.coverVideo && workingDraft.coverVideo.uri) {
+      return { src: workingDraft.coverVideo.uri }
+    }
+    return getVideoUrls(workingDraft.coverVideo, false)
+  }
+
   render() {
     const {isGuide} = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
+
     const hasMediaAsset = !!coverImage || !!coverVideo
 
     return (
@@ -361,7 +370,7 @@ export default class AddCoverTitles extends React.Component {
         {coverVideo && (
           <LimitedWidthContainer>
             <Video
-              src={coverVideo}
+              {...this.getVideoSrcs()}
               type={'cover'}
               onError={this.removeCover}
               withPrettyControls

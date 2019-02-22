@@ -213,6 +213,7 @@ export default class FeedItemHeader extends React.Component {
     followUser: PropTypes.func,
     reroute: PropTypes.func,
     isStory: PropTypes.bool,
+    isDraft: PropTypes.bool,
     shouldHideCover: PropTypes.bool,
     onClickAddToGuide: PropTypes.func,
   }
@@ -278,7 +279,7 @@ export default class FeedItemHeader extends React.Component {
                 <ClickableContainer
                   onClick={this._profileReroute}
                 >
-                  {hasBadge(author.role) &&
+                  {hasBadge(author.role) && (
                     <VerticalCenter>
                       <BadgeIcon
                         name={roleToIconName[author.role]}
@@ -286,7 +287,7 @@ export default class FeedItemHeader extends React.Component {
                         profileAvatar={author.profile.avatar}
                       />
                     </VerticalCenter>
-                  }
+                  )}
                   <Username
                     onClick={this._profileReroute}
                     hasBadge={hasBadge(author.role)}
@@ -294,7 +295,7 @@ export default class FeedItemHeader extends React.Component {
                     {author.username}
                   </Username>
                 </ClickableContainer>
-                {!isUsersFeedItem &&
+                {!isUsersFeedItem && (
                   <SpacedVerticalCenter>
                     <RoundedButton
                       margin='none'
@@ -306,13 +307,13 @@ export default class FeedItemHeader extends React.Component {
                       responsiveButtonProps={hideButtonStyles}
                     />
                   </SpacedVerticalCenter>
-                }
+                )}
               </Row>
               <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
           </UserInfoRow>
           <Row>
-            {isUsersFeedItem &&
+            {isUsersFeedItem && (
               <VerticalCenter>
                 <ClickableRow onClick={this._editReroute}>
                   <PencilIcon
@@ -323,8 +324,8 @@ export default class FeedItemHeader extends React.Component {
                   </EditText>
                 </ClickableRow>
               </VerticalCenter>
-            }
-            {onClickAddToGuide && !isDraft &&
+            )}
+            {onClickAddToGuide && !isDraft && (
               <RoundedButton
                 margin='noRight'
                 padding='smallEven'
@@ -333,51 +334,51 @@ export default class FeedItemHeader extends React.Component {
                 textProps={addToGuideButtonStyles}
                 responsiveButtonProps={hideButtonStyles}
               />
-            }
-            {!isUsersFeedItem && sessionUserId &&
+            )}
+            {!isUsersFeedItem && sessionUserId && (
               <RoundedButton
-              margin='none'
-              padding='smallEven'
-              onClick={isFollowing ? unfollowUser : followUser}
-              type={isFollowing ? undefined : 'blackWhite'}
-              text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
-              textProps={followButtonTextStyles}
-              buttonProps={hideButtonStyles}
-              responsiveButtonProps={responsiveFollowButtonStyles}
+                margin='none'
+                padding='smallEven'
+                onClick={isFollowing ? unfollowUser : followUser}
+                type={isFollowing ? undefined : 'blackWhite'}
+                text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
+                textProps={followButtonTextStyles}
+                buttonProps={hideButtonStyles}
+                responsiveButtonProps={responsiveFollowButtonStyles}
               />
-            }
+            )}
           </Row>
         </TopRow>
-        {!isStory &&
+        {!isStory && (
           <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>
-        }
+        )}
         {
-          mediaType === 'image' && !shouldHideCover &&
+          mediaType === 'image' && !shouldHideCover && (
           <CoverImage
             src={this.getCoverImage()}
           />
-        }
+        )}
         {
-          mediaType === 'video' && !shouldHideCover &&
+          mediaType === 'video' && !shouldHideCover && (
           <Video
             {...getVideoUrls(feedItem.coverVideo, false)}
             type='cover'
             withPrettyControls
           />
-        }
-        {isStory &&
+        )}
+        {isStory && (
           <div>
             <CoverCaption>{feedItem.coverCaption}</CoverCaption>
             <LocationText>{displayLocationPreview(feedItem.locationInfo)}</LocationText>
             <Title mediaType={mediaType}>{feedItem.title}</Title>
             <Subtitle>{feedItem.description}</Subtitle>
           </div>
-        }
-        {isStory &&
+        )}
+        {isStory && (
           <StyledDivider
             color={'lighter-grey'}
           />
-        }
+        )}
       </Container>
     )
   }

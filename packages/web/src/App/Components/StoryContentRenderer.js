@@ -8,7 +8,7 @@ import _ from 'lodash'
 import Image from './Image'
 import Video from './Video'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import { getVideoUrlBase } from '../Shared/Lib/getVideoUrl'
+import { getBodyVideoUrls } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
 const ContentContainer = styled.div``
@@ -78,15 +78,9 @@ const getAtomic = (children, { data, keys }) => {
       media = (<StyledImage src={getImageUrl(mediaBlock.url, 'contentBlock')} />)
     }
     else if (mediaBlock.type === 'video') {
-      const videoKey = mediaBlock.url.split('.')[0]
-      const originalSrc = `${getVideoUrlBase()}/${mediaBlock.url}`
-      const webmSrc = `${getVideoUrlBase()}/vc_vp8/${videoKey}.webm`
-      const mp4Src = `${getVideoUrlBase()}/vc_auto/${videoKey}.mp4`
       media = (
         <Video
-          src={originalSrc}
-          webmSrc={webmSrc}
-          mp4Src={mp4Src}
+          {...getBodyVideoUrls(mediaBlock.url)}
           withPrettyControls
         />
 

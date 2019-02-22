@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import getVideoUrl from '../Shared/Lib/getVideoUrl'
+import { getVideoUrls } from '../Shared/Lib/getVideoUrl'
 
 import Avatar from './Avatar'
 import VerticalCenter from './VerticalCenter'
@@ -360,7 +360,7 @@ export default class FeedItemHeader extends React.Component {
         {
           mediaType === 'video' && !shouldHideCover &&
           <Video
-            src={getVideoUrl(feedItem.coverVideo, false)}
+            {...getVideoUrls(feedItem.coverVideo, false)}
             type='cover'
             withPrettyControls
           />

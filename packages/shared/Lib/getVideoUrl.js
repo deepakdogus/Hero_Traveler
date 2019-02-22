@@ -6,6 +6,15 @@ export function getVideoUrlBase() {
   return `https://res.cloudinary.com/${Env.cloudName}/video/upload`
 }
 
+export function getBodyVideoUrls(partialUrl) {
+  const videoKey = partialUrl.split('.')[0]
+  return {
+    src: `${getVideoUrlBase()}/${partialUrl}`,
+    webmSrc: `${getVideoUrlBase()}/vc_vp8/${videoKey}.webm`,
+    mp4Src: `${getVideoUrlBase()}/vc_auto/${videoKey}.mp4`
+  }
+}
+
 export function isLocalMediaAsset(asset) {
   return typeof asset === 'string'
   && (
@@ -34,6 +43,20 @@ export function getVideoUrlFromString(video: string, stream = true, createdAt): 
   const isTenMinutesOld = moment(createdAt).isBefore(tenMinutesAgo)
   if (!isTenMinutesOld) return `${getVideoUrlBase()}/${video}`
   return `${getVideoUrlBase()}/q_auto/${video}`
+}
+
+
+export function getVideoUrls(video, stream) {
+  const src = getVideoUrl(video, stream)
+  return {
+    ...getBodyVideoUrls(getPartialUrl(src)),
+    src,
+  }
+}
+
+function getPartialUrl(videoSrc) {
+  const split = videoSrc.split('/')
+  return split.slice(split.length - 2).join('/')
 }
 
 export default function getVideoUrl(video: object, stream = true): ?string {

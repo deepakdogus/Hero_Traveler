@@ -20,15 +20,16 @@ const StyledVideo = styled.video`
 
 class Video extends React.Component {
   static propTypes = {
-    src: PropTypes.string,
-    webmSrc: PropTypes.string,
-    mp4Src: PropTypes.oneOf(['cover', 'preview']),
+    mp4Src: PropTypes.string,
     noControls: PropTypes.bool,
-    withPrettyControls: PropTypes.bool,
     onError: PropTypes.func,
+    src: PropTypes.string,
+    type: PropTypes.oneOf(['cover', 'preview']),
     width: PropTypes.string,
     video: PropTypes.object,
     videoEl: PropTypes.object,
+    webmSrc: PropTypes.string,
+    withPrettyControls: PropTypes.bool,
   }
 
   componentDidUpdate = (prevProps) => {

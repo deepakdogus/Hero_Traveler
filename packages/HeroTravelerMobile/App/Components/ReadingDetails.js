@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from 'react-native'
+import moment from 'moment'
 
 import TabIcon from './TabIcon'
 import {styles} from '../Containers/Styles/StoryReadingScreenStyles'
@@ -88,7 +89,7 @@ class ReadingDetails extends React.Component {
   }
 
   render () {
-    const {categories, cost, travelTips, duration} = this.props.targetEntity
+    const {categories, cost, travelTips, duration, tripDate, publishedDate} = this.props.targetEntity
 
     return (
       <Fragment>
@@ -120,6 +121,14 @@ class ReadingDetails extends React.Component {
             'cost',
             'Cost',
             cost + this.getCostType(),
+          )
+        }
+        {!!tripDate && !!publishedDate &&
+          moment(tripDate).format('DD-MM-YYYY') !== moment(publishedDate).format('DD-MM-YYYY') &&
+          this.renderRow(
+            'date',
+            'Travel Date',
+            moment(tripDate).format('LL'),
           )
         }
         {!!travelTips &&

@@ -143,7 +143,7 @@ export default class FeedItemPreview extends Component {
         styles.dateText,
         isReadingScreen && styles.dateTextReading,
       ]}>
-        {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
+        {moment(feedItem.publishedDate || feedItem.updatedAt).format('LL')}
       </Text>
     )
   }

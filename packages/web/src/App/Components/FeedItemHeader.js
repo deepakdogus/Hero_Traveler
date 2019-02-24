@@ -309,7 +309,7 @@ export default class FeedItemHeader extends React.Component {
                   </SpacedVerticalCenter>
                 )}
               </Row>
-              <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
+              <TimeStamp>{moment(isStory && !isDraft ? feedItem.publishedDate : feedItem.createdAt).fromNow()}</TimeStamp>
             </SpacedVerticalCenter>
           </UserInfoRow>
           <Row>

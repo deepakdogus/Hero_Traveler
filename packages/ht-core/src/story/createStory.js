@@ -68,6 +68,11 @@ export default async function createStory(storyData, assetFormater) {
     storyData.id = undefined
     newStory = await Story.create(storyObject)
   }
+
+  if (storyObject.draft === false) {
+    storyObject.publishedDate = new Date();
+  } 
+
   else newStory = await updateDraft(storyData.id, storyObject)
 
   // make a query for the story with just the fields

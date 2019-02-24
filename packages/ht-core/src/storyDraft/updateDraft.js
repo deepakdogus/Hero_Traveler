@@ -57,6 +57,10 @@ export default async function updateDraft(draftId, attrs, assetFormater){
     attrs.hashtags = await parseAndInsertStoryHashtags(attrs.hashtags)
   }
 
+  if (attrs.draft === false) {
+    attrs.publishedDate = new Date();
+  }
+
   return draft.update(attrs)
   .then((draft) => {
     // use getDraft so we return the populated document

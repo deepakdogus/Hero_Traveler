@@ -275,7 +275,9 @@ class FeedItemPreview extends Component {
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
     onClickBookmark: PropTypes.func,
+    onClickRemoveBookmark: PropTypes.func,
     onClickStoryLike: PropTypes.func,
+    onClickStoryUnlike: PropTypes.func,
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
     openGlobalModal: PropTypes.func,
@@ -299,10 +301,14 @@ class FeedItemPreview extends Component {
   _onClickLike = () => {
     const {
       sessionUserId, isLiked, isStory,
-      onClickStoryLike, onClickGuideLike, onClickGuideUnLike,
+      onClickStoryLike, onClickStoryUnlike,
+      onClickGuideLike, onClickGuideUnLike,
     } = this.props
 
-    if (isStory) onClickStoryLike(sessionUserId)
+    if (isStory) {
+      if (isLiked) onClickStoryUnlike(sessionUserId)
+      else onClickStoryLike(sessionUserId)
+    }
     else {
       if (isLiked) onClickGuideUnLike(sessionUserId)
       else onClickGuideLike(sessionUserId)
@@ -310,8 +316,12 @@ class FeedItemPreview extends Component {
   }
 
   _onClickBookmark = () => {
-    const {sessionUserId, onClickBookmark} = this.props
-    onClickBookmark(sessionUserId)
+    const {
+      isBookmarked, sessionUserId,
+      onClickBookmark, onClickRemoveBookmark,
+    } = this.props
+    if (isBookmarked) return onClickRemoveBookmark(sessionUserId)
+    return onClickBookmark(sessionUserId)
   }
 
   getLocationText = () => {
@@ -511,13 +521,17 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     onClickStoryLike: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, feedItem.id])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.likeStoryRequest, [feedItem.id, sessionUserId])),
+    onClickStoryUnlike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.unlikeStoryRequest, [feedItem.id, sessionUserId])),
     onClickGuideLike: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [feedItem.id, sessionUserId])),
     onClickGuideUnLike: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [feedItem.id, sessionUserId])),
     onClickBookmark: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, feedItem.id])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.bookmarkStoryRequest, [feedItem.id])),
+    onClickRemoveBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.removeStoryBookmarkRequest, [feedItem.id])),
     reroute: (path) => dispatch(push(path)),
   }
 }

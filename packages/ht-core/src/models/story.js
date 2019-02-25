@@ -106,10 +106,6 @@ const StorySchema = new Schema({
       type: Number,
       default: 0
     },
-    bookmarks: {
-      type: Number,
-      default: 0
-    },
     comments: {
       type: Number,
       default: 0

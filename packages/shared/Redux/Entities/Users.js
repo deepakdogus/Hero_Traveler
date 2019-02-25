@@ -38,8 +38,10 @@ const { Types, Creators } = createActions({
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'likes'],
   receiveBookmarks: ['userId', 'storyIds'],
-  userToggleLike: ['userId', 'storyId'],
-  userToggleBookmark: ['userId', 'storyId'],
+  addBookmark: ['userId', 'storyId'],
+  removeBookmark: ['userId', 'storyId'],
+  userStoryLike: ['userId', 'storyId'],
+  userStoryUnlike: ['userId', 'storyId'],
   userGuideLike: ['userId', 'guideId'],
   userGuideUnlike: ['userId', 'guideId'],
   fetchActivities: null,
@@ -295,20 +297,46 @@ export const toggleLike = (state, {userId, storyId}) => {
   }
 }
 
-export const toggleBookmark = (state, {userId, storyId}) => {
+export const addBookmark = (state, {userId, storyId}) => {
   const likes = _.get(state, `usersBookmarksById.${userId}`, [])
-  if (_.includes(likes, storyId)) {
-    return state.setIn(
-      ['usersBookmarksById', userId],
-      _.without(likes, storyId)
-    )
-  } else {
-    return state.setIn(
-      ['usersBookmarksById', userId],
-      [storyId, ...likes]
+  if (_.includes(likes, storyId)) return state
+  return state.setIn(
+    ['usersBookmarksById', userId],
+    [storyId, ...likes]
+  )
+}
+
+export const removeBookmark = (state, {userId, storyId}) => {
+  const likes = _.get(state, `usersBookmarksById.${userId}`, [])
+  if (!_.includes(likes, storyId)) return state
+  return state.setIn(
+    ['usersBookmarksById', userId],
+    _.without(likes, storyId)
+  )
+}
+
+export const addStoryLike = (state, {userId, storyId}) => {
+  const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
+  if (!_.includes(storyLikes, storyId)) {
+    return  state.setIn(
+      ['usersLikesById', userId],
+      storyLikes.concat(storyId)
     )
   }
+  return state
 }
+
+export const removeStoryLike = (state, {userId, storyId}) => {
+  const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
+  if (_.includes(storyLikes, storyId)) {
+    return  state.setIn(
+      ['usersLikesById', userId],
+      _.without(storyLikes, storyId),
+    )
+  }
+  return state
+}
+
 
 export const addGuideLike = (state, {userId, guideId}) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
@@ -510,8 +538,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
+  [Types.ADD_BOOKMARK]: addBookmark,
+  [Types.REMOVE_BOOKMARK]: removeBookmark,
   [Types.USER_TOGGLE_LIKE]: toggleLike,
-  [Types.USER_TOGGLE_BOOKMARK]: toggleBookmark,
+  [Types.USER_STORY_LIKE]: addStoryLike,
+  [Types.USER_STORY_UNLIKE]: removeStoryLike,
   [Types.USER_GUIDE_LIKE]: addGuideLike,
   [Types.USER_GUIDE_UNLIKE]: removeGuideLike,
   [Types.FETCH_ACTIVITIES]: fetchActivities,

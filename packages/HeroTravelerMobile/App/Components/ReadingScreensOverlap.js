@@ -120,7 +120,6 @@ class ReadingScreenOverlap extends React.Component {
             isStory={isStory}
             likeCount={formatCount(targetEntity.counts.likes)}
             commentCount={formatCount(targetEntity.counts.comments)}
-            boomarkCount={formatCount(targetEntity.counts.bookmarks)}
             isBookmarked={isBookmarked}
             isLiked={isLiked}
             userId={user.id}

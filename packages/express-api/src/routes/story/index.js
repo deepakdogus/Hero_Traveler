@@ -13,7 +13,11 @@ import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
+import likeStory from './likeStory'
+import unlikeStory from './unlikeStory'
 import toggleBookmark from './toggleBookmark'
+import addBookmark from './addBookmark'
+import removeBookmark from './removeBookmark'
 import getBookmarks from './getBookmarks'
 import getComments from './getComments'
 import createComment from './createComment'
@@ -81,8 +85,12 @@ router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
 router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 
 router.get('/:id', endpointWrapper(getStory))
+router.put('/:id/like', hasValidOauth, endpointWrapper(likeStory))
+router.put('/:id/unlike', hasValidOauth, endpointWrapper(unlikeStory))
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
+router.post('/:id/bookmark', hasValidOauth, endpointWrapper(addBookmark))
+router.delete('/:id/bookmark', hasValidOauth, endpointWrapper(removeBookmark))
 router.put('/:id/flag', hasValidOauth, endpointWrapper(flagStory))
 router.post('/', hasValidOauth, endpointWrapper(createStoryOld))
 router.post('/v2', hasValidOauth, endpointWrapper(createStory))

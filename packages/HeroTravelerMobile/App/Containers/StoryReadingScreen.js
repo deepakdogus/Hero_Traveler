@@ -135,9 +135,11 @@ class StoryReadingScreen extends React.Component {
     story: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.object,
-    toggleBookmark: PropTypes.func,
+    onPressBookmark: PropTypes.func,
+    onPressRemoveBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,
-    toggleLike: PropTypes.func,
+    onPressStoryLike: PropTypes.func,
+    onPressStoryUnlike: PropTypes.func,
     isLiked: PropTypes.bool,
     flagStory: PropTypes.func,
     completeTooltip: PropTypes.func,
@@ -156,8 +158,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   _onPressBookmark = () => {
-    const {toggleBookmark, user, storyId} = this.props
-    toggleBookmark(user.id, storyId)
+    const {
+      onPressRemoveBookmark, onPressBookmark,
+      isBookmarked, storyId,
+    } = this.props
+    if (isBookmarked) return onPressRemoveBookmark(storyId)
+    return onPressBookmark(storyId)
   }
 
   _onPressComment = () => {
@@ -167,7 +173,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    this.props.toggleLike(this.props.user.id, this.props.story.id)
+    const {
+      story, user, isLiked,
+      onPressStoryLike, onPressStoryUnlike,
+    } = this.props
+    if (isLiked) onPressStoryUnlike(story.id, user.id)
+    else onPressStoryLike(story.id, user.id)
   }
 
   _toggleFlag = () => {
@@ -385,8 +396,16 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
+    onPressStoryLike: (story, sessionUserId) => {
+      dispatch(StoryActions.likeStoryRequest(story, sessionUserId))
+    },
+    onPressStoryUnlike: (story, sessionUserId) => {
+      dispatch(StoryActions.unlikeStoryRequest(story, sessionUserId))
+    },
+    onPressBookmark: (feedItemId) =>
+      dispatch(StoryActions.bookmarkStoryRequest(feedItemId)),
+    onPressRemoveBookmark: (feedItemId) =>
+      dispatch(StoryActions.removeStoryBookmarkRequest(feedItemId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),

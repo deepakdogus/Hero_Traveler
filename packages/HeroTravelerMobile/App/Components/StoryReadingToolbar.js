@@ -16,7 +16,6 @@ export default class StoryReadingToolbarComponent extends Component {
     isBookmarked: PropTypes.bool,
     likeCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     commentCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    boomarkCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     isStory: PropTypes.bool,
   }
 
@@ -87,11 +86,6 @@ export default class StoryReadingToolbarComponent extends Component {
 
     const bookmarkContainer = (
       <View style={styles.wrapper}>
-        <Text
-          style={styles.text}
-        >
-          {this.props.boomarkCount || 0}
-        </Text>
         <TabIcon name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}/>
       </View>
     )

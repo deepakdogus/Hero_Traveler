@@ -102,6 +102,7 @@ class Story extends Component {
     onClickUnLike: PropTypes.func,
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
+    onClickRemoveBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
     onClickAddToGuide: PropTypes.func,
@@ -131,7 +132,12 @@ class Story extends Component {
   }
 
   _onClickBookmark = () => {
-    this.props.onClickBookmark(this.props.sessionUserId)
+    const {
+      isBookmarked, sessionUserId,
+      onClickBookmark, onClickRemoveBookmark,
+    } = this.props
+    if (isBookmarked) return onClickRemoveBookmark(sessionUserId)
+    return onClickBookmark(sessionUserId)
   }
 
   _onClickComments = () => {
@@ -270,7 +276,9 @@ function mapDispatchToProps(dispatch, ownProps) {
         runIfAuthed(sessionUserId, StoryActions.unlikeStoryRequest, [storyId, sessionUserId]),
     ),
     onClickBookmark: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.bookmarkStoryRequest, [storyId])),
+    onClickRemoveBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.removeStoryBookmarkRequest, [storyId])),
     onClickComments: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { storyId }])),
     onClickAddToGuide: (sessionUserId) =>

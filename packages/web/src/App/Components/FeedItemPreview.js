@@ -275,6 +275,7 @@ class FeedItemPreview extends Component {
     isBookmarked: PropTypes.bool,
     reroute: PropTypes.func,
     onClickBookmark: PropTypes.func,
+    onClickRemoveBookmark: PropTypes.func,
     onClickStoryLike: PropTypes.func,
     onClickStoryUnlike: PropTypes.func,
     onClickGuideLike: PropTypes.func,
@@ -315,8 +316,12 @@ class FeedItemPreview extends Component {
   }
 
   _onClickBookmark = () => {
-    const {sessionUserId, onClickBookmark} = this.props
-    onClickBookmark(sessionUserId)
+    const {
+      isBookmarked, sessionUserId,
+      onClickBookmark, onClickRemoveBookmark,
+    } = this.props
+    if (isBookmarked) return onClickRemoveBookmark(sessionUserId)
+    return onClickBookmark(sessionUserId)
   }
 
   getLocationText = () => {
@@ -524,7 +529,9 @@ const mapDispatchToProps = (dispatch, props) => {
     onClickGuideUnLike: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [feedItem.id, sessionUserId])),
     onClickBookmark: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, feedItem.id])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.bookmarkStoryRequest, [feedItem.id])),
+    onClickRemoveBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.removeStoryBookmarkRequest, [feedItem.id])),
     reroute: (path) => dispatch(push(path)),
   }
 }

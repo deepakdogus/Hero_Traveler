@@ -158,9 +158,10 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(GuideActions.unlikeGuideRequest(guideId, sessionUserId))
     },
     onPressBookmark: () =>
-      dispatch(StoryActions.storyBookmark(userId, feedItemId)),
-    onPressFollow: idToFollow =>
-      dispatch(UserActions.followUser(userId, idToFollow)),
+      dispatch(StoryActions.bookmarkStoryRequest(feedItemId)),
+    onPressRemoveBookmark: () =>
+      dispatch(StoryActions.removeStoryBookmarkRequest(feedItemId)),
+    onPressFollow: idToFollow => dispatch(UserActions.followUser(userId, idToFollow)),
     onPressUnfollow: idToUnfollow =>
       dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }

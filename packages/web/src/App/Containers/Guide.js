@@ -362,8 +362,6 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(
         runIfAuthed(sessionUserId, GuideActions.unlikeGuideRequest, [guideId, sessionUserId]),
       ),
-    // onClickBookmark: (sessionUserId) =>
-    //    dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
     onClickComments: sessionUserId =>
       dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { guideId }])),
     onClickFlag: (sessionUserId, storyId) =>

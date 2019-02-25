@@ -66,6 +66,7 @@ export default class FeedItemPreview extends Component {
     showPlayButton: PropTypes.bool,
     titleStyle: PropTypes.number,
     onPressBookmark: PropTypes.func,
+    onPressRemoveBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,
     selectedStories: PropTypes.array,
     location: PropTypes.string,
@@ -135,6 +136,11 @@ export default class FeedItemPreview extends Component {
 
   _onPressUnfollow = () => {
     this.props.onPressUnfollow(this.props.user.id)
+  }
+
+  _onPressBookmark = () => {
+    if (this.props.isBookmarked) return this.props.onPressRemoveBookmark()
+    return this.props.onPressBookmark()
   }
 
   renderDate(){
@@ -349,7 +355,7 @@ export default class FeedItemPreview extends Component {
                 && (
                   <View style={styles.bookmarkContainer}>
                     <TouchableOpacity
-                      onPress={this.props.onPressBookmark}
+                      onPress={this._onPressBookmark}
                     >
                       <TabIcon
                         name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}

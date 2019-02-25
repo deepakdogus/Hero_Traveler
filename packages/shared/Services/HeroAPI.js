@@ -331,7 +331,11 @@ const create = () => {
   }
 
   const bookmarkStory = (storyId) => {
-    return api.get(`story/${storyId}/bookmark`)
+    return api.post(`story/${storyId}/bookmark`)
+  }
+
+  const removeStoryBookmark = (storyId) => {
+    return api.delete(`story/${storyId}/bookmark`)
   }
 
   const getBookmarks = (userId) => {
@@ -510,6 +514,7 @@ const create = () => {
     likeStory,
     unlikeStory,
     bookmarkStory,
+    removeStoryBookmark,
     getStory,
     getDrafts,
     getGuideStories,

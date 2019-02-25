@@ -26,7 +26,6 @@ const { Types, Creators } = createActions({
   resetDrafts: null,
   changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
   flagStory: ['userId', 'storyId'],
-  toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   getBookmarks: ['userId'],
   getBookmarksSuccess: ['userId', 'bookmarks'],
@@ -40,6 +39,8 @@ const { Types, Creators } = createActions({
   getDeletedStories: ['userId'],
   likeStoryRequest: ['storyId', 'userId'],
   unlikeStoryRequest: ['storyId', 'userId'],
+  bookmarkStoryRequest: ['storyId'],
+  removeStoryBookmarkRequest: ['storyId'],
   syncPendingUpdates: null,
   storyFailure: ['error'],
 })

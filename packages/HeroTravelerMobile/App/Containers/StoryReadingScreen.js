@@ -135,7 +135,8 @@ class StoryReadingScreen extends React.Component {
     story: PropTypes.object,
     fetching: PropTypes.bool,
     error: PropTypes.object,
-    toggleBookmark: PropTypes.func,
+    onPressBookmark: PropTypes.func,
+    onPressRemoveBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,
     onPressStoryLike: PropTypes.func,
     onPressStoryUnlike: PropTypes.func,
@@ -157,8 +158,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   _onPressBookmark = () => {
-    const {toggleBookmark, user, storyId} = this.props
-    toggleBookmark(user.id, storyId)
+    const {
+      onPressRemoveBookmark, onPressBookmark,
+      isBookmarked, storyId,
+    } = this.props
+    if (isBookmarked) return onPressRemoveBookmark(storyId)
+    return onPressBookmark(storyId)
   }
 
   _onPressComment = () => {
@@ -397,7 +402,10 @@ const mapDispatchToProps = (dispatch) => {
     onPressStoryUnlike: (story, sessionUserId) => {
       dispatch(StoryActions.unlikeStoryRequest(story, sessionUserId))
     },
-    toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
+    onPressBookmark: (feedItemId) =>
+      dispatch(StoryActions.bookmarkStoryRequest(feedItemId)),
+    onPressRemoveBookmark: (feedItemId) =>
+      dispatch(StoryActions.removeStoryBookmarkRequest(feedItemId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),

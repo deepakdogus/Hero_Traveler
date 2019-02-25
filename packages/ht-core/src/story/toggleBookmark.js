@@ -17,12 +17,5 @@ export default function toggleBookmark(storyId, userId) {
           .then(() => true)
       }
     })
-    .then(isBookmarked => {
-      return Story.update({
-        _id: storyId
-      }, {
-        $inc: {'counts.bookmarks': isBookmarked ? 1 : -1}
-      })
-      .then(() => {isBookmarked})
-    })
+    .then(isBookmarked => {isBookmarked})
 }

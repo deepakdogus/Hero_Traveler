@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.77",
+  "version": "0.0.78",
   "description": "HERO Traveler core server functions",
   "main": "dist/index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "consolidate": "^0.14.5",
     "joi": "^10.2.2",
     "lodash": "^4.17.4",
+    "mailchimp-api-v3": "^1.12.1",
     "moment": "^2.17.1",
     "mongoose": "^4.8.6",
     "mongoose-delete": "^0.3.4",

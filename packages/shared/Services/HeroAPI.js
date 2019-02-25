@@ -319,7 +319,11 @@ const create = () => {
   }
 
   const likeStory = (storyId) => {
-    return api.get(`story/${storyId}/like`)
+    return api.put(`story/${storyId}/like`)
+  }
+
+  const unlikeStory = (storyId) => {
+    return api.put(`story/${storyId}/unlike`)
   }
 
   const flagStory = (storyId) => {
@@ -504,6 +508,7 @@ const create = () => {
     unfollowCategory,
     getUserLikes,
     likeStory,
+    unlikeStory,
     bookmarkStory,
     getStory,
     getDrafts,

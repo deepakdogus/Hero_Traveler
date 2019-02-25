@@ -1,4 +1,4 @@
-import {Guide, GuideLike, ActivityStoryLike} from '../models'
+import {Guide, GuideLike} from '../models'
 
 export default function unlikeGuide(guideId, userId) {
   const params = {

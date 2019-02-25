@@ -25,7 +25,6 @@ const { Types, Creators } = createActions({
   removeDraft: ['draftId'],
   resetDrafts: null,
   changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
-  storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
   toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
@@ -39,7 +38,10 @@ const { Types, Creators } = createActions({
   removeDeletedStories: ['deleteStories'],
   getGuideStories: ['guideId'],
   getDeletedStories: ['userId'],
+  likeStoryRequest: ['storyId', 'userId'],
+  unlikeStoryRequest: ['storyId', 'userId'],
   syncPendingUpdates: null,
+  storyFailure: ['error'],
 })
 
 export const StoryTypes = Types
@@ -353,6 +355,15 @@ export const getBookmarksFetchStatus = (state, userId) => {
   return state.getIn(['bookmarks', userId, 'fetchStatus'], {})
 }
 
+export const genericFailure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+    error,
+  })
+}
+
 
 // export const getIdsByUser = (state, userId: string) => {
 //   return state.getIn(['storiesByUser', userId, 'byId'], [])
@@ -385,4 +396,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_BOOKMARKS]: getBookmarks,
   [Types.GET_BOOKMARKS_SUCCESS]: getBookmarksSuccess,
   [Types.GET_BOOKMARKS_FAILURE]: getBookmarksFailure,
+  [Types.STORY_FAILURE]: genericFailure,
 })

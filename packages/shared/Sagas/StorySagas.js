@@ -414,20 +414,41 @@ export function * uploadCoverImage(api, action) {
   }
 }
 
-export function * likeStory(api, {userId, storyId}) {
-  const [wasLiked, response] = yield [
-    select(isStoryLikedSelector, userId, storyId),
-    call(api.likeStory, storyId)
+export function * likeStory(api, {storyId, userId}) {
+  // eagerly incrementing storyLike count and adding story to users like list
+  const [response] = yield [
+    call(api.likeStory, storyId),
+    put(UserActions.userStoryLike(userId, storyId)),
+    put(StoryActions.changeCountOfType(storyId, 'likes', true)),
   ]
 
-  yield [
-    put(UserActions.userToggleLike(userId, storyId)),
-    put(StoryActions.changeCountOfType(storyId, 'likes' , !wasLiked)),
+  // every update is done greedily so we do not need to do anything upon success
+  if (!response.ok) {
+    yield put(StoryActions.changeCountOfType(storyId, 'likes', false))
+    yield [
+      put(StoryActions.storyFailure(
+        new Error("Failed to like story")
+      )),
+      put(UserActions.userStoryUnlike(userId, storyId)),
+    ]
+  }
+}
+
+export function * unlikeStory(api, {storyId, userId}) {
+  const [response] = yield [
+    call(api.unlikeStory, storyId),
+    put(UserActions.userStoryUnlike(userId, storyId)),
+    put(StoryActions.changeCountOfType(storyId, 'likes', false)),
   ]
 
+  // every update is done greedily so we do not need to do anything upon success
   if (!response.ok) {
     yield [
-      put(UserActions.userToggleLike(userId, storyId)),
+      put(StoryActions.storyFailure(
+        new Error("Failed to unlike story")
+      )),
+      put(UserActions.userStoryLike(userId, storyId)),
+      put(StoryActions.changeCountOfType(storyId, 'likes', true)),
     ]
   }
 }

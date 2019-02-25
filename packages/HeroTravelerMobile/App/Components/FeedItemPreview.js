@@ -39,6 +39,7 @@ export default class FeedItemPreview extends Component {
     onPressGuide: PropTypes.func,
     onPressStory: PropTypes.func,
     onPressStoryLike: PropTypes.func,
+    onPressStoryUnlike: PropTypes.func,
     onPressGuideLike: PropTypes.func,
     onPressGuideUnlike: PropTypes.func,
     onPress: PropTypes.func,
@@ -439,11 +440,15 @@ export default class FeedItemPreview extends Component {
 
   _onPressLike = () => {
     const {
-      feedItem, isStory, isGuideLiked, sessionUserId,
-      onPressStoryLike, onPressGuideLike, onPressGuideUnlike,
+      feedItem, isStory, sessionUserId,
+      isGuideLiked, onPressGuideLike, onPressGuideUnlike,
+      isStoryLiked, onPressStoryLike, onPressStoryUnlike,
     } = this.props
 
-    if (isStory && onPressStoryLike) onPressStoryLike(feedItem)
+    if (isStory) {
+      if (isStoryLiked) onPressStoryUnlike(feedItem.id, sessionUserId)
+      else onPressStoryLike(feedItem.id, sessionUserId)
+    }
     else {
       if (isGuideLiked) onPressGuideUnlike(feedItem.id, sessionUserId)
       else onPressGuideLike(feedItem.id, sessionUserId)

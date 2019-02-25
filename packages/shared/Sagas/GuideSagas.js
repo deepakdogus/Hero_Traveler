@@ -139,15 +139,13 @@ export function * likeGuide(api, {guideId, userId}) {
 
   // every update is done greedily so we do not need to do anything upon success
   if (!response.ok) {
-    yield put(GuideActions.unlikeGuide(guideId, userId))
-    if (_.get(response, 'data.message') !== 'Already liked') {
-      yield [
-        put(GuideActions.guideFailure(
-          new Error("Failed to like guide")
-        )),
-        put(UserActions.userGuideUnlike(userId, guideId)),
-      ]
-    }
+    yield put(GuideActions.changeCountOfType(guideId, 'likes', false))
+    yield [
+      put(GuideActions.guideFailure(
+        new Error("Failed to like guide")
+      )),
+      put(UserActions.userGuideUnlike(userId, guideId)),
+    ]
   }
 }
 
@@ -165,7 +163,7 @@ export function * unlikeGuide(api, {guideId, userId}) {
         new Error("Failed to unlike guide")
       )),
       put(UserActions.userGuideLike(userId, guideId)),
-      put(GuideActions.likeGuide(guideId, userId)),
+      put(GuideActions.changeCountOfType(guideId, 'likes', true)),
     ]
   }
 }

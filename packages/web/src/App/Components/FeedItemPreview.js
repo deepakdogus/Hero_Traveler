@@ -276,6 +276,7 @@ class FeedItemPreview extends Component {
     reroute: PropTypes.func,
     onClickBookmark: PropTypes.func,
     onClickStoryLike: PropTypes.func,
+    onClickStoryUnlike: PropTypes.func,
     onClickGuideLike: PropTypes.func,
     onClickGuideUnLike: PropTypes.func,
     openGlobalModal: PropTypes.func,
@@ -299,10 +300,14 @@ class FeedItemPreview extends Component {
   _onClickLike = () => {
     const {
       sessionUserId, isLiked, isStory,
-      onClickStoryLike, onClickGuideLike, onClickGuideUnLike,
+      onClickStoryLike, onClickStoryUnlike,
+      onClickGuideLike, onClickGuideUnLike,
     } = this.props
 
-    if (isStory) onClickStoryLike(sessionUserId)
+    if (isStory) {
+      if (isLiked) onClickStoryUnlike(sessionUserId)
+      else onClickStoryLike(sessionUserId)
+    }
     else {
       if (isLiked) onClickGuideUnLike(sessionUserId)
       else onClickGuideLike(sessionUserId)
@@ -511,7 +516,9 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     onClickStoryLike: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, feedItem.id])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.likeStoryRequest, [feedItem.id, sessionUserId])),
+    onClickStoryUnlike: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.unlikeStoryRequest, [feedItem.id, sessionUserId])),
     onClickGuideLike: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, GuideActions.likeGuideRequest, [feedItem.id, sessionUserId])),
     onClickGuideUnLike: (sessionUserId) =>

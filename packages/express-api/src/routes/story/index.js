@@ -13,6 +13,8 @@ import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
 import toggleLike from './toggleLike'
+import likeStory from './likeStory'
+import unlikeStory from './unlikeStory'
 import toggleBookmark from './toggleBookmark'
 import getBookmarks from './getBookmarks'
 import getComments from './getComments'
@@ -81,6 +83,8 @@ router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
 router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))
 
 router.get('/:id', endpointWrapper(getStory))
+router.put('/:id/like', hasValidOauth, endpointWrapper(likeStory))
+router.put('/:id/unlike', hasValidOauth, endpointWrapper(unlikeStory))
 router.get('/:id/like', hasValidOauth, endpointWrapper(toggleLike))
 router.get('/:id/bookmark', hasValidOauth, endpointWrapper(toggleBookmark))
 router.put('/:id/flag', hasValidOauth, endpointWrapper(flagStory))

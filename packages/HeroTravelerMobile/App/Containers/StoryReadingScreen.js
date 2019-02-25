@@ -137,7 +137,8 @@ class StoryReadingScreen extends React.Component {
     error: PropTypes.object,
     toggleBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,
-    toggleLike: PropTypes.func,
+    onPressStoryLike: PropTypes.func,
+    onPressStoryUnlike: PropTypes.func,
     isLiked: PropTypes.bool,
     flagStory: PropTypes.func,
     completeTooltip: PropTypes.func,
@@ -167,7 +168,12 @@ class StoryReadingScreen extends React.Component {
   }
 
   _toggleLike = () => {
-    this.props.toggleLike(this.props.user.id, this.props.story.id)
+    const {
+      story, user, isLiked,
+      onPressStoryLike, onPressStoryUnlike,
+    } = this.props
+    if (isLiked) onPressStoryUnlike(story.id, user.id)
+    else onPressStoryLike(story.id, user.id)
   }
 
   _toggleFlag = () => {
@@ -385,7 +391,12 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (userId, storyId) => dispatch(StoryActions.storyLike(userId, storyId)),
+    onPressStoryLike: (story, sessionUserId) => {
+      dispatch(StoryActions.likeStoryRequest(story, sessionUserId))
+    },
+    onPressStoryUnlike: (story, sessionUserId) => {
+      dispatch(StoryActions.unlikeStoryRequest(story, sessionUserId))
+    },
     toggleBookmark: (userId, storyId) => dispatch(StoryActions.storyBookmark(userId, storyId)),
     requestStory: (storyId) => dispatch(StoryActions.storyRequest(storyId)),
     flagStory: (userId, storyId) => dispatch(StoryActions.flagStory(userId, storyId)),

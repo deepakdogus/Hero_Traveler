@@ -11,12 +11,15 @@ import SaveEdits from './Modals/HeaderModals/SaveEdits'
 import ExistingUpdateWarning from './Modals/HeaderModals/ExistingUpdateWarning'
 import ResetPasswordRequest from './Modals/HeaderModals/ResetPasswordRequest'
 import ResetPasswordAttempt from './Modals/HeaderModals/ResetPasswordAttempt'
+import ResetPasswordSuccess from './Modals/HeaderModals/ResetPasswordSuccess'
 import ChangeTempUsername from './Modals/ChangeTempUsername'
 import Contributor from './Modals/HeaderModals/Contributor'
 import FlagStory from './Modals/FlagStory'
 import DeleteFeedItem from './Modals/DeleteFeedItem'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
+import ErrorModal from './Modals/ErrorModal'
+
 // Right Modals
 import RightModal from './RightModal'
 import Settings from './Modals/Settings'
@@ -86,6 +89,7 @@ export default class HeaderModals extends React.Component {
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
     openGlobalModal: PropTypes.func,
+    pendingMediaUploads: PropTypes.number,
   }
 
   closeGlobalModal = () => {
@@ -112,6 +116,7 @@ export default class HeaderModals extends React.Component {
       attemptLogout,
       resetCreateStore,
       flagStory,
+      pendingMediaUploads,
     } = this.props
 
     //destructuring these as let so we can reassign message in respective components
@@ -151,7 +156,14 @@ export default class HeaderModals extends React.Component {
           contentLabel="Reset Password Modal"
           style={customModalStyles}
         >
-          <ResetPasswordAttempt />
+          <ResetPasswordAttempt closeModal={closeGlobalModal}/>
+        </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'resetPasswordSuccess'}
+          contentLabel="Reset Password Success Modal"
+          style={customModalStyles}
+        >
+          <ResetPasswordSuccess />
         </Modal>
         <Modal
           isOpen={globalModalThatIsOpen === 'contributor'}
@@ -174,6 +186,7 @@ export default class HeaderModals extends React.Component {
             closeModal={closeGlobalModal}
             attemptLogout={attemptLogout}
             resetCreateStore={resetCreateStore}
+            pendingMediaUploads={pendingMediaUploads}
           />
         </Modal>
         <Modal
@@ -223,6 +236,15 @@ export default class HeaderModals extends React.Component {
         >
           <EmailVerificationConfirmation />
         </Modal>
+        <Modal
+          isOpen={globalModalThatIsOpen === 'error'}
+          contentLabel="Error Modal"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <ErrorModal closeModal={closeGlobalModal} />
+        </Modal>
+
         <RightModal
           isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'
@@ -286,7 +308,10 @@ export default class HeaderModals extends React.Component {
           contentLabel='Inbox'
           onRequestClose={closeModal}
         >
-          <Inbox closeModal={closeModal} profile={currentUserProfile}/>
+          <Inbox
+            closeModal={closeModal}
+            profile={currentUserProfile}
+          />
         </RightModal>
       </Container>
     )

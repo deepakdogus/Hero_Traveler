@@ -42,7 +42,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     height: Metrics.searchBarHeight,
     backgroundColor: Colors.feedDividerGrey,
-    opacity: .6,
+    opacity: 0.6,
     paddingLeft: Metrics.baseMargin / 2,
     paddingRight: Metrics.baseMargin / 2,
     borderRadius: 5,
@@ -233,14 +233,19 @@ export default StyleSheet.create({
   videoCoverWrapper: {
     position: 'relative',
   },
+  textContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   listItemText: {
     fontSize: 15,
+    fontWeight: '600',
     color: Colors.background,
   },
-  listItemTextSecondary: {
-    fontSize: 12,
-    color: Colors.navBarText,
-    fontStyle: 'italic',
+  listItemSecondaryText: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: Colors.grey,
   },
   noFindText: {
     color: 'white',

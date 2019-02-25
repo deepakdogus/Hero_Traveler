@@ -4,6 +4,7 @@ import {Constants, algoliaHelper} from '@hero/ht-util'
 
 import {User, UserDevice, Image} from '../models'
 import {welcomeEmail} from '../utils/emailService'
+import {subscribeMailchimp} from '../utils/mailchimpService'
 
 const {
   ACCOUNT_TYPE_EMAIL,
@@ -72,6 +73,7 @@ export async function createUserFacebook(facebookUserData, device: ?object) {
     await Promise.all([
       algoliaHelper.addUserToIndex(userToReturn),
       welcomeEmail(userToReturn),
+      subscribeMailchimp(email),
     ])
   }
 
@@ -107,6 +109,7 @@ export default function createUser(userData, device: ?object) {
   .then(newUser => {
     algoliaHelper.addUserToIndex(newUser)
     welcomeEmail(newUser)
+    subscribeMailchimp(userData.email)
     return newUser;
   })
 }

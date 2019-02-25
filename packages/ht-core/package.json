@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.60",
+    "@hero/ht-util": "^0.0.61",
     "algoliasearch": "^3.22.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.23.0",
@@ -28,6 +28,7 @@
     "consolidate": "^0.14.5",
     "joi": "^10.2.2",
     "lodash": "^4.17.4",
+    "mailchimp-api-v3": "^1.12.1",
     "moment": "^2.17.1",
     "mongoose": "^4.8.6",
     "mongoose-delete": "^0.3.4",

@@ -20,7 +20,6 @@ const STORY_INDEX = env.SEARCH_STORY_INDEX
 const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
-const MAX_RADIUS = 804672 // = 250 miles in meters
 const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
 
 const Container = styled.div`
@@ -41,8 +40,8 @@ const ContentWrapper = styled.div`
 
 const ResultTitle = styled.div`
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 700;
-  font-size: 40px;
+  font-weight: 600;
+  font-size: 25px;
   color: ${props => props.theme.Colors.background};
   text-align: center;
   margin-bottom: 20px;
@@ -134,8 +133,12 @@ class SearchResults extends Component {
   }
 
   componentWillUnmount() {
-    this.removeSearchListeners(this.storyHelper)
     this.removeSearchListeners(this.guideHelper)
+    this.removeSearchListeners(this.storyHelper)
+
+    // avoids not showing new results/showing deleted stories
+    this.guideHelper.clearCache()
+    this.storyHelper.clearCache()
   }
 
   removeSearchListeners = helper => {
@@ -170,17 +173,16 @@ class SearchResults extends Component {
         'aroundLatLng',
         `${lat}, ${lng}`,
       )
-      .setQueryParameter('aroundRadius', MAX_RADIUS)
       .setQueryParameter('aroundPrecision', METER_PRECISION)
       .setQueryParameter('hitsPerPage', hits)
       .search()
   }
 
   _onClickShowAll = (seeAllType, seeAllLabel) => {
-    const { lat, lng, reroute } = this.props
+    const { lat, lng, country, reroute } = this.props
     return () => {
       this.setState({seeAllType, seeAllLabel})
-      reroute(`/results/${lat}/${lng}/${seeAllType}?t=${
+      reroute(`/results/${country}/${lat}/${lng}/${seeAllType}?t=${
         encodeURIComponent(this.state.label)
       }`)
     }

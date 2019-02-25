@@ -11,7 +11,7 @@ import themes from '../Shared/Themes'
 
 import Routes from '../Routes'
 
-const store = createStore()
+const store = createStore({ includeAdmin: true })
 
 class AppRoot extends Component {
   render() {

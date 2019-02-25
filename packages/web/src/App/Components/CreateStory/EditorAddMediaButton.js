@@ -4,9 +4,8 @@ import PropTypes from 'prop-types'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import {
-  insertAtomicBlock,
-} from '../../Shared/Lib/draft-js-helpers'
+import { insertAtomicBlock } from '../../Shared/Lib/draft-js-helpers'
+import { removeMedia } from '../../Lib/web-draft-js-helpers'
 import Icon from '../Icon'
 import styled from 'styled-components'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
@@ -21,7 +20,7 @@ const HiddenInput = styled.input`
 
 class AddMediaButton extends React.Component {
   static propTypes = {
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     getEditorState: PropTypes.func,
     setEditorState: PropTypes.func,
     type: PropTypes.string,
@@ -29,32 +28,45 @@ class AddMediaButton extends React.Component {
   }
 
   uploadFile = (event) => {
+    const {getEditorState, type} = this.props
+    const loaderUpdate = insertAtomicBlock(
+      getEditorState(),
+      {
+        type: 'loader',
+        url: 'url', // need to pass dummy URL for EditorMediaComponent
+      },
+    )
+    const loaderKey = loaderUpdate.getSelection().getFocusKey()
+    this.props.setEditorState(loaderUpdate)
+
     uploadFile(event, this, (file) => {
-      if (!file) return
-      const {getEditorState, type} = this.props
+      if (!file) {
+        const cleanedEditorState = removeMedia(loaderKey, loaderUpdate)
+        this.props.setEditorState(cleanedEditorState)
+        return
+      }
 
-      const updateCall = (cloudinaryFile) => {
-        let update
-        if (cloudinaryFile) {
-          const formattedFile = extractUploadData(cloudinaryFile)
-          update = insertAtomicBlock(
-            getEditorState(),
-            type,
-            formattedFile.url,
-            formattedFile.height,
-            formattedFile.width,
-          )
+      const updateCall = (cloudinaryFile, failure) => {
+        let cleanedEditorState
+        if (failure) {
+          cleanedEditorState = removeMedia(loaderKey, loaderUpdate)
         }
-        else update = insertAtomicBlock(getEditorState(), type, file.uri)
-        this.props.setEditorState(update)
+        else {
+          const formattedFile = extractUploadData(cloudinaryFile)
+          const update = insertAtomicBlock(
+            loaderUpdate,
+            {
+              type,
+              url: formattedFile.url,
+              height: formattedFile.height,
+              width: formattedFile.width,
+            },
+          )
+          cleanedEditorState = removeMedia(loaderKey, update)
+        }
+        this.props.setEditorState(cleanedEditorState)
       }
-
-      if (file.type.includes('video')) {
-        updateCall()
-      }
-      else {
-        this.props.uploadImage(file.uri, updateCall)
-      }
+      this.props.uploadMedia(file.uri, updateCall, type)
     })
   }
 
@@ -116,8 +128,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    uploadImage: (file, callback) => dispatch(
-      StoryCreateActions.uploadImage(file, callback),
+    uploadMedia: (file, callback, mediaType) => dispatch(
+      StoryCreateActions.uploadMedia(file, callback, mediaType),
     ),
   }
 }

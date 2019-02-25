@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import LoginActions from '../Shared/Redux/LoginRedux'
 
-import RoundedButton from '../Components/RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 
 import {
   Title,

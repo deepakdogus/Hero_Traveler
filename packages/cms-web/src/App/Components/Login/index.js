@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import VerticalCenter from '../VerticalCenter'
-import Icon from '../Icon'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const basicTextStyle = `
   font-weight: 400;

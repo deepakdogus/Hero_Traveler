@@ -12,17 +12,14 @@ import isEmpty from 'lodash/isEmpty'
 import AdminStoryActions from '../../Shared/Redux/Admin/Stories'
 import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
 
+import StatsTable from '../../Components/Shared/StatsTable'
+
 import {
   Wrapper,
   Breadcrumbs,
   MainWrapper,
   Title,
-  SmallTitle,
   Divider,
-  TableStyled,
-  TrStyled,
-  TdStyledGrey,
-  TdStyled,
   Centered,
 } from '../../Components/Shared/StyledEditComponents'
 
@@ -98,68 +95,55 @@ class EditStory extends React.Component {
 
   renderTable = () => {
     const { record } = this.props
+
     return (
-      <div>
-        <SmallTitle>
-          Story Stats
-        </SmallTitle>
-        <TableStyled>
-          <tbody>
-            <TrStyled>
-              <TdStyledGrey>Link</TdStyledGrey>
-              <TdStyled>
-                <a href={`https://herotraveler.com/stories/${record.id}`}>
-                  {truncate(`herotraveler.com/stories/${record.id}`, 20)}
-                </a>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Date Published</TdStyledGrey>
-              <TdStyled>{moment(record.createdAt).format('YYYY/MM/DD')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Author</TdStyledGrey>
-              <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>
-                  {get(record, 'author.username')}
-                </Link>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Location</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'locationInfo.name')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Activity Type</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'type')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Categories</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'categories', []).map(i => i.title).join(', ')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Hashtags</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'hashtags', []).join(', ')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Likes</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.likes')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Comments</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.comments')}</TdStyled>
-            </TrStyled>
-          </tbody>
-        </TableStyled>
-      </div>
+      <StatsTable
+        title="Story Stats"
+        columns={[
+          {
+            title: 'Link',
+            render: () => (
+              <a href={`https://herotraveler.com/stories/${record.id}`}>
+                {truncate(`herotraveler.com/stories/${record.id}`, 20)}
+              </a>),
+          },
+          {
+            title: 'Date Published',
+            text: moment(record.createdAt).format('YYYY/MM/DD'),
+          },
+          {
+            title: 'Author',
+            render: () => (
+              <Link to={`/users/${get(record, 'author.id')}`}>
+                {get(record, 'author.username')}
+              </Link>),
+          },
+          {
+            title: 'Location',
+            text: get(record, 'locationInfo.name'),
+          },
+          {
+            title: 'Activity Type',
+            text: get(record, 'type'),
+          },
+          {
+            title: 'Categories',
+            text: get(record, 'categories', []).map(i => i.title).join(', '),
+          },
+          {
+            title: 'Hashtags',
+            text: get(record, 'hashtags', []).join(', '),
+          },
+          {
+            title: '# Of Likes',
+            text: get(record, 'counts.likes'),
+          },
+          {
+            title: '# Of Comments',
+            text: get(record, 'counts.comments'),
+          },
+        ]}
+      />
     )
   }
 

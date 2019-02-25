@@ -1,24 +1,17 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Table, Input, Icon } from 'antd'
+import { Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
-import debounce from 'lodash/debounce'
-import isEmpty from 'lodash/isEmpty'
+
+import GenericList from '../../Components/Shared/GenericList'
 
 import AdminStoriesActions from '../../Shared/Redux/Admin/Stories'
 
 import {
-  Wrapper,
-  TopRow,
-  Header,
-  SearchContainer,
-  LeftSpaceDiv,
   Divider,
-  MiddleRow,
-  Tab,
 } from '../../Components/Shared/StyledListComponents'
 
 const columns = [{
@@ -74,121 +67,24 @@ const columns = [{
 ]
 
 class StoriesInCategoryList extends React.Component {
-  state = {
-    activeTab: 'all',
-    selectedRole: undefined,
+  renderSubHeader = () => {
+    const categoryName = get(this.props, 'location.query.categoryName', '')
+    return (
+      <Fragment>
+        <b>Stories in {categoryName}</b>
+        <Divider/>
+      </Fragment>
+    )
   }
 
-  componentDidMount(){
-    const { categoryId } = get(this.props, 'match.params', {})
-    //get user StoriesInCategoryList on signUp and reset signUp redux
-    this.props.getStories({
-      query: {
-        categories: categoryId,
-        isDeleted: {$in: [null, false]},
-      },
-    })
-    this.setState({
-      activeTab: 'active',
-    })
-  }
-
-  onChange = (pagination, filters, sorter) => {
-    const { params, getStories } = this.props
-    const newParams = {
-      page: pagination.current,
-      limit: pagination.pageSize,
-    }
-    if (!isEmpty(sorter)) {
-      newParams.sort = {
-        fieldName: sorter.field,
-        order: sorter.order === 'ascend' ? 1 : -1,
-      }
-    }
-    getStories({
-      ...params,
-      ...newParams,
-    })
-  }
-
-  _handleSearch = (e) => this._onSearchChange(e.target.value)
-
-  _onSearchChange = debounce((text) => {
-    this.props.getStories({
-      search: text,
-    })
-  }, 300)
-
-  _showAll = () => {
-    const { getStories, categoryId, params } = this.props
-    getStories({
-      ...params,
-      query: {
-        categories: categoryId,
-      },
-    })
-    this.setState({
-      activeTab: 'all',
-    })
-  }
-
-  _showActive = () => {
-    const { getStories, categoryId, params } = this.props
-    getStories({
-      ...params,
-      query: {
-        categories: categoryId,
-        isDeleted: {$in: [null, false]},
-      },
-    })
-    this.setState({
-      activeTab: 'active',
-    })
-  }
-
-  _showDeleted = () => {
-    const { getStories, categoryId, params } = this.props
-    getStories({
-      ...params,
-      query: {
-        categories: categoryId,
-        isDeleted: true,
-      },
-    })
-    this.setState({
-      activeTab: 'deleted',
-    })
-  }
-
-  _showFlagged = () => {
-    const { getStories, categoryId, params } = this.props
-    getStories({
-      ...params,
-      query: {
-        categories: categoryId,
-        flagged: true,
-      },
-    })
-    this.setState({
-      activeTab: 'flagged',
-    })
-  }
-
-  _handleSelectChange = (value) => {
-    this.setState({
-      selectedRole: value,
-    })
-  }
-
-  _applyTypeFilter = () => {
-    const { params, getStories } = this.props
-    getStories({
-      ...params,
-      query: {
-        ...params.query,
-        role: this.state.selectedRole,
-      },
-    })
+  renderCustomBreadcrumb = () => {
+    const categoryName = get(this.props, 'location.query.categoryName', '')
+    return (
+      <Fragment>
+        <Link to="/categories">{`Categories > `}</Link>
+        <span> Stories in {categoryName}</span>
+      </Fragment>
+    )
   }
 
   render() {
@@ -197,75 +93,26 @@ class StoriesInCategoryList extends React.Component {
       total,
       isLoading,
       params,
+      getStories,
     } = this.props
 
-    const categoryName = get(this.props, 'location.query.categoryName', '')
-      
-    const paginationProps = {
-      showTotal: (totalNum, range) => `${range[0]}–${range[1]} of ${totalNum} items`,
-      total,
-      current: params.page,
-      pageSize: params.limit,
-      position: 'both',
-    }
+    const { categoryId } = get(this.props, 'match.params', {})
 
     return (
-      <Wrapper>
-        <TopRow>
-          <Header>
-            <Link to="/categories">{`Categories > `}</Link>
-            <span> Stories in {categoryName}</span>
-          </Header>
-          <SearchContainer>
-            <Input
-              size='small'
-              type='text'
-              prefix={<Icon type='search' />}
-              onChange={this._handleSearch}
-              placeholder='Search Stories'
-            />
-          </SearchContainer>
-        </TopRow>
-
-        <b>Stories in {categoryName}</b>
-        <Divider/>
-        
-        <MiddleRow>
-          <Tab active={this.state.activeTab === 'active'} onClick={this._showActive}>
-            Active {this.state.activeTab === 'active' && <span>({total})</span>}
-          </Tab>
-          <LeftSpaceDiv> | 
-          </LeftSpaceDiv>
-          <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'flagged'} onClick={this._showFlagged}>
-              Flagged {this.state.activeTab === 'flagged' && <span>({total})</span>}
-            </Tab>
-          </LeftSpaceDiv>
-          <LeftSpaceDiv> | 
-          </LeftSpaceDiv>
-          <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
-              Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
-            </Tab>
-          </LeftSpaceDiv>
-          <LeftSpaceDiv> | 
-          </LeftSpaceDiv>
-          <LeftSpaceDiv>
-            <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
-              All {this.state.activeTab === 'all' && <span>({total})</span>}
-            </Tab>
-          </LeftSpaceDiv>
-        </MiddleRow>
-
-        <Table
-          rowKey="id"
-          loading={isLoading}
-          columns={columns}
-          dataSource={list}
-          onChange={this.onChange}
-          pagination={paginationProps}
-        />
-      </Wrapper>
+      <GenericList
+        renderCustomBreadcrumb={this.renderCustomBreadcrumb}
+        renderSubHeader={this.renderSubHeader}
+        prefilter={{ categories: categoryId }}
+        rowKey="id"
+        entity="stories"
+        list={list}
+        columns={columns}
+        isLoading={isLoading}
+        params={params}
+        total={total}
+        getItems={getStories}
+        showFlagged
+      />
     )
   }
 }

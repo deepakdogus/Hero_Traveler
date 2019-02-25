@@ -6,20 +6,20 @@ import styled from 'styled-components'
 import {
   Row,
   Col,
-} from '../FlexboxGrid'
+} from '../../Shared/Web/Components/FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
-import { mediaMax } from '../ContentLayout.component'
-import Avatar from '../Avatar'
-import RoundedButton from '../RoundedButton'
+import { mediaMax } from '../../Shared/Web/Components/ContentLayout.component'
+import Avatar from '../../Shared/Web/Components/Avatar'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   StyledRow,
   Logo,
   Divider,
   HamburgerIcon,
-} from './Shared'
+} from '../../Shared/Web/Components/Headers/Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import ConditionalLink from '../ConditionalLink'
+import ConditionalLink from '../../Shared/Web/Components/ConditionalLink'
 import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
 
 const LoggedInDesktopContainer = styled.div`

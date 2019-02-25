@@ -169,9 +169,10 @@ class StoryCoverScreen extends Component {
 
   _onLeft = () => {
     const {workingDraft, originalDraft, draftToBeSaved} = this.props
+    const cleanedDraft = this.cleanDraft(workingDraft)
     if (
-      haveFieldsChanged(workingDraft, originalDraft)
-      && hasChangedSinceSave(workingDraft, draftToBeSaved)
+      haveFieldsChanged(cleanedDraft, originalDraft)
+      || hasChangedSinceSave(cleanedDraft, draftToBeSaved)
     ) {
       this.setState({ activeModal: 'cancel' })
     }
@@ -341,30 +342,31 @@ class StoryCoverScreen extends Component {
     NavActions.createStory_details()
   }
 
-  cleanDraft(draft){
+  cleanDraft(){
     const {workingDraft, originalDraft, draftIdToDBId} = this.props
+    const draft = _.merge({}, workingDraft)
     if (!isFieldSame('title', workingDraft, originalDraft)) draft.title = _.trim(draft.title)
     if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
     if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
     draft.draftjsContent = this.editor.getEditorStateAsObject()
+    return draft
   }
 
   // this only saves it at the redux level
   softSaveDraft() {
-    const copy = _.merge({}, this.props.workingDraft)
-    this.cleanDraft(copy)
-    return Promise.resolve(this.props.updateWorkingDraft(copy))
+    const cleanedDraft = this.cleanDraft()
+    return Promise.resolve(this.props.updateWorkingDraft(cleanedDraft))
   }
 
   // this does a create or update depending on whether it is a local draft
   saveStory() {
-    const draft = this.props.workingDraft
-    this.cleanDraft(draft)
-    if (isLocalDraft(draft.id)) {
-      this.props.saveDraft(draft, true)
+    const cleanedDraft = this.cleanDraft()
+
+    if (isLocalDraft(cleanedDraft.id)) {
+      this.props.saveDraft(cleanedDraft, true)
     }
-    else this.props.update(draft.id, draft)
+    else this.props.update(cleanedDraft.id, cleanedDraft)
     return Promise.resolve({})
   }
 

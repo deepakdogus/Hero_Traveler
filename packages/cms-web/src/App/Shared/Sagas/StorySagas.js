@@ -4,6 +4,7 @@ import {
   select,
 } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {
@@ -19,6 +20,7 @@ import CloudinaryAPI, {
   moveVideoToPreCache,
   moveVideosFromPrecacheToCache,
 } from '../../Services/CloudinaryAPI'
+import UXActions from '../../Redux/UXRedux'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
@@ -154,21 +156,34 @@ export const extractUploadData = (uploadData) => {
   return baseObject
 }
 
-// to be used on web only to deal with orientation
-export function * uploadImage(api, {uri, callback}) {
-  const cloudinaryImage = yield CloudinaryAPI.uploadMediaFile(
+// used exclusively by web to immediately upload cloudinary assets
+export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
+  const cloudinaryMedia = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
-    'image',
+    mediaType,
   )
-  if (typeof cloudinaryImage.data === "string") {
-    cloudinaryImage.data = JSON.parse(cloudinaryImage.data)
-  }
 
-  if (cloudinaryImage.data.error) {
-    yield put(StoryCreateActions.uploadImageFailure(cloudinaryImage.data.error))
+  if (typeof cloudinaryMedia.data === "string") {
+    cloudinaryMedia.data = JSON.parse(cloudinaryMedia.data)
+  }
+  const failureMessage = _.get(cloudinaryMedia, 'data.error')
+    || _.get(cloudinaryMedia, 'problem')
+  if (failureMessage) {
+    callback(null, failureMessage)
+    yield [
+      put(StoryCreateActions.uploadMediaFailure(failureMessage)),
+      put(UXActions.openGlobalModal(
+        'error',
+        {
+          title: 'Upload Failure',
+          message: 'There was a problem uploading your file. Please retry.',
+        }
+      ))
+    ]
   }
   else {
-    callback(cloudinaryImage.data)
+    callback(cloudinaryMedia.data)
+    yield put(StoryCreateActions.uploadMediaSuccess())
   }
 }
 

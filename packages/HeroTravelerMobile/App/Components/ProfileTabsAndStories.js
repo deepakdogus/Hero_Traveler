@@ -12,7 +12,6 @@ import Loader from './Loader'
 import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
 import TabBar from './TabBar'
 import _ from 'lodash'
-import { hasBadge } from '../Shared/Lib/badgeHelpers'
 
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
@@ -113,10 +112,10 @@ export default class ProfileTabsAndStories extends Component {
     // This is quite manual but RN currently doesn't give accurate metrics
     // from .measure() or onLayout. So don't forget to update here if styles
     // change.
-    const {user, editable} = this.props
+    const { editable} = this.props
 
-    let height = editable ? 216 : 198
-    height += hasBadge(user.role) ? 21 : 0
+    // half point needed for downsample rounding on iPhone XS Max
+    let height = editable ? 236.5 : 199
     height += this.props.error ? 27 : 0
     return height
   }
@@ -162,7 +161,6 @@ export default class ProfileTabsAndStories extends Component {
           <ConnectedFeedList
             isStory={isStory}
             isDraftsTab={selectedTab === tabTypes.drafts}
-            style={styles.feedList}
             entitiesById={feedItemsById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}

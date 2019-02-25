@@ -118,7 +118,7 @@ export default class ProfileUserInfo extends Component {
 
   renderFirstRow() {
     const {user} = this.props
-    const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
+    const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>

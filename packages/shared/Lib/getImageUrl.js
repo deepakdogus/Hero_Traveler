@@ -106,8 +106,8 @@ function getAvatarImageUrlParameters(size: object): string {
 
 function getLargeAvatarImageUrlParameters(size: object): string {
   return _.merge({}, getAvatarImageUrlParameters(), {
-    w: '140',
-    h: '140',
+    w: '190',
+    h: '190',
   })
 }
 

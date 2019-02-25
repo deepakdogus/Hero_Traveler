@@ -13,6 +13,7 @@ export const ModelName = 'Guide'
 const GuideSchema = new Schema({
   title: {
     type: String,
+    index: true,
     required: true,
   },
   description: {

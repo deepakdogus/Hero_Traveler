@@ -58,7 +58,8 @@ export const tabbarObj = {
   Privacy: 'Privacy Policy',
 }
 
-const tabBarTabs = Object.values(tabbarObj)
+// Object.values(tabbarObj) is not supported by firefox
+const tabBarTabs = Object.keys(tabbarObj).map(key => tabbarObj[key])
 
 class Documentation extends Component {
   static propTypes = {

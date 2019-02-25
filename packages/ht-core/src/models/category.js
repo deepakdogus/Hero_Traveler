@@ -8,6 +8,7 @@ export const ModelName = 'Category'
 const CategorySchema = new mongoose.Schema({
   title: {
     type: String,
+    index: true,
     required: true
   },
   // slug: {

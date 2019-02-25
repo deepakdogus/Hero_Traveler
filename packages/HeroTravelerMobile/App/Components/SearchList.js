@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
+import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
+
 import styles from './Styles/SearchPlacesPeopleStyles'
 
 import FollowFollowingRow from './FollowFollowingRow'
@@ -20,7 +22,7 @@ const MAX_ITEMS = 5
 class SearchList extends Component {
   static propTypes = {
     selectedTabIndex: PropTypes.number,
-    lastSearchResults: PropTypes.object,
+    lastPeopleSearchResults: PropTypes.object,
     lastLocationPredictions: PropTypes.array,
     isSearching: PropTypes.bool,
     userId: PropTypes.string,
@@ -33,8 +35,14 @@ class SearchList extends Component {
     myFollowedUsers: PropTypes.array,
   }
 
-  _navToSearchResults = location => () => {
+  navToSearchResults = location => () => {
     Keyboard.dismiss()
+
+    let title = location.primaryText || location.title
+    title += hasSecondaryText(location.secondaryText)
+      ? `, ${formatSecondaryText(location.secondaryText)}`
+      : ''
+
     NavActions.searchResults({
       location,
       userId: this.props.userId,
@@ -44,31 +52,14 @@ class SearchList extends Component {
         contentType: 'location',
         id: location.placeID || location.id,
         title: location.primaryText || location.title,
+        secondaryText: location.secondaryText,
         latitude: location.latitude,
         longitude: location.longitude,
         country: location.country,
       },
-      title: location.primaryText || location.title,
+      title,
     })
   }
-
-  _navToStory = story => () => {
-    this.props.addRecentSearch({
-      searchType: 'places',
-      contentType: 'story',
-      id: story.id,
-      title: story.title,
-    })
-    NavActions.story({
-      storyId: story._id || story.id,
-      title: story.title,
-    })
-  }
-
-  navConditionally = item =>
-    item.contentType === 'story'
-      ? this._navToStory(item)
-      : this._navToSearchResults(item)
 
   addUserToSearchHistory = user => {
     this.props.addRecentSearch({
@@ -93,21 +84,26 @@ class SearchList extends Component {
         </View>
       )
 
-  renderLocationRow = ({ item: location }) => {
-    return (
-      <ListItem
-        onPress={this._navToSearchResults(location)}
-        text={<Text style={styles.listItemText}>{location.primaryText}</Text>}
-        style={styles.searchRowItem}
-      />
+  renderLocationRow = ({ item, item: {title, primaryText, secondaryText} }) => {
+    const TextContainer = (
+      <View style={styles.textContainer}>
+        <Text style={styles.listItemText}>
+          {primaryText || title}
+          {hasSecondaryText(secondaryText) ? ',' : ''}
+          &nbsp;
+        </Text>
+        {!!secondaryText && secondaryText.indexOf(', ') !== -1 && (
+          <Text style={styles.listItemSecondaryText}>
+            {formatSecondaryText(secondaryText)}
+          </Text>
+        )}
+      </View>
     )
-  }
 
-  renderPlacesRow = ({ item: place }) => {
     return (
       <ListItem
-        onPress={this._navToStory(place)}
-        text={<Text style={styles.listItemText}>{place.title}</Text>}
+        onPress={this.navToSearchResults(item)}
+        text={TextContainer}
         style={styles.searchRowItem}
       />
     )
@@ -130,14 +126,51 @@ class SearchList extends Component {
 
   userIsFollowed = userId => _.includes(this.props.myFollowedUsers, userId)
 
+  //recent searches
+  shouldDisplayRecent = (type) => {
+    const {
+      searchHistory,
+      hasSearchText,
+      query,
+    } = this.props
+
+    return this.hasNoResults()
+      && !!searchHistory[type].length
+      && (!hasSearchText || query.length < 3)
+  }
+
+  shouldDisplayRecentPlaces = () => this.shouldDisplayRecent('places')
+
+  shouldDisplayRecentPeople = () => this.shouldDisplayRecent('people')
+
+  renderNoRecentSearches = () => {
+    return (
+      <View style={styles.noResults}>
+        <Text style={styles.noResultsText}>
+          {'No recent searches yet. Search for something!'}
+        </Text>
+      </View>
+    )
+  }
+
+  renderRecentSearchesRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPlaces()) return null
+    return this.renderLocationRow({ item })
+  }
+
+  renderRecentPeopleRow = ({ item }) => {
+    if (!this.shouldDisplayRecentPeople()) return null
+    return this.renderPeopleRow({ item })
+  }
+
   //no results
   hasNoResults = () => {
     const {
       isSearching,
-      lastSearchResults,
+      lastPeopleSearchResults,
       lastLocationPredictions,
     } = this.props
-    const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const searchHits = _.get(lastPeopleSearchResults, 'hits', []).slice(0, MAX_ITEMS)
     const locationHits = lastLocationPredictions || []
 
     return !isSearching
@@ -158,58 +191,15 @@ class SearchList extends Component {
     )
   }
 
-  //recent searches
-  shouldDisplayRecent = (type) => {
-    const {
-      searchHistory,
-      hasSearchText,
-      query,
-    } = this.props
-
-    return this.hasNoResults()
-      && !!searchHistory[type].length
-      && (!hasSearchText || query.length < 3)
-  }
-
-  shouldDisplayRecentPlaces = () => this.shouldDisplayRecent('places')
-
-  shouldDisplayRecentPeople = () => this.shouldDisplayRecent('people')
-
-  renderNoRecentSearches = () => {
-    return (
-    <View style={styles.noResults}>
-      <Text style={styles.noResultsText}>
-        {'No recent searches yet. Search for something!'}
-      </Text>
-    </View>
-  )
-}
-
-  renderRecentSearchesRow = ({ item }) => {
-    if (!this.shouldDisplayRecentPlaces()) return null
-    return (
-      <ListItem
-        onPress={this.navConditionally(item)}
-        text={<Text style={styles.listItemText}>{item.title}</Text>}
-        style={styles.searchRowItem}
-      />
-    )
-  }
-
-  renderRecentPeopleRow = ({ item }) => {
-    if (!this.shouldDisplayRecentPeople()) return null
-    return this.renderPeopleRow({ item })
-  }
-
   render = () => {
     const {
       isSearching,
       selectedTabIndex,
-      lastSearchResults,
+      lastPeopleSearchResults,
       lastLocationPredictions,
       searchHistory,
     } = this.props
-    const searchHits = _.get(lastSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const searchHits = _.get(lastPeopleSearchResults, 'hits', []).slice(0, MAX_ITEMS)
 
     return (
       <View style={styles.scrollWrapper}>
@@ -225,12 +215,6 @@ class SearchList extends Component {
                 data: lastLocationPredictions || [],
                 renderItem: this.renderLocationRow,
                 keyExtractor: item => item.placeID,
-               },
-              {
-                title: 'STORIES',
-                data: searchHits || [],
-                renderItem: this.renderPlacesRow,
-                keyExtractor: item => item.id,
               },
               {
                 title: 'RECENT SEARCHES',

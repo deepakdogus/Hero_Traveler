@@ -39,7 +39,7 @@ export default {
     fontWeight: '600',
     letterSpacing: .7,
     fontSize: 15,
-    color: Colors.background,
+    width: Metrics.screenWidth * 0.75,
   },
   navBarBack: {
     tintColor: Colors.redHighlights,

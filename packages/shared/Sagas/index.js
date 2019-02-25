@@ -1,5 +1,13 @@
 import { delay } from 'redux-saga'
-import { takeLatest, take, fork, race, call, put } from 'redux-saga/effects'
+import {
+  call,
+  fork,
+  put,
+  race,
+  take,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
 
@@ -88,14 +96,14 @@ import {
   deleteStory,
   flagStory,
   getGuideStories,
-  uploadImage,
+  uploadMedia,
   watchPendingUpdates,
   syncPendingUpdates,
   getDeletedStories,
 } from './StorySagas'
 
 import {
-  uploadMedia,
+  uploadMediaAsset,
 } from './MediaUploadSagas'
 
 import {
@@ -186,7 +194,37 @@ function * watchRefreshTokens() {
 }
 
 export default function * root () {
-  yield [
+  const adminSagas = [
+    //Admin
+    takeLatest(AdminUserTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_GET_USER, adminGetUser, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_PUT_USER, adminPutUser, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_DELETE_USER, adminDeleteUser, heroAPI),
+    takeLatest(AdminUserTypes.ADMIN_RESTORE_USERS, adminRestoreUsers, heroAPI),
+
+    takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORY, adminGetCategory, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_PUT_CATEGORY, adminPutCategory, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_DELETE_CATEGORY, adminDeleteCategory, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_RESTORE_CATEGORIES, adminRestoreCategories, heroAPI),
+    takeLatest(AdminCategoryTypes.ADMIN_POST_CATEGORY, adminPostCategory, heroAPI),
+
+    takeLatest(AdminStoryTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
+    takeLatest(AdminStoryTypes.ADMIN_GET_STORY, adminGetStory, heroAPI),
+    takeLatest(AdminStoryTypes.ADMIN_PUT_STORY, adminPutStory, heroAPI),
+    takeLatest(AdminStoryTypes.ADMIN_DELETE_STORY, adminDeleteStory, heroAPI),
+    takeLatest(AdminStoryTypes.ADMIN_RESTORE_STORIES, adminRestoreStories, heroAPI),
+
+    takeLatest(AdminGuideTypes.ADMIN_GET_GUIDES, adminGetGuides, heroAPI),
+    takeLatest(AdminGuideTypes.ADMIN_GET_GUIDE, adminGetGuide, heroAPI),
+    takeLatest(AdminGuideTypes.ADMIN_PUT_GUIDE, adminPutGuide, heroAPI),
+    takeLatest(AdminGuideTypes.ADMIN_DELETE_GUIDE, adminDeleteGuide, heroAPI),
+    takeLatest(AdminGuideTypes.ADMIN_RESTORE_GUIDES, adminRestoreGuides, heroAPI),
+
+    takeLatest(AdminStatsTypes.ADMIN_GET_TOTAL_STATS, adminGetTotalStats, heroAPI),
+    takeLatest(AdminStatsTypes.ADMIN_GET_NEW_STATS, adminGetNewStats, heroAPI),
+  ]
+  const allSagas = [
     fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
@@ -215,7 +253,7 @@ export default function * root () {
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
-    takeLatest(StoryCreateTypes.UPLOAD_IMAGE, uploadImage, heroAPI),
+    takeEvery(StoryCreateTypes.UPLOAD_MEDIA, uploadMedia, heroAPI),
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
@@ -249,7 +287,7 @@ export default function * root () {
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
 
     // Media Upload
-    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMediaAsset, heroAPI),
 
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
@@ -266,36 +304,11 @@ export default function * root () {
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
     takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
-
-    //Admin
-    takeLatest(AdminUserTypes.ADMIN_GET_USERS, adminGetUsers, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_GET_USER, adminGetUser, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_PUT_USER, adminPutUser, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_DELETE_USER, adminDeleteUser, heroAPI),
-    takeLatest(AdminUserTypes.ADMIN_RESTORE_USERS, adminRestoreUsers, heroAPI),
-
-    takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORIES, adminGetCategories, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_GET_CATEGORY, adminGetCategory, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_PUT_CATEGORY, adminPutCategory, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_DELETE_CATEGORY, adminDeleteCategory, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_RESTORE_CATEGORIES, adminRestoreCategories, heroAPI),
-    takeLatest(AdminCategoryTypes.ADMIN_POST_CATEGORY, adminPostCategory, heroAPI),
-
-    takeLatest(AdminStoryTypes.ADMIN_GET_STORIES, adminGetStories, heroAPI),
-    takeLatest(AdminStoryTypes.ADMIN_GET_STORY, adminGetStory, heroAPI),
-    takeLatest(AdminStoryTypes.ADMIN_PUT_STORY, adminPutStory, heroAPI),
-    takeLatest(AdminStoryTypes.ADMIN_DELETE_STORY, adminDeleteStory, heroAPI),
-    takeLatest(AdminStoryTypes.ADMIN_RESTORE_STORIES, adminRestoreStories, heroAPI),
-
-    takeLatest(AdminGuideTypes.ADMIN_GET_GUIDES, adminGetGuides, heroAPI),
-    takeLatest(AdminGuideTypes.ADMIN_GET_GUIDE, adminGetGuide, heroAPI),
-    takeLatest(AdminGuideTypes.ADMIN_PUT_GUIDE, adminPutGuide, heroAPI),
-    takeLatest(AdminGuideTypes.ADMIN_DELETE_GUIDE, adminDeleteGuide, heroAPI),
-    takeLatest(AdminGuideTypes.ADMIN_RESTORE_GUIDES, adminRestoreGuides, heroAPI),
-
-    takeLatest(AdminStatsTypes.ADMIN_GET_TOTAL_STATS, adminGetTotalStats, heroAPI),
-    takeLatest(AdminStatsTypes.ADMIN_GET_NEW_STATS, adminGetNewStats, heroAPI),
     
     fork(watchRefreshTokens),
   ]
+
+  allSagas.concat(adminSagas)
+
+  yield allSagas
 }

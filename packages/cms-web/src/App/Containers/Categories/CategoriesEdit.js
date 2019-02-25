@@ -11,19 +11,16 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
-import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
+import prepareCategoryImages from '../../Utils/prepareCategoryImages'
+
+import StatsTable from '../../Components/Shared/StatsTable'
 
 import {
   Wrapper,
   Breadcrumbs,
   MainWrapper,
   Title,
-  SmallTitle,
   Divider,
-  TableStyled,
-  TrStyled,
-  TdStyledGrey,
-  TdStyled,
   Centered,
 } from '../../Components/Shared/StyledEditComponents'
 
@@ -77,23 +74,11 @@ class EditCategory extends React.Component {
     this.setState({
       formSubmitting: true,
     })
-    const { thumbnail, heroImage, categorySponsorLogo, interstitialImage } = values
-    if ((thumbnail && thumbnail.public_id) ||
-        (heroImage && heroImage.public_id)) {
-      values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
-    }
-    if (categorySponsorLogo && categorySponsorLogo.public_id) {
-      values.categorySponsorLogo =
-        convertUrlsToImageFormat(undefined, categorySponsorLogo, 'categorySponsorLogo')
-    }
-    if (interstitialImage && interstitialImage.public_id) {
-      values.interstitialImage =
-        convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
-    }
+    
     new Promise((resolve, reject) => {
       putCategory({
         id,
-        values,
+        values: prepareCategoryImages(values),
         resolve,
         reject,
       })
@@ -112,48 +97,43 @@ class EditCategory extends React.Component {
 
   renderTable = () => {
     const { record } = this.props
+
     return (
-      <div>
-        <SmallTitle>
-          Category Stats
-        </SmallTitle>
-        <TableStyled>
-          <tbody>
-            <TrStyled>
-              <TdStyledGrey>Link</TdStyledGrey>
-              <TdStyled>
-                <a href={`https://herotraveler.com/categories/${record.id}`}>
-                  {truncate(`herotraveler.com/categories/${record.id}`, 20)}
-                </a>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Created By</TdStyledGrey>
-              <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>
-                  {get(record, 'author.username')}
-                </Link>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Date Created</TdStyledGrey>
-              <TdStyled>{moment(record.createdAt).format('YYYY/MM/DD')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Followers</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.followers')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Stories</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.stories')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Guides</TdStyledGrey>
-              <TdStyled>{get(record, 'numberOfGuides')}</TdStyled>
-            </TrStyled>
-          </tbody>
-        </TableStyled>
-      </div>
+      <StatsTable
+        title="Category Stats"
+        columns={[
+          {
+            title: 'Link',
+            render: () => (
+              <a href={`https://herotraveler.com/categories/${record.id}`}>
+                {truncate(`herotraveler.com/categories/${record.id}`, 20)}
+              </a>),
+          },
+          {
+            title: 'Created By',
+            render: () => (
+              <Link to={`/users/${get(record, 'author.id')}`}>
+                {get(record, 'author.username')}
+              </Link>),
+          },
+          {
+            title: 'Date Created',
+            text: moment(record.createdAt).format('YYYY/MM/DD'),
+          },
+          {
+            title: '# Of Followers',
+            text: get(record, 'counts.followers'),
+          },
+          {
+            title: '# Of Stories',
+            text: get(record, 'counts.stories'),
+          },
+          {
+            title: '# Of Guides',
+            text: get(record, 'numberOfGuides'),
+          },
+        ]}
+      />
     )
   }
 

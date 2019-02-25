@@ -9,20 +9,20 @@ export default function getTotal(req, res) {
   return Promise.props({
     totalStories: Models.Story.count({
       createdAt: {
-        $gte: moment(dateFrom).startOf('day').toDate(),
-        $lte: moment(dateTill).endOf('day').toDate(),
+        $gte: moment(dateFrom, 'YYYY/MM/DD').startOf('day').toDate(),
+        $lte: moment(dateTill, 'YYYY/MM/DD').endOf('day').toDate(),
       }
     }).exec(),
     totalGuides: Models.Guide.count({
       createdAt: {
-        $gte: moment(dateFrom).startOf('day').toDate(),
-        $lte: moment(dateTill).endOf('day').toDate(),
+        $gte: moment(dateFrom, 'YYYY/MM/DD').startOf('day').toDate(),
+        $lte: moment(dateTill, 'YYYY/MM/DD').endOf('day').toDate(),
       }
     }).exec(),
     totalUsers: Models.User.count({
       createdAt: {
-        $gte: moment(dateFrom).startOf('day').toDate(),
-        $lte: moment(dateTill).endOf('day').toDate(),
+        $gte: moment(dateFrom, 'YYYY/MM/DD').startOf('day').toDate(),
+        $lte: moment(dateTill, 'YYYY/MM/DD').endOf('day').toDate(),
       }
     }).exec(),
   }) 

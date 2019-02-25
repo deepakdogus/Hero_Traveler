@@ -8,7 +8,7 @@ import _ from 'lodash'
 import Image from './Image'
 import Video from './Video'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import { getVideoUrlBase } from '../Shared/Lib/getVideoUrl'
+import { getBodyVideoUrls } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
 const ContentContainer = styled.div``
@@ -70,40 +70,33 @@ const getAtomic = (children, { data, keys }) => {
     this seems a pretty precarious to get the text.
     TODO: See if we can find a better way to isolate the text
   */
-  return data.map((media, index) => {
-    const type = media.type
-    const mediaUrl = type === 'image'
-      ? getImageUrl(media.url, 'contentBlock')
-      : `${getVideoUrlBase()}/${media.url}`
+  return data.map((mediaBlock, index) => {
     const text = _.get(children, `[${index}][1][0]`, '').trim()
+    let media
 
-    switch (media.type) {
-      case 'image':
-        return [
-          <Spacer key={0} />,
-          <div key={keys[index]}>
-            <StyledImage src={mediaUrl} />
-            {text && <Caption>{text}</Caption>}
-          </div>,
-          <Spacer key={1} />,
-          <Spacer key={2} />,
-        ]
-      case 'video':
-        return [
-          <Spacer key={0} />,
-          <div key={keys[index]}>
-            <Video
-              src={mediaUrl}
-              withPrettyControls
-            />
-            {text && <Caption>{text}</Caption>}
-          </div>,
-          <Spacer key={1} />,
-          <Spacer key={2} />,
-        ]
-      default:
-        return null
+    if (mediaBlock.type === 'image') {
+      media = (<StyledImage src={getImageUrl(mediaBlock.url, 'contentBlock')} />)
     }
+    else if (mediaBlock.type === 'video') {
+      media = (
+        <Video
+          {...getBodyVideoUrls(mediaBlock.url)}
+          withPrettyControls
+        />
+
+      )
+    }
+    else return null
+
+    return [
+      <Spacer key={0} />,
+      <div key={keys[index]}>
+        {media}
+        {text && <Caption>{text}</Caption>}
+      </div>,
+      <Spacer key={1} />,
+      <Spacer key={2} />,
+    ]
   })
 }
 

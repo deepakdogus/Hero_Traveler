@@ -172,7 +172,10 @@ export default class FeedList extends React.Component {
         i = i + 1
         keyIndex = keyIndex + 1
         return (
-          <NativeFeedItem key={`FeedItem:${keyIndex}`} cellNum={i}>
+          <NativeFeedItem
+            key={`FeedItem:${keyIndex}`}
+            cellNum={i}
+           >
             {this.props.renderFeedItem(entity, i)}
           </NativeFeedItem>
         )

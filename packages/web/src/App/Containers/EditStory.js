@@ -95,6 +95,7 @@ class EditStory extends Component {
     syncProgress: PropTypes.number,
     openGlobalModal: PropTypes.func,
     draftIdToDBId: PropTypes.object,
+    pendingMediaUploads: PropTypes.number,
   }
 
   constructor(props){
@@ -155,9 +156,13 @@ class EditStory extends Component {
     if (originalDraft && originalDraft.id && match.isExact) {
       return reroute(`/editStory/${originalDraft.id}/cover`)
     }
+    // this check is for navbar's conditional links
+    // do not set values when isPending so we do not
+    // override params set internally from saveCover call
     if (
       prevProps.globalModal.modalName !== 'saveEdits'
       && this.props.globalModal.modalName === 'saveEdits'
+      && !this.props.isPending
     ) {
       return this.props.updateGlobalModalParams({
         resetCreateStore: this.props.resetCreateStore,
@@ -200,16 +205,17 @@ class EditStory extends Component {
     // publish is sometimes an event so we need to expressly check if true
     this.setState({ saveAction: publish === true ? 'publish' : 'update' })
 
+    const cleanedDraft = this.cleanDraft(workingDraft)
+
     if (isLocalDraft(workingDraft.id)) {
-      saveDraft(this.cleanDraft(workingDraft), !(publish === true))
+      saveDraft(cleanedDraft, !(publish === true))
     }
     else {
-      const cleanedDraft = this.cleanDraft(workingDraft)
       if (publish && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
         originalDraft.id,
-        this.cleanDraft(workingDraft),
+        cleanedDraft,
         null,
         isRepublishing,
       )
@@ -254,7 +260,7 @@ class EditStory extends Component {
     })
   }
 
-  cleanDraft(draft){
+  cleanDraft = (draft) => {
     const {workingDraft, originalDraft, draftIdToDBId} = this.props
     const cleanedDraft = _.merge({}, draft)
     if (!isFieldSame('title', workingDraft, originalDraft)) {
@@ -267,9 +273,17 @@ class EditStory extends Component {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.getEditorState()
+    cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
     if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
+  }
+
+  removeLoaders(draftjsContent) {
+    draftjsContent.blocks = draftjsContent.blocks.filter(block => {
+      return block.type !== 'atomic'
+        || (block.type === 'atomic' && _.get(block, 'data.type') !== 'loader')
+    })
+    return draftjsContent
   }
 
   // this only saves it at the redux level
@@ -283,7 +297,21 @@ class EditStory extends Component {
   }
 
   saveCover = () => {
-    const {workingDraft, originalDraft} = this.props
+    const {
+      openGlobalModal,
+      originalDraft,
+      pendingMediaUploads,
+      workingDraft,
+    } = this.props
+    if (pendingMediaUploads) {
+      return openGlobalModal(
+        'saveEdits',
+        {
+          updateDraft: this.saveCover,
+          isPending: true,
+        },
+      )
+    }
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
     const isImageSame = isFieldSame('coverImage', workingDraft, originalDraft)
@@ -384,7 +412,7 @@ class EditStory extends Component {
         />
         <Modal
           isOpen={!!error.title}
-          contentLabel="Signup Modal"
+          contentLabel="Error Modal"
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >
@@ -434,6 +462,8 @@ function mapStateToProps(state, props) {
     backgroundFailures,
     globalModal: state.ux,
     draftIdToDBId: state.storyCreate.draftIdToDBId,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
+    isPending: state.ux.params.isPending,
   }
 }
 

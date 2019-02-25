@@ -6,8 +6,8 @@ import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
-import { Grid } from '../Components/FlexboxGrid'
-import { sizes } from '../Themes/Metrics'
+import { Grid } from '../Shared/Web/Components/FlexboxGrid'
+import { sizes } from '../Shared/Web/Themes/Metrics'
 import UXActions from '../Redux/UXRedux'
 
 import SessionActions from '../Shared/Redux/SessionRedux'

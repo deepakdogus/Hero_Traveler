@@ -7,10 +7,10 @@ import styled from 'styled-components'
 
 
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import {getVideoUrlBase} from '../../Shared/Lib/getVideoUrl'
+import { getBodyVideoUrls } from '../../Shared/Lib/getVideoUrl'
 import Image from '../Image'
 import Video from '../Video'
-import {CloseXContainer} from './Shared'
+import { CloseXContainer } from './Shared'
 import CloseX from '../CloseX'
 import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
@@ -39,6 +39,10 @@ const StyledRow = styled(Row)`
   top: -20px;
 `
 
+const CenteredRow = styled(Row)`
+  width: 100%;
+`
+
 export default class MediaComponent extends EditorBlock {
   static propTypes = {
     offsetKey: PropTypes.string,
@@ -59,66 +63,76 @@ export default class MediaComponent extends EditorBlock {
 
   setErrorState = () => this.setState({error: 'Failed to load asset'})
 
-  getMediaUrl() {
-    const {type, url} = this.props.blockProps
-    if (url.startsWith('data:')) return url
-    else if (type === 'image') return getImageUrl(url, 'contentBlock')
-    else if (type === 'video') return `${getVideoUrlBase()}/${url}`
-  }
-
   getMediaComponent() {
-    let {type, key} = this.props.blockProps
+    let {type, key, url} = this.props.blockProps
 
-    const mediaUrl = this.getMediaUrl()
-    switch (type) {
-      case 'image':
-        return (
-          <BodyMediaDiv key={key}>
-            <CloseXContainer>
-              <CloseX
-                onClick={this.onClickDelete}
-              />
-            </CloseXContainer>
-            <StyledRow center="xs">
-              <Loader />
-            </StyledRow>
-            <StyledImage
-              src={mediaUrl}
-              onLoad={this.setImageLoaded}
+    if (type === 'image') {
+      return (
+        <BodyMediaDiv key={key}>
+          <CloseXContainer>
+            <CloseX
+              onClick={this.onClickDelete}
             />
-          </BodyMediaDiv>
-        )
-      case 'video':
-        return (
-          <BodyMediaDiv key={key}>
-            <CloseXContainer>
-              <CloseX
-                onClick={this.onClickDelete}
-              />
-            </CloseXContainer>
-            <Video
-              src={mediaUrl}
-              withPrettyControls
-              onError={this.onClickDelete}
-            />
-          </BodyMediaDiv>
-        )
-      default:
-        return null
+          </CloseXContainer>
+          <StyledRow center="xs">
+            <Loader />
+          </StyledRow>
+          <StyledImage
+            src={getImageUrl(url, 'contentBlock')}
+            onLoad={this.setImageLoaded}
+          />
+        </BodyMediaDiv>
+      )
     }
+    else if (type === 'video') {
+      return (
+        <BodyMediaDiv key={key}>
+          <CloseXContainer>
+            <CloseX
+              onClick={this.onClickDelete}
+            />
+          </CloseXContainer>
+          <Video
+            {...getBodyVideoUrls(url)}
+            withPrettyControls
+            onError={this.onClickDelete}
+          />
+        </BodyMediaDiv>
+      )
+    }
+    return null
   }
 
   render() {
     const {offsetKey, direction} = this.props
-    const {text} = this.props.blockProps
+    const {text, type, url} = this.props.blockProps
     const className = cx({
       'public/DraftStyleDefault/block': true,
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     })
 
-    const {url} = this.props.blockProps
-    if (!url) return <div data-offset-key={offsetKey} className={className}/>
+    if (type === 'loader') {
+      return (
+        <MediaWrapper
+          data-offset-key={offsetKey}
+          className={className}
+        >
+          <CenteredRow center="xs">
+            <Loader />
+          </CenteredRow>
+        </MediaWrapper>
+      )
+    }
+
+    if (!url) {
+      return (
+        <div
+          data-offset-key={offsetKey}
+          className={className}
+        />
+      )
+    }
 
     return (
       <MediaWrapper

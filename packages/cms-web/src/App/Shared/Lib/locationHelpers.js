@@ -22,9 +22,14 @@ export function displayLocationDetails(locationInfo = {}) {
   return locationArray.join(', ')
 }
 
+// check that secondaryText exists and has least one location part excluding country
+export const hasSecondaryText = text => text && text.indexOf(', ') !== -1
+
+// remove country from secondaryText
+export const formatSecondaryText = text => text.substr(0, text.lastIndexOf(','))
+
 export default {
   displayLocationPreview,
   displayLocationDetails,
+  formatSecondaryText,
 }
-
-

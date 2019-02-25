@@ -32,8 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "share": "rimraf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/shared",
-    "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/Shared --watch"
+    "share": "rimraf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/shared",
+    "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared --watch"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",

@@ -9,7 +9,7 @@ import {
   CloseXContainer,
 } from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getVideoUrl, { getVideoUrls } from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
@@ -183,7 +183,7 @@ function isNewStory(props, nextProps) {
 export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
     isPendingUpdateOverride: PropTypes.bool,
@@ -197,6 +197,7 @@ export default class AddCoverTitles extends React.Component {
       coverCaption: props.workingDraft.coverCaption || '',
       textAreaHeight: { height: '50px'},
       textAreaBreakCharIdx: 0,
+      isUploading: false,
     }
 
     this.textAreaRef = null
@@ -204,26 +205,25 @@ export default class AddCoverTitles extends React.Component {
 
   _setTextAreaRef = (ref) => this.textAreaRef = ref
 
+  getOnSuccess = coverType => {
+    const isVideo = coverType === 'video'
+    return cloudinaryFile => {
+      this.setState({ isUploading: false })
+      this.props.onInputChange({
+        coverVideo: isVideo ? cloudinaryFile : null,
+        coverImage: isVideo ? null : cloudinaryFile,
+        coverType,
+      })
+    }
+  }
+
   _onCoverChange = (event) => {
+    this.setState({ isUploading: true })
     uploadFile(event, this, (file) => {
-      if (!file) return
-      if (file.type.includes('video')) {
-        this.props.onInputChange({
-          'coverVideo': file,
-          'coverImage': null,
-          'coverType': 'video',
-        })
-      }
-      else {
-        const onSuccess = (cloudinaryFile) => {
-          this.props.onInputChange({
-            'coverVideo': null,
-            'coverImage': cloudinaryFile,
-            'coverType': 'image',
-          })
-        }
-        this.props.uploadImage(file.uri, onSuccess)
-      }
+      if (!file) return this.setState({ isUploading: false })
+      const coverType = file.type.includes('video') ? 'video' : 'image'
+      const onSuccess = this.getOnSuccess(coverType)
+      this.props.uploadMedia(file.uri, onSuccess, coverType)
     })
   }
 
@@ -288,7 +288,7 @@ export default class AddCoverTitles extends React.Component {
   }
 
   renderUploadButton() {
-    const {isGuide} = this.props
+    const { isGuide } = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
 
@@ -344,10 +344,19 @@ export default class AddCoverTitles extends React.Component {
     : getVideoUrl(workingDraft.coverVideo, false)
   }
 
+  getVideoSrcs() {
+    const { workingDraft } = this.props
+    if (workingDraft.coverVideo && workingDraft.coverVideo.uri) {
+      return { src: workingDraft.coverVideo.uri }
+    }
+    return getVideoUrls(workingDraft.coverVideo, false)
+  }
+
   render() {
     const {isGuide} = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
+
     const hasMediaAsset = !!coverImage || !!coverVideo
 
     return (
@@ -361,7 +370,7 @@ export default class AddCoverTitles extends React.Component {
         {coverVideo && (
           <LimitedWidthContainer>
             <Video
-              src={coverVideo}
+              {...this.getVideoSrcs()}
               type={'cover'}
               onError={this.removeCover}
               withPrettyControls
@@ -369,9 +378,11 @@ export default class AddCoverTitles extends React.Component {
           </LimitedWidthContainer>
         )}
         <Wrapper hasMediaAsset={hasMediaAsset}>
-          <ButtonsHorizontalCenter>
-            {this.renderUploadButton()}
-          </ButtonsHorizontalCenter>
+          {!this.state.isUploading && (
+            <ButtonsHorizontalCenter>
+              {this.renderUploadButton()}
+            </ButtonsHorizontalCenter>
+          )}
         </Wrapper>
         {hasMediaAsset && !isGuide && (
           <StyledCoverCaptionInput

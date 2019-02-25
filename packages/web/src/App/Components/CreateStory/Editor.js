@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {
   EditorState,
-  Modifier,
-  SelectionState,
 } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import 'draft-js/dist/Draft.css'
@@ -13,6 +11,10 @@ import {
   convertFromRaw,
   convertToRaw,
 } from '../../Shared/Lib/draft-js-helpers'
+import {
+  removeMedia,
+  createSelectionWithFocus,
+ } from '../../Lib/web-draft-js-helpers'
 
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
@@ -41,9 +43,10 @@ const styleMap = {
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
-    value: PropTypes.object,
+    onInputChange: PropTypes.func,
     setGetEditorState: PropTypes.func,
     storyId: PropTypes.string,
+    value: PropTypes.object,
   }
 
   constructor(props) {
@@ -82,55 +85,15 @@ export default class BodyEditor extends React.Component {
     return convertToRaw(this.state.editorState.getCurrentContent())
   }
 
-  createSelectionWithFocus = (key) => {
-    return new SelectionState({
-      anchorKey: key,
-      anchorOffset: 0,
-      focusKey: key,
-      focusOffset: 0,
-      hasFocus: true,
-    })
-  }
-
-  // see https://github.com/facebook/draft-js/issues/1510
-  // for remove atomic block logic
   removeMedia = (key, length) => {
-    const contentState = this.state.editorState.getCurrentContent()
-    let selectKey = contentState.getKeyAfter(key) || contentState.getKeyBefore(key)
-
-    const selection = this.createSelectionWithFocus(selectKey)
-
-    const withoutAtomicEntity = Modifier.removeRange(
-      contentState,
-      new SelectionState({
-        anchorKey: key,
-        anchorOffset: 0,
-        focusKey: key,
-        focusOffset: length,
-      }),
-      'backward',
-    )
-
-    const blockMap = withoutAtomicEntity.getBlockMap().delete(key)
-    var withoutAtomic = withoutAtomicEntity.merge({
-      blockMap,
-      selectionAfter: selection,
-    })
-
-    const newEditorState = EditorState.push(
-      this.state.editorState,
-      withoutAtomic,
-      'remove-range',
-    )
-
-    this.setState({editorState: newEditorState})
+    const updatedEditorState = removeMedia(key, this.state.editorState, length)
+    this.setState({editorState: updatedEditorState})
   }
 
   myBlockRenderer = (contentBlock) => {
     const type = contentBlock.getType()
     const focusKey = this.state.editorState.getSelection().getFocusKey()
     const blockKey = contentBlock.getKey()
-
     if (type === 'atomic') {
       const props = {
         text: contentBlock.getText(),
@@ -145,7 +108,7 @@ export default class BodyEditor extends React.Component {
 
       return {
         component: MediaComponent,
-        editable: true,
+        editable: props.type !== 'loader',
         props: props,
       }
     }
@@ -198,14 +161,20 @@ export default class BodyEditor extends React.Component {
       this.setState({
         editorState: EditorState.forceSelection(
           this.state.editorState,
-          this.createSelectionWithFocus(this.getFocusKey()),
+          createSelectionWithFocus(this.getFocusKey()),
         ),
       })
     }
   }
 
   onChange = (editorState) => {
-    this.setState({editorState})
+    this.setState({ editorState })
+  }
+
+  onBlur = (event) => {
+    this.props.onInputChange({
+      draftjsContent: this.getEditorStateAsObject(),
+    })
   }
 
   focus = () => this.editor.focus()
@@ -223,6 +192,7 @@ export default class BodyEditor extends React.Component {
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
+          onBlur={this.onBlur}
         />
           <SideToolbar/>
       </EditorWrapper>

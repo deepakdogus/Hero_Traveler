@@ -15,17 +15,14 @@ import StoryActions from '../../Shared/Redux/Entities/Stories'
 import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
 import StoriesInGuideTable from '../../Components/Stories/StoriesInGuideTable'
 
+import StatsTable from '../../Components/Shared/StatsTable'
+
 import {
   Wrapper,
   Breadcrumbs,
   MainWrapper,
   Title,
-  SmallTitle,
   Divider,
-  TableStyled,
-  TrStyled,
-  TdStyledGrey,
-  TdStyled,
   Centered,
 } from '../../Components/Shared/StyledEditComponents'
 
@@ -102,62 +99,51 @@ class EditGuide extends React.Component {
 
   renderTable = () => {
     const { record } = this.props
+
     return (
-      <div>
-        <SmallTitle>
-          Guide Stats
-        </SmallTitle>
-        <TableStyled>
-          <tbody>
-            <TrStyled>
-              <TdStyledGrey>Link</TdStyledGrey>
-              <TdStyled>
-                <a href={`https://herotraveler.com/stories/${record.id}`}>
-                  {truncate(`herotraveler.com/stories/${record.id}`, 20)}
-                </a>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Date Published</TdStyledGrey>
-              <TdStyled>{moment(record.createdAt).format('YYYY/MM/DD')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Author</TdStyledGrey>
-              <TdStyled>
-                <Link to={`/users/${get(record, 'author.id')}`}>
-                  {get(record, 'author.username')}
-                </Link>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Location</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'locations.0.name')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Likes</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.likes')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Comments</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.comments')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Public</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'public')}
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Verified</TdStyledGrey>
-              <TdStyled>
-                {get(record, 'verified')}
-              </TdStyled>
-            </TrStyled>
-          </tbody>
-        </TableStyled>
-      </div>
+      <StatsTable
+        title="Guide Stats"
+        columns={[
+          {
+            title: 'Link',
+            render: () => (
+              <a href={`https://herotraveler.com/guides/${record.id}`}>
+                {truncate(`herotraveler.com/guides/${record.id}`, 20)}
+              </a>),
+          },
+          {
+            title: 'Date Published',
+            text: moment(record.createdAt).format('YYYY/MM/DD'),
+          },
+          {
+            title: 'Author',
+            render: () => (
+              <Link to={`/users/${get(record, 'author.id')}`}>
+                {get(record, 'author.username')}
+              </Link>),
+          },
+          {
+            title: 'Location',
+            text: get(record, 'locationInfo.name'),
+          },
+          {
+            title: '# Of Likes',
+            text: get(record, 'counts.likes'),
+          },
+          {
+            title: '# Of Comments',
+            text: get(record, 'counts.comments'),
+          },
+          {
+            title: 'Public',
+            text: get(record, 'public'),
+          },
+          {
+            title: 'Verified',
+            text: get(record, 'verified'),
+          },
+        ]}
+      />
     )
   }
 

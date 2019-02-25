@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
-import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
+import prepareCategoryImages from '../../Utils/prepareCategoryImages'
 
 const Wrapper = styled.div``
 
@@ -37,23 +37,9 @@ class CreateCategory extends React.Component {
       formSubmitting: true,
     })
 
-    const { thumbnail, heroImage, categorySponsorLogo, interstitialImage } = values
-    if ((thumbnail && thumbnail.public_id) ||
-        (heroImage && heroImage.public_id)) {
-      values.image = convertUrlsToImageFormat(thumbnail, heroImage, 'categoryImage')
-    }
-    if (categorySponsorLogo && categorySponsorLogo.public_id) {
-      values.categorySponsorLogo =
-        convertUrlsToImageFormat(undefined, categorySponsorLogo, 'categorySponsorLogo')
-    }
-    if (interstitialImage && interstitialImage.public_id) {
-      values.interstitialImage =
-        convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
-    }
-
     new Promise((resolve, reject) => {
       postCategory({
-        values,
+        values: prepareCategoryImages(values),
         resolve,
         reject,
       })

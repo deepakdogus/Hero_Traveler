@@ -12,6 +12,7 @@ export const ModelName = 'Story'
 
 const StorySchema = new Schema({
   title: {
+    index: true,
     type: String,
   },
   // slug: {

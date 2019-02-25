@@ -22,7 +22,7 @@ function getUploadMethod(api, uploadType){
 }
 
 // objectId will be draftId or userId depending on uploadType
-export function * uploadMedia (api, {objectId, file, uploadType}) {
+export function * uploadMediaAsset (api, {objectId, file, uploadType}) {
   const uploadMethod = getUploadMethod(api, uploadType)
   const response = yield call(
     uploadMethod,

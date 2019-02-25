@@ -19,17 +19,14 @@ import EditUserForm from '../../Components/Users/EditUserForm'
 import UserItemsTable from '../../Components/Users/UserItemsTable'
 import convertUrlsToImageFormat from '../../Utils/convertUrlsToImageFormat'
 
+import StatsTable from '../../Components/Shared/StatsTable'
+
 import {
   Wrapper,
   Breadcrumbs,
   MainWrapper,
   Title,
-  SmallTitle,
   Divider,
-  TableStyled,
-  TrStyled,
-  TdStyledGrey,
-  TdStyled,
   Centered,
 } from '../../Components/Shared/StyledEditComponents'
 
@@ -127,48 +124,44 @@ class EditUser extends React.Component {
 
   renderTable = () => {
     const { record, stories, guides } = this.props
+
     return (
-      <div>
-        <SmallTitle>
-          User Stats
-        </SmallTitle>
-        <TableStyled>
-          <tbody>
-            <TrStyled>
-              <TdStyledGrey>Link</TdStyledGrey>
-              <TdStyled>
-                <a href={`https://herotraveler.com/profile/${record.id}`}>
-                  {truncate(`herotraveler.com/profile/${record.id}`, 20)}
-                </a>
-              </TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Member Since</TdStyledGrey>
-              <TdStyled>{moment(record.createdAt).format('YYYY/MM/DD')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Created On</TdStyledGrey>
-              <TdStyled></TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Followers</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.followers')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey>Following</TdStyledGrey>
-              <TdStyled>{get(record, 'counts.following')}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Stories Published</TdStyledGrey>
-              <TdStyled>{stories.length}</TdStyled>
-            </TrStyled>
-            <TrStyled>
-              <TdStyledGrey># Of Guides Published</TdStyledGrey>
-              <TdStyled>{guides.length}</TdStyled>
-            </TrStyled>
-          </tbody>
-        </TableStyled>
-      </div>
+      <StatsTable
+        title="User Stats"
+        columns={[
+          {
+            title: 'Link',
+            render: () => (
+              <a href={`https://herotraveler.com/profile/${record.id}`}>
+                {truncate(`herotraveler.com/profile/${record.id}`, 20)}
+              </a>),
+          },
+          {
+            title: 'Member Since',
+            text: moment(record.createdAt).format('YYYY/MM/DD'),
+          },
+          {
+            title: 'Created On',
+            text: '',
+          },
+          {
+            title: '# Of Followers',
+            text: get(record, 'counts.followers'),
+          },
+          {
+            title: 'Following',
+            text: get(record, 'counts.following'),
+          },
+          {
+            title: '# Of Stories Published',
+            text: stories.length,
+          },
+          {
+            title: '# Of Guides Published',
+            text: guides.length,
+          },
+        ]}
+      />
     )
   }
 

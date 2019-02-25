@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Login from './Login'
-import Loader from '../Components/Loader'
-import VerticalCenter from '../Components/VerticalCenter'
+import Loader from '../Shared/Web/Components/Loader'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const LoaderWrapper = styled.div`
   align-self: center;

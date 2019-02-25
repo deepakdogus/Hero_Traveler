@@ -255,8 +255,8 @@ export default class FeedItemPreview extends Component {
     )
   }
 
-  _onPress = (title) => {
-    return () => this.getOnPress()(title)
+  _onPress = () => {
+    return this.getOnPress()(this.getLocationText())
   }
 
   renderTitle() {
@@ -287,7 +287,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderBottomSection() {
-    const {title, counts, description, coverCaption, draft, type} = this.props.feedItem
+    const {counts, description, coverCaption, draft, type} = this.props.feedItem
     const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
@@ -325,7 +325,7 @@ export default class FeedItemPreview extends Component {
           </Text>
         )}
         <TouchableOpacity
-          onPress={this._onPress(this.getLocationText())}
+          onPress={this._onPress}
           disabled={!!isReadingScreen}
         >
           {this.renderTitle()}
@@ -416,7 +416,7 @@ export default class FeedItemPreview extends Component {
             allowVideoPlay={this.props.allowVideoPlay}
             cover={cover}
             coverType={feedItem.coverImage ? 'image' : 'video'}
-            onPress={this.getOnPress()}
+            onPress={this._onPress}
             showPlayButton={showPlayButton}
             playButtonSize={playButtonSize}
             isFeed={this.props.isFeed}

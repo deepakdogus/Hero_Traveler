@@ -27,7 +27,7 @@ import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
-import { showFeedDate } from '../Shared/Lib/dateHelpers'
+import { showPublishDate } from '../Shared/Lib/dateHelpers'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -143,7 +143,7 @@ export default class FeedItemPreview extends Component {
         styles.dateText,
         isReadingScreen && styles.dateTextReading,
       ]}>
-        {showFeedDate(feedItem)}
+        {showPublishDate(feedItem)}
       </Text>
     )
   }

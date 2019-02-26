@@ -17,7 +17,7 @@ export async function parseAndInsertStoryHashtags(hashtags) {
 }
 
 export async function getUserDetails(userId) {
-  return User.findOne({_id:userId});
+  return User.findOne({_id:userId})
 }
 
 export async function addCover(draft, assetFormater){
@@ -71,7 +71,7 @@ export default async function createStory(storyData, assetFormater) {
 
   if (storyObject.draft === false) {
     storyObject.publishedDate = new Date()
-  } 
+  }
 
   else newStory = await updateDraft(storyData.id, storyObject)
 

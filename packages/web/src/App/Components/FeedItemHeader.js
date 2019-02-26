@@ -13,7 +13,7 @@ import Video from './Video'
 import RoundedButton from './RoundedButton'
 import Icon from './Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
-import { showFeedDate } from '../Shared/Lib/dateHelpers'
+import { showPublishDate } from '../Shared/Lib/dateHelpers'
 
 import {
   roleToIconName,
@@ -309,7 +309,7 @@ export default class FeedItemHeader extends React.Component {
                   </SpacedVerticalCenter>
                 )}
               </Row>
-              <TimeStamp>{showFeedDate(feedItem)}</TimeStamp>
+              <TimeStamp>{showPublishDate(feedItem)}</TimeStamp>
             </SpacedVerticalCenter>
           </UserInfoRow>
           <Row>

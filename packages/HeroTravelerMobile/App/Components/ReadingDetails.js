@@ -4,7 +4,6 @@ import {
   Text,
   View,
 } from 'react-native'
-import moment from 'moment'
 
 import TabIcon from './TabIcon'
 import {styles} from '../Containers/Styles/StoryReadingScreenStyles'
@@ -91,7 +90,7 @@ class ReadingDetails extends React.Component {
 
   render () {
     const { targetEntity } = this.props
-    const {categories, cost, travelTips, duration, tripDate} = targetEntity
+    const {categories, cost, travelTips, duration} = targetEntity
 
     return (
       <Fragment>

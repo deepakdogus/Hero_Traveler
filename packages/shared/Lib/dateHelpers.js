@@ -6,7 +6,7 @@ export function showTravelDate(feedItem) {
     moment(feedItem.publishedDate).format('DD-MM-YYYY')
 }
 
-export function showFeedDate(feedItem) {
+export function showPublishDate(feedItem) {
   return moment(feedItem.publishedDate || feedItem.createdAt).fromNow()
 }
 

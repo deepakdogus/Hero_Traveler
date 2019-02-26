@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "share": "rimraf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/shared",
+    "share": "rm -rf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/shared",
     "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared --watch"
   },
   "devDependencies": {

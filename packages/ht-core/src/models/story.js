@@ -131,6 +131,9 @@ const StorySchema = new Schema({
   travelTips: {
     type: String,
   },
+  publishedDate: {
+    type: Date,
+  },
 }, {
   timestamps: true,
   toObject: {
@@ -167,7 +170,7 @@ StorySchema.statics = {
       .populate('categories')
       .populate('hashtags')
       .populate('coverImage coverVideo')
-      .sort({createdAt: -1})
+      .sort({publishedDate: -1})
   },
 
   getUserFeed(userId, followingIds, page = 1, perPage = 100) {

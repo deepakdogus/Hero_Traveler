@@ -7,7 +7,6 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native'
-import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
@@ -28,6 +27,7 @@ import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
+import { showPublishDate } from '../Shared/Lib/dateHelpers'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -150,7 +150,7 @@ export default class FeedItemPreview extends Component {
         styles.dateText,
         isReadingScreen && styles.dateTextReading,
       ]}>
-        {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
+        {showPublishDate(feedItem)}
       </Text>
     )
   }

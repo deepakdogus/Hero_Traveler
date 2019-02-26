@@ -3,14 +3,9 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
-import capitalize from 'lodash/capitalize'
+import FormControls from './FormControls'
 
 const FormItem = Form.Item
-
-const ButtonStyled = styled(Button)`
-  margin-top: 10px;
-  margin-right: 10px;
-`
 
 class EditStoryOrGuideForm extends React.Component {
   state = {
@@ -35,6 +30,8 @@ class EditStoryOrGuideForm extends React.Component {
       isDeleting,
       record,
       type,
+      handleCancel,
+      onDelete,
     } = this.props
 
     const { getFieldDecorator } = this.props.form
@@ -93,33 +90,14 @@ class EditStoryOrGuideForm extends React.Component {
             <Checkbox>Flag</Checkbox>,
           )}
         </FormItem>
-        <FormItem>
-          <div>
-            <ButtonStyled
-              type="primary"
-              htmlType="submit"
-              loading={formLoading}
-            >
-              Save Changes
-            </ButtonStyled>
-            <ButtonStyled
-              type="default"
-              onClick={this.props.handleCancel}
-            >
-              Cancel
-            </ButtonStyled>
-            <br/>
-            <ButtonStyled
-              disabled={record.isDeleted}
-              type="danger"
-              icon="delete"
-              loading={isDeleting}
-              onClick={this.props.onDelete}
-            >
-              Delete {capitalize(`${type}`)}
-            </ButtonStyled>
-          </div>
-        </FormItem>
+        <FormControls
+          entity={type}
+          record={record}
+          onCancel={handleCancel}
+          onDelete={onDelete}
+          isDeleting={isDeleting}
+          formLoading={formLoading}
+        />
       </Form>
     )
   }

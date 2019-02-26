@@ -1,17 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { Form, Input, Button, Checkbox, message } from 'antd'
+import { Form, Input, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 import get from 'lodash/get'
 import SingleImageUpload from '../SingleImageUpload'
+import FormControls from '../Shared/FormControls'
 
 const FormItem = Form.Item
-
-const ButtonStyled = styled(Button)`
-  margin-top: 10px;
-  margin-right: 10px;
-`
 
 class EditCategoryForm extends React.Component {
   state = {
@@ -35,6 +30,8 @@ class EditCategoryForm extends React.Component {
       formLoading,
       isDeleting,
       record,
+      onDelete,
+      handleCancel,
     } = this.props
 
     const { getFieldDecorator } = this.props.form
@@ -104,32 +101,14 @@ class EditCategoryForm extends React.Component {
             <Checkbox>Feature category in Explore page</Checkbox>,
           )}
         </FormItem>
-        <FormItem>
-          <div>
-            <ButtonStyled
-              type="primary"
-              htmlType="submit"
-              loading={formLoading}>
-              Save Changes
-            </ButtonStyled>
-            <ButtonStyled
-              type="default"
-              onClick={this.props.handleCancel}>
-              Cancel
-            </ButtonStyled>
-
-            <br/>
-            {this.props.onDelete && <ButtonStyled
-              disabled={record.isDeleted}
-              type="danger"
-              icon="delete"
-              loading={isDeleting}
-              onClick={this.props.onDelete}
-            >
-              Delete Category
-            </ButtonStyled>}
-          </div>
-        </FormItem>
+        <FormControls
+          formLoading={formLoading}
+          handleCancel={handleCancel}
+          onDelete={onDelete}
+          entity="category"
+          isDeleting={isDeleting}
+          record={record}
+        />
       </Form>
     )
   }

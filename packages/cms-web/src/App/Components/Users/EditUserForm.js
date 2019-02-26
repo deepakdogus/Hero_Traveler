@@ -1,23 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { Form, Input, Button, Checkbox, Select, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 import get from 'lodash/get'
 import SingleImageUpload from '../SingleImageUpload'
+import FormControls from '../Shared/FormControls'
+
+import { Divider } from '../Shared/StyledEditComponents'
 
 const Option = Select.Option
 const FormItem = Form.Item
-
-const ButtonStyled = styled(Button)`
-  margin-top: 10px;
-  margin-right: 10px;
-`
-
-const Divider = styled.hr`
-  border-bottom: 2px solid black;
-  width: 100%;
-`
 
 class EditUserForm extends React.Component {
   state = {
@@ -48,6 +40,8 @@ class EditUserForm extends React.Component {
       formLoading,
       isDeleting,
       record,
+      handleCancel,
+      onDelete,
     } = this.props
 
     const { getFieldDecorator, getFieldValue } = this.props.form
@@ -162,32 +156,14 @@ class EditUserForm extends React.Component {
 
           <Divider />
         </div>}
-        <FormItem>
-          <div>
-            <ButtonStyled type="primary"
-              htmlType="submit"
-              loading={formLoading}
-            >
-              Save Changes
-            </ButtonStyled>
-            <ButtonStyled
-              type="default"
-              onClick={this.props.handleCancel}
-            >
-              Cancel
-            </ButtonStyled>
-            <br/>
-            <ButtonStyled
-              disabled={record.isDeleted}
-              type="danger"
-              icon="delete"
-              loading={isDeleting}
-              onClick={this.props.onDelete}
-            >
-              Delete User
-            </ButtonStyled>
-          </div>
-        </FormItem>
+        <FormControls
+          formLoading={formLoading}
+          handleCancel={handleCancel}
+          onDelete={onDelete}
+          entity="user"
+          isDeleting={isDeleting}
+          record={record}
+        />
       </Form>
     )
   }

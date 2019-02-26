@@ -8,9 +8,8 @@ export default function likeStory(req, res) {
   return Story.likeStory(storyId, userId)
   .then(({story, notify}) => {
     if (notify && story.author.receivesLikeNotifications()) {
-      likeNotification(likedUser, likingUser, story)
+      likeNotification(story.author, likingUser, story)
     }
-    // test if I can return nothing. Does not matter since we are doign this eager
     return { notify }
   })
 }

@@ -24,7 +24,6 @@ export default function likeStory(storyId, userId) {
       .populate('author')
     })
     .then((story) => {
-      // add ActivityStoryLike
       return ActivityStoryLike.add(
         story.author,
         userId,

@@ -70,7 +70,7 @@ export default async function createStory(storyData, assetFormater) {
   }
 
   if (storyObject.draft === false) {
-    storyObject.publishedDate = new Date();
+    storyObject.publishedDate = new Date()
   } 
 
   else newStory = await updateDraft(storyData.id, storyObject)

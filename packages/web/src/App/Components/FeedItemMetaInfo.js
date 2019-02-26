@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import moment from 'moment'
 
 import Icon from './Icon'
 import { Row } from './FlexboxGrid'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
+import { showTravelDate, getTripDate } from '../Shared/Lib/dateHelpers'
 
 const LocationIcon = styled(Icon)`
   width: 17px;
@@ -105,7 +105,7 @@ DetailRow.propTypes = {
 export default class FeedItemMetaInfo extends React.Component {
   static propTypes = {
     feedItem: PropTypes.object,
-  };
+  }
 
   renderCategoriesLinks = categories => {
     const keys = Object.keys(categories)
@@ -124,24 +124,18 @@ export default class FeedItemMetaInfo extends React.Component {
         </StyledLink>
       )
     })
-  };
+  }
 
   getLocationText = () => {
     const { locationInfo, locations = [] } = this.props.feedItem
     if (locationInfo) return displayLocationDetails(locationInfo)
     else if (locations.length) return locations.map(displayLocationDetails).join(' - ')
-  };
+  }
 
   getDuration = () => {
     const { duration } = this.props.feedItem
     if (!duration) return
     return `${duration} day${duration > 1 ? 's' : ''}`
-  };
-
-  showTravelDate = (feedItem) => {
-    return !!feedItem.tripDate && !!feedItem.publishedDate &&
-      moment(feedItem.tripDate).format('DD-MM-YYYY') !==
-      moment(feedItem.publishedDate).format('DD-MM-YYYY')
   }
 
   render() {
@@ -176,10 +170,10 @@ export default class FeedItemMetaInfo extends React.Component {
           Icon={CalendarIcon}
           iconName='date'
           label='Travel Date'
-          hasValue={this.showTravelDate(feedItem)}
+          hasValue={showTravelDate(feedItem)}
         >
           <DetailText>
-            {this.showTravelDate(feedItem) ? moment(feedItem.tripDate).format('LL') : ''}
+            {getTripDate(feedItem)}
           </DetailText>
         </DetailRow>
         <DetailRow

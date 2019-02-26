@@ -57,7 +57,7 @@ export default async function updateDraft(draftId, attrs, assetFormater){
     attrs.hashtags = await parseAndInsertStoryHashtags(attrs.hashtags)
   }
 
-  if (attrs.draft === false) {
+  if (draft.draft === true && attrs.draft === false) {
     attrs.publishedDate = new Date();
   }
 

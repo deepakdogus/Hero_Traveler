@@ -188,6 +188,10 @@ class SearchPlacesPeople extends Component {
     Keyboard.dismiss()
   }
 
+  onPostCardClick = () => {
+
+  }
+
   setupInputRef = ref => (this._searchInput = ref)
 
   focusInput = () => this._searchInput.focus()
@@ -227,6 +231,17 @@ class SearchPlacesPeople extends Component {
           ]}
         >
           <View style={styles.headerSearch}>
+            <TouchableOpacity onPress={this.onPostCardClick}>
+              <View style={styles.postCard}>
+                <TabIcon
+                  name="cameraDark"
+                  defaultScale
+                  style={{
+                    image: styles.postCardIcon,
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
             <View style={styles.searchWrapper}>
               {!hasSearchText && (
                 <TouchableOpacity

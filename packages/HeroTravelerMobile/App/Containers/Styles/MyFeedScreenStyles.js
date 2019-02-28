@@ -7,6 +7,10 @@ export default StyleSheet.create({
   root: {
     backgroundColor: Colors.snow,
   },
+  statusBarAvoider: {
+    marginTop: Metrics.statusBarHeight,
+    flex: 1,
+  },
   fakeNavBar: {
     height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
     backgroundColor: Colors.snow,

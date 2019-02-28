@@ -155,7 +155,7 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  getFirstPendingUpdate() {
+  getFirstPendingFailure() {
     const { pendingUpdates, updateOrder } = this.props
     const firstFailureKey = updateOrder.find(key => {
       const pendingUpdate = pendingUpdates[key] || {}
@@ -194,7 +194,7 @@ class MyFeedScreen extends React.Component {
     let bottomContent
 
     const isFollowingSelected = selectedTab === tabTypes.following
-    const failure = this.getFirstPendingUpdate()
+    const failure = this.getFirstPendingFailure()
 
     if (
       (isFollowingSelected && (!storiesById || !storiesById.length))
@@ -218,11 +218,7 @@ class MyFeedScreen extends React.Component {
     }
 
     return (
-      <SearchPlacesPeople
-        stories={stories}
-        user={user}
-        placeholder={`Search`}
-      >
+      <View style={styles.statusBarAvoider}>
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -231,8 +227,14 @@ class MyFeedScreen extends React.Component {
           discardUpdate={this.props.discardUpdate}
           resetFailCount={this.props.resetFailCount}
         />
-        { bottomContent }
-      </SearchPlacesPeople>
+        <SearchPlacesPeople
+          stories={stories}
+          user={user}
+          placeholder={`Search`}
+        >
+          { bottomContent }
+        </SearchPlacesPeople>
+      </View>
     )
   }
 }

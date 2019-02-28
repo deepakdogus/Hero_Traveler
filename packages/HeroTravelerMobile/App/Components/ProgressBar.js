@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Text, TouchableOpacity, ProgressViewIOS, View} from 'react-native'
+import {Text, ProgressViewIOS, View} from 'react-native'
 import styles from './Styles/BackgroundPublishingBarsStyles'
 import {Colors} from '../Shared/Themes'
-import TabIcon from './TabIcon'
 
 class ProgressBar extends Component {
   static propTypes = {
@@ -17,7 +16,9 @@ class ProgressBar extends Component {
   render() {
     const {message, syncProgress, syncProgressSteps, error} = this.props
 
-    if (syncProgressSteps === 0 || syncProgressSteps === syncProgress || error) return null
+    if (syncProgressSteps === 0 || syncProgressSteps === syncProgress || error) {
+      return null
+    }
 
     return (
       <View style={styles.container}>
@@ -29,7 +30,7 @@ class ProgressBar extends Component {
         </View>
         <ProgressViewIOS
           style={styles.bar}
-          progress={syncProgress/syncProgressSteps}
+          progress={syncProgress / syncProgressSteps}
           progressTintColor={Colors.redHighlights}
           trackTintColor={Colors.feedDividerGrey}
           progressViewStyle='bar'

@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.78":
-  version "0.0.78"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.78.tgz#267b1d4db238b79d55dc76283af91bd01120d4de"
-  integrity sha1-JnsdTbI4t51V3HYoOvkb0BEg1N4=
+"@hero/ht-core@0.0.79":
+  version "0.0.79"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.79.tgz#5d624aab8c8dc24daee9c5b9046a38242e0347a2"
+  integrity sha1-XWJKq4yNwk2u6cW5BGo4JC4DR6I=
   dependencies:
-    "@hero/ht-util" "^0.0.61"
+    "@hero/ht-util" "^0.0.62"
     algoliasearch "^3.22.1"
     babel-preset-flow "^6.23.0"
     babel-register "^6.23.0"
@@ -28,10 +28,10 @@
     rand-token "^0.3.0"
     standard-error "^1.1.0"
 
-"@hero/ht-util@^0.0.61":
-  version "0.0.61"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.61.tgz#8afdc863bf5e393fe55f3e6bf9d8608a67d9285b"
-  integrity sha1-iv3IY79eOT/lXz5r+dhgimfZKFs=
+"@hero/ht-util@^0.0.62":
+  version "0.0.62"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.62.tgz#25635d12f2b15c94c16d5290a797ec7d1a314d05"
+  integrity sha1-JWNdEvKxXJTBbVKQp5fsfRoxTQU=
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

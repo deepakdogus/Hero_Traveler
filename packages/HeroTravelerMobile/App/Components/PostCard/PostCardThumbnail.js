@@ -10,9 +10,7 @@ import styles from '../Styles/PostCardStyles'
 
 export default class PostCardThumbnail extends Component {
   static propTypes = {
-    cardId: PropTypes.string,
-    caption: PropTypes.string,
-    imageUrl: PropTypes.string,
+    postCard: PropTypes.object,
   }
 
   _navToPostCard = () => {
@@ -21,7 +19,7 @@ export default class PostCardThumbnail extends Component {
   }
 
   render() {
-    const { imageUrl, caption } = this.props
+    const { postCard } = this.props
 
     return (
       <View style={styles.contentContainer}>
@@ -29,7 +27,7 @@ export default class PostCardThumbnail extends Component {
           <ImageWrapper
             cached={true}
             resizeMode='cover'
-            source={{uri: imageUrl}}
+            source={{uri: postCard.imageUrl}}
             style={styles.thumbnailImage}
           />
           <LinearGradient
@@ -37,7 +35,7 @@ export default class PostCardThumbnail extends Component {
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.0)', 'rgba(0,0,0,0.8)']}
             style={styles.overlayContainer}>
             <Text style={styles.caption}>
-              {caption}
+              {postCard.caption}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

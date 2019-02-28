@@ -10,6 +10,10 @@ export default StyleSheet.create({
     width: Metrics.screenWidth * 0.4,
     flex: 1,
   },
+  root: {
+    flex: 1,
+    marginTop: Metrics.statusBarHeight,
+  }
 })
 
 export const CategoryFeedNavActionStyles = StyleSheet.create({

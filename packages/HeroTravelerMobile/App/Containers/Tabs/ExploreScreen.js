@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 
@@ -91,15 +91,17 @@ class ExploreScreen extends Component {
       )
 
     return (
-      <SearchPlacesPeople
-        stories={stories}
-        searchHistory={searchHistory}
-        addRecentSearch={addRecentSearch}
-        user={user}
-        renderTabs={this.renderTabs}
-      >
-        {content}
-      </SearchPlacesPeople>
+      <View style={styles.root}>
+        <SearchPlacesPeople
+          stories={stories}
+          searchHistory={searchHistory}
+          addRecentSearch={addRecentSearch}
+          user={user}
+          renderTabs={this.renderTabs}
+        >
+          {content}
+        </SearchPlacesPeople>
+      </View>
     )
   }
 }

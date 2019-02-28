@@ -30,8 +30,8 @@ import SelectedItem from '../../Components/SelectedItem'
 export const TAG_TYPE_CATEGORY = "category";
 export const TAG_TYPE_HASHTAG = "hashtag";
 
-class TagScreen extends Component {
 
+class TagScreen extends Component {
   static propTypes = {
     tagType: PropTypes.oneOf([TAG_TYPE_CATEGORY, TAG_TYPE_HASHTAG]).isRequired,
     tags: PropTypes.array,
@@ -46,22 +46,28 @@ class TagScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.setTagInfo(this.props.tagType)
+    this.state = this.getInitialState(props.tags)
+  }
 
-    switch(props.tagType) {
+  setTagInfo = (tagType) => {
+    switch(tagType) {
       case TAG_TYPE_CATEGORY:
         this.props.loadDefaultCategories()
-        this.tagIndex = env.SEARCH_CATEGORIES_INDEX;
-        break;
+        this.tagIndex = env.SEARCH_CATEGORIES_INDEX
+        break
       case TAG_TYPE_HASHTAG:
         this.props.loadDefaultHashtags()
-        this.tagIndex = env.SEARCH_HASHTAGS_INDEX;
-        break;
+        this.tagIndex = env.SEARCH_HASHTAGS_INDEX
+        break
       default:
-        throw new Error("No tag type supplied to the TagScreen")
+        throw new Error('No tag type supplied to the TagScreen')
     }
+  }
 
-    this.state = {
-      selectedTags: props.tags || [],
+  getInitialState(tags) {
+    return {
+      selectedTags: tags || [],
       text: '',
       searching: false,
       searchResults: null,
@@ -69,9 +75,13 @@ class TagScreen extends Component {
     }
   }
 
-  componentWillMount() {
+  setupAlgolia = () => {
     this.helper = AlgoliaSearchHelper(algoliasearch, this.tagIndex)
     this.setupSearchListeners(this.helper)
+  }
+
+  componentWillMount() {
+    this.setupAlgolia()
   }
 
   setupSearchListeners(helper) {
@@ -89,6 +99,15 @@ class TagScreen extends Component {
   removeSearchListeners() {
     this.helper.removeAllListeners('result')
     this.helper.removeAllListeners('search')
+  }
+
+  componentDidUpdate(prevProps) {
+    const { tags, tagType } = this.props
+    if (prevProps.tagType !== this.props.tagType) {
+      this.setTagInfo(tagType)
+      this.setupAlgolia()
+      this.setState(this.getInitialState(tags))
+    }
   }
 
   componentWillUnmount() {

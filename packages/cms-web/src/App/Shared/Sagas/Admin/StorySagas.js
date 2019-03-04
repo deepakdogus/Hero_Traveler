@@ -7,7 +7,8 @@ export function * adminGetStories (api, action) {
   if (response.ok && response.data && response.data.data) {
     const { data, count } = response.data
     yield put(AdminActions.adminGetStoriesSuccess({ data, count }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetStoriesFailure(error))
   }
@@ -19,7 +20,8 @@ export function * adminGetStory (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     yield put(AdminActions.adminGetStorySuccess({ record }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetStoryFailure(error))
   }
@@ -32,7 +34,8 @@ export function * adminPutStory (api, action) {
     const record = response.data
     yield put(AdminActions.adminGetStorySuccess({ record }))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -45,7 +48,8 @@ export function * adminDeleteStory (api, action) {
     const record = response.data
     yield put(AdminActions.adminDeleteStorySuccess(id))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -57,7 +61,8 @@ export function * adminRestoreStories (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }

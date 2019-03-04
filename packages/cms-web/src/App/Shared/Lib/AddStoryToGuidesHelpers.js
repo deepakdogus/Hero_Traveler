@@ -39,7 +39,7 @@ export class SharedComponent extends Component {
     if (prevProps.guides.length !== this.props.guides.length) {
       this.setState({
         isInGuideById: getIsInGuidesById(guides, story.id),
-        filteredGuides: this.getFilteredGuides(this.state.searchTerm || ""),
+        filteredGuides: this.getFilteredGuides(this.state.searchTerm || ''),
       })
     }
   }
@@ -100,5 +100,5 @@ export const mapDispatchToProps = dispatch => ({
   getUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
   bulkSaveStoryToGuide: (storyId, isInGuideById) => {
     dispatch(GuideActions.bulkSaveStoryToGuideRequest(storyId, isInGuideById))
-  }
+  },
 })

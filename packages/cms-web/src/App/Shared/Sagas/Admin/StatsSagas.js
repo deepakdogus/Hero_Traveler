@@ -8,7 +8,8 @@ export function * adminGetTotalStats (api, action) {
     const { data } = response
     yield put(AdminActions.adminGetTotalStatsSuccess({ data }))
     return resolve(data)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -21,7 +22,8 @@ export function * adminGetNewStats (api, action) {
     const { data } = response
     yield put(AdminActions.adminGetNewStatsSuccess({ data }))
     return resolve(data)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }

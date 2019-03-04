@@ -81,7 +81,7 @@ export const INITIAL_STATE = Immutable({
 export const loadUser = (state) => {
   return state.setIn(
     ['fetchStatus'],
-    {fetching: true, loaded: false}
+    {fetching: true, loaded: false},
   )
 }
 
@@ -89,9 +89,9 @@ export const loadUserSuccess = (state) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
-      loaded: true
+      loaded: true,
     },
-    error: null
+    error: null,
   })
 }
 
@@ -102,7 +102,7 @@ export const loadUserFailure = (state, {error}) => {
 export const suggestions = (state) => {
   return state.setIn(
     ['fetchStatus', 'fetching'],
-    true
+    true,
   )
 }
 
@@ -113,9 +113,9 @@ export const suggestionsSuccess = (state, {usersById = []}) => {
       loaded: true,
     },
     error: null,
-    suggestedUsersById: usersById
+    suggestedUsersById: usersById,
   }, {
-    deep: true
+    deep: true,
   })
 }
 
@@ -123,9 +123,9 @@ export const suggestionsFailure = (state, {error}) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
-      loaded: false
+      loaded: false,
     },
-    error
+    error,
   })
 }
 
@@ -135,7 +135,7 @@ export const receive = (state, { users = {} }) => {
 
 export const updateUser = (state) => state.merge({
   error: null,
-  updating: true
+  updating: true,
 })
 
 export const updateUserSuccess = (state, {user}) => {
@@ -143,14 +143,14 @@ export const updateUserSuccess = (state, {user}) => {
   const updatedUser = state.getIn(path).merge(user, {deep: true})
   return state.setIn(path, updatedUser).merge({
     error: null,
-    updating: false
+    updating: false,
   })
 }
 
 export const updateUserFailure = (state, {error}) => {
   return state.merge({
     error,
-    updating: false
+    updating: false,
   })
 }
 
@@ -165,7 +165,7 @@ export const removeAvatarSuccess = (state, {user}) => {
     null,
   ).merge({
     error: null,
-    updating: false
+    updating: false,
   })
 }
 
@@ -193,7 +193,7 @@ export const connectFacebookSuccess = (state, {user}) => {
     error: null,
     fetchStatus: {
       fetching: false,
-    }
+    },
   })
 }
 
@@ -203,7 +203,7 @@ export const connectFacebookFailure = (state, {error}) => {
     fetchStatus: {
       fetching: false,
     },
-    error
+    error,
   })
 }
 
@@ -229,7 +229,7 @@ export const deleteUserFailure = (state, {error}) => {
     fetchStatus: {
       fetching: false,
     },
-    error
+    error,
   })
 }
 
@@ -245,18 +245,18 @@ export const removeActivities = (state, {feedItemId, feedItemType}) => {
 
   const updatedState = state.setIn(
     ['activities'],
-    filteredActivities
+    filteredActivities,
   )
   return updatedState.setIn(
     ['activitiesById'],
-     _.without(state.activitiesById, ...removedActivitesIds)
+     _.without(state.activitiesById, ...removedActivitesIds),
   )
 }
 
 export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
   return state.setIn(
     ['entities', userId, 'introTooltips'],
-    tooltips
+    tooltips,
   )
 }
 
@@ -273,7 +273,7 @@ export const receiveLikes = (state, {userId, likes}) => {
 
 export const receiveBookmarks = (state, {userId, storyIds}) => state.setIn(
   ['usersBookmarksById', userId],
-  storyIds
+  storyIds,
 )
 
 export const getByBookmarks = (state, userId) => {
@@ -285,12 +285,13 @@ export const toggleLike = (state, {userId, storyId}) => {
   if (_.includes(likes, storyId)) {
     return state.setIn(
       ['usersLikesById', userId],
-      _.without(likes, storyId)
+      _.without(likes, storyId),
     )
-  } else {
+  }
+ else {
     return state.setIn(
       ['usersLikesById', userId],
-      likes.concat(storyId)
+      likes.concat(storyId),
     )
   }
 }
@@ -300,12 +301,13 @@ export const toggleBookmark = (state, {userId, storyId}) => {
   if (_.includes(likes, storyId)) {
     return state.setIn(
       ['usersBookmarksById', userId],
-      _.without(likes, storyId)
+      _.without(likes, storyId),
     )
-  } else {
+  }
+ else {
     return state.setIn(
       ['usersBookmarksById', userId],
-      [storyId, ...likes]
+      [storyId, ...likes],
     )
   }
 }
@@ -313,9 +315,9 @@ export const toggleBookmark = (state, {userId, storyId}) => {
 export const addGuideLike = (state, {userId, guideId}) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
   if (!_.includes(guideLikes, guideId)) {
-    return  state.setIn(
+    return state.setIn(
       ['usersGuideLikesById', userId],
-      guideLikes.concat(guideId)
+      guideLikes.concat(guideId),
     )
   }
   return state
@@ -324,7 +326,7 @@ export const addGuideLike = (state, {userId, guideId}) => {
 export const removeGuideLike = (state, {userId, guideId}) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
   if (_.includes(guideLikes, guideId)) {
-    return  state.setIn(
+    return state.setIn(
       ['usersGuideLikesById', userId],
       _.without(guideLikes, guideId),
     )
@@ -335,79 +337,79 @@ export const removeGuideLike = (state, {userId, guideId}) => {
 export const loadUserFollowers = (state, {userId}) => {
   return state.setIn(
     ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: true, loaded: false}
+    {fetching: true, loaded: false},
   )
 }
 
 export const loadUserFollowersSuccess = (state, {userId, usersById}) => {
   return state.setIn(
     ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: true}
+    {fetching: false, loaded: true},
   )
   .setIn(
     ['userFollowersByUserIdAndId', userId, 'byId'],
-    usersById
+    usersById,
   )
 }
 
 export const loadUserFollowersFailure = (state, {userId, error}) => {
   return state.setIn(
     ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
+    {fetching: false, loaded: false, error},
   )
 }
 
 export const loadUserFollowing = (state, {userId}) => {
   return state.setIn(
     ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: true, loaded: false}
+    {fetching: true, loaded: false},
   )
 }
 
 export const loadUserFollowingSuccess = (state, {userId, usersById}) => {
   return state.setIn(
     ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: true}
+    {fetching: false, loaded: true},
   )
   .setIn(
     ['userFollowingByUserIdAndId', userId, 'byId'],
-    usersById
+    usersById,
   )
 }
 
 export const loadUserFollowingFailure = (state, {userId, error}) => {
   return state.setIn(
     ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
+    {fetching: false, loaded: false, error},
   )
 }
 
 export const followUser = (state, {userId, targetUserId}) =>
   state.setIn(
     ['userFollowingByUserIdAndId', userId, 'byId'],
-    state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []).concat(targetUserId)
+    state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []).concat(targetUserId),
   )
   .setIn(
     ['entities', targetUserId, 'counts', 'followers'],
-    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) + 1
+    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) + 1,
   )
   .setIn(
     ['entities', userId, 'counts', 'following'],
-    state.getIn(['entities', userId, 'counts', 'following'], 0) + 1
+    state.getIn(['entities', userId, 'counts', 'following'], 0) + 1,
   )
 
 export const unfollowUser = (state, {userId, targetUserId}) =>
   state.setIn(
     ['userFollowingByUserIdAndId', userId, 'byId'],
-    _.without(state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []), targetUserId)
+    _.without(state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []), targetUserId),
   )
   .setIn(
     ['entities', targetUserId, 'counts', 'followers'],
-    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) - 1
+    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) - 1,
   )
   .setIn(
     ['entities', userId, 'counts', 'following'],
-    state.getIn(['entities', userId, 'counts', 'following'], 0) - 1
+    state.getIn(['entities', userId, 'counts', 'following'], 0) - 1,
   )
 
 export const fetchActivities = (state) => {
@@ -434,12 +436,10 @@ export const activitySeenFailure = (state, {activityId}) => {
   return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
 }
 
-
-
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
   return _.every([
-    _.has(state.usersLikesById, userId)
+    _.has(state.usersLikesById, userId),
   ])
 }
 
@@ -458,7 +458,8 @@ export const isStoryBookmarked = (state: object, userId: string, storyId: string
 export const getFollowers = (state: object, followersType: string, userId: string) => {
   if (followersType === 'followers') {
     return state.getIn(['userFollowersByUserIdAndId', userId, 'byId'], [])
-  } else {
+  }
+ else {
     return state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], [])
   }
 }
@@ -466,7 +467,8 @@ export const getFollowers = (state: object, followersType: string, userId: strin
 export const getFollowersFetchStatus = (state: object, followersType: string, userId: string) => {
   if (followersType === 'followers') {
     return state.getIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], [])
-  } else {
+  }
+ else {
     return state.getIn(['userFollowingByUserIdAndId', userId, 'fetchStatus'], [])
   }
 }

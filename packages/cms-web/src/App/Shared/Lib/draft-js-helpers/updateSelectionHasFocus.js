@@ -7,6 +7,6 @@ export default function updateSelectionHasFocus(editorState, hasFocus) {
 
   return EditorState.acceptSelection(
     editorState,
-    selectionState
+    selectionState,
     )
 }

@@ -11,49 +11,48 @@
  *
  */
 
-'use strict';
+'use strict'
 
 import {genKey} from '.'
-var Immutable = require('immutable');
+var Immutable = require('immutable')
 
-var invariant = require('fbjs/lib/invariant');
+var invariant = require('fbjs/lib/invariant')
 
-var Map = Immutable.Map;
-
+var Map = Immutable.Map
 
 function customSplitBlockInContentState(contentState, selectionState, textType) {
-  !selectionState.isCollapsed() ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Selection range must be collapsed.') : invariant(false) : void 0;
+  !selectionState.isCollapsed() ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Selection range must be collapsed.') : invariant(false) : void 0
 
-  var key = selectionState.getAnchorKey();
-  var offset = selectionState.getAnchorOffset();
-  var blockMap = contentState.getBlockMap();
-  var blockToSplit = blockMap.get(key);
+  var key = selectionState.getAnchorKey()
+  var offset = selectionState.getAnchorOffset()
+  var blockMap = contentState.getBlockMap()
+  var blockToSplit = blockMap.get(key)
 
-  var text = blockToSplit.getText();
-  var chars = blockToSplit.getCharacterList();
+  var text = blockToSplit.getText()
+  var chars = blockToSplit.getCharacterList()
 
   var blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
-    characterList: chars.slice(0, offset)
-  });
+    characterList: chars.slice(0, offset),
+  })
 
-  var keyBelow = genKey();
+  var keyBelow = genKey()
 
   var blockBelow = blockAbove.merge({
     type: textType,
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
-    data: Map()
-  });
+    data: Map(),
+  })
 
   var blocksBefore = blockMap.toSeq().takeUntil(function (v) {
-    return v === blockToSplit;
-  });
+    return v === blockToSplit
+  })
   var blocksAfter = blockMap.toSeq().skipUntil(function (v) {
-    return v === blockToSplit;
-  }).rest();
-  var newBlocks = blocksBefore.concat([[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]], blocksAfter).toOrderedMap();
+    return v === blockToSplit
+  }).rest()
+  var newBlocks = blocksBefore.concat([[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]], blocksAfter).toOrderedMap()
 
   return contentState.merge({
     blockMap: newBlocks,
@@ -63,9 +62,9 @@ function customSplitBlockInContentState(contentState, selectionState, textType) 
       anchorOffset: 0,
       focusKey: keyBelow,
       focusOffset: 0,
-      isBackward: false
-    })
-  });
+      isBackward: false,
+    }),
+  })
 }
 
-export default customSplitBlockInContentState;
+export default customSplitBlockInContentState

@@ -23,7 +23,8 @@ async function trimVideo(videoFile, callback, storyId, _this){
     }
     newSource = await VideoManager.moveVideo(newSource, storyId)
     callback(newSource)
-  } catch(e) {
+  }
+ catch(e) {
       console.log(`Issue trimming video ${e}`)
       _this.props.onTrimError()
       // _this.setState({error: 'There\'s an issue with the video you selected. Please try another.'})

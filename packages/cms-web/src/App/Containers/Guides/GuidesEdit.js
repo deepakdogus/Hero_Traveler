@@ -12,7 +12,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import AdminGuideActions from '../../Shared/Redux/Admin/Guides'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
-import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
+import EditFeedItemForm from '../../Components/Shared/EditFeedItemForm'
 import StoriesInGuideTable from '../../Components/Stories/StoriesInGuideTable'
 
 import StatsTable from '../../Components/Shared/StatsTable'
@@ -169,7 +169,7 @@ class EditGuide extends React.Component {
           <Divider/>
           <Row gutter={16}>
             <Col xs={24} md={12}>
-              <EditStoryOrGuideForm
+              <EditFeedItemForm
                 type="guide"
                 record={record}
                 handleCancel={this.handleCancel}

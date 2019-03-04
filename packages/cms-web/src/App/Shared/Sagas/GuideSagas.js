@@ -18,11 +18,10 @@ export function * createGuide(api, {guide, userId}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to create guide")
+      new Error('Failed to create guide'),
     ))
   }
 }
-
 
 export function * getGuide(api, {guideId}) {
   const response = yield call(api.getGuide, guideId)
@@ -35,7 +34,7 @@ export function * getGuide(api, {guideId}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to get guide")
+      new Error('Failed to get guide'),
     ))
   }
 }
@@ -61,7 +60,7 @@ export function * deleteGuide(api, {guideId, userId}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to delete guide")
+      new Error('Failed to delete guide'),
     ))
   }
 }
@@ -91,7 +90,7 @@ export function * getUserFeedGuides(api, {userId}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed get user's feed guides")
+      new Error("Failed get user's feed guides"),
     ))
   }
 }
@@ -104,12 +103,12 @@ export function * getCategoryGuides(api, {categoryId}) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(GuideActions.receiveGuides(entities.guides)),
-      put(GuideActions.getCategoryGuidesSuccess(categoryId, result))
+      put(GuideActions.getCategoryGuidesSuccess(categoryId, result)),
     ]
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to get category's guides")
+      new Error("Failed to get category's guides"),
     ))
   }
 }
@@ -124,7 +123,7 @@ export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to add story to guides")
+      new Error('Failed to add story to guides'),
     ))
   }
 }
@@ -143,7 +142,7 @@ export function * likeGuide(api, {guideId, userId}) {
     if (_.get(response, 'data.message') !== 'Already liked') {
       yield [
         put(GuideActions.guideFailure(
-          new Error("Failed to like guide")
+          new Error('Failed to like guide'),
         )),
         put(UserActions.userGuideUnlike(userId, guideId)),
       ]
@@ -162,7 +161,7 @@ export function * unlikeGuide(api, {guideId, userId}) {
   if (!response.ok) {
     yield [
       put(GuideActions.guideFailure(
-        new Error("Failed to unlike guide")
+        new Error('Failed to unlike guide'),
       )),
       put(UserActions.userGuideLike(userId, guideId)),
       put(GuideActions.likeGuide(guideId, userId)),

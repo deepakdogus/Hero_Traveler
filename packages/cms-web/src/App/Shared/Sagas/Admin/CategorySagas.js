@@ -7,7 +7,8 @@ export function * adminGetCategories (api, action) {
   if (response.ok && response.data && response.data.data) {
     const { data, count } = response.data
     yield put(AdminActions.adminGetCategoriesSuccess({ data, count }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetCategoriesFailure(error))
   }
@@ -19,7 +20,8 @@ export function * adminGetCategory (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     yield put(AdminActions.adminGetCategorySuccess({ record }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetCategoryFailure(error))
   }
@@ -32,7 +34,8 @@ export function * adminPutCategory (api, action) {
     const record = response.data
     yield put(AdminActions.adminGetCategorySuccess({ record }))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -45,7 +48,8 @@ export function * adminDeleteCategory (api, action) {
     const record = response.data
     yield put(AdminActions.adminDeleteCategorySuccess(id))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -57,7 +61,8 @@ export function * adminRestoreCategories (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -70,7 +75,8 @@ export function * adminPostCategory (api, action) {
     const record = response.data[0]
     yield put(AdminActions.adminGetCategorySuccess({ record }))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }

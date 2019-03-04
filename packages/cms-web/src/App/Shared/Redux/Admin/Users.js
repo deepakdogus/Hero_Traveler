@@ -14,7 +14,7 @@ const { Types, Creators } = createActions({
   adminPutUser: ['payload'],
   adminDeleteUser: ['payload'],
   adminDeleteUserSuccess: ['id'],
-  adminRestoreUsers: ['payload']
+  adminRestoreUsers: ['payload'],
 })
 
 export const AdminUserTypes = Types
@@ -29,8 +29,8 @@ export const INITIAL_STATE = Immutable({
   error: null,
   params: {
     page: 1,
-    limit: 5
-  }
+    limit: 5,
+  },
 })
 
 /* ------------- Reducers ------------- */
@@ -39,17 +39,17 @@ export const adminGetUsers = (state, { params = {} }) => {
     isLoading: true,
     params: {
       ...state.params,
-      ...params
-    }
+      ...params,
+    },
   }, {
-    deep: true
+    deep: true,
   })
 }
 
 export const adminGetUsersFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
 
@@ -59,10 +59,10 @@ export const adminGetUsersSuccess = (state, { res }) => {
     list: res.data,
     total: res.count,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -73,10 +73,9 @@ export const adminGetUser = (state, { params = {} }) => {
 export const adminGetUserFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
-
 
 export const adminGetUserSuccess = (state, { res }) => {
   let list = [...state.getIn(['list'])]
@@ -85,7 +84,8 @@ export const adminGetUserSuccess = (state, { res }) => {
   const userIndex = findIndex(list, { id: record.id })
   if (userIndex >= 0) {
     list[userIndex] = record
-  } else {
+  }
+ else {
     list.push(record)
     total = total + 1
   }
@@ -94,10 +94,10 @@ export const adminGetUserSuccess = (state, { res }) => {
     list,
     total,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -121,4 +121,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-

@@ -4,7 +4,7 @@ import {isArray} from 'lodash'
 import {normalize, schema} from 'normalizr'
 import {getToken as getPushToken} from '../../Config/PushConfig'
 import env from '../../Config/Env'
-import CloudinaryAPI from '../../Services/CloudinaryAPI'
+import CloudinaryAPI from '../Services/CloudinaryAPI'
 import _ from 'lodash'
 
 const User = new schema.Entity('users')

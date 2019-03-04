@@ -34,7 +34,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   error: null,
   fetching: false,
-  isLoggedIn: false
+  isLoggedIn: false,
 })
 
 /* ------------- Reducers ------------- */
@@ -66,9 +66,8 @@ export const failureRequestReset = (state) => state
 export const resetPasswordFailure = (state, { error }) =>
   state.merge({
     fetching: false,
-    error: "Could NOT reset your password. Your token may be expired. Please try again."
+    error: 'Could NOT reset your password. Your token may be expired. Please try again.',
   })
-
 
 export const setIsLoggedIn = (state, {isLoggedIn}) => state.merge({isLoggedIn})
 

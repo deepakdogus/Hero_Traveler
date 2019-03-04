@@ -105,7 +105,7 @@ class Header extends React.Component {
       reroute,
       pathname,
       openGlobalModal,
-      closeGlobalModal
+      closeGlobalModal,
     } = this.props
 
     const spacerSize = '65px'

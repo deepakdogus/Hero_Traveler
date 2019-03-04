@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { Form, Input, Button, Checkbox, message } from 'antd'
+import { Form, Input, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
 import FormControls from './FormControls'
 
 const FormItem = Form.Item
 
-class EditStoryOrGuideForm extends React.Component {
+class EditFeedItemForm extends React.Component {
   state = {
   }
 
@@ -103,7 +102,7 @@ class EditStoryOrGuideForm extends React.Component {
   }
 }
 
-EditStoryOrGuideForm.propTypes = {
+EditFeedItemForm.propTypes = {
   type: PropTypes.string.isRequired,
   record: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
@@ -117,4 +116,4 @@ EditStoryOrGuideForm.propTypes = {
 const mapPropsToFields = ({ record }) =>
   mapValues(record, value => Form.createFormField({ value }))
 
-export default Form.create({ mapPropsToFields })(EditStoryOrGuideForm)
+export default Form.create({ mapPropsToFields })(EditFeedItemForm)

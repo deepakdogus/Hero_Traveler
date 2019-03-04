@@ -214,16 +214,16 @@ class HeaderLoggedIn extends React.Component {
                   isProfileHeader={true}
                 />
               </StyledRoundedAvatarButton>
-                {globalModal === 'profileMenu' &&
-                  this.renderProfileMenu()
+                {globalModal === 'profileMenu'
+                  && this.renderProfileMenu()
                 }
             </LoggedInDesktopContainer>
             <HamburgerIcon
               name='hamburger'
               onClick={this._openHamburgerMenu}
             />
-            {globalModal === 'hamburgerMenu' &&
-              this.renderProfileMenu()
+            {globalModal === 'hamburgerMenu'
+              && this.renderProfileMenu()
             }
           </Row>
         </Col>

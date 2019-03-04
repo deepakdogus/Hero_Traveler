@@ -29,27 +29,26 @@ export const INITIAL_STATE = Immutable({
   error: null,
   params: {
     page: 1,
-    limit: 5
-  }
+    limit: 5,
+  },
 })
-
 
 export const adminGetGuides = (state, { params = {} }) => {
   return state.merge({
     isLoading: true,
     params: {
       ...state.params,
-      ...params
-    }
+      ...params,
+    },
   }, {
-    deep: true
+    deep: true,
   })
 }
 
 export const adminGetGuidesFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
 
@@ -59,10 +58,10 @@ export const adminGetGuidesSuccess = (state, { res }) => {
     list: res.data,
     total: res.count,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -70,14 +69,12 @@ export const adminGetGuide = (state, { params = {} }) => {
   return state.setIn(['isLoading'], true)
 }
 
-
 export const adminGetGuideFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
-
 
 export const adminGetGuideSuccess = (state, { res }) => {
   let list = [...state.getIn(['list'])]
@@ -86,7 +83,8 @@ export const adminGetGuideSuccess = (state, { res }) => {
   const index = findIndex(list, { id: record.id })
   if (index >= 0) {
     list[index] = record
-  } else {
+  }
+ else {
     list.push(record)
     total = total + 1
   }
@@ -95,10 +93,10 @@ export const adminGetGuideSuccess = (state, { res }) => {
     list,
     total,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -122,4 +120,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-

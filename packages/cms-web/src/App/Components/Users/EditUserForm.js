@@ -185,10 +185,10 @@ const mapPropsToFields = ({ record }) => {
     if (key === 'channelImage') return undefined
     return Form.createFormField({ value })
   })
-  values['channelThumbnail'] =
-    Form.createFormField({ value: get(record, 'channelImage') })
-  values['channelHeroImage'] =
-    Form.createFormField({ value: get(record, 'channelImage') })
+  values['channelThumbnail']
+    = Form.createFormField({ value: get(record, 'channelImage') })
+  values['channelHeroImage']
+    = Form.createFormField({ value: get(record, 'channelImage') })
   return values
 }
 

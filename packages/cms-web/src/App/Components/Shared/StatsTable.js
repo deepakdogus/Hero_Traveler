@@ -21,9 +21,9 @@ const StatsTable = ({ title, columns}) => {
               <TrStyled key={`${i}`}>
                 <TdStyledGrey>{c.title}</TdStyledGrey>
                 <TdStyled>
-                  {c.render ?
-                    c.render() :
-                    c.text
+                  {c.render
+                    ? c.render()
+                    : c.text
                   }
                 </TdStyled>
               </TrStyled>

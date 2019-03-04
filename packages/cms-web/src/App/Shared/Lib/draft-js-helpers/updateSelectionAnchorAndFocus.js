@@ -7,6 +7,6 @@ export default function updateSelectionAnchorAndFocus(editorState, anchorKey, an
 
   return EditorState.acceptSelection(
     editorState,
-    selectionState
+    selectionState,
     )
 }

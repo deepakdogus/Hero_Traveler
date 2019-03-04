@@ -17,9 +17,9 @@ const create = () => {
   const cloudinaryApi = apisauce.create({
     baseURL: '/',
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
     },
-    timeout: 30000
+    timeout: 30000,
   })
 
   // Wrap api's addMonitor to allow the calling code to attach
@@ -35,7 +35,8 @@ const create = () => {
     const data = new FormData()
     if (fileObject.uri) {
       data.append('file', fileObject.uri)
-    } else {
+    }
+ else {
       fileObject.uri = fileObject.url
       data.append('file', fileObject.uri)
     }

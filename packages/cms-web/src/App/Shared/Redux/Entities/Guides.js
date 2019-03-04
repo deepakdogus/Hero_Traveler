@@ -56,9 +56,9 @@ export const request = (state) => {
       fetching: true,
       loaded: false,
     },
-    error: null
+    error: null,
   }, {
-    deep: true
+    deep: true,
   })
 }
 
@@ -70,12 +70,11 @@ export const receiveGuides = (state, {guides = {} }) => {
     },
     entities: guides,
   }, {
-    deep: true
+    deep: true,
   })
 
   return newState
 }
-
 
 export const receiveUsersGuides = (state, {guides = {}, userId}) => {
   // only needs ids so getting the keys
@@ -84,7 +83,6 @@ export const receiveUsersGuides = (state, {guides = {}, userId}) => {
 
 export const receiveCategoryGuides = (state, {categoryId, guideIds = {}}) => {
   return state.setIn(['guideIdsByCategoryId', categoryId], guideIds)
-
 }
 
 export const receiveNewGuide = (state, {guides = {}, userId}) => {
@@ -94,14 +92,14 @@ export const receiveNewGuide = (state, {guides = {}, userId}) => {
   if (oldGuideIdsByUserId) {
     newState = newState.setIn(
       ['guideIdsByUserId', userId],
-      [...newGuidesIds, ...oldGuideIdsByUserId]
+      [...newGuidesIds, ...oldGuideIdsByUserId],
     )
   }
   else newState = newState.setIn(['guideIdsByUserId', userId], [...newGuidesIds])
 
   newState = newState.setIn(
     ['feedGuidesById'],
-    [...newGuidesIds, ...state.feedGuidesById]
+    [...newGuidesIds, ...state.feedGuidesById],
   )
   return newState
 }
@@ -114,7 +112,7 @@ export const deleteGuideSuccess = (state, {guideId, userId}) => {
     {
       fetching: false,
       loaded: true,
-    }
+    },
   )
 
   newState = newState.setIn(['feedGuidesById'], state.feedGuidesById.filter(id => {
@@ -125,7 +123,7 @@ export const deleteGuideSuccess = (state, {guideId, userId}) => {
     ['guideIdsByUserId', userId],
     _.get(newState, `guideIdsByUserId.${userId}`, []).filter(id => {
       return id !== guideId
-    })
+    }),
   )
 
   _.get(guide, 'categories',[]).forEach(category => {
@@ -133,7 +131,7 @@ export const deleteGuideSuccess = (state, {guideId, userId}) => {
       ['guideIdsByCategoryId', category.id],
       _.get(newState, `guideIdsByCategoryId.${category.id}`, []).filter(id => {
         return id !== guideId
-      })
+      }),
     )
   })
 
@@ -157,7 +155,6 @@ export const dismissError = (state, {error}) => {
   return state.setIn(['error'], null)
 }
 
-
 export const deleteStoryFromGuides = (state, {storyId}) => {
   const guides = state.entities
   const updatedGuides = {}
@@ -166,7 +163,7 @@ export const deleteStoryFromGuides = (state, {storyId}) => {
     if (guide.stories.indexOf(storyId) !== -1) {
       guide = guide.setIn(
         ['stories'],
-        guide.stories.filter(filterStoryId => storyId !== filterStoryId)
+        guide.stories.filter(filterStoryId => storyId !== filterStoryId),
       )
       updatedGuides[key] = guide
     }
@@ -174,7 +171,7 @@ export const deleteStoryFromGuides = (state, {storyId}) => {
 
   return state.merge(
     {entities: updatedGuides},
-    {deep: true}
+    {deep: true},
   )
 }
 

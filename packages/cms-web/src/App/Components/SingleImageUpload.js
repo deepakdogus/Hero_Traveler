@@ -5,7 +5,7 @@ import get from 'lodash/get'
 
 import { Upload, Icon, Modal, message } from 'antd'
 
-import CloudinaryAPI from '../Services/CloudinaryAPI'
+import CloudinaryAPI from '../Shared/Services/CloudinaryAPI'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const FullWidthImg = styled.img`
@@ -36,9 +36,9 @@ class SingleImageUpload extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.value !== get(state, 'fileList.0.url')) {
       const { fileList } = state
-      const url = props.id === 'thumbnail' || props.id === 'channelThumbnail' ?
-        getImageUrl(props.value, 'categoryThumbnail') :
-        getImageUrl(props.value)
+      const url = props.id === 'thumbnail' || props.id === 'channelThumbnail'
+        ? getImageUrl(props.value, 'categoryThumbnail')
+        : getImageUrl(props.value)
       return {
         fileList: [{
           uid: fileList.length + 1,
@@ -58,9 +58,9 @@ class SingleImageUpload extends React.Component {
     const { value, id } = this.props
     if (!value) return
     const { fileList } = this.state
-    const url = id === 'thumbnail' || id === 'channelThumbnail' ?
-        getImageUrl(value, 'categoryThumbnail') :
-        getImageUrl(value)
+    const url = id === 'thumbnail' || id === 'channelThumbnail'
+        ? getImageUrl(value, 'categoryThumbnail')
+        : getImageUrl(value)
     this.setState({
       fileList: [{
         uid: fileList.length + 1,

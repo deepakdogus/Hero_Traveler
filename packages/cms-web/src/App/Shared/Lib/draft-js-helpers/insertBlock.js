@@ -11,7 +11,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
     text: '',
     data: {},
     selection: editorState.getSelection(),
-    selectNewBlock: false
+    selectNewBlock: false,
   })
   const contentState = editorState.getCurrentContent()
   const currentBlock = contentState.getBlockForKey(blockKey)
@@ -25,7 +25,7 @@ export default function insertBlock(editorState, blockKey, options = {}) {
     type: options.type,
     text: options.text,
     characterList: List(),
-    data: Map(options.data)
+    data: Map(options.data),
   })
 
   let newBlocks = options.direction === 'before' ? [
@@ -40,7 +40,8 @@ export default function insertBlock(editorState, blockKey, options = {}) {
 
   if (options.selectNewBlock === true) {
     nextSelection = makeSelectionState(newBlockKey, newBlockKey, 0, 0, true)
-  } else {
+  }
+ else {
     nextSelection = options.selection
   }
 

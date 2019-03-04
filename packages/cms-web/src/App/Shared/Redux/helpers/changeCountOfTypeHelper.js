@@ -5,6 +5,6 @@ export default function changeCountOfType (state, {feedItemId, countType, isIncr
   const currentNumCountOfType = _.get(state, `entities.${feedItemId}.counts.${countType}`, 0)
   return state.setIn(
     ['entities', feedItemId, 'counts', countType],
-    isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1
+    isIncrement ? currentNumCountOfType + 1 : currentNumCountOfType - 1,
   )
 }

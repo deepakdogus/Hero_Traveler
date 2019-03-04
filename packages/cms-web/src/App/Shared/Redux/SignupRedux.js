@@ -32,7 +32,7 @@ export const INITIAL_STATE = Immutable({
   saving: false,
   signedUp: false,
   selectedCategories: [],
-  selectedUsers: []
+  selectedUsers: [],
 })
 
 /* ------------- Reducers ------------- */

@@ -56,7 +56,7 @@ import {
 import {
   logout,
   resumeSession,
-  refreshSession
+  refreshSession,
 } from './SessionSagas'
 // related to nav which is device specific so not located in shared folder
 import { openScreen } from '../../Sagas/OpenScreenSagas'
@@ -121,7 +121,7 @@ import {
 
 import {
   getComments,
-  createComment
+  createComment,
 } from './CommentsSagas'
 
 import {
@@ -129,7 +129,7 @@ import {
   adminGetUser,
   adminPutUser,
   adminDeleteUser,
-  adminRestoreUsers
+  adminRestoreUsers,
 } from './Admin/UserSagas'
 
 import {

@@ -5,12 +5,12 @@ export default function insertText(editorState, text) {
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
-    editorState.getCurrentInlineStyle()
+    editorState.getCurrentInlineStyle(),
   )
 
   return EditorState.push(
     editorState,
     newContentState,
-    'insert-characters'
+    'insert-characters',
   )
 }

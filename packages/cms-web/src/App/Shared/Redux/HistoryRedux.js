@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   addRecentSearch: ['search'],
-  removeRecentSearch: ['id']
+  removeRecentSearch: ['id'],
 })
 
 const INITIAL_STATE = Immutable({
@@ -13,8 +13,8 @@ const INITIAL_STATE = Immutable({
     places: [],
     people: [],
     lastSearchType: '',
-    navedToId: ''
-  }
+    navedToId: '',
+  },
 })
 
 const MAX_RECENT_SEARCHES = 10
@@ -26,8 +26,8 @@ export const addRecentSearch = (state, action) => {
     action.search,
     ...recentSearches.filter(
       search =>
-        search.id !== id && (searchType === 'people' || search.title !== title)
-    )
+        search.id !== id && (searchType === 'people' || search.title !== title),
+    ),
   ]
   if (updatedSearch.length >= MAX_RECENT_SEARCHES) {
     updatedSearch = updatedSearch.slice(0, MAX_RECENT_SEARCHES)
@@ -38,29 +38,29 @@ export const addRecentSearch = (state, action) => {
       searchHistory: {
         [searchType]: updatedSearch,
         lastSearchType: searchType,
-        navedToId: id
-      }
+        navedToId: id,
+      },
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   )
 }
 
 export const removeRecentStorySearch = (state, { storyId }) =>
   state.setIn(
     ['places'],
-    state.getIn(['places'], storyId).filter(id => id !== storyId)
+    state.getIn(['places'], storyId).filter(id => id !== storyId),
   )
 
 export const removeRecentUserSearch = (state, { userId }) =>
   state.setIn(
     ['people'],
-    state.getIn(['people'], userId).filter(id => id !== userId)
+    state.getIn(['people'], userId).filter(id => id !== userId),
   )
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.ADD_RECENT_SEARCH]: addRecentSearch
+  [Types.ADD_RECENT_SEARCH]: addRecentSearch,
 })
 
 export default Creators

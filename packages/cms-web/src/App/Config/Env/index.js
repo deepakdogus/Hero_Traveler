@@ -5,9 +5,11 @@ import stgSettings from './stg'
 let env
 if (process.env.NODE_ENV === 'staging') {
   env = stgSettings 
-} else if (process.env.NODE_ENV === 'production') {
+}
+ else if (process.env.NODE_ENV === 'production') {
   env = prodSettings
-} else {
+}
+ else {
   env = devSettings
 }
 

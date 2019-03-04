@@ -21,7 +21,7 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     loaded: false,
   },
-  error: null
+  error: null,
 })
 
 /* ------------- Reducers ------------- */
@@ -30,7 +30,7 @@ export const request = (state) => {
   return Immutable.setIn(
     state,
     ['fetchStatus', 'fetching'],
-    true
+    true,
   )
 }
 
@@ -47,17 +47,17 @@ export const loadSuccess = (state, {categories = {}}) => {
       loaded: true,
     },
     error: null,
-    entities: categories
+    entities: categories,
   }, {
-    deep
+    deep,
   })
 }
 
 export const receive = (state, {categories = {}}) => {
   return state.merge({
-    entities: categories
+    entities: categories,
   }, {
-    deep: true
+    deep: true,
   })
 }
 

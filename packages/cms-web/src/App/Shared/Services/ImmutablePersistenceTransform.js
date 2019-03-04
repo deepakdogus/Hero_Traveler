@@ -32,5 +32,5 @@ export default {
   in: (raw) => {
     // console.log({ storing: raw })
     return fromImmutable(raw)
-  }
+  },
 }

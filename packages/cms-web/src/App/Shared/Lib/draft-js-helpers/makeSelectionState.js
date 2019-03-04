@@ -9,6 +9,6 @@ export default function makeSelectionState(startKey, endKey, start, end, hasFocu
       focusKey: endKey,
       focusOffset: end,
       hasFocus: hasFocus || false,
-      isBackward: false
+      isBackward: false,
     })
 }

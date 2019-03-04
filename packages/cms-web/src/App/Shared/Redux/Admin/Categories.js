@@ -30,27 +30,26 @@ export const INITIAL_STATE = Immutable({
   error: null,
   params: {
     page: 1,
-    limit: 5
-  }
+    limit: 5,
+  },
 })
-
 
 export const adminGetCategories = (state, { params = {} }) => {
   return state.merge({
     isLoading: true,
     params: {
       ...state.params,
-      ...params
-    }
+      ...params,
+    },
   }, {
-    deep: true
+    deep: true,
   })
 }
 
 export const adminGetCategoriesFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
 
@@ -60,10 +59,10 @@ export const adminGetCategoriesSuccess = (state, { res }) => {
     list: res.data,
     total: res.count,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -71,14 +70,12 @@ export const adminGetCategory = (state, { params = {} }) => {
   return state.setIn(['isLoading'], true)
 }
 
-
 export const adminGetCategoryFailure = (state, { error }) => {
   return state.merge({
     error,
-    isLoading: false
+    isLoading: false,
   })
 }
-
 
 export const adminGetCategorySuccess = (state, { res }) => {
   let list = [...state.getIn(['list'])]
@@ -87,7 +84,8 @@ export const adminGetCategorySuccess = (state, { res }) => {
   const index = findIndex(list, { id: record.id })
   if (index >= 0) {
     list[index] = record
-  } else {
+  }
+ else {
     list.push(record)
     total = total + 1
   }
@@ -96,10 +94,10 @@ export const adminGetCategorySuccess = (state, { res }) => {
     list,
     total,
     isLoading: false,
-    error: null
+    error: null,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -123,4 +121,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-

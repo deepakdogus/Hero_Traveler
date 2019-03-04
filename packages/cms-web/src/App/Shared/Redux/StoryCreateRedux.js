@@ -57,11 +57,11 @@ export const INITIAL_STATE = Immutable({
   error: null,
   fetchStatus: {
     loaded: false,
-    fetching: false
+    fetching: false,
   },
   pendingMediaUploads: 0,
   imageUpload: {
-    ...initialImageUpload
+    ...initialImageUpload,
   },
   // used to make sure we dont save the same local draft multiple times to DB
   draftIdToDBId: {},
@@ -81,7 +81,7 @@ export const saveDraftSuccess = (state, {draft, story}) => {
     sync: {
       syncProgress: state.sync.syncProgressSteps,
     },
-    draftIdToDBId: { [draft.id]: story.id}
+    draftIdToDBId: { [draft.id]: story.id},
   }
 
   return state.merge(update, {deep: true})
@@ -93,8 +93,8 @@ export const failureUpdating = (state, {error}) => {
   return state.merge({
     error,
     sync: {
-      error: true
-    }
+      error: true,
+    },
   })
 }
 
@@ -114,7 +114,7 @@ export const updateDraftSuccess = (state, {draft}) => {
     sync: {
       syncProgress: state.sync.syncProgressSteps,
       message: '',
-    }
+    },
   },
   {deep: true})
 }
@@ -123,7 +123,8 @@ export const updateDraftSuccess = (state, {draft}) => {
 export const updateWorkingDraft = (state, {workingDraft}) => {
   if(needToChangeCoverVideo(state, workingDraft)) {
     return changeCoverVideo(state, workingDraft.coverVideo)
-  } else {
+  }
+ else {
     // have to do setIn for new cloudinary images on web
     // if we do not we never update the cover
     if (workingDraft.coverImage) {
@@ -148,7 +149,7 @@ export const initializeSyncProgress = (state, {numSteps, message}) => {
       syncProgressSteps: numSteps,
       message,
       error: false,
-    }
+    },
   })
 }
 
@@ -168,7 +169,7 @@ export const resetSync = (state) => {
       syncProgressSteps: 0,
       message: '',
       error: false,
-    }
+    },
   })
 }
 
@@ -176,8 +177,8 @@ export const editStory = (state) => {
   return state.merge({
     fetchStatus: {
       loaded: false,
-      fetching: true
-    }
+      fetching: true,
+    },
   })
 }
 
@@ -185,7 +186,7 @@ export const editStorySuccess = (state, { story, isPendingUpdateOverride = false
   return state.merge({
     fetchStatus: {
       loaded: true,
-      fetching: false
+      fetching: false,
     },
     isPendingUpdateOverride,
     draft: story,
@@ -198,7 +199,7 @@ export const editStoryFailure = (state, {error, cachedStory}) => {
   return state.merge({
     fetchStatus: {
       loaded: false,
-      fetching: false
+      fetching: false,
     },
     error,
     draft: cachedStory,
@@ -211,7 +212,7 @@ export const uploadMediaInit = (state) => {
     pendingMediaUploads: state.pendingMediaUploads + 1,
     imageUpload: {
       ...initialImageUpload,
-    }
+    },
   })
 }
 
@@ -226,7 +227,7 @@ export const uploadMediaFailure = (state, {error, id}) => {
     pendingMediaUploads: state.pendingMediaUploads - 1,
     imageUpload: {
       error,
-    }
+    },
   })
 }
 

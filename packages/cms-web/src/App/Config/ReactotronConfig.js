@@ -11,14 +11,14 @@ if (Config.useReactotron) {
   Reactotron
     .configure({
       // host: '10.0.3.2' // default is localhost (on android don't forget to `adb reverse tcp:9090 tcp:9090`)
-      name: 'Ignite App' // would you like to see your app's name?
+      name: 'Ignite App', // would you like to see your app's name?
     })
 
     // forward all errors to Reactotron
     .use(errorPlugin({
       // ignore all error frames from react-native (for example)
       veto: (frame) =>
-        frame.fileName.indexOf('/node_modules/react-native/') >= 0
+        frame.fileName.indexOf('/node_modules/react-native/') >= 0,
     }))
 
     // register apisauce so we can install a monitor later
@@ -34,7 +34,7 @@ if (Config.useReactotron) {
 
       // Fires when Reactotron uploads a new copy of the state tree.  Since our reducers are
       // immutable with `seamless-immutable`, we ensure we convert to that format.
-      onRestore: state => Immutable(state)
+      onRestore: state => Immutable(state),
     }))
 
     // register the redux-saga plugin so we can use the monitor in CreateStore.js
@@ -49,13 +49,14 @@ if (Config.useReactotron) {
   // Totally hacky, but this allows you to not both importing reactotron-react-js
   // on every file.  This is just DEV mode, so no big deal.
   console.tron = Reactotron
-} else {
+}
+ else {
   // a mock version should you decide to leave console.tron in your codebase
   console.tron = {
     log: () => false,
     warn: () => false,
     error: () => false,
     display: () => false,
-    image: () => false
+    image: () => false,
   }
 }

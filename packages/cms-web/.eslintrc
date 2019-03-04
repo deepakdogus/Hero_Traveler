@@ -58,6 +58,7 @@
     "space-infix-ops": "error",
     "use-isnan": "error",
     "yield-star-spacing": ["error", "both"],
+    "operator-linebreak": ["error", "before"],
     "yoda": ["error", "never"]
   }
 }

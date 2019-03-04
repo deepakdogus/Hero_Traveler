@@ -27,8 +27,8 @@ export function * heroStartup(api, {deeplinkObject}) {
     if (deeplinkObject.action === 'emailverify') {
       yield call(api.verifyEmail, deeplinkObject.id)
     }
-
-  } else {
+  }
+ else {
     if (deeplinkObject.action === 'resetpassword') {
       yield ScreenActions.openScreen('resetPassword', {type: 'push', token: deeplinkObject.id})
     }

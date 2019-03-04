@@ -33,7 +33,7 @@ function buildUrl(base: string, uri: string, urlParameters: object): string {
 
 function ensureJpgExtension(uri: string): string {
     uri = uri.split('.')
-    uri[uri.length-1] = 'jpg'
+    uri[uri.length - 1] = 'jpg'
     uri = uri.join('.')
     return uri
 }
@@ -45,7 +45,8 @@ function getUri(image: object|string, type: string): ?string {
 
   if (typeof(image) === 'string') {
     return ensureJpgExtension(image)
-  } else if (typeof(image) === 'object' && _.has(image, 'original')) {
+  }
+ else if (typeof(image) === 'object' && _.has(image, 'original')) {
     const target = type === 'categoryThumbnail'
       ? image.versions.thumbnail240
       : image.original
@@ -122,10 +123,10 @@ function getNotificationImageUrlParameters(){
 
 function getLoadingPreviewImageUrlParameters(size: object): string {
   if (size.width) {
-    size.width = Math.round(size.width/4)
+    size.width = Math.round(size.width / 4)
   }
   if (size.height) {
-    size.height = Math.round(size.height/4)
+    size.height = Math.round(size.height / 4)
   }
 
   const urlParameters = getBasicOptimizedUrlParameters(size)
@@ -147,7 +148,7 @@ const imageUrlParametersFactories = {
   loading: getLoadingPreviewImageUrlParameters,
   optimized: getOptimizedImageUrlParameters,
   thumbnail: getNotificationImageUrlParameters,
-  avatarLarge: getLargeAvatarImageUrlParameters
+  avatarLarge: getLargeAvatarImageUrlParameters,
 }
 
 // hacky way to extract the url for images that get uploaded to Cloudinary but not DB
@@ -155,18 +156,17 @@ const imageUrlParametersFactories = {
 function midSyncSpecialCase(image, type){
     const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
     const urlParameters = urlParametersFactory(image)
-    let parameters = buildParameters(urlParameters).join(",")
+    let parameters = buildParameters(urlParameters).join(',')
 
     let orignalUrl = image.uri || image.secure_url
     if (!parameters.length) return orignalUrl
 
-    orignalUrl = orignalUrl.split("/")
+    orignalUrl = orignalUrl.split('/')
     orignalUrl[6] = parameters
-    let lastArrayItem = orignalUrl[orignalUrl.length-1].split('.')
+    let lastArrayItem = orignalUrl[orignalUrl.length - 1].split('.')
     lastArrayItem[1] = 'jpg'
-    orignalUrl[orignalUrl.length-1] = lastArrayItem.join('.')
-    return orignalUrl.join("/")
-
+    orignalUrl[orignalUrl.length - 1] = lastArrayItem.join('.')
+    return orignalUrl.join('/')
 }
 
 export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
@@ -186,13 +186,15 @@ export default function getImageUrl(image: object|string, type: string, options:
 
   if (options.width === 'screen') {
     imageSize.width = Math.round(metrics.screenWidth * metrics.pixelRatio)
-  } else if (options.width) {
+  }
+ else if (options.width) {
     imageSize.width = Math.round(options.width * metrics.pixelRatio)
   }
 
   if (options.height === 'screen') {
     imageSize.height = Math.round(metrics.screenHeight * metrics.pixelRatio)
-  } else if (options.height) {
+  }
+ else if (options.height) {
     imageSize.height = Math.round(options.height * metrics.pixelRatio)
   }
 

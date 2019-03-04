@@ -58,7 +58,7 @@ export const removePendingUpdate = (state, { draftId }) => {
     path,
     state.getIn(path, draftId).filter(id => {
       return id !== draftId
-    })
+    }),
   )
 }
 

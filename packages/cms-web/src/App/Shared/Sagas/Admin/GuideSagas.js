@@ -7,7 +7,8 @@ export function * adminGetGuides (api, action) {
   if (response.ok && response.data && response.data.data) {
     const { data, count } = response.data
     yield put(AdminActions.adminGetGuidesSuccess({ data, count }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetGuidesFailure(error))
   }
@@ -19,7 +20,8 @@ export function * adminGetGuide (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     yield put(AdminActions.adminGetGuideSuccess({ record }))
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     yield put(AdminActions.adminGetGuideFailure(error))
   }
@@ -32,7 +34,8 @@ export function * adminPutGuide (api, action) {
     const record = response.data
     yield put(AdminActions.adminGetGuideSuccess({ record }))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -45,7 +48,8 @@ export function * adminDeleteGuide (api, action) {
     const record = response.data
     yield put(AdminActions.adminDeleteGuideSuccess(id))
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }
@@ -57,7 +61,8 @@ export function * adminRestoreGuides (api, action) {
   if (response.ok && response.data) {
     const record = response.data
     return resolve(record)
-  } else {
+  }
+ else {
     const error = response.data ? response.data.message : 'Error fetching data'
     return reject(error)
   }

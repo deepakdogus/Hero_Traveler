@@ -10,12 +10,12 @@ export const updateBlockText = (editorState, key, text) => {
     contentState,
     editorState.getSelection(),
     text,
-    editorState.getCurrentInlineStyle()
+    editorState.getCurrentInlineStyle(),
   )
 
   return EditorState.push(
     editorState,
     newContentState,
-    'insert-characters'
+    'insert-characters',
   )
 }

@@ -28,7 +28,7 @@ export const adminGetTotalStatsSuccess = (state, { res }) => {
     total: res.data,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -38,7 +38,7 @@ export const adminGetNewStatsSuccess = (state, { res }) => {
     new: res.data,
   },
   {
-    deep: true
+    deep: true,
   })
 }
 
@@ -50,4 +50,3 @@ export const reducer = createReducer(INITIAL_STATE, {
 })
 
 /* ------------- Selectors ------------- */
-

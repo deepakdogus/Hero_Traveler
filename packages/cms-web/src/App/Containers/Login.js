@@ -84,8 +84,8 @@ class Login extends Component {
     if (loginReduxError === 'Unauthorized' || loginReduxError === 'CLIENT_ERROR') {
       loginReduxError = 'Invalid username or password'
     }
-    else if (loginReduxError === 'TIMEOUT_ERROR' ||
-      loginReduxError === 'NETWORK_ERROR' ) {
+    else if (loginReduxError === 'TIMEOUT_ERROR'
+      || loginReduxError === 'NETWORK_ERROR' ) {
       loginReduxError = 'Unable to login, check your connection...'
     }
 
@@ -102,14 +102,14 @@ class Login extends Component {
               onChange={this.setPassword}
               type='password'
             />
-            {loginReduxFetching &&
-              <LoginFetchingText>Signing In ...</LoginFetchingText>
+            {loginReduxFetching
+              && <LoginFetchingText>Signing In ...</LoginFetchingText>
             }
-            {(loginReduxError && !loginReduxFetching) &&
-              <LoginErrorText>{loginReduxError}</LoginErrorText>
+            {(loginReduxError && !loginReduxFetching)
+              && <LoginErrorText>{loginReduxError}</LoginErrorText>
             }
-            {this.state.localError &&
-              <LoginErrorText>{this.state.localError}</LoginErrorText>
+            {this.state.localError
+              && <LoginErrorText>{this.state.localError}</LoginErrorText>
             }
             <RoundedButton
               width='100%'

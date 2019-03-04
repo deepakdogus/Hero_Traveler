@@ -6,5 +6,5 @@ export default {
   yellowBox: isDev,
   reduxLogging: isDev,
   includeExamples: isDev,
-  useReactotron: isDev
+  useReactotron: isDev,
 }

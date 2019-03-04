@@ -11,7 +11,7 @@ export function getBodyVideoUrls(partialUrl) {
   return {
     src: `${getVideoUrlBase()}/${partialUrl}`,
     webmSrc: `${getVideoUrlBase()}/vc_vp8/${videoKey}.webm`,
-    mp4Src: `${getVideoUrlBase()}/vc_auto/${videoKey}.mp4`
+    mp4Src: `${getVideoUrlBase()}/vc_auto/${videoKey}.mp4`,
   }
 }
 
@@ -44,7 +44,6 @@ export function getVideoUrlFromString(video: string, stream = true, createdAt): 
   if (!isTenMinutesOld) return `${getVideoUrlBase()}/${video}`
   return `${getVideoUrlBase()}/q_auto/${video}`
 }
-
 
 export function getVideoUrls(video, stream) {
   const src = getVideoUrl(video, stream)

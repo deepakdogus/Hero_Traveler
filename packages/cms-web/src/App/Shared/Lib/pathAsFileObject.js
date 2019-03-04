@@ -4,6 +4,6 @@ export default function pathAsFileObject(path: string): object {
   return {
     uri: path,
     name: path.split('/').pop(),
-    type: getMimeType(path)
+    type: getMimeType(path),
   }
 }

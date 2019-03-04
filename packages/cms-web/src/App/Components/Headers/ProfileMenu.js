@@ -65,8 +65,8 @@ class ProfileMenu extends React.Component{
 
     return(
       <Sidebar>
-        {globalModalParams.isHamburger &&
-          <ExtraLinks>
+        {globalModalParams.isHamburger
+          && <ExtraLinks>
             <SidebarDemiLink onClick={this.openUsers}>
               Users
             </SidebarDemiLink>

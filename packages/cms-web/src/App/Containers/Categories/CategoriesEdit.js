@@ -204,10 +204,6 @@ function mapDispatchToProps(dispatch) {
     putCategory: (payload) => dispatch(AdminCategoryActions.adminPutCategory(payload)),
     deleteCategory: (payload) =>
       dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
-    uploadHeroImage: (payload) =>
-      dispatch(AdminCategoryActions.adminUploadCategoryHeroImage(payload)),
-    uploadChannelImage: (payload) =>
-      dispatch(AdminCategoryActions.adminUploadCategoryChannelImage(payload)),
   }
 }
 

@@ -36,11 +36,11 @@ export const getCommentsRequest = (state) => {
     getCommentsStatus: {
       fetching: true,
       loaded: false,
-    }
+    },
   })
 }
 
-export const getCommentsSuccess = (state, {comments=[], feedItemId, entityType}) => {
+export const getCommentsSuccess = (state, {comments = [], feedItemId, entityType}) => {
 	const update = {
 		story:{},
 		guide:{},
@@ -54,7 +54,7 @@ export const getCommentsSuccess = (state, {comments=[], feedItemId, entityType})
 
 	return state.merge(
 		update,
-		{ deep: true }
+		{ deep: true },
 	)
 }
 
@@ -72,19 +72,17 @@ export const createCommentRequest = (state) => {
   return state.merge({
     createCommentStatus: {
       creating: true,
-    }
+    },
   })
 }
 
 export const createCommentSuccess = (state, {comment, feedItemId, entityType}) => {
 	return state.setIn(
 		[entityType, feedItemId],
-		state.getIn([entityType, feedItemId], []).concat(comment)
+		state.getIn([entityType, feedItemId], []).concat(comment),
 	)
 	.setIn(['createCommentStatus', 'creating'], false)
 }
-
-
 
 export const reducer = createReducer(INITIAL_STATE, {
 	[Types.GET_COMMENTS_REQUEST]: getCommentsRequest,

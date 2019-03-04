@@ -5,7 +5,7 @@ import StoryActions from '../Redux/Entities/Stories'
 import StartupActions from '../Redux/StartupRedux'
 import SessionActions from '../Redux/SessionRedux'
 import SignupActions from '../Redux/SignupRedux'
-import { loginToFacebookAndGetUserInfo } from '../../Services/FacebookConnect'
+import { loginToFacebookAndGetUserInfo } from '../Services/FacebookConnect'
 
 const currentUserId = ({session}) => session.userId
 

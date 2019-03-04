@@ -10,7 +10,7 @@ import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 
 import AdminStoryActions from '../../Shared/Redux/Admin/Stories'
-import EditStoryOrGuideForm from '../../Components/Shared/EditStoryOrGuideForm'
+import EditFeedItemForm from '../../Components/Shared/EditFeedItemForm'
 
 import StatsTable from '../../Components/Shared/StatsTable'
 
@@ -168,7 +168,7 @@ class EditStory extends React.Component {
           <Divider/>
           <Row gutter={16}>
             <Col xs={24} md={12}>
-              <EditStoryOrGuideForm
+              <EditFeedItemForm
                 type="story"
                 record={record}
                 handleCancel={this.handleCancel}

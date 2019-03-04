@@ -19,7 +19,7 @@ import {getNewCover} from '../Redux/helpers/coverUpload'
 import CloudinaryAPI, {
   moveVideoToPreCache,
   moveVideosFromPrecacheToCache,
-} from '../../Services/CloudinaryAPI'
+} from '../Services/CloudinaryAPI'
 import UXActions from '../../Redux/UXRedux'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'

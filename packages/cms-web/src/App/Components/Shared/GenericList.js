@@ -146,9 +146,6 @@ class GenericList extends React.Component {
         reject,
       })
     }).then(() => {
-      this.setState({
-        isActionLoading: false,
-      })
       message.success(`${capitalize(entity)} were restored`)
       getItems({
         ...params,
@@ -158,6 +155,7 @@ class GenericList extends React.Component {
         },
       })
       this.setState({
+        isActionLoading: false,
         selectedRowKeys: [],
       })
     }).catch((e) => {
@@ -232,8 +230,8 @@ class GenericList extends React.Component {
           </Tab>
           <LeftSpaceDiv> | 
           </LeftSpaceDiv>
-          {showFlagged &&
-            <Fragment>
+          {showFlagged
+            && <Fragment>
               <LeftSpaceDiv>
                 <Tab
                   active={this.state.activeTab === 'flagged'}
@@ -244,7 +242,8 @@ class GenericList extends React.Component {
               </LeftSpaceDiv>
               <LeftSpaceDiv> | 
               </LeftSpaceDiv>
-            </Fragment>}
+            </Fragment>
+          }
           <LeftSpaceDiv>
             <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
               Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
@@ -283,8 +282,8 @@ class GenericList extends React.Component {
             (<LeftSpaceDiv key={`${i}`}>{c}</LeftSpaceDiv>))
           }
         </FilterRow>}
-        {this.state.activeTab === 'deleted' &&
-          <ActionRow>
+        {this.state.activeTab === 'deleted'
+          && <ActionRow>
             <Button
               type="primary"
               onClick={this._applyAction}
@@ -300,9 +299,9 @@ class GenericList extends React.Component {
         }
         <Table
           rowSelection={
-            restoreItems && this.state.activeTab === 'deleted' ?
-              rowSelection :
-              null
+            restoreItems && this.state.activeTab === 'deleted'
+              ? rowSelection
+              : null
           }
           rowKey={rowKey}
           loading={isLoading}

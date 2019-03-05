@@ -12,6 +12,8 @@ import branch from 'react-native-branch'
 
 // import PerfMonitor from 'react-native/Libraries/Performance/RCTRenderingPerf'
 
+import AddStoryModal from '../Components/AddStoryModal'
+import UXActions from '../Redux/UXRedux'
 import OpenScreenActions from '../Shared/Redux/OpenScreenRedux'
 import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Shared/Redux/StartupRedux'
@@ -30,6 +32,9 @@ class RootContainer extends Component {
     heroStartup: PropTypes.func,
     openScreen: PropTypes.func,
     verifyEmail: PropTypes.func,
+    isAddStoryModalOpen: PropTypes.bool,
+    closeAddStoryModal: PropTypes.func,
+    openAddStoryModal: PropTypes.func,
   }
 
   constructor(props) {
@@ -139,7 +144,25 @@ class RootContainer extends Component {
       || location === 'login'
   }
 
+  _addStory = () => {
+    const { closeAddStoryModal } = this.props
+    NavActions.createStoryFlow({
+      type: 'reset',
+      shouldLoadStory: true,
+    })
+    closeAddStoryModal()
+  }
+
+  _addSlideshow = () => {
+    const { closeAddStoryModal } = this.props
+    NavActions.createSlideshow({
+      type: 'reset',
+    })
+    closeAddStoryModal()
+  }
+
   render () {
+    const { isAddStoryModalOpen, closeAddStoryModal } = this.props
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle={
@@ -147,7 +170,16 @@ class RootContainer extends Component {
             ? 'light-content'
             : 'dark-content'
           } />
-        <ConnectedRouter scenes={NavigationScenes} />
+        <AddStoryModal
+          closeModal={closeAddStoryModal}
+          showModal={isAddStoryModalOpen}
+          addStory={this._addStory}
+          addSlideshow={this._addSlideshow}
+        />
+        <ConnectedRouter
+        >
+          {NavigationScenes(this.props)}
+        </ConnectedRouter>
       </View>
     )
   }
@@ -156,11 +188,13 @@ class RootContainer extends Component {
 const mapStateToProps = (state) => {
   let location = state.routes.scene.name
   if (location === 'tabbar' && state.routes.scene.index === 4) location = 'profile'
+  const isAddStoryModalOpen = state.ux.modalName === 'newStory'
 
   return {
     started: state.startup.started,
     isLoggedIn: state.login.isLoggedIn,
     location: location || '',
+    isAddStoryModalOpen,
   }
 }
 
@@ -172,6 +206,8 @@ const mapDispatchToProps = (dispatch) => ({
   heroStartup: (linkAction) => dispatch(StartupActions.heroStartup(linkAction)),
   openScreen: (...args) => dispatch(OpenScreenActions.openScreen(...args)),
   verifyEmail: (token) => dispatch(LoginActions.verifyEmail(token)),
+  closeAddStoryModal: () => dispatch(UXActions.closeGlobalModal()),
+  openAddStoryModal: () => dispatch(UXActions.openGlobalModal('newStory')),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Scene,
   Actions as NavActions,
@@ -121,13 +122,6 @@ const alwaysNull = () => null
 
 const popVertical = () => NavActions.pop({direction: 'horizontal'})
 
-const navToCreateFlow = () => {
-  NavActions.createStoryFlow({
-    type: 'reset',
-    shouldLoadStory: true,
-  })
-}
-
 const navToActivity = () => {
   NavActions.tabbar({type: 'reset'})
   NavActions.activity()
@@ -158,7 +152,8 @@ const noop = () => {}
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
 
-export default NavActions.create(
+export default function NavigationRouter({ openAddStoryModal }) {
+  return (
     <Scene
       key='root'
       {...navBarProps}
@@ -355,7 +350,7 @@ export default NavActions.create(
           key='createStory'
           title='Create Story'
           icon={TabIcon}
-          onPress={navToCreateFlow}
+          onPress={openAddStoryModal}
           style={Styles.createStory}
         />
         <Scene
@@ -482,5 +477,10 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         titleStyle={Styles.storyTitle}
       />
-    </Scene>,
-)
+    </Scene>
+  )
+}
+
+NavigationRouter.propTypes = {
+  openAddStoryModal: PropTypes.func,
+}

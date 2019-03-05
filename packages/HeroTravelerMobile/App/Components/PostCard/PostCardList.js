@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, ScrollView } from 'react-native'
 
-import PostCardThumbnail from './PostCardThumbnail';
+import PostCardThumbnail from './PostCardThumbnail'
 
 import styles from '../Styles/PostCardStyles'
 

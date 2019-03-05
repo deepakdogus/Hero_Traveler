@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, TextInput, TouchableOpacity, Text, Keyboard } from 'react-native'
 import PropTypes from 'prop-types'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
@@ -157,6 +158,10 @@ class SearchPlacesPeople extends Component {
 
   _goToPeopleTab = () => this._changeTab(1)
 
+  _handleSelectCover = () => {
+    /** */
+  }
+
   setFocus = () => {
     if (this.state.selectedTabIndex === null)
       this.setState({ selectedTabIndex: 0 })
@@ -188,8 +193,14 @@ class SearchPlacesPeople extends Component {
     Keyboard.dismiss()
   }
 
-  onPostCardClick = () => {
-
+  onPressPostCard = () => {
+    NavActions.mediaSelectorScreen({
+      title: 'ADD COVER',
+      leftTitle: 'Cancel',
+      onLeft: () => NavActions.pop(),
+      rightTitle: 'Next',
+      onSelectMedia: this._handleSelectCover,
+    })
   }
 
   setupInputRef = ref => (this._searchInput = ref)
@@ -231,7 +242,7 @@ class SearchPlacesPeople extends Component {
           ]}
         >
           <View style={styles.headerSearch}>
-            <TouchableOpacity onPress={this.onPostCardClick}>
+            <TouchableOpacity onPress={this.onPressPostCard}>
               <View style={styles.postCard}>
                 <TabIcon
                   name="cameraDark"

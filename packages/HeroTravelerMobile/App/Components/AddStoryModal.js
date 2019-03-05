@@ -6,11 +6,11 @@ import { Colors, Metrics } from '../Shared/Themes/'
 import { isIPhoneX } from '../Themes/Metrics'
 import TabIcon from './TabIcon'
 
-const visibleButtonHeight = 70
+const visibleButtonHeight = 60
 const marginBottom = 0
 const maxOffSet = Metrics.tabBarHeight + 2 * visibleButtonHeight + 2 * marginBottom
 const hiddenView = -Metrics.screenHeight
-const visibleView = -(Metrics.screenHeight - maxOffSet - (isIPhoneX() ? 50 : 0))
+const visibleView = -(Metrics.screenHeight - maxOffSet - (isIPhoneX() ? 50 : 0)) + 50
 
 export default class AddStoryModal extends Component {
   constructor(props) {
@@ -59,25 +59,31 @@ export default class AddStoryModal extends Component {
     const {closeModal, addStory, addSlideshow} = this.props
     const {viewHeight} = this.state
 
+    console.log('viewHeight', viewHeight)
     if (!this.state.showModal) return null
     return (
       <TouchableOpacity
         style={styles.background}
         onPress={closeModal}
       >
-        <Animated.View style={{bottom: viewHeight}}>
+        <Animated.View style={{
+          bottom: viewHeight,
+          paddingTop: 25,
+          paddingBottom: 25,
+          backgroundColor: 'white',
+        }}>
           <TouchableOpacity
             style={[styles.button]}
             onPress={addStory}
           >
             <TabIcon
-              name='createStory'
+              name='menuCreateStory'
               style={{
                 image: styles.iconImage,
               }}
             />
             <Text style={styles.text}>
-              Add Story
+              Create Story
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -85,13 +91,13 @@ export default class AddStoryModal extends Component {
             onPress={addSlideshow}
           >
             <TabIcon
-              name='createStory'
+              name='menuCreateSlideshow'
               style={{
                 image: styles.iconImage,
               }}
             />
             <Text style={styles.text}>
-              Add Slideshow
+              Create Slideshow
             </Text>
           </TouchableOpacity>
         </Animated.View>
@@ -122,9 +128,13 @@ const styles = {
     alignItems: 'center',
   },
   iconImage: {
-    maxHeight: 50,
+    height: 25,
+    width: 25,
+    marginRight: 20,
   },
   text: {
+    width: 120,
+    textAlign: 'left',
     color: Colors.background,
     fontWeight: '600',
     fontSize: 16,

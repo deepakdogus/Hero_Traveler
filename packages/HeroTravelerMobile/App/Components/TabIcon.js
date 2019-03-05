@@ -118,6 +118,10 @@ class TabIcon extends React.Component {
         return Images.iconTrash
       case 'trashBlack':
         return Images.iconTrashBlack
+      case 'menuCreateStory':
+        return Images.iconMenuCreateStory
+      case 'menuCreateSlideshow':
+        return Images.iconMenuCreateSlideshow
       case 'normalText':
         return Images.iconNormalText
       case 'headerText':

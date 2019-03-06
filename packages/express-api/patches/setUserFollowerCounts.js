@@ -1,5 +1,4 @@
-import {User, Models} from '@hero/ht-core'
-import {algoliaHelper} from '@hero/ht-util'
+import {Models} from '@hero/ht-core'
 
 export default function indexUsers() {
   return Models.User.find({})

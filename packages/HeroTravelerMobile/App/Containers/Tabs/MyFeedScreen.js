@@ -16,6 +16,7 @@ import styles from '../Styles/MyFeedScreenStyles'
 
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
+import ConnectedPostCardList from '../ConnectedPostCardList'
 import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
@@ -181,6 +182,10 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  renderPostCards = () => (
+    <ConnectedPostCardList />
+  )
+
   render () {
     let {
       storiesById,
@@ -210,6 +215,8 @@ class MyFeedScreen extends React.Component {
           entitiesById={isFollowingSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
+          renderPostcards={this.renderPostCards()}
+          postcardsContentHeight={120}
           sectionContentHeight={40}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}

@@ -3,12 +3,17 @@ import { Colors, Metrics, Fonts } from '../../Shared/Themes/'
 
 export default StyleSheet.create({
   container: {
-    marginVertical: Metrics.marginVertical,
+    flex: 1,
+    flexDirection: 'column',
   },
   contentContainer: {
     position: 'relative',
-    marginRight: Metrics.marginLeft / 2,
+    marginLeft: Metrics.marginHorizontal / 2,
     alignSelf: 'center',
+    width: Metrics.postCard.listing.cardWidth,
+    height: '100%',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
   firstContentContainer: {
     marginLeft: Metrics.marginLeft,
@@ -17,6 +22,7 @@ export default StyleSheet.create({
     marginRight: Metrics.marginRight,
   },
   overlayContainer: {
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -26,12 +32,14 @@ export default StyleSheet.create({
     paddingRight: Metrics.paddingRight,
   },
   caption: {
-    marginTop: '60%',
+    position: 'absolute',
+    bottom: Metrics.baseMargin / 2,
+    left: Metrics.baseMargin / 2,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.medium,
     fontWeight: 'bold',
     textAlign: 'left',
-    color: '#ffffff',
+    color: Colors.white,
   },
   message: {
     marginTop: Metrics.baseMargin,

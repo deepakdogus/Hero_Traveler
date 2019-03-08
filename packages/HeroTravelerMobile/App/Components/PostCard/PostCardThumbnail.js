@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient';
-import { Actions as NavActions } from 'react-native-router-flux'
-
+import LinearGradient from 'react-native-linear-gradient'
+// import { Actions as NavActions } from 'react-native-router-flux'
 import ImageWrapper from '../../Components/ImageWrapper'
-
+import getImageUrl from '../../Shared/Lib/getImageUrl'
 import styles from '../Styles/PostCardStyles'
 
 export default class PostCardThumbnail extends Component {
   static propTypes = {
-    postCard: PropTypes.object,
+    item: PropTypes.object,
   }
 
   _navToPostCard = () => {
@@ -19,26 +18,25 @@ export default class PostCardThumbnail extends Component {
   }
 
   render() {
-    const { postCard } = this.props
+    const { item } = this.props
 
     return (
       <View style={styles.contentContainer}>
-        <TouchableOpacity onPress={this._navToPostCard}>
+        {/* <TouchableOpacity onPress={this._navToPostCard}> */}
           <ImageWrapper
             cached={true}
             resizeMode='cover'
-            source={{uri: postCard.imageUrl}}
-            style={styles.thumbnailImage}
+            source={{uri: item.coverImage}}
           />
           <LinearGradient
-            locations={[0, 0.4, 1]}
-            colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.0)', 'rgba(0,0,0,0.8)']}
+            locations={[0, 0.3, 1]}
+            colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.0)', 'rgba(0,0,0,0.4)']}
             style={styles.overlayContainer}>
             <Text style={styles.caption}>
-              {postCard.caption}
+              {item.caption}
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
       </View>
     )
   }

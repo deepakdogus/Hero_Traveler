@@ -35,9 +35,11 @@ export default class FeedList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
+    renderPostcards: PropTypes.object,
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
     sectionContentHeight: PropTypes.number,
+    postcardsContentHeight: PropTypes.number,
     style: PropTypes.number,
     sessionError: PropTypes.string,
     clearSessionError: PropTypes.func,
@@ -123,6 +125,8 @@ export default class FeedList extends React.Component {
       targetEntities,
       renderSectionHeader,
       sectionContentHeight,
+      renderPostcards,
+      postcardsContentHeight,
       renderHeaderContent,
       headerContentHeight,
     } = this.props
@@ -231,6 +235,16 @@ export default class FeedList extends React.Component {
               sticky={true}
             >
               {renderSectionHeader}
+            </NativeFeedHeader>
+          )
+          : null
+        }
+        {renderPostcards
+          ? (
+            <NativeFeedHeader
+              headerHeight={postcardsContentHeight}
+            >
+              {renderPostcards}
             </NativeFeedHeader>
           )
           : null

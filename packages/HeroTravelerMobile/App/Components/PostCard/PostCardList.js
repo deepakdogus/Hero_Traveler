@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, ScrollView } from 'react-native'
+import { View, FlatList, Text } from 'react-native'
 
 import PostCardThumbnail from './PostCardThumbnail'
 
@@ -8,22 +8,22 @@ import styles from '../Styles/PostCardStyles'
 
 export default class PostCardList extends Component {
   static propTypes = {
-    postCards: PropTypes.array,
+    entities: PropTypes.array,
   }
 
-  render() {
-    const { postCards } = this.props
+  _renderItem = ({item}) => (
+    <PostCardThumbnail item={item} />
+  )
 
+  render() {
+    const { entities } = this.props
     return (
       <View style={styles.container}>
-        <ScrollView horizontal={true}>
-          { postCards && postCards.map((postCard, index) => (
-            <PostCardThumbnail
-              key={index}
-              postCard={postCard}
-            />
-          )) }
-        </ScrollView>
+        <FlatList
+          data={entities}
+          horizontal={true}
+          renderItem={this._renderItem}
+        />
       </View>
     )
   }

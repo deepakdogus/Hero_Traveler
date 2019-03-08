@@ -243,6 +243,7 @@ export default class FeedList extends React.Component {
           ? (
             <NativeFeedHeader
               headerHeight={postcardsContentHeight}
+              style={styles.postcardContainer}
             >
               {renderPostcards}
             </NativeFeedHeader>

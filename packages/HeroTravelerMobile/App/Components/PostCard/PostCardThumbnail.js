@@ -22,11 +22,16 @@ export default class PostCardThumbnail extends Component {
 
     return (
       <View style={styles.contentContainer}>
-        {/* <TouchableOpacity onPress={this._navToPostCard}> */}
+        <TouchableOpacity
+          onPress={this._navToPostCard}
+          style={styles.innerContainer}
+        >
           <ImageWrapper
             cached={true}
             resizeMode='cover'
-            source={{uri: item.coverImage}}
+            fullWidth
+            limitedHeight
+            source={{uri: getImageUrl(item.coverImage)}}
           />
           <LinearGradient
             locations={[0, 0.3, 1]}
@@ -36,7 +41,7 @@ export default class PostCardThumbnail extends Component {
               {item.caption}
             </Text>
           </LinearGradient>
-        {/* </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     )
   }

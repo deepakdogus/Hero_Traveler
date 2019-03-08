@@ -6,20 +6,28 @@ import PostCardList from '../Components/PostCard/PostCardList'
 const mapStateToProps = (state) => {
   const dummyData = [
     {
-      coverImage: 'https://images.unsplash.com/photo-1551704309-a8876f22745d',
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
       caption: 'Winter Mountains'
     },
     {
-      coverImage: 'https://images.unsplash.com/photo-1551801234-6304319ed9bc',
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
       caption: 'Wild Ice Hokey'
     },
     {
-      coverImage: 'https://images.unsplash.com/photo-1551890312-1ea3beb91e0f',
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
       caption: 'City Tram'
     },
     {
-      coverImage: 'https://images.unsplash.com/photo-1551852121-6ba2913274a1',
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
       caption: 'Puppy'
+    },
+    {
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
+      caption: 'Earth'
+    },
+    {
+      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
+      caption: 'Mars'
     }
   ]
 

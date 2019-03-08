@@ -5,6 +5,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    marginTop: Metrics.baseMargin,
   },
   contentContainer: {
     position: 'relative',
@@ -14,6 +15,10 @@ export default StyleSheet.create({
     height: '100%',
     borderRadius: 3,
     overflow: 'hidden',
+  },
+  innerContainer: {
+    width: '100%',
+    height: '100%',
   },
   firstContentContainer: {
     marginLeft: Metrics.marginLeft,

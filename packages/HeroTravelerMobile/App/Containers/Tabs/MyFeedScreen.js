@@ -216,7 +216,7 @@ class MyFeedScreen extends React.Component {
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
           renderPostcards={this.renderPostCards()}
-          postcardsContentHeight={120}
+          postcardsContentHeight={150}
           sectionContentHeight={40}
           onRefresh={this._onRefresh}
           refreshing={fetchStatus.fetching}

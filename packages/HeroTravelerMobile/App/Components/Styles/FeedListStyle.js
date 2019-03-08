@@ -7,4 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.snow,
   },
+  postcardContainer: {
+    backgroundColor: Colors.lightGreyAreas,
+  },
 })

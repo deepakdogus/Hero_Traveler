@@ -216,6 +216,7 @@ export default class FeedList extends React.Component {
           enabled={this.props.refreshing}
           refreshing={false} // workaround to prevent it from persisting
           onRefresh={this.props.onRefresh}
+          style={styles.refreshContainer}
         />
         {renderHeaderContent
           ? (

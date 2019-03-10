@@ -7,6 +7,9 @@ export default StyleSheet.create({
     flexDirection: 'column',
     marginTop: Metrics.baseMargin,
   },
+  listContainer: {
+    paddingBottom: Metrics.baseMargin,
+  },
   contentContainer: {
     position: 'relative',
     marginLeft: Metrics.marginHorizontal / 2,
@@ -57,5 +60,14 @@ export default StyleSheet.create({
   },
   icon: {
     color: Colors.steel,
+  },
+  titleInput: {
+    color: Colors.background,
+    fontSize: 30,
+    fontFamily: Fonts.type.montserrat,
+    fontWeight: '600',
+    lineHeight: 33,
+    marginTop: 15,
+    paddingTop: 0,
   },
 })

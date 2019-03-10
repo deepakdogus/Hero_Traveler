@@ -63,6 +63,9 @@ import GuideReadingScreen from '../Containers/GuideReadingScreen'
 import SearchResultsScreen from '../Containers/SearchResultsScreen'
 import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
+// PostCard
+import PostCardCreate from '../Containers/CreatePostCard/CreatePostCardScreen'
+
 import { Images } from '../Shared/Themes'
 
 const navBarProps = {
@@ -405,6 +408,12 @@ export default NavActions.create(
         />
       </Scene>
       <Scene
+        key='createQuickShare'
+        component={PostCardCreate}
+        hideNavBar={true}
+        direction='horizontal'
+      />
+      <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
         onLeft={NavActions.pop}
@@ -429,6 +438,7 @@ export default NavActions.create(
         key='mediaSelectorScreen'
         component={MediaSelectorScreen}
         direction='horizontal'
+        hideNavBar={true}
       />
       <Scene
         key='textInputScreen'

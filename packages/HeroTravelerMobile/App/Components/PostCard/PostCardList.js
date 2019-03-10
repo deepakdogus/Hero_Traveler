@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, FlatList, Text } from 'react-native'
+import { View, FlatList } from 'react-native'
 
 import PostCardThumbnail from './PostCardThumbnail'
 
@@ -23,6 +23,7 @@ export default class PostCardList extends Component {
           data={entities}
           horizontal={true}
           renderItem={this._renderItem}
+          style={styles.listContainer}
         />
       </View>
     )

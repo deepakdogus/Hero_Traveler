@@ -42,6 +42,11 @@ const metrics = {
       videoTypeHeight: platformSpecificMetrics.screenWidth * 9 / 16,
     },
   },
+  postCard: {
+    listing: {
+      cardWidth: platformSpecificMetrics.screenWidth / 4 + 8
+    }
+  },
   feedCell: {
     imageCellHeight: 390, // Should be imageTypeHeight
     videoCellHeight: platformSpecificMetrics.screenWidth * 9 / 16, // Should be videoTypeHeight

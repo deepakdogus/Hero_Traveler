@@ -159,7 +159,9 @@ class SearchPlacesPeople extends Component {
   _goToPeopleTab = () => this._changeTab(1)
 
   _handleSelectCover = () => {
-    /** */
+    NavActions.createQuickShare({
+
+    })
   }
 
   setFocus = () => {
@@ -195,7 +197,7 @@ class SearchPlacesPeople extends Component {
 
   onPressPostCard = () => {
     NavActions.mediaSelectorScreen({
-      title: 'ADD COVER',
+      title: 'CREATE QUICKSHARE',
       leftTitle: 'Cancel',
       onLeft: () => NavActions.pop(),
       rightTitle: 'Next',

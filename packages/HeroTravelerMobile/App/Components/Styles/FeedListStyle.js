@@ -5,7 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    backgroundColor: Colors.lightGreyAreas,
+  //  backgroundColor: Colors.lightGreyAreas,
   },
   refreshContainer: {
     backgroundColor: Colors.snow,

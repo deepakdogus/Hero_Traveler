@@ -7,6 +7,11 @@ export default StyleSheet.create({
     flexDirection: 'column',
     marginTop: Metrics.baseMargin,
   },
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: Colors.backgroundDark,
+  },
   listContainer: {
     paddingBottom: Metrics.baseMargin,
   },
@@ -22,6 +27,9 @@ export default StyleSheet.create({
   innerContainer: {
     width: '100%',
     height: '100%',
+  },
+  formContainer: {
+    padding: Metrics.doubleBaseMargin,
   },
   firstContentContainer: {
     marginLeft: Metrics.marginLeft,
@@ -62,12 +70,33 @@ export default StyleSheet.create({
     color: Colors.steel,
   },
   titleInput: {
-    color: Colors.background,
-    fontSize: 30,
+    color: Colors.white,
+    fontSize: 20,
     fontFamily: Fonts.type.montserrat,
     fontWeight: '600',
     lineHeight: 33,
     marginTop: 15,
     paddingTop: 0,
+  },
+  navBarStyle: {
+    height: Metrics.navBarHeight + 20,
+    paddingTop: 0,
+    color: Colors.snow,
+    backgroundColor: Colors.transparent,
+  },
+  navBarTitleStyle: {
+    display: 'none',
+  },
+  navBarLeftTextStyle: {
+    color: Colors.white,
+    justifyContent: 'flex-start',
+  },
+  navBarRightTextStyle: {
+    color: Colors.snow,
+    justifyContent: 'flex-end',
+  },
+  locationInputStyle: {
+    borderWidth: 0,
+    color: Colors.white,
   },
 })

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { View, TextInput, TouchableOpacity, Text, Keyboard } from 'react-native'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
+import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
+import Reactotron from 'reactotron-react-native'
 
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
@@ -158,9 +160,43 @@ class SearchPlacesPeople extends Component {
 
   _goToPeopleTab = () => this._changeTab(1)
 
-  _handleSelectCover = () => {
-    NavActions.createQuickShare({
+  _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
+    const file = pathAsFileObject(path)
+    const update = { coverCaption: '' }
 
+    // const callback = (newSource) => {
+    //   // nesting coverMetrics inside of original.meta to mirror published media asset format
+    //   const modifiedFile = {
+    //     ...file,
+    //     uri: newSource,
+    //     original: {
+    //       meta: coverMetrics,
+    //     },
+    //   }
+
+    //   if (isPhotoType) {
+    //     update.coverImage = modifiedFile
+    //     update.coverVideo = undefined
+    //   } else {
+    //     update.coverImage = undefined
+    //     update.coverVideo = modifiedFile
+    //   }
+
+    //   this.setState({
+    //     file,
+    //     isScrollDown: true,
+    //     coverMetrics,
+    //   })
+    //   NavActions.createQuickShare({
+    //     media: update,
+    //     mediaType: isPhotoType ? 'photo' : 'video',
+    //   })
+    // }
+
+    // trimVideo(file.uri, callback, this.props.targetId, this)
+    NavActions.createQuickShare({
+      media: path,
+      mediaType: isPhotoType ? 'photo' : 'video',
     })
   }
 

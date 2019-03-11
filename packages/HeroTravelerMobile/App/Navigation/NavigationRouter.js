@@ -410,7 +410,7 @@ export default NavActions.create(
       <Scene
         key='createQuickShare'
         component={PostCardCreate}
-        hideNavBar={true}
+        onLeft={NavActions.pop}
         direction='horizontal'
       />
       <Scene

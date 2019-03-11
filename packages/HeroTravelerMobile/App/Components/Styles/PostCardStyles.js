@@ -8,6 +8,7 @@ export default StyleSheet.create({
     marginTop: Metrics.baseMargin,
   },
   imageContainer: {
+    position: 'relative',
     width: '100%',
     height: '100%',
     backgroundColor: Colors.backgroundDark,
@@ -98,5 +99,20 @@ export default StyleSheet.create({
   locationInputStyle: {
     borderWidth: 0,
     color: Colors.white,
+  },
+  publishBtnStyle: {
+    position: 'absolute',
+    right: Metrics.doubleBaseMargin / 2,
+    bottom: Metrics.doubleBaseMargin,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderWidth: 0,
+    backgroundColor: Colors.snow,
+  },
+  publishBtnTextStyle: {
+    fontWeight: '600',
+    color: '#000',
   },
 })

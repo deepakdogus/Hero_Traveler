@@ -5,6 +5,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import { Colors } from '../../Shared/Themes'
 import FormInput from '../FormInput'
 import NavBar from '../../Containers/CreateStory/NavBar'
+import RoundedButton from '../RoundedButton'
 
 import styles from '../Styles/PostCardStyles'
 
@@ -56,18 +57,25 @@ export default class PostCardCreate extends Component {
     })
   }
 
-  _onNavRight = () => {
+  onCancelClick = () => {
     NavActions.pop()
     setTimeout(() => {
       NavActions.pop()
     })
   }
 
+  onPublishClick = () => {
+
+  }
+
   render() {
     const { media, mediaType } = this.props
     const { title, location } = this.state
     return (
-      <ImageBackground source={{uri: media}} style={styles.imageContainer}>
+      <ImageBackground
+        source={{uri: media}}
+        style={styles.imageContainer}
+      >
         <NavBar
           title='CREATE QUICKSHARE'
           titleStyle={styles.navBarTitleStyle}
@@ -75,7 +83,7 @@ export default class PostCardCreate extends Component {
           leftIcon='arrowLeftRed'
           leftTextStyle={styles.navBarLeftTextStyle}
           leftIconStyle={styles.navBarLeftTextStyle}
-          onRight={this._onNavRight}
+          onRight={this.onCancelClick}
           rightTitle='Cancel'
           rightTextStyle={styles.navBarRightTextStyle}
           style={styles.navBarStyle}
@@ -103,8 +111,13 @@ export default class PostCardCreate extends Component {
             blurOnSubmit
             onContentSizeChange={this.setTitleHeight}
           />
-          
         </View>
+        <RoundedButton
+          style={styles.publishBtnStyle}
+          textStyle={styles.publishBtnTextStyle}
+          text='PUBLISH'
+          onPress={this.onPublishClick}
+        />
       </ImageBackground>
     )
   }

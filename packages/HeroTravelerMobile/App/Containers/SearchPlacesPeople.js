@@ -5,7 +5,6 @@ import { View, TextInput, TouchableOpacity, Text, Keyboard } from 'react-native'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
-import Reactotron from 'reactotron-react-native'
 
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
@@ -281,12 +280,12 @@ class SearchPlacesPeople extends Component {
         >
           <View style={styles.headerSearch}>
             <TouchableOpacity onPress={this.onPressPostCard}>
-              <View style={styles.postCard}>
+              <View style={styles.postcardIconWrapper}>
                 <TabIcon
                   name="cameraDark"
                   defaultScale
                   style={{
-                    image: styles.postCardIcon,
+                    image: styles.postcardIcon,
                   }}
                 />
               </View>

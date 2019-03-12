@@ -11,8 +11,8 @@ export default class PostCardList extends Component {
     entities: PropTypes.array,
   }
 
-  _renderItem = ({item}) => (
-    <PostCardThumbnail item={item} />
+  renderItem = ({item}) => (
+    <PostCardThumbnail postcard={item} />
   )
 
   render() {
@@ -22,7 +22,7 @@ export default class PostCardList extends Component {
         <FlatList
           data={entities}
           horizontal={true}
-          renderItem={this._renderItem}
+          renderItem={this.renderItem}
           style={styles.listContainer}
         />
       </View>

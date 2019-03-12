@@ -263,12 +263,12 @@ export default StyleSheet.create({
     color: Colors.background,
     textAlign: 'left',
   },
-  postCard: {
+  postcardIconWrapper: {
     marginTop: isIPhoneX() ? 30 : 5,
     padding: Metrics.baseMargin,
     paddingLeft: 0,
   },
-  postCardIcon: {
+  postcardIcon: {
     height: 22,
     width: 30,
   },

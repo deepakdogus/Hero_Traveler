@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import PostCardCreate from '../../Components/PostCard/PostCardCreate'
+import PostCardScreen from '../.../../Components/PostCard/PostCardScreScreen
 
 function mapDispatchToProps(dispatch) {
   // return {
@@ -11,4 +11,4 @@ function mapDispatchToProps(dispatch) {
   // }
 }
 
-export default connect(null, null)(PostCardCreate)
+export default connect(null, null)(PostCardScreen)

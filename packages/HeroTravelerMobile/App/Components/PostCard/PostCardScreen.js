@@ -93,7 +93,8 @@ export default class PostCardCreate extends Component {
             onPress={this.navToLocation}
             iconName='location'
             value={location ? location.name : ''}
-            placeholder='Location'
+            placeholder='Add a location'
+            placeholderColor={Colors.white}
             style={styles.locationInputStyle}
           />
           <TextInput

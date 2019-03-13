@@ -27,7 +27,6 @@ const { Types, Creators } = createActions({
   incrementSyncProgress: ['steps'],
   syncError: null,
   resetSync: null,
-  pendingMediaUploads: 0,
   uploadMedia: ['uri', 'callback', 'mediaType'],
   uploadMediaSuccess: null,
   uploadMediaFailure: ['error'],

@@ -185,7 +185,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_USERS_GUIDES]: receiveUsersGuides,
   [Types.GUIDE_FAILURE]: failure,
   [Types.UPDATE_GUIDE]: request,
-  [Types.GET_GUIDE]: request,
+  [Types.GET_GUIDE_REQUEST]: request,
   [Types.DELETE_GUIDE_REQUEST]: request,
   [Types.DELETE_GUIDE_SUCCESS]: deleteGuideSuccess,
   [Types.GET_USER_GUIDES]: request,

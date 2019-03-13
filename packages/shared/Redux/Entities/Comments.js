@@ -89,7 +89,7 @@ export const createCommentSuccess = (state, {comment, feedItemId, entityType}) =
 export const reducer = createReducer(INITIAL_STATE, {
 	[Types.GET_COMMENTS_REQUEST]: getCommentsRequest,
   [Types.GET_COMMENTS_SUCCESS]: getCommentsSuccess,
-  [Types.COMMENTS_REQUEST_FAILURE]: commentRequestFailure,
+  [Types.COMMENT_REQUEST_FAILURE]: commentRequestFailure,
   [Types.CREATE_COMMENT_REQUEST]: createCommentRequest,
   [Types.CREATE_COMMENT_SUCCESS]: createCommentSuccess,
 })

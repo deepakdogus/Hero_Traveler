@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import configureStore from './CreateStore'
-import rootSaga from '../Sagas/'
+// import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'
 import {SessionTypes} from './SessionRedux'
@@ -34,5 +34,8 @@ export default () => {
     return appReducer(state, action)
   }
 
-  return configureStore(rootReducer, rootSaga)
+  console.log("this is being run")
+
+  // return configureStore(rootReducer, rootSaga)
+  return configureStore(rootReducer)
 }

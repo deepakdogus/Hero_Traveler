@@ -540,7 +540,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
   [Types.ADD_BOOKMARK]: addBookmark,
   [Types.REMOVE_BOOKMARK]: removeBookmark,
-  [Types.USER_TOGGLE_LIKE]: toggleLike,
   [Types.USER_STORY_LIKE]: addStoryLike,
   [Types.USER_STORY_UNLIKE]: removeStoryLike,
   [Types.USER_GUIDE_LIKE]: addGuideLike,

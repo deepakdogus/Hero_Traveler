@@ -16,6 +16,7 @@ import { Title } from './Shared'
 import TagSelector from './TagSelector'
 import VerticalCenter from '../VerticalCenter'
 import Tile from './Tile'
+import StarRating from './StarRating'
 
 import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
 
@@ -41,7 +42,7 @@ export const InputRowContainer = styled(Container)`
 const StyledTitle = styled(Title)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-size: 28px;
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
 `
 
@@ -68,16 +69,20 @@ const DetailLabel = styled.label`
   font-weight: 600;
   font-size: 18px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   padding-left: 2px;
 `
 
-const ActivityDetailLabel = styled(DetailLabel)`
-  margin-right: 40px;
+const BoldDetailLabel = styled(DetailLabel)`
+  margin-right: 10px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin-right: 0px;
     margin-bottom: 10px;
   }
+`
+
+const ActivityDetailLabel = styled(BoldDetailLabel)`
+  margin-right: 40px;
 `
 
 const PrivacyLabel = styled(DetailLabel)`
@@ -89,7 +94,7 @@ export const StyledInput = styled.input`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   width: 80%;
   color: ${props => props.theme.Colors.background};
   border-width: 0;
@@ -102,10 +107,10 @@ export const StyledInput = styled.input`
 `
 
 const StyledCheckbox = styled.input`
-  @supports (zoom:1.2) {
-    zoom: 1.7
+  @supports (zoom: 1.2) {
+    zoom: 1.7;
   }
-  @supports not (zoom:1.2) {
+  @supports not (zoom: 1.2) {
     transform: scale(1.5);
   }
   margin: 2px 0 0;
@@ -143,7 +148,7 @@ const TravelTipsInput = styled.textarea`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   width: 100%;
   height: 160px;
   resize: none;
@@ -169,7 +174,7 @@ const styles = {
     fontWeight: 600,
     fontSize: 18,
     color: '#1a1c21',
-    letterSpacing: .2,
+    letterSpacing: 0.2,
   },
   radioIcon: {
     fill: '#ed1e2e',
@@ -197,14 +202,14 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
-const sortCategories = (categories) => {
-  return categories.sort((a,b) => {
+const sortCategories = categories => {
+  return categories.sort((a, b) => {
     if (a.title < b.title) return -1
     else return 1
   })
 }
 
-const formatCategories = (categories) => sortCategories(_.values(categories))
+const formatCategories = categories => sortCategories(_.values(categories))
 
 const isSameTag = (a, b) => a.title === b.title
 
@@ -230,7 +235,11 @@ export default class FeedItemDetails extends React.Component {
     let categoriesList = []
     if (props.categories && props.workingDraft) {
       const formattedCategoriesList = formatCategories(props.categories)
-      categoriesList = _.differenceWith(formattedCategoriesList, props.workingDraft.categories, isSameTag)
+      categoriesList = _.differenceWith(
+        formattedCategoriesList,
+        props.workingDraft.categories,
+        isSameTag,
+      )
     }
 
     this.state = {
@@ -245,33 +254,38 @@ export default class FeedItemDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length && nextProps.workingDraft){
+    if (
+      Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length
+      && nextProps.workingDraft
+    ) {
       const categoriesList = formatCategories(nextProps.categories)
-      this.updateCategoriesList(_.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag))
+      this.updateCategoriesList(
+        _.differenceWith(categoriesList, nextProps.workingDraft.categories, isSameTag),
+      )
     }
   }
 
-  handleLocationSelect = (addressObj) => {
+  handleLocationSelect = addressObj => {
     const { isGuide } = this.props
-    const {location, locationInfo} = addressObj
+    const { location, locationInfo } = addressObj
     if (!location && locationInfo) {
       if (isGuide) {
-        this.setState({address: ''})
+        this.setState({ address: '' })
         this.props.onInputChange({
           locations: [...this.props.workingDraft.locations, locationInfo],
         })
       }
-      else {
-        this.setState({address: locationInfo.name})
-        this.props.onInputChange({locationInfo: locationInfo})
+ else {
+        this.setState({ address: locationInfo.name })
+        this.props.onInputChange({ locationInfo: locationInfo })
       }
     }
-    else {
-      this.setState({address: location})
+ else {
+      this.setState({ address: location })
     }
   }
 
-  handleDayClick = (day) => {
+  handleDayClick = day => {
     this.toggleDayPicker()
     this.props.onInputChange({
       tripDate: day,
@@ -279,20 +293,24 @@ export default class FeedItemDetails extends React.Component {
   }
 
   handleRadioChange = (event, value) => {
-    this.props.onInputChange({type: value})
+    this.props.onInputChange({ type: value })
   }
 
-  togglePicker = (name) => {
+  handleRatingChange = value => {
+    this.props.onInputChange({ rating: value })
+  }
+
+  togglePicker = name => {
     const stateKey = `show${name}Picker`
     const currentVal = this.state[stateKey]
-    this.setState({ [stateKey]: !currentVal})
- }
+    this.setState({ [stateKey]: !currentVal })
+  }
 
   toggleDayPicker = () => this.togglePicker('Day')
 
   toggleCategoryPicker = () => this.togglePicker('Category')
 
-  formatTripDate = (day) => {
+  formatTripDate = day => {
     if (!day) return Moment().format('MM-DD-YYYY')
     else return Moment(day).format('MM-DD-YYYY')
   }
@@ -328,32 +346,27 @@ export default class FeedItemDetails extends React.Component {
     const clickedTile = _.find(selectedTilesOfType, findByTitleFns[type])
     if (!clickedTile) return
 
-    const updatedTiles = _.differenceWith(
-      selectedTilesOfType,
-      [clickedTile], isSameFns[type],
-    )
+    const updatedTiles = _.differenceWith(selectedTilesOfType, [clickedTile], isSameFns[type])
 
     if (type === 'categories') {
-      this.updateCategoriesList(
-        sortCategories(this.state.categoriesList.concat([clickedTile])),
-      )
+      this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedTile])))
     }
     this.props.onInputChange({ [type]: updatedTiles })
   }
 
-  updateCategoriesList = (newCategoriesList) => {
+  updateCategoriesList = newCategoriesList => {
     this.setState({
       categoriesList: newCategoriesList,
     })
   }
 
-  updateHashtagsList = (newHashtagsList) => {
+  updateHashtagsList = newHashtagsList => {
     this.setState({
       hashtagsList: newHashtagsList,
     })
   }
 
-  handleCategoryInputTextChange = (text) => {
+  handleCategoryInputTextChange = text => {
     this.setState({
       categoryInputText: text,
     })
@@ -365,13 +378,19 @@ export default class FeedItemDetails extends React.Component {
   loadDefaultCategories = (excludeThese = []) => {
     if (this.props.categories && this.props.workingDraft) {
       const categoriesList = formatCategories(this.props.categories)
-      this.updateCategoriesList(_.differenceWith(categoriesList, [...this.props.workingDraft.categories, ...excludeThese], isSameTag))
+      this.updateCategoriesList(
+        _.differenceWith(
+          categoriesList,
+          [...this.props.workingDraft.categories, ...excludeThese],
+          isSameTag,
+        ),
+      )
     }
   }
 
-  loadDefaultHashtags = () => this.setState({hashtagsList: []})
+  loadDefaultHashtags = () => this.setState({ hashtagsList: [] })
 
-  onGenericChange = (event) => {
+  onGenericChange = event => {
     this.props.onInputChange({
       [event.target.name]: event.target.value,
     })
@@ -383,7 +402,7 @@ export default class FeedItemDetails extends React.Component {
     })
   }
 
-  getCostPlaceHolderText = (type) =>{
+  getCostPlaceHolderText = type => {
     if (type === 'stay') return 'Cost Per Night'
     return 'Cost Per Person'
   }
@@ -396,18 +415,19 @@ export default class FeedItemDetails extends React.Component {
     return (
       <StyledGrid>
         <VerticallyCenterRow>
-          {!!this.props.workingDraft.locations.length && <TilesWrapper>
-            {
-              this.props.workingDraft.locations.map((location, index) => {
-                return <Tile
-                  key={index}
-                  text={displayLocationDetails(location)}
-                  handleTileRemove={handleLocationTileRemove}
-                />
-              })
-            }
-          </TilesWrapper>
-          }
+          {!!this.props.workingDraft.locations.length && (
+            <TilesWrapper>
+              {this.props.workingDraft.locations.map((location, index) => {
+                return (
+                  <Tile
+                    key={index}
+                    text={displayLocationDetails(location)}
+                    handleTileRemove={handleLocationTileRemove}
+                  />
+                )
+              })}
+            </TilesWrapper>
+          )}
           <FeedItemDetailsLocator
             onChange={this.handleLocationSelect}
             address={this.state.address}
@@ -419,104 +439,120 @@ export default class FeedItemDetails extends React.Component {
   }
 
   render() {
-    const {
-      workingDraft,
-      isGuide,
-    } = this.props
-    const {
-      showDayPicker,
-      categoriesList,
-      hashtagsList,
-    } = this.state
+    const { workingDraft, isGuide } = this.props
+    const { showDayPicker, categoriesList, hashtagsList } = this.state
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
 
     return (
       <Container>
-        {!isGuide &&
+        {!isGuide && (
           <div>
             <StyledTitle>{workingDraft.title} DETAILS</StyledTitle>
-            <br/>
-            <br/>
+            <br />
+            <br />
           </div>
-        }
-        {!isGuide &&
+        )}
+        {!isGuide && (
           <InputRowContainer>
             <ActivitySelectRow>
               <ActivityDetailLabel>Activity: </ActivityDetailLabel>
-                <RadioButtonGroup
-                  valueSelected={workingDraft.type}
-                  name="activity"
-                  style={styles.radioButtonGroup}
-                  onChange={this.handleRadioChange}
-                >
-                  {buttons.map((button, index) => {
-                    return (
-                      <RadioButton
-                        key={index}
-                        value={button}
-                        label={button.toUpperCase()}
-                        style={styles.radioButton}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
-                        uncheckedIcon={<RadioButtonUnchecked/>}
-                      />
-                    )
-                  })}
-                </RadioButtonGroup>
+              <RadioButtonGroup
+                valueSelected={workingDraft.type}
+                name="activity"
+                style={styles.radioButtonGroup}
+                onChange={this.handleRadioChange}
+              >
+                {buttons.map((button, index) => {
+                  return (
+                    <RadioButton
+                      key={index}
+                      value={button}
+                      label={button.toUpperCase()}
+                      style={styles.radioButton}
+                      labelStyle={styles.radioButtonLabel}
+                      checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
+                      uncheckedIcon={<RadioButtonUnchecked />}
+                    />
+                  )
+                })}
+              </RadioButtonGroup>
             </ActivitySelectRow>
           </InputRowContainer>
-        }
+        )}
         {isGuide && <Spacer />}
-        {isGuide &&
+        {isGuide && (
           <InputRowContainer>
             <IconWrapper>
-              <IconWithMargin name='infoLarge'/>
+              <IconWithMargin name="infoLarge" />
             </IconWrapper>
             <StyledInput
-              placeholder='Title'
+              placeholder="Title"
               value={workingDraft.title}
-              name='title'
+              name="title"
               onChange={this.onGenericChange}
-              autoComplete='off'
+              autoComplete="off"
             />
           </InputRowContainer>
-        }
-        <StyledDivider color='lighter-grey' opaque/>
+        )}
+        <StyledDivider
+          color="lighter-grey"
+          opaque
+        />
+        {!isGuide && (
+          <InputRowContainer>
+            <BoldDetailLabel>Rate this experience:</BoldDetailLabel>
+            <StarRating
+              onClick={this.handleRatingChange}
+              valueSelected={workingDraft.rating}
+            />
+          </InputRowContainer>
+        )}
+        {!isGuide && <StyledDivider
+          color="lighter-grey"
+          opaque
+                     />}
         <InputRowContainer>
           <IconWrapper>
-            <EnlargedIcon name='locationLarge'/>
+            <EnlargedIcon name="locationLarge" />
           </IconWrapper>
-          {isGuide
-            ? this.renderLocations()
-            : <FeedItemDetailsLocator
-                onChange={this.handleLocationSelect}
-                address={this.state.address}
-              />
-          }
+          {isGuide ? (
+            this.renderLocations()
+          ) : (
+            <FeedItemDetailsLocator
+              onChange={this.handleLocationSelect}
+              address={this.state.address}
+            />
+          )}
         </InputRowContainer>
-        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
-        {!isGuide &&
+        {!isGuide && <StyledDivider
+          color="lighter-grey"
+          opaque
+                     />}
+        {!isGuide && (
           <InputRowContainer>
             <IconWrapper>
-              <EnlargedIcon name='dateLarge'/>
+              <EnlargedIcon name="dateLarge" />
             </IconWrapper>
             <StyledInput
-              type='text'
+              type="text"
               placeholder={this.formatTripDate()}
               value={this.formatTripDate(workingDraft.tripDate)}
               onClick={this.toggleDayPicker}
               readOnly
             />
-            {showDayPicker &&
+            {showDayPicker && (
               <StyledReactDayPicker
                 handleDayClick={this.handleDayClick}
                 togglePicker={this.toggleDayPicker}
               />
-            }
+            )}
           </InputRowContainer>
-        }
-        <StyledDivider color='lighter-grey' opaque/>
+        )}
+        <StyledDivider
+          color="lighter-grey"
+          opaque
+        />
         <TagSelector
           handleTagAdd={this.handleTagAdd}
           loadDefaultTags={this.loadDefaultCategories}
@@ -524,12 +560,15 @@ export default class FeedItemDetails extends React.Component {
           updateTagsList={this.updateCategoriesList}
           isSameTag={isSameTag}
           Icon={EnlargedIcon}
-          iconName='tagLarge'
+          iconName="tagLarge"
           selectedTags={workingDraft.categories}
           tagsList={categoriesList}
         />
-        {!isGuide && <StyledDivider color='lighter-grey' opaque/>}
-        {!isGuide &&
+        {!isGuide && <StyledDivider
+          color="lighter-grey"
+          opaque
+                     />}
+        {!isGuide && (
           <TagSelector
             handleTagAdd={this.handleTagAdd}
             loadDefaultTags={this.loadDefaultHashtags}
@@ -537,77 +576,80 @@ export default class FeedItemDetails extends React.Component {
             updateTagsList={this.updateHashtagsList}
             isSameTag={isSameTag}
             Icon={HashtagIcon}
-            iconName='hashtag'
+            iconName="hashtag"
             selectedTags={workingDraft.hashtags}
             tagsList={hashtagsList}
           />
-        }
-        <StyledDivider color='lighter-grey' opaque/>
-        {isGuide &&
+        )}
+        <StyledDivider
+          color="lighter-grey"
+          opaque
+        />
+        {isGuide && (
           <InputRowContainer>
             <IconWrapper>
-              <EnlargedIcon name='dateLarge'/>
+              <EnlargedIcon name="dateLarge" />
             </IconWrapper>
             <StyledInput
-              type='number'
-              placeholder='How many days is this guide?'
+              type="number"
+              placeholder="How many days is this guide?"
               value={workingDraft.duration}
-              min='1'
-              name='duration'
+              min="1"
+              name="duration"
               onChange={this.onGenericChange}
-              autoComplete='off'
+              autoComplete="off"
             />
           </InputRowContainer>
-        }
-        {isGuide && <StyledDivider color='lighter-grey' opaque/>}
+        )}
+        {isGuide && <StyledDivider
+          color="lighter-grey"
+          opaque
+                    />}
         <InputRowContainer>
           <IconWrapper>
-            <IconWithMargin name='costLarge'/>
+            <IconWithMargin name="costLarge" />
           </IconWrapper>
           <StyledInput
-            type='number'
+            type="number"
             placeholder={this.getCostPlaceHolderText(workingDraft.type)}
             value={workingDraft.cost}
-            min='0'
-            name='cost'
+            min="0"
+            name="cost"
             onChange={this.onGenericChange}
           />
         </InputRowContainer>
-        <StyledDivider color='lighter-grey' opaque/>
+        <StyledDivider
+          color="lighter-grey"
+          opaque
+        />
         <Spacer />
         <TravelTipsContainer>
-          <DetailLabel>
-            {isGuide ? 'Overview' : 'Travel Tips'}
-          </DetailLabel>
+          <DetailLabel>{isGuide ? 'Overview' : 'Travel Tips'}</DetailLabel>
           <TravelTipsInput
             value={isGuide ? workingDraft.description : workingDraft.travelTips}
             name={isGuide ? 'description' : 'travelTips'}
             placeholder={
-              isGuide
-              ? `What's your guide about?`
-              : 'What should your fellow travelers know?'
+              isGuide ? `What's your guide about?` : 'What should your fellow travelers know?'
             }
             onChange={this.onGenericChange}
           />
         </TravelTipsContainer>
-        {isGuide &&
+        {isGuide && (
           <Container>
             <Row>
               <VerticalCenter>
                 <StyledCheckbox
                   checked={workingDraft.isPrivate || false}
-                  type='checkbox'
+                  type="checkbox"
                   onClick={this.togglePrivacy}
                 />
               </VerticalCenter>
               <VerticalCenter>
-                <PrivacyLabel>
-                  Make this guide private
-                </PrivacyLabel>
+                <PrivacyLabel>Make this guide private</PrivacyLabel>
               </VerticalCenter>
             </Row>
           </Container>
-        }
+        )}
       </Container>
     )
   }

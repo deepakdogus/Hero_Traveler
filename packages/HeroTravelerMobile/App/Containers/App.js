@@ -1,8 +1,7 @@
-import '../Config'
 import React, { Component } from 'react'
 import { Text } from 'react-native'
 import { Provider } from 'react-redux'
-import RootContainer from './RootContainer'
+// import RootContainer from './RootContainer'
 import createStore from '../Shared/Redux'
 
 // create our store
@@ -20,15 +19,23 @@ const store = createStore()
 class App extends Component {
   constructor() {
     super()
+    Text.defaultProps = Text.defaultProps || {}
     Text.defaultProps.allowFontScaling = false
   }
 
   render() {
     return (
       <Provider store={store}>
-        <RootContainer />
+        <Text style={{marginTop: 20}}>
+          Testing 2
+        </Text>
       </Provider>
     )
+    // return (
+    //   <Provider store={store}>
+    //     <RootContainer />
+    //   </Provider>
+    // )
   }
 }
 

@@ -65,6 +65,12 @@ const Radio = ({ text, onPress, selected }) => {
   )
 }
 
+Radio.propTypes = {
+  text: PropTypes.string,
+  onPress: PropTypes.func,
+  selected: PropTypes.bool,
+}
+
 class CreateStoryDetailScreen extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,

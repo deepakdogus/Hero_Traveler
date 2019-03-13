@@ -28,6 +28,7 @@ import {
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
 import { showPublishDate } from '../Shared/Lib/dateHelpers'
+import StarRating from '../Containers/CreateStory/StarRating'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -294,7 +295,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderBottomSection() {
-    const {counts, description, coverCaption, draft, type} = this.props.feedItem
+    const {counts, description, coverCaption, draft, type, rating} = this.props.feedItem
     const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
@@ -342,6 +343,17 @@ export default class FeedItemPreview extends Component {
             </Text>
           )}
         </TouchableOpacity>
+        {isReadingScreen && rating && (
+          <View style={storyReadingScreenStyles.starRating}>
+            <Text style={storyReadingScreenStyles.experience}>
+              Overall Experience:
+            </Text>
+            <StarRating
+              valueSelected={rating}
+              readOnly
+            />
+          </View>
+        )}
         <View style={styles.lastRow}>
           {!isReadingScreen && (
             <View style={styles.leftRow}>

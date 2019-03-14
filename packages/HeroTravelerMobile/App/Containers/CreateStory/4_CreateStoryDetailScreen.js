@@ -9,10 +9,10 @@ import {
   DatePickerIOS,
 } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
-import {Colors, Metrics} from '../../Shared/Themes'
+import { Metrics } from '../../Shared/Themes'
 import ShadowButton from '../../Components/ShadowButton'
 import RoundedButton from '../../Components/RoundedButton'
 import Tooltip from '../../Components/Tooltip'
@@ -30,23 +30,33 @@ const api = API.create()
 
 ***/
 
-const dateLikeItemAsDate = (dateLikeItem) => {
+const dateLikeItemAsDate = dateLikeItem => {
   const timeStamp = Date.parse(dateLikeItem)
   return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
 }
 
-const dateLikeItemAsDateString = (dateLikeItem) => {
+const dateLikeItemAsDateString = dateLikeItem => {
   const date = dateLikeItemAsDate(dateLikeItem)
   const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
 }
 
-const Radio = ({text, onPress, selected}) => {
+const Radio = ({ text, onPress, selected }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.radio}>
-        <View style={[styles.radioBtnOuter, selected ? styles.radioBtnActiveBorder : {}]}>
-          <View style={[styles.radioBtnInner, selected ? styles.radioBtnActiveBackground : {}]}/>
+        <View
+          style={[
+            styles.radioBtnOuter,
+            selected ? styles.radioBtnActiveBorder : {},
+          ]}
+        >
+          <View
+            style={[
+              styles.radioBtnInner,
+              selected ? styles.radioBtnActiveBackground : {},
+            ]}
+          />
         </View>
         <Text style={styles.radioText}>{text}</Text>
       </View>
@@ -85,7 +95,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.storyCreateError){
+    if (newProps.storyCreateError) {
       this.setState({
         showError: true,
         error: newProps.storyCreateError,
@@ -98,12 +108,12 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({ modalVisible: visible })
   }
 
-  onLocationChange = (location) => {
-    this.props.updateWorkingDraft({location})
+  onLocationChange = location => {
+    this.props.updateWorkingDraft({ location })
   }
 
-  _onDateChange = (tripDate) => {
-    this.props.updateWorkingDraft({tripDate})
+  _onDateChange = tripDate => {
+    this.props.updateWorkingDraft({ tripDate })
   }
 
   confirmDate = () => {
@@ -114,7 +124,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onRight = () => {
-    const {workingDraft} = this.props
+    const { workingDraft } = this.props
     if (!workingDraft.locationInfo || !workingDraft.type) {
       this.setState({
         validationError: 'Please add an activity type and location to continue',
@@ -140,19 +150,19 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
-  _updateType = (type) => {
-    this.props.updateWorkingDraft({type})
+  _updateType = type => {
+    this.props.updateWorkingDraft({ type })
   }
 
-  _updateCostText = (value) => {
-    this.setState({cost:value})
+  _updateCostText = value => {
+    this.setState({ cost: value })
   }
 
   _updateCost = () => {
-    this.props.updateWorkingDraft({cost:this.state.cost})
+    this.props.updateWorkingDraft({ cost: this.state.cost })
   }
 
-  _getCostPlaceholderText = (draft) => {
+  _getCostPlaceholderText = draft => {
     let placeholder
     switch (draft.type) {
       case 'see':
@@ -176,38 +186,35 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _closeError = () => {
-    this.setState({showError: false})
+    this.setState({ showError: false })
   }
 
   _dismissTooltip = () => {
-    this.setState({validationError:null})
+    this.setState({ validationError: null })
   }
 
-  saveDraft = (draft) => {
-    this.props.update(
-      draft.id,
-      draft,
-    )
+  saveDraft = draft => {
+    this.props.update(draft.id, draft)
   }
 
   next() {
     this.props.resetCreateStore()
-    NavActions.tabbar({type: 'reset'})
+    NavActions.tabbar({ type: 'reset' })
     NavActions.myFeed()
   }
 
-  _receiveCategories = (selectedCategories) => {
-    this.props.updateWorkingDraft({categories: selectedCategories})
+  _receiveCategories = selectedCategories => {
+    this.props.updateWorkingDraft({ categories: selectedCategories })
     NavActions.pop()
   }
 
-  _receiveHashtags = (selectedHashtags) => {
-    this.props.updateWorkingDraft({hashtags: selectedHashtags})
+  _receiveHashtags = selectedHashtags => {
+    this.props.updateWorkingDraft({ hashtags: selectedHashtags })
     NavActions.pop()
   }
 
-  _receiveTravelTips = (travelTips) => {
-    this.props.updateWorkingDraft({travelTips: travelTips})
+  _receiveTravelTips = travelTips => {
+    this.props.updateWorkingDraft({ travelTips: travelTips })
     NavActions.pop()
   }
 
@@ -232,7 +239,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   // if you change this... also make sure to change getLocationInfo's formatLocationInfo
-  receiveLocation = (locationInfo) => {
+  receiveLocation = locationInfo => {
     this.props.updateWorkingDraft({ locationInfo })
     NavActions.pop()
   }
@@ -247,11 +254,24 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  receiveButton = actionButton => {
+    this.props.updateWorkingDraft({ actionButton })
+  }
+
+  navToAddButton = () => {
+    const hasActionButton = this.hasActionButton()
+    NavActions.createStory_addButton({
+      onAddButton: this.receiveButton,
+      link: hasActionButton ? this.props.workingDraft.actionButton.link : '',
+      buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
+    })
+  }
+
   renderErrors() {
     if (this.state.showError) {
       const err = this.state.error
       let errText
-      if ((__DEV__ && err && err.problem && err.status)) {
+      if (__DEV__ && err && err.problem && err.status) {
         errText = `${err.status}: ${err.problem}`
       }
       else if (err.text) {
@@ -271,7 +291,7 @@ class CreateStoryDetailScreen extends React.Component {
   getHashtagsValue() {
     const { hashtags } = this.props.workingDraft
     if (hashtags.length === 0) return undefined
-    return _.map(hashtags, (hashtag) => {
+    return _.map(hashtags, hashtag => {
       return `#${hashtag.title}`
     }).join(', ')
   }
@@ -291,138 +311,153 @@ class CreateStoryDetailScreen extends React.Component {
     ])
   }
 
-  render () {
-    const {workingDraft} = this.props
-    const {modalVisible, validationError} = this.state
+  hasActionButton = () => {
+    const { workingDraft } = this.props
+    return workingDraft && workingDraft.actionButton && workingDraft.actionButton.link
+  }
+
+  render() {
+    const { workingDraft } = this.props
+    const { modalVisible, validationError } = this.state
 
     return (
       <View style={styles.wrapper}>
-          {this.renderErrors()}
-          <NavBar
-            title='STORY DETAILS'
-            leftIcon='arrowLeftRed'
-            leftTitle='Back'
-            onLeft={this._onLeft}
-            leftTextStyle={styles.navBarLeftText}
-            onRight={this._onRight}
-            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
-            rightTextStyle={styles.redText}
-            isRightValid={this.isValid()}
-          />
-          <ScrollView style={styles.root}>
-            <Text style={styles.title}>{this.props.story.title} Details </Text>
-            <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Activity: </Text>
-              <View style={styles.radioGroup}>
-                <Radio
-                  selected={workingDraft.type === 'see'}
-                  onPress={() => this._updateType('see')}
-                  text='SEE'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
-                  text='DO'
-                />
-                <Radio
-                  selected={workingDraft.type === 'eat'}
-                  onPress={() => this._updateType('eat')}
-                  text='EAT'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'stay'}
-                  onPress={() => this._updateType('stay')}
-                  text='STAY'
-                />
-              </View>
+        {this.renderErrors()}
+        <NavBar
+          title="STORY DETAILS"
+          leftIcon="arrowLeftRed"
+          leftTitle="Back"
+          onLeft={this._onLeft}
+          leftTextStyle={styles.navBarLeftText}
+          onRight={this._onRight}
+          rightTitle={this.isDraft() ? 'Publish' : 'Save'}
+          rightTextStyle={styles.redText}
+          isRightValid={this.isValid()}
+        />
+        <ScrollView style={styles.root}>
+          <Text style={styles.title}>{this.props.story.title} Details </Text>
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.fieldLabel}>Activity: </Text>
+            <View style={styles.radioGroup}>
+              <Radio
+                selected={workingDraft.type === 'see'}
+                onPress={() => this._updateType('see')}
+                text="SEE"
+              />
+              <Radio
+                style={{ marginLeft: Metrics.baseMargin }}
+                selected={workingDraft.type === 'do'}
+                onPress={() => this._updateType('do')}
+                text="DO"
+              />
+              <Radio
+                selected={workingDraft.type === 'eat'}
+                onPress={() => this._updateType('eat')}
+                text="EAT"
+              />
+              <Radio
+                style={{ marginLeft: Metrics.baseMargin }}
+                selected={workingDraft.type === 'stay'}
+                onPress={() => this._updateType('stay')}
+                text="STAY"
+              />
             </View>
-            <FormInput
-              onPress={this.navToLocation}
-              iconName='location'
-              value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
-              placeholder='Location'
-            />
-            <FormInput
-              onPress={this._setModalVisible}
-              iconName='date'
-              value={dateLikeItemAsDateString(workingDraft.tripDate)}
-            />
-            <FormInput
-              onChangeText={this._updateCostText}
-              iconName='cost'
-              value={this.state.cost.toString()}
-              placeholder={this._getCostPlaceholderText(workingDraft)}
-              keyboardType='numeric'
-              cost={this.state.cost}
-            />
-            <FormInput
-              onPress={this.navToCategories}
-              iconName='tag'
-              value={this.getCategoriesValue()}
-              placeholder='Add categories...'
-            />
-            <FormInput
-              onPress={this.navToHashtags}
-              iconName='hashtag'
-              value={this.getHashtagsValue()}
-              placeholder='Add hashtags'
-            />
-            <TouchableMultilineInput
-              onDone={this._receiveTravelTips}
-              title='TRAVEL TIPS'
-              label='Travel Tips: '
-              value={workingDraft.travelTips}
-              placeholder='What should your fellow travelers know?'
-            />
-          </ScrollView>
-        {modalVisible &&
-        <View
-          style={styles.dateWrapper}
-          shadowColor='black'
-          shadowOpacity={.9}
-          shadowRadius={10}
-          shadowOffset={{width: 0, height: 0}}>
-          <View
-            style={styles.dateView}>
-            <DatePickerIOS
-              date={dateLikeItemAsDate(workingDraft.tripDate)}
-              mode="date"
-              onDateChange={this._onDateChange}
-            />
-            <RoundedButton
-              text='Confirm'
-              onPress={this.confirmDate}
-            />
           </View>
-        </View> }
-        {validationError &&
+          <FormInput
+            onPress={this.navToLocation}
+            iconName="location"
+            value={
+              workingDraft.locationInfo ? workingDraft.locationInfo.name : ''
+            }
+            placeholder="Location"
+          />
+          <FormInput
+            onPress={this._setModalVisible}
+            iconName="date"
+            value={dateLikeItemAsDateString(workingDraft.tripDate)}
+          />
+          <FormInput
+            onPress={this.navToCategories}
+            iconName="tag"
+            value={this.getCategoriesValue()}
+            placeholder="Add categories"
+          />
+          <FormInput
+            onPress={this.navToHashtags}
+            iconName="hashtag"
+            value={this.getHashtagsValue()}
+            placeholder="Add hashtags"
+          />
+          <FormInput
+            onChangeText={this._updateCostText}
+            iconName="cost"
+            value={this.state.cost.toString()}
+            placeholder={this._getCostPlaceholderText(workingDraft)}
+            keyboardType="numeric"
+            cost={this.state.cost}
+          />
+          <FormInput
+            onPress={this.navToAddButton}
+            iconName="addButton"
+            value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
+            placeholder="Add an action button"
+          />
+          <TouchableMultilineInput
+            onDone={this._receiveTravelTips}
+            title="TRAVEL TIPS"
+            label="Travel Tips: "
+            value={workingDraft.travelTips}
+            placeholder="What should your fellow travelers know?"
+          />
+        </ScrollView>
+        {modalVisible && (
+          <View
+            style={styles.dateWrapper}
+            shadowColor="black"
+            shadowOpacity={0.9}
+            shadowRadius={10}
+            shadowOffset={{ width: 0, height: 0 }}
+          >
+            <View style={styles.dateView}>
+              <DatePickerIOS
+                date={dateLikeItemAsDate(workingDraft.tripDate)}
+                mode="date"
+                onDateChange={this._onDateChange}
+              />
+              <RoundedButton
+                text="Confirm"
+                onPress={this.confirmDate} />
+            </View>
+          </View>
+        )}
+        {validationError && (
           <Tooltip
             onPress={this._touchError}
             position={'right-nav-button'}
             text={validationError}
             onDismiss={this._dismissTooltip}
           />
-        }
+        )}
       </View>
     )
   }
 }
 
 export default connect(
-  (state) => {
+  state => {
     return {
-      accessToken: _.find(state.session.tokens, {type: 'access'}),
-      story: {...state.storyCreate.workingDraft},
-      workingDraft: {...state.storyCreate.workingDraft},
+      accessToken: _.find(state.session.tokens, { type: 'access' }),
+      story: { ...state.storyCreate.workingDraft },
+      workingDraft: { ...state.storyCreate.workingDraft },
       storyCreateError: state.storyCreate.error,
     }
   },
   dispatch => ({
-    updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    saveDraft: (story) => dispatch(StoryEditActions.saveLocalDraft(story)),
-    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
+    updateWorkingDraft: update =>
+      dispatch(StoryCreateActions.updateWorkingDraft(update)),
+    saveDraft: story => dispatch(StoryEditActions.saveLocalDraft(story)),
+    update: (id, attrs) =>
+      dispatch(StoryEditActions.updateDraft(id, attrs, true)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore()),
   }),
 )(CreateStoryDetailScreen)

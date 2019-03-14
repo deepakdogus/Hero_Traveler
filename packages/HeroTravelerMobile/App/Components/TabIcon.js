@@ -150,6 +150,8 @@ class TabIcon extends React.Component {
         return Images.iconActivityEat
       case 'activity-stay':
         return Images.iconActivityStay
+      case 'addButton':
+        return Images.iconAddButton
       case 'profile':
       default:
         return Images.iconNavProfile

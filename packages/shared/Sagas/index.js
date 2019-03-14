@@ -30,16 +30,16 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 
 // /* ------------- Sagas ------------- */
 
-// import { startup, heroStartup } from './StartupSagas'
-// import {
-//   login,
-//   loginFacebook,
-//   resetPasswordRequest,
-//   resetPassword,
-//   loggedIn,
-//   verifyEmail,
-//   changePassword,
-// } from './LoginSagas'
+import { startup, heroStartup } from './StartupSagas'
+import {
+  login,
+  loginFacebook,
+  resetPasswordRequest,
+  resetPassword,
+  loggedIn,
+  verifyEmail,
+  changePassword,
+} from './LoginSagas'
 // import {
 //   signupEmail,
 //   signupFacebook,
@@ -47,16 +47,16 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 //   followCategory,
 //   unfollowCategory,
 // } from './SignupSagas'
-// import {
-//   logout,
-//   resumeSession,
-//   refreshSession
-// } from './SessionSagas'
+import {
+  logout,
+  resumeSession,
+  refreshSession
+} from './SessionSagas'
 // // related to nav which is device specific so not located in shared folder
-// import { openScreen } from '../../Sagas/OpenScreenSagas'
+import { openScreen } from '../../Sagas/OpenScreenSagas'
 
-// import { getCategories } from './CategorySagas'
-// import { getHashtags } from './HashtagSagas'
+import { getCategories } from './CategorySagas'
+import { getHashtags } from './HashtagSagas'
 // import {
 //   updateUser,
 //   removeAvatar,
@@ -98,9 +98,9 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 //   getDeletedStories,
 // } from './StorySagas'
 
-// import {
-//   uploadMediaAsset,
-// } from './MediaUploadSagas'
+import {
+  uploadMediaAsset,
+} from './MediaUploadSagas'
 
 // import {
 //   createGuide,
@@ -115,10 +115,10 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 //   unlikeGuide,
 // } from './GuideSagas'
 
-// import {
-//   getComments,
-//   createComment
-// } from './CommentsSagas'
+import {
+  getComments,
+  createComment
+} from './CommentsSagas'
 
 
 // /* ------------- API ------------- */

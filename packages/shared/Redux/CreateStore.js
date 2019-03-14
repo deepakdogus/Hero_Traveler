@@ -5,7 +5,7 @@ import {
 } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import Config from '../../Config/DebugConfig'
-// import createSagaMiddleware from 'redux-saga'
+import createSagaMiddleware from 'redux-saga'
 import RehydrationServices from '../Services/RehydrationServices'
 import CreateLogger from 'redux-logger'
 import ReduxPersist from '../../Config/ReduxPersist'

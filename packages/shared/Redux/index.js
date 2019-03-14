@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import configureStore from './CreateStore'
-// import rootSaga from '../Sagas/'
+import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'
 import {SessionTypes} from './SessionRedux'

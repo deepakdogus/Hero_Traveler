@@ -34,8 +34,6 @@ export default () => {
     return appReducer(state, action)
   }
 
-  console.log("this is being run")
-
   // return configureStore(rootReducer, rootSaga)
   return configureStore(rootReducer)
 }

@@ -27,7 +27,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Text style={{marginTop: 20}}>
-          Testing 4
+          Testing 5
         </Text>
       </Provider>
     )

@@ -134,6 +134,14 @@ const StorySchema = new Schema({
   publishedDate: {
     type: Date,
   },
+  actionButton: {
+    type: {
+      type: String,
+    },
+    link: {
+      type: String,
+    },
+  }
 }, {
   timestamps: true,
   toObject: {

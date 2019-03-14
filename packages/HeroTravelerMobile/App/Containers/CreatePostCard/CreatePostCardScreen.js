@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
-import PostCardScreen from '../.../../Components/PostCard/PostCardScreScreen
+import PostCardScreen from '../../Components/PostCard/PostCardScreen'
+import PostcardActions from '../../Shared/Redux/PostcardRedux'
 
 function mapDispatchToProps(dispatch) {
-  // return {
-  //   addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
-  //   loadDraft: (draftId, story) => dispatch(StoryCreateActions.editStory(draftId, story)),
-  //   setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
-  //   discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-  //   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-  // }
+  return {
+    createPostcard: (postcard) => dispatch(PostcardActions.createPostcard(postcard)),
+    deletePostcard: (cardId) => dispatch(PostcardActions.deletePostcard(cardId)),
+    getPostcard: (cardId) => dispatch(PostcardActions.getPostcard(cardId)),
+    getPostcards: () => dispatch(PostcardActions.getPostcards()),
+  }
 }
 
-export default connect(null, null)(PostCardScreen)
+export default connect(null, mapDispatchToProps)(PostCardScreen)

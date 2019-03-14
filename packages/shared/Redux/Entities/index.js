@@ -7,5 +7,4 @@ export default combineReducers({
   users: require('./Users').reducer,
   guides: require('./Guides').reducer,
   comments: require('./Comments').reducer,
-  postcards: require('./Postcards').reducer,
 })

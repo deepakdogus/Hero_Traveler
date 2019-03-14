@@ -467,6 +467,22 @@ const create = () => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
+  const createPostcard = (postcard) => {
+    return api.post('postcard', { postcard })
+  }
+
+  const getPostcard = (cardId) => {
+    return api.get(`postcard/${cardId}`)
+  }
+
+  const getPostcards = () => {
+    return api.get('postcards')
+  }
+
+  const deletePostcard = (cardId) => {
+    return api.delete(`postcard/${cardId}`)
+  }
+
   // ------
   // STEP 3
   // ------
@@ -552,6 +568,10 @@ const create = () => {
     getCategoryGuides,
     likeGuide,
     unlikeGuide,
+    createPostcard,
+    getPostcard,
+    getPostcards,
+    deletePostcard,
   }
 }
 

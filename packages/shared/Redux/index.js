@@ -22,6 +22,7 @@ export default () => {
     pendingUpdates: require('./PendingUpdatesRedux').reducer,
     ux: require('../../Redux/UXRedux').reducer,
     history: require('./HistoryRedux').reducer,
+    postcards: require('./PostcardRedux').reducer,
   })
 
   const rootReducer = (state, action) => {

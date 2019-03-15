@@ -1,29 +1,10 @@
-import {Category, Guide} from '@hero/ht-core'
+import {Category} from '@hero/ht-core'
+import formatQueryParams from '../../../utils/formatSearchQueryParams'
 import _ from 'lodash'
 
 export default function getAll(req, res) {
-  const page = parseInt(req.query.page, 10);
-  const perPage = parseInt(req.query.perPage, 10);
-  const search = req.query.search;
-  const query = req.query.query && _.isString(req.query.query) ? JSON.parse(req.query.query) : req.query.query;
-  const sort = req.query.sort && _.isString(req.query.sort) ? JSON.parse(req.query.sort) : req.query.sort;
-  Category.list({
-    page,
-    perPage,
-    search,
-    sort,
-    query
-  })
-    .then((data) => {
-      const countGuides = data.data.map(i => Guide.getCountCategoryGuides(i.id).then((count) => ({
-        ...i.toObject(),
-        numberOfGuides: count
-      })));
-      Promise.all(countGuides).then((results) => {
-        return res.json({
-          data: results,
-          count: data.count
-        });
-      });
-    });
+  const params = formatQueryParams(req);
+  Category.listWithCounts(params).then((data) => {
+    return res.json(data);
+  });
 }

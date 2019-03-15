@@ -37,7 +37,7 @@ const FormControls = ({
         </ButtonStyled>
         <br/>
         <ButtonStyled
-          disabled={record.isDeleted}
+          disabled={record.deleted}
           type="danger"
           icon="delete"
           loading={isDeleting}

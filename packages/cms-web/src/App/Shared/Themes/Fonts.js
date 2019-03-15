@@ -6,7 +6,7 @@ const type = {
   bold: 'Source Sans Pro',
   sourceSansPro: 'Source Sans Pro',
   crimsonText: 'Crimson Text',
-  montserrat: 'Montserrat',
+  montserrat: 'Montserrat'
 }
 
 const size = {
@@ -20,33 +20,33 @@ const size = {
   regular: 17,
   medium: 14,
   small: 12,
-  tiny: 8.5,
+  tiny: 8.5
 }
 
 const style = {
   h1: {
     fontFamily: type.base,
-    fontSize: size.h1,
+    fontSize: size.h1
   },
   h2: {
     fontWeight: 'bold',
-    fontSize: size.h2,
+    fontSize: size.h2
   },
   h3: {
     fontFamily: type.emphasis,
-    fontSize: size.h3,
+    fontSize: size.h3
   },
   h4: {
     fontFamily: type.base,
-    fontSize: size.h4,
+    fontSize: size.h4
   },
   h5: {
     fontFamily: type.base,
-    fontSize: size.h5,
+    fontSize: size.h5
   },
   h6: {
     fontFamily: type.emphasis,
-    fontSize: size.h6,
+    fontSize: size.h6
   },
   title: {
     fontFamily: type.montserrat,
@@ -58,34 +58,34 @@ const style = {
     fontSize: 16,
     fontFamily: type.sourceSansPro,
     letterSpacing: .7,
-    fontWeight: '300',
+    fontWeight: '300'
   },
   tos: {
     color: Colors.signupGrey,
     fontSize: 13,
     fontWeight: '300',
-    letterSpacing: .7,
+    letterSpacing: .7
   },
   buttonText: {
-    fontFamily: type.montserrat,
+    fontFamily: type.montserrat
   },
   inputLabels: {
     fontWeight: '300',
     letterSpacing: .7,
-    fontSize: 16,
+    fontSize: 16
   },
   normal: {
     fontFamily: type.base,
-    fontSize: size.regular,
+    fontSize: size.regular
   },
   description: {
     fontFamily: type.base,
-    fontSize: size.medium,
-  },
+    fontSize: size.medium
+  }
 }
 
 export default {
   type,
   size,
-  style,
+  style
 }

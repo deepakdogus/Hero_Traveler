@@ -94,38 +94,21 @@ class HomePage extends React.Component {
   fetchNew = () => {
     const { dates } = this.state
     const { getNew } = this.props
-    this.setState({
-      newIsLoading: true,
-    })
 
-    new Promise((resolve, reject) => {
-      getNew({
-        params: {
-          dateFrom: dates[0].format('YYYY/MM/DD'),
-          dateTill: dates[1].format('YYYY/MM/DD'),
-        },
-        resolve,
-        reject,
-      })
-    }).catch(() => {
-      message.error('There was error loading new stats')
-    }).finally(() => this.setState({ newIsLoading: false }))
+    getNew({
+      params: {
+        dateFrom: dates[0].format('YYYY/MM/DD'),
+        dateTill: dates[1].format('YYYY/MM/DD'),
+      },
+      message,
+    })
   }
 
   fetchTotal = () => {
     const { getTotal } = this.props
-    this.setState({
-      totalIsLoading: true,
+    getTotal({
+      message,
     })
-
-    new Promise((resolve, reject) => {
-      getTotal({
-        resolve,
-        reject,
-      })
-    }).catch(() => {
-      message.error('There was error loading total stats')
-    }).finally(() => this.setState({ totalIsLoading: false }))
   }
 
   onFilterChange = (date, dateString) => {
@@ -135,8 +118,7 @@ class HomePage extends React.Component {
   }
 
   renderTotalTable = () => {
-    const { totalStats } = this.props
-    const { totalIsLoading } = this.state
+    const { totalStats, totalIsLoading } = this.props
     if (totalIsLoading) return (<Centered><Spin /></Centered>)
     return (
       <TableStyled>
@@ -171,8 +153,7 @@ class HomePage extends React.Component {
   }
 
   renderNewTable = () => {
-    const { newStats } = this.props
-    const { newIsLoading } = this.state
+    const { newStats, newIsLoading } = this.props
     if (newIsLoading) return (<Centered><Spin /></Centered>)
     return (
       <TableStyled>
@@ -242,6 +223,8 @@ HomePage.propTypes = {
   totalStats: PropTypes.object.isRequired,
   newStats: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
+  newIsLoading: PropTypes.bool.isRequired,
+  totalIsLoading: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -253,6 +236,8 @@ function mapStateToProps(state) {
     totalStats,
     newStats,
     profile, 
+    newIsLoading: get(state, ['admin.stats.newIsLoading']),
+    totalIsLoading: get(state, ['admin.stats.totalIsLoading']),
   }
 }
 

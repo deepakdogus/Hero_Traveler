@@ -11,9 +11,9 @@
  *
  */
 
-'use strict'
+'use strict';
 import {removeEntitiesAtEdges, removeRangeFromContentState} from '.'
-var customSplitBlockInContentState = require('./customSplitBlockInContentState')
+var customSplitBlockInContentState = require('./customSplitBlockInContentState');
 
 /**
  * `DraftModifier` provides a set of convenience methods that apply
@@ -28,11 +28,11 @@ var customSplitBlockInContentState = require('./customSplitBlockInContentState')
 
 var customDraftModifier = {
   splitBlock: function splitBlock(contentState, selectionState, textType) {
-    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState)
-    var withoutText = removeRangeFromContentState(withoutEntities, selectionState)
+    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
+    var withoutText = removeRangeFromContentState(withoutEntities, selectionState);
 
-    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter(), textType)
+    return customSplitBlockInContentState(withoutText, withoutText.getSelectionAfter(), textType);
   },
-}
+};
 
-export default customDraftModifier
+export default customDraftModifier;

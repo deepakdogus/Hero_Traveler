@@ -10,7 +10,7 @@ import values from 'lodash/values'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminGuideActions from '../../Shared/Redux/Admin/Guides'
+import GuideActions from '../../Shared/Redux/Entities/Guides'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import EditFeedItemForm from '../../Components/Shared/EditFeedItemForm'
 import StoriesInGuideTable from '../../Components/Stories/StoriesInGuideTable'
@@ -27,13 +27,9 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditGuide extends React.Component {
-  state = {
-    formSubmitting: false,
-    isDeleting: false,
-  }
+  state = {}
 
   componentDidMount(){
-    //get user EditGuide on signUp and reset signUp redux
     const { record, getGuide, getStories, id } = this.props
     
     if (isEmpty(record)) {
@@ -49,51 +45,19 @@ class EditGuide extends React.Component {
 
   handleDelete = () => {
     const { deleteGuide, history, id } = this.props
-    this.setState({
-      isDeleting: true,
-    })
-    new Promise((resolve, reject) => {
-      deleteGuide({
-        id,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.success('Guide was deleted')
-      history.goBack()
-    }).catch((e) => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.error(e.toString())
+    deleteGuide({
+      id,
+      history,
+      message,
     })
   }
 
   handleSubmit = (values) => {
     const { putGuide, id } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-    new Promise((resolve, reject) => {
-      putGuide({
-        id,
-        values,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.success('Guide was updated')
-    }).catch((e) => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.error(e.toString())
+    putGuide({
+      id,
+      values,
+      message,
     })
   }
 
@@ -152,9 +116,9 @@ class EditGuide extends React.Component {
       record,
       isLoading,
       stories,
+      isDeleting,
+      isUpdating,
     } = this.props
-
-    const { formSubmitting, isDeleting } = this.state
 
     if (isLoading) return (<Centered><Spin /></Centered>)
 
@@ -175,7 +139,7 @@ class EditGuide extends React.Component {
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
                 onDelete={this.handleDelete}
-                formLoading={formSubmitting}
+                formLoading={isUpdating}
                 isDeleting={isDeleting}
               />
             </Col>
@@ -200,6 +164,8 @@ EditGuide.propTypes = {
   putGuide: PropTypes.func.isRequired,
   deleteGuide: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
   stories: PropTypes.array,
   id: PropTypes.string.isRequired,
   getStories: PropTypes.func.isRequired,
@@ -207,12 +173,14 @@ EditGuide.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
-  const list = [...get(state, ['admin','guides', 'list'], [])]
+  const list = [...get(state, ['entities', 'guides', 'adminGuides', 'byId'], [])]
   const record = find(list, { id }) || {}
   const stories = values(get(state, ['entities', 'guides', 'storiesByGuide', id], []))
   return {
     record,
-    isLoading: state.admin.guides.isLoading,
+    isLoading: get(state, 'entities.guides.adminGuides.fetchStatus.fetching'),
+    isDeleting: get(state, 'entities.guides.adminGuides.isDeleting'),
+    isUpdating: get(state, 'entities.guides.adminGuides.isUpdating'),
     stories,
     id,
   }
@@ -220,9 +188,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuide: (id) => dispatch(AdminGuideActions.adminGetGuide(id)),
-    putGuide: (payload) => dispatch(AdminGuideActions.adminPutGuide(payload)),
-    deleteGuide: (payload) => dispatch(AdminGuideActions.adminDeleteGuide(payload)),
+    getGuide: (id) => dispatch(GuideActions.adminGetGuide(id)),
+    putGuide: (payload) => dispatch(GuideActions.adminPutGuide(payload)),
+    deleteGuide: (payload) => dispatch(GuideActions.adminDeleteGuide(payload)),
     getStories: (id) => dispatch(StoryActions.getGuideStories(id)),
   }
 }

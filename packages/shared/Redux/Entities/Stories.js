@@ -40,7 +40,19 @@ const { Types, Creators } = createActions({
   getGuideStories: ['guideId'],
   receiveStoriesByGuide: ['guideId', 'storiesByGuide'],
   getDeletedStories: ['userId'],
-  syncPendingUpdates: null
+  syncPendingUpdates: null,
+  adminGetStories: ['params'],
+  adminGetStoriesSuccess: ['res'],
+  adminGetStoriesFailure: ['error'],
+  adminGetStory: ['id'],
+  adminGetStorySuccess: ['res'],
+  adminGetStoryFailure: ['error'],
+  adminPutStory: ['payload'],
+  adminPutStoryFailure: null,
+  adminDeleteStory: ['payload'],
+  adminDeleteStorySuccess: ['id'],
+  adminDeleteStoryFailure: ['error'],
+  adminRestoreStories: ['payload'],
 })
 
 export const StoryTypes = Types
@@ -68,6 +80,18 @@ export const INITIAL_STATE = Immutable({
     error: null,
     fetchStatus: initialFetchStatus(),
     byId: []
+  },
+  adminStories: {
+    fetchStatus: initialFetchStatus(),
+    byId: [],
+    total: 0,
+    error: null,
+    isDeleting: false,
+    isUpdating: false,
+    params: {
+      page: 1,
+      limit: 5
+    }
   }
 })
 
@@ -340,6 +364,129 @@ export const removeDeletedStories = (state, {deleteStories = [ {} ] }) => {
   }, state)
 }
 
+
+export const adminGetStories = (state, { params = {} }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: true,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'params'],
+      {
+        ...state.adminStories.params,
+        ...params
+      })
+}
+
+export const adminGetStoriesFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      error)
+}
+
+export const adminGetStoriesSuccess = (state, { res }) => {
+  return state
+    .setIn(
+      ['adminStories', 'byId'],
+      res.data)
+    .setIn(
+      ['adminStories', 'total'],
+      res.count)
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      null)
+}
+
+export const adminGetStory = (state, { params = {} }) => {
+  return state.setIn(['adminStories', 'fetchStatus', 'fetching'], true)
+}
+
+export const adminGetStoryFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      error)
+}
+
+
+export const adminGetStorySuccess = (state, { res }) => {
+  let list = [...state.getIn(['adminStories', 'byId'])]
+  let total = state.getIn(['adminStories', 'total'])
+  const { record } = res
+  const recordIndex = _.findIndex(list, { id: record.id })
+  if (recordIndex >= 0) {
+    list[recordIndex] = record
+  } else {
+    list.push(record)
+    total = total + 1
+  }
+  return state
+    .setIn(
+      ['adminStories', 'byId'],
+      list)
+    .setIn(
+      ['adminStories', 'total'],
+      total)
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      null)
+    .setIn(
+      ['adminStories', 'isUpdating'],
+      false)
+}
+
+export const adminDeleteStory = (state) => {
+  return state.setIn(['adminStories', 'isDeleting'], true)
+}
+
+export const adminDeleteStoryFailure = (state) => {
+  return state.setIn(['adminStories', 'isDeleting'], false)
+}
+
+export const adminDeleteStorySuccess = (state, { id }) => {
+  const list = [...state.getIn(['adminStories', 'byId'])]
+  const recordIndex = _.findIndex(list, { id })
+    
+  return state.setIn(['adminStories', 'byId', recordIndex, 'isDeleted'], true)
+    .setIn(['adminStories', 'isDeleting'], false)
+}
+
+export const adminPutStory = (state) => {
+  return state.setIn(['adminStories', 'isUpdating'], true)
+}
+
+export const adminPutStoryFailure = (state) => {
+  return state.setIn(['adminStories', 'isUpdating'], false)
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (state, categoryId) => {
@@ -395,4 +542,15 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_BOOKMARKS_SUCCESS]: getBookmarksSuccess,
   [Types.GET_BOOKMARKS_FAILURE]: getBookmarksFailure,
   [Types.RECEIVE_STORIES_BY_GUIDE]: receiveStoriesByGuide,
+  [Types.ADMIN_GET_STORIES]: adminGetStories,
+  [Types.ADMIN_GET_STORIES_FAILURE]: adminGetStoriesFailure,
+  [Types.ADMIN_GET_STORIES_SUCCESS]: adminGetStoriesSuccess,
+  [Types.ADMIN_GET_STORY]: adminGetStory,
+  [Types.ADMIN_GET_STORY_FAILURE]: adminGetStoryFailure,
+  [Types.ADMIN_GET_STORY_SUCCESS]: adminGetStorySuccess,
+  [Types.ADMIN_DELETE_STORY]: adminDeleteStory,
+  [Types.ADMIN_DELETE_STORY_FAILURE]: adminDeleteStoryFailure,
+  [Types.ADMIN_DELETE_STORY_SUCCESS]: adminDeleteStorySuccess,
+  [Types.ADMIN_PUT_STORY]: adminPutStory,
+  [Types.ADMIN_PUT_STORY_FAILURE]: adminPutStoryFailure,
 })

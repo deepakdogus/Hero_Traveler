@@ -16,24 +16,23 @@ const updateReducers = (store: Object) => {
           name: 'PURGE',
           value: {
             'Old Version:': localVersion,
-            'New Version:': reducerVersion,
+            'New Version:': reducerVersion
           },
           preview: 'Reducer Version Change Detected',
-          important: true,
+          important: true
         })
       }
       // Purge store
       persistStore(store, config, startup).purge()
       AsyncStorage.setItem('reducerVersion', reducerVersion)
-    }
- else {
+    } else {
       if (debugConfig.useReactotron && console.tron) {
         console.tron.display({
           messsage: 'Store',
           preview: 'Store!',
           value: {
-            store: store.getState(),
-          },
+            store: store.getState()
+          }
         })
       }
       persistStore(store, config, startup)

@@ -4,10 +4,11 @@ import { connect } from 'react-redux'
 import { Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import get from 'lodash/get'
 
 import GenericList from '../../Components/Shared/GenericList'
 
-import AdminGuidesActions from '../../Shared/Redux/Admin/Guides'
+import GuidesActions from '../../Shared/Redux/Entities/Guides'
 
 const columns = [{
   title: 'Title',
@@ -104,19 +105,20 @@ GuidesList.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const newList = [...state.admin.guides.list]
+  const newList = [...get(state, 'entities.guides.adminGuides.byId', [])]
+  console.log('state', state)
   return {
     list: newList,
-    total: state.admin.guides.total,
-    params: state.admin.guides.params,
-    isLoading: state.admin.guides.isLoading,
+    total: get(state, 'entities.guides.adminGuides.total'),
+    params: get(state, 'entities.guides.adminGuides.params'),
+    isLoading: get(state, 'entities.guides.adminGuides.fetchStatus.fetching'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuides: (params) => dispatch(AdminGuidesActions.adminGetGuides(params)),
-    restoreGuides: (payload) => dispatch(AdminGuidesActions.adminRestoreGuides(payload)),
+    getGuides: (params) => dispatch(GuidesActions.adminGetGuides(params)),
+    restoreGuides: (payload) => dispatch(GuidesActions.adminRestoreGuides(payload)),
   }
 }
 

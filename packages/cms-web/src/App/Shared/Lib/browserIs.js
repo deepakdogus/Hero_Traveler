@@ -1,5 +1,6 @@
 export const browserIs = (checkFor) => {
-	const browsers = ['MSIE', 'Firefox', 'Safari', 'Chrome', 'Opera']
+
+	const browsers = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"]
   const sUsrAg = navigator.userAgent
   
   let nIdx = browsers.length - 1

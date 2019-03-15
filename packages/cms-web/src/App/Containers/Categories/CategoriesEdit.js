@@ -9,7 +9,7 @@ import find from 'lodash/find'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
+import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
 import prepareCategoryImages from '../../Utils/prepareCategoryImages'
 
@@ -25,10 +25,7 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditCategory extends React.Component {
-  state = {
-    formSubmitting: false,
-    isDeleting: false,
-  }
+  state = {}
 
   componentDidMount(){
     //get user EditCategory on signUp and reset signUp redux
@@ -46,52 +43,19 @@ class EditCategory extends React.Component {
 
   handleDelete = () => {
     const { deleteCategory, history, id } = this.props
-    this.setState({
-      isDeleting: true,
-    })
-    new Promise((resolve, reject) => {
-      deleteCategory({
-        id,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.success('Category was deleted')
-      history.goBack()
-    }).catch((e) => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.error(e.toString())
+    deleteCategory({
+      id,
+      history,
+      message,
     })
   }
 
   handleSubmit = (values) => {
     const { putCategory, id } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-    
-    new Promise((resolve, reject) => {
-      putCategory({
-        id,
-        values: prepareCategoryImages(values),
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.success('Category was updated')
-    }).catch((e) => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.error(e.toString())
+    putCategory({
+      id,
+      values: prepareCategoryImages(values),
+      message,
     })
   }
 
@@ -141,9 +105,9 @@ class EditCategory extends React.Component {
     const {
       record,
       isLoading,
+      isDeleting,
+      isUpdating,
     } = this.props
-
-    const { formSubmitting, isDeleting } = this.state
 
     if (isLoading) return (<Centered><Spin /></Centered>)
 
@@ -163,7 +127,7 @@ class EditCategory extends React.Component {
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
                 onDelete={this.handleDelete}
-                formLoading={formSubmitting}
+                formLoading={isUpdating}
                 isDeleting={isDeleting}
               />
             </Col>
@@ -184,26 +148,30 @@ EditCategory.propTypes = {
   putCategory: PropTypes.func.isRequired,
   deleteCategory: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
-  const list = [...get(state, ['admin','categories', 'list'], [])]
+  const list = [...get(state, 'admin.entities.categories.adminCategories.byId', [])]
   const record = find(list, { id }) || {}
   return {
     record,
-    isLoading: state.admin.categories.isLoading,
+    isLoading: get(state, 'entities.categories.adminCategories.fetchStatus.fetching'),
+    isDeleting: get(state, 'entities.categories.adminCategories.isDeleting'),
+    isUpdating: get(state, 'entities.categories.adminCategories.isUpdating'),
     id,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategory: (id) => dispatch(AdminCategoryActions.adminGetCategory(id)),
-    putCategory: (payload) => dispatch(AdminCategoryActions.adminPutCategory(payload)),
+    getCategory: (id) => dispatch(CategoryActions.adminGetCategory(id)),
+    putCategory: (payload) => dispatch(CategoryActions.adminPutCategory(payload)),
     deleteCategory: (payload) =>
-      dispatch(AdminCategoryActions.adminDeleteCategory(payload)),
+      dispatch(CategoryActions.adminDeleteCategory(payload)),
   }
 }
 

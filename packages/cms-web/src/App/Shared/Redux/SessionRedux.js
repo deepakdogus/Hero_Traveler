@@ -36,25 +36,26 @@ export const INITIAL_STATE = Immutable({
 export const startInitializeSession = (state) => {
   return state.merge({
     isSessionLoading: true,
-    error: null,
+    error: null
   })
 }
 // we're attempting to login
 export const initializeSession = (state, {userId, tokens}) => {
+
   return state.merge({
     userId,
     tokens,
     isLoggedOut: false,
     isResumingSession: false,
     isSessionLoading: false,
-    error: null,
+    error: null
   })
 }
 
 export const resumeSessionFailure = (state, { error }) => {
   return state.merge({
     isSessionLoading: false,
-    error,
+    error
   })
 }
 
@@ -66,7 +67,7 @@ export const logout = (state) => state.merge({ isLoggingOut: true })
 export const logoutSuccess = (state, {deviceType}) => {
   let update = {
       isLoggedOut: true,
-      isLoggingOut: false,
+      isLoggingOut: false
     }
   if (deviceType !== 'mobile') {
     update.tokens = null
@@ -80,7 +81,7 @@ export const logoutSuccess = (state, {deviceType}) => {
 // operation so that user can at least try to login again.
 export const logoutFailure = (state) => state.merge({
   isLoggedOut: true,
-  isLoggingOut: false,
+  isLoggingOut: false
 })
 
 export const setIsResuming = (state, {isResuming}) => state.merge({
@@ -99,7 +100,7 @@ export const refreshSessionSuccess = (state, {tokens}) => {
 export const resumeError = (state, {error}) => state.merge({
   isResumingSession: false,
   isSessionLoading: false,
-  error,
+  error
 })
 
 export const clearError = (state) => state.merge({ error: null })

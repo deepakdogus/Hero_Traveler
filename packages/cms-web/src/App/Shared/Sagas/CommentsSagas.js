@@ -10,8 +10,7 @@ export function * getComments(api, {feedItemId, entityType}) {
 
   if (response.ok) {
     yield put(CommentActions.getCommentsSuccess(response.data, feedItemId, entityType))
-  }
- else {
+  } else {
     yield put(CommentActions.commentRequestFailure('get', 'Failed to get comments'))
   }
 }
@@ -28,10 +27,9 @@ export function * createComment(api, {feedItemId, entityType, text}) {
   if (response.ok) {
     yield [
       put(CommentActions.createCommentSuccess(response.data, feedItemId, entityType)),
-      put(changeCount(feedItemId, 'comments', true)),
+      put(changeCount(feedItemId, 'comments', true))
     ]
-  }
- else {
+  } else {
     yield put(CommentActions.commentRequestFailure('get', 'Failed to create comment'))
   }
 }

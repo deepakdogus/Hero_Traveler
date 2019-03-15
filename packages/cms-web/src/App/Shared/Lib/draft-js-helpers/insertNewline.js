@@ -16,18 +16,18 @@ export default function keyCommandInsertNewline(editorState) {
       {
         type: 'unstyled',
         selectNewBlock: true,
-      },
+      }
     )
   }
 
   var contentState = Modifier.splitBlock(
     editorState.getCurrentContent(),
-    editorState.getSelection(),
+    editorState.getSelection()
   )
 
   return EditorState.push(
     editorState,
     contentState,
-    'split-block',
+    'split-block'
   )
 }

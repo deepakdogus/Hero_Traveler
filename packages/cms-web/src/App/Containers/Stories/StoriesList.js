@@ -4,10 +4,11 @@ import { connect } from 'react-redux'
 import { Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import get from 'lodash/get'
 
 import GenericList from '../../Components/Shared/GenericList'
 
-import AdminStoriesActions from '../../Shared/Redux/Admin/Stories'
+import StoriesActions from '../../Shared/Redux/Entities/Stories'
 
 const columns = [{
   title: 'Title',
@@ -104,20 +105,20 @@ StoriesList.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const newList = [...state.admin.stories.list]
+  const newList = [...get(state, 'entities.stories.adminStories.byId', [])]
   return {
     list: newList,
-    total: state.admin.stories.total,
-    params: state.admin.stories.params,
-    isLoading: state.admin.stories.isLoading,
+    total: get(state, 'entities.stories.adminStories.total'),
+    params: get(state, 'entities.stories.adminStories.params'),
+    isLoading: get(state, 'entities.stories.adminStories.fetchStatus.fetching'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (params) => dispatch(AdminStoriesActions.adminGetStories(params)),
+    getStories: (params) => dispatch(StoriesActions.adminGetStories(params)),
     restoreStories: (payload) =>
-      dispatch(AdminStoriesActions.adminRestoreStories(payload)),
+      dispatch(StoriesActions.adminRestoreStories(payload)),
   }
 }
 

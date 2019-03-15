@@ -5,7 +5,7 @@ import { Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
-import AdminUserActions from '../../Shared/Redux/Admin/Users'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 import GenericList from '../../Components/Shared/GenericList'
 
@@ -69,7 +69,7 @@ class UsersList extends React.Component {
 
     return (
       <GenericList
-        rowKey="username"
+        rowKey="id"
         entity="users"
         list={list}
         columns={columns}
@@ -96,19 +96,19 @@ UsersList.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const newList = [...state.admin.users.list]
+  const newList = [...state.entities.users.adminUsers.byId]
   return {
     list: newList,
-    total: state.admin.users.total,
-    params: state.admin.users.params,
-    isLoading: state.admin.users.isLoading,
+    total: state.entities.users.adminUsers.total,
+    params: state.entities.users.adminUsers.params,
+    isLoading: state.entities.users.adminUsers.fetchStatus.fetching,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (params) => dispatch(AdminUserActions.adminGetUsers(params)),
-    restoreUsers: (payload) => dispatch(AdminUserActions.adminRestoreUsers(payload)),
+    getUsers: (params) => dispatch(UserActions.adminGetUsers(params)),
+    restoreUsers: (payload) => dispatch(UserActions.adminRestoreUsers(payload)),
   }
 }
 

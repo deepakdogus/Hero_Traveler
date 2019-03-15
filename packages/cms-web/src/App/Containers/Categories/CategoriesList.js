@@ -5,7 +5,7 @@ import { Icon, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
-import AdminCategoriesActions from '../../Shared/Redux/Admin/Categories'
+import CategoriesActions from '../../Shared/Redux/Entities/Categories'
 import Images from '../../Themes/Images'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 
@@ -138,21 +138,22 @@ CategoriesList.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const newList = [...state.admin.categories.list]
+  const newList = [...get(state, 'entities.categories.adminCategories.byId', [])]
   return {
     list: newList,
-    total: state.admin.categories.total,
-    params: state.admin.categories.params,
-    isLoading: state.admin.categories.isLoading,
+    total: get(state, 'entities.categories.adminCategories.total'),
+    params: get(state, 'entities.categories.adminCategories.params'),
+    isLoading:
+      get(state, 'entities.categories.adminCategories.fetchStatus.fetching'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getCategories: (params) =>
-      dispatch(AdminCategoriesActions.adminGetCategories(params)),
+      dispatch(CategoriesActions.adminGetCategories(params)),
     restoreCategories: (payload) =>
-      dispatch(AdminCategoriesActions.adminRestoreCategories(payload)),
+      dispatch(CategoriesActions.adminRestoreCategories(payload)),
   }
 }
 

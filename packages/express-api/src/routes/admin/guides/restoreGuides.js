@@ -1,13 +1,7 @@
 import {Guide} from '@hero/ht-core'
 
 const restoreGuide = async(id) => {
-  const guidePromise = Guide.getGuideById({ _id: id })
-
-  return guidePromise
-  .then((guide) => {
-    guide.isDeleted = false
-    return guide.save()
-  });
+  return Guide.restoreGuide(id)
 }
 
 export default function restoreGuides(req, res) {

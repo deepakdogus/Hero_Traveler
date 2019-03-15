@@ -183,6 +183,7 @@ StorySchema.statics = {
       .sort({createdAt: -1})
   },
 
+  // includes soft-deleted by default
   getMany({ page = 1, perPage = 5, search='', sort, query }) {
     let queryToApply = {}
 
@@ -201,8 +202,8 @@ StorySchema.statics = {
       }
     }
     return Promise.props({
-      count: this.count(queryToApply).exec(),
-      data: this.find(queryToApply)
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
         .populate('author')
         .populate('categories.title')
         .skip((page - 1) * perPage)

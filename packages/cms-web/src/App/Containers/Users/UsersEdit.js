@@ -11,7 +11,7 @@ import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 import values from 'lodash/values'
 
-import AdminUserActions from '../../Shared/Redux/Admin/Users'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import LoginActions from '../../Shared/Redux/LoginRedux'
@@ -54,26 +54,10 @@ class EditUser extends React.Component {
 
   handleDelete = () => {
     const { deleteUser, history, id } = this.props
-    this.setState({
-      isDeleting: true,
-    })
-    new Promise((resolve, reject) => {
-      deleteUser({
-        id,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.success('User was deleted')
-      history.goBack()
-    }).catch((e) => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.error(e.toString())
+    deleteUser({
+      id,
+      history,
+      message,
     })
   }
 
@@ -102,23 +86,10 @@ class EditUser extends React.Component {
         = convertUrlsToImageFormat(undefined, interstitialImage, 'interstitialImage')
     }
     
-    new Promise((resolve, reject) => {
-      putUser({
-        id,
-        values,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.success('User was updated')
-    }).catch((e) => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.error(e.toString())
+    putUser({
+      id,
+      values,
+      message,
     })
   }
 
@@ -172,9 +143,9 @@ class EditUser extends React.Component {
       stories,
       guides,
       resetPasswordRequest,
+      isDeleting,
+      isUpdating,
     } = this.props
-
-    const { formSubmitting, isDeleting } = this.state
 
     if (isLoading) return (<Centered><Spin /></Centered>)
 
@@ -194,7 +165,7 @@ class EditUser extends React.Component {
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
                 onDelete={this.handleDelete}
-                formLoading={formSubmitting}
+                formLoading={isUpdating}
                 isDeleting={isDeleting}
                 resetPasswordRequest={resetPasswordRequest}
               />
@@ -229,13 +200,15 @@ EditUser.propTypes = {
   getGuides: PropTypes.func.isRequired,
   guides: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
   resetPasswordRequest: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
-  const list = [...get(state, ['admin','users', 'list'], [])]
+  const list = [...get(state, ['entities', 'users', 'adminUsers', 'byId'], [])]
   const record = find(list, { id }) || {}
   const stories
     = filter(values(get(state, 'entities.stories.entities', [])), { author: id })
@@ -243,7 +216,9 @@ function mapStateToProps(state, ownProps) {
     = filter(values(get(state, 'entities.guides.entities', [])), { author: id })
   return {
     record,
-    isLoading: state.admin.users.isLoading,
+    isLoading: get(state, 'entities.users.adminUsers.fetchStatus.fetching'),
+    isDeleting: get(state, 'entities.users.adminUsers.isDeleting'),
+    isUpdating: get(state, 'entities.users.adminUsers.isUpdating'),
     stories,
     guides,
     id,
@@ -252,9 +227,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUser: (id) => dispatch(AdminUserActions.adminGetUser(id)),
-    putUser: (payload) => dispatch(AdminUserActions.adminPutUser(payload)),
-    deleteUser: (payload) => dispatch(AdminUserActions.adminDeleteUser(payload)),
+    getUser: (id) => dispatch(UserActions.adminGetUser(id)),
+    putUser: (payload) => dispatch(UserActions.adminPutUser(payload)),
+    deleteUser: (payload) => dispatch(UserActions.adminDeleteUser(payload)),
     getStories: (id) => dispatch(StoryActions.fromUserRequest(id)),
     getGuides: (id) => dispatch(GuideActions.getUserGuides(id)),
     resetPasswordRequest: email => dispatch(LoginActions.resetPasswordRequest(email)),

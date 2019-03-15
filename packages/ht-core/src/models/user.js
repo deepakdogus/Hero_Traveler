@@ -64,10 +64,6 @@ const UserSchema = new Schema({
     unique: true,
     uniqueCaseInsensitive: true
   },
-  isDeleted: {
-    type: Boolean,
-    default: false
-  },
   bio: {
     type: String
   },
@@ -287,7 +283,9 @@ UserSchema.statics = {
       notificationTypes: defaultNotificationTypes,
     })
   },
-  list({ page = 1, perPage = 5, search='', sort, query }) {
+
+  // includes soft-deleted by default
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
     let queryToApply = {}
 
     if (query) {
@@ -304,10 +302,9 @@ UserSchema.statics = {
         [sort.fieldName]: sort.order
       }
     }
-
     return Promise.props({
-      count: this.count(queryToApply).exec(),
-      data: this.find(queryToApply)
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)

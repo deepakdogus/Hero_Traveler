@@ -4,10 +4,9 @@ import HashtagActions from '../Redux/Entities/Hashtags'
 export function * getHashtags (api, action) {
   const response = yield call(api.getHashtags)
   if (response.ok) {
-    const { entities } = response.data
+    const { entities } = response.data;
     yield put(HashtagActions.loadHashtagsSuccess(entities.hashtags))
-  }
- else {
+  } else {
     yield put(HashtagActions.loadHashtagsFailure())
   }
 }

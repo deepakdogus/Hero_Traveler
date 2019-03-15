@@ -2,9 +2,9 @@ import express from 'express'
 import {hasValidOauth, populatesUser, isAdmin} from '../../../middleware'
 import endpointWrapper from '../../../utils/endpointWrapper'
 import getAll from './getAll'
-import getOne from './getOne'
+import getGuide from '../../guide/getGuide'
 import putOne from './putOne'
-import deleteOne from './deleteOne'
+import deleteGuide from '../../guide/deleteGuide'
 import restoreGuides from './restoreGuides'
 
 const router = express.Router()
@@ -18,11 +18,11 @@ router.get(
 )
 
 router.get(
-  '/:id',
+  '/:guideId',
   hasValidOauth,
   populatesUser,
   isAdmin,
-  endpointWrapper(getOne)
+  endpointWrapper(getGuide)
 )
 
 router.put(
@@ -38,7 +38,7 @@ router.delete(
   hasValidOauth,
   populatesUser,
   isAdmin,
-  endpointWrapper(deleteOne)
+  endpointWrapper(deleteGuide)
 )
 
 router.post(

@@ -22,12 +22,10 @@ const isEqual = (firstItem, secondItem) => {
     || !firstItem && !!secondItem
   ) {
     return false
-  }
- else if (!!firstItem && !!secondItem) {
+  } else if (!!firstItem && !!secondItem) {
     // lodash will take of equality check for all objects
     return _.isEqual(firstItem, secondItem)
-  }
- else {
+  } else {
     return true
   }
 }
@@ -72,7 +70,7 @@ const isDraftJSContentSame = (workingDraft, comparisonDraft) => {
 const haveFieldsChanged = (workingDraft, comparisonDraft) => {
   if (!workingDraft || !comparisonDraft || _.isEqual(comparisonDraft, {})) return
   return !_.every(
-    fieldsToCheck.map(field => isFieldSame(field, workingDraft, comparisonDraft)),
+    fieldsToCheck.map(field => isFieldSame(field, workingDraft, comparisonDraft))
   )
 }
 
@@ -80,6 +78,7 @@ const hasChangedSinceSave = (workingDraft, draftToBeSaved) => {
   return !draftToBeSaved
     || (draftToBeSaved && haveFieldsChanged(workingDraft, draftToBeSaved))
 }
+
 
 export {
   isFieldSame,

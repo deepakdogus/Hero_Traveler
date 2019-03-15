@@ -2,9 +2,9 @@ import express from 'express'
 import {hasValidOauth, populatesUser, isAdmin} from '../../../middleware'
 import endpointWrapper from '../../../utils/endpointWrapper'
 import getAll from './getAll'
-import getOne from './getOne'
+import getUser from '../../user/getUser'
 import update from '../../user/update'
-import deleteOne from './deleteOne'
+import deleteUser from '../../user/deleteUser'
 import restoreUsers from './restoreUsers'
 
 const router = express.Router()
@@ -22,7 +22,7 @@ router.get(
   hasValidOauth,
   populatesUser,
   isAdmin,
-  endpointWrapper(getOne)
+  endpointWrapper(getUser)
 )
 
 router.put(
@@ -38,7 +38,7 @@ router.delete(
   hasValidOauth,
   populatesUser,
   isAdmin,
-  endpointWrapper(deleteOne)
+  endpointWrapper(deleteUser)
 )
 
 router.post(

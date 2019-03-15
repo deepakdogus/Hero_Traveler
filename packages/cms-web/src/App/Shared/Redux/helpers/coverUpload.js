@@ -14,7 +14,7 @@ export function getNewCover(coverImage, coverVideo){
 
 export function saveCover(api, workingDraft, cover){
   let promise
-  if (workingDraft.coverImage) promise = api.uploadCoverImage(workingDraft.id, cover)
+  if (!!workingDraft.coverImage) promise = api.uploadCoverImage(workingDraft.id, cover)
   else promise = api.uploadCoverVideo(workingDraft.id, cover)
   return promise.then(resp => {
     return _.merge(
@@ -32,13 +32,13 @@ export function changeCoverVideo(state, coverVideo){
   )
   return nullVideo.setIn(
     ['workingDraft', 'coverVideo'],
-    coverVideo,
+    coverVideo
   )
 }
 
 export function needToChangeCoverVideo(state, workingDraft){
   return (
-    (state.workingDraft.coverVideo && workingDraft.coverVideo)
-      && (state.workingDraft.coverVideo.uri !== workingDraft.coverVideo.uri)
+    (state.workingDraft.coverVideo && workingDraft.coverVideo) &&
+      (state.workingDraft.coverVideo.uri !== workingDraft.coverVideo.uri)
   )
 }

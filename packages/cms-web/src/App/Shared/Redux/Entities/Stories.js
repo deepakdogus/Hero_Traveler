@@ -41,6 +41,18 @@ const { Types, Creators } = createActions({
   receiveStoriesByGuide: ['guideId', 'storiesByGuide'],
   getDeletedStories: ['userId'],
   syncPendingUpdates: null,
+  adminGetStories: ['params'],
+  adminGetStoriesSuccess: ['res'],
+  adminGetStoriesFailure: ['error'],
+  adminGetStory: ['id'],
+  adminGetStorySuccess: ['res'],
+  adminGetStoryFailure: ['error'],
+  adminPutStory: ['payload'],
+  adminPutStoryFailure: null,
+  adminDeleteStory: ['payload'],
+  adminDeleteStorySuccess: ['id'],
+  adminDeleteStoryFailure: ['error'],
+  adminRestoreStories: ['payload'],
 })
 
 export const StoryTypes = Types
@@ -67,8 +79,20 @@ export const INITIAL_STATE = Immutable({
   drafts: {
     error: null,
     fetchStatus: initialFetchStatus(),
-    byId: [],
+    byId: []
   },
+  adminStories: {
+    fetchStatus: initialFetchStatus(),
+    byId: [],
+    total: 0,
+    error: null,
+    isDeleting: false,
+    isUpdating: false,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  }
 })
 
 /* ------------- Reducers ------------- */
@@ -77,8 +101,8 @@ export const INITIAL_STATE = Immutable({
 export const feedRequest = (state, { userId, params }) => {
   return state.setIn(
     ['fetchStatus', 'fetching'],
-    true,
-  )
+    true
+  );
 }
 // successful temperature lookup
 export const feedSuccess = (state, {userFeedById, count, params}) => {
@@ -99,27 +123,27 @@ export const feedSuccess = (state, {userFeedById, count, params}) => {
     },
     userFeedById: userFeedUpdate,
     userStoryFeedCount: count,
-    error: null,
+    error: null
   }, {
-    deep: true,
+    deep: true
   })
 }
 
 export const userRequest = (state, {userId}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
-    {fetching: true, loaded: false},
+    {fetching: true, loaded: false}
   )
 }
 
 export const userSuccess = (state, {userId, userStoriesById}) => {
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: true},
+    {fetching: false, loaded: true}
   )
   .setIn(
     ['storiesByUserAndId', userId, 'byId'],
-    userStoriesById,
+    userStoriesById
   )
 }
 
@@ -130,32 +154,32 @@ export const userFailure = (state, {userId, error}) => {
 
   return state.setIn(
     ['storiesByUserAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error},
+    {fetching: false, loaded: false, error}
   )
   .setIn(
     ['storiesByUserAndId', userId, 'byId'],
-    derivedById,
+    derivedById
   )
 }
 
 export const getBookmarks = (state, {userId}) => {
   return state.setIn(
     ['bookmarks', userId, 'fetchStatus'],
-    {fetching: true, loaded: false},
+    {fetching: true, loaded: false}
   )
 }
 
 export const getBookmarksSuccess = (state, {userId, bookmarks}) => {
   return state.setIn(
     ['bookmarks', userId, 'fetchStatus'],
-    {fetching: false, loaded: true},
+    {fetching: false, loaded: true}
   )
 }
 
 export const getBookmarksFailure = (state, {userId, error}) => {
   return state.setIn(
     ['bookmarks', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error},
+    {fetching: false, loaded: false, error}
   )
 }
 
@@ -163,18 +187,18 @@ export const categoryRequest = (state, {categoryId}) => {
   const errorLessState = state.setIn(['error'], null)
   return errorLessState.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    {fetching: true, loaded: false},
+    {fetching: true, loaded: false}
   )
 }
 
 export const categorySuccess = (state, {categoryId, categoryStoriesById}) => {
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    {fetching: false, loaded: true},
+    {fetching: false, loaded: true}
   )
   .setIn(
     ['storiesByCategoryAndId', categoryId, 'byId'],
-    categoryStoriesById,
+    categoryStoriesById
   )
 }
 
@@ -187,11 +211,11 @@ export const categoryFailure = (state, {categoryId, error}) => {
 
   return state.setIn(
     ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    {fetching: false, loaded: false},
+    {fetching: false, loaded: false}
   )
   .setIn(
     ['storiesByCategoryAndId', categoryId, 'byId'],
-    derivedStoriesById,
+    derivedStoriesById
   )
   .setIn(['error'], error)
 }
@@ -200,11 +224,11 @@ export const failure = (state, {error}) =>
   state.merge({
     fetchStatus: {
       fetching: false,
-      loaded: false,
+      loaded: false
     },
-    error,
+    error
   }, {
-    deep: true,
+    deep: true
   })
 
 export const updateEntities = (state, { stories = {} }) => {
@@ -214,7 +238,7 @@ export const updateEntities = (state, { stories = {} }) => {
 export const receiveStoriesByGuide = (state, { guideId, storiesByGuide }) => {
   return state.setIn(
     ['storiesByGuide', guideId],
-    storiesByGuide,
+    storiesByGuide
   )
 }
 
@@ -223,7 +247,7 @@ export const addUserStory = (state, {stories = {}, draftId}) => {
   const story = stories[Object.keys(stories)[0]]
 
   let userStoriesMeta = state.storiesByUserAndId[story.author]
-  if (!userStoriesMeta) userStoriesMeta = { 'byId': []}
+  if (!userStoriesMeta) userStoriesMeta = { "byId": []}
   let userStoriesById = userStoriesMeta.byId
   // adding to list of user's stories
   if (story && userStoriesById.indexOf(story.id) === -1) {
@@ -236,6 +260,7 @@ export const addUserStory = (state, {stories = {}, draftId}) => {
       userStoriesById,
     })
     state = state.merge({userFeedById})
+
   }
   return removeDraft(state, {draftId})
 }
@@ -246,10 +271,10 @@ export const loadDrafts = (state) => {
       error: null,
       fetchStatus: {
         fetching: true,
-        loaded: false,
+        loaded: false
       },
       byId: state.drafts.byId,
-    },
+    }
   })
 }
 
@@ -258,10 +283,10 @@ export const loadDraftsSuccess = (state, {draftsById}) => {
     drafts: {
       fetchStatus: {
         fetching: false,
-        loaded: true,
+        loaded: true
       },
-      byId: draftsById,
-    },
+      byId: draftsById
+    }
   })
 }
 
@@ -274,10 +299,10 @@ export const loadDraftsFailure = (state, {error, userId}) => {
       error,
       fetchStatus: {
         fetching: false,
-        loaded: false,
+        loaded: false
       },
-      byId: derivedById,
-    },
+      byId: derivedById
+    }
   })
 }
 
@@ -292,10 +317,10 @@ export const addDraft = (state, {draft}) => {
     drafts: {
       fetchStatus: {
         fetching: false,
-        loaded: true,
+        loaded: true
       },
-      byId: draftsById,
-    },
+      byId: draftsById
+    }
   })
 }
 
@@ -339,6 +364,129 @@ export const removeDeletedStories = (state, {deleteStories = [ {} ] }) => {
   }, state)
 }
 
+
+export const adminGetStories = (state, { params = {} }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: true,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'params'],
+      {
+        ...state.adminStories.params,
+        ...params
+      })
+}
+
+export const adminGetStoriesFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      error)
+}
+
+export const adminGetStoriesSuccess = (state, { res }) => {
+  return state
+    .setIn(
+      ['adminStories', 'byId'],
+      res.data)
+    .setIn(
+      ['adminStories', 'total'],
+      res.count)
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      null)
+}
+
+export const adminGetStory = (state, { params = {} }) => {
+  return state.setIn(['adminStories', 'fetchStatus', 'fetching'], true)
+}
+
+export const adminGetStoryFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      error)
+}
+
+
+export const adminGetStorySuccess = (state, { res }) => {
+  let list = [...state.getIn(['adminStories', 'byId'])]
+  let total = state.getIn(['adminStories', 'total'])
+  const { record } = res
+  const recordIndex = _.findIndex(list, { id: record.id })
+  if (recordIndex >= 0) {
+    list[recordIndex] = record
+  } else {
+    list.push(record)
+    total = total + 1
+  }
+  return state
+    .setIn(
+      ['adminStories', 'byId'],
+      list)
+    .setIn(
+      ['adminStories', 'total'],
+      total)
+    .setIn(
+      ['adminStories', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminStories', 'error'],
+      null)
+    .setIn(
+      ['adminStories', 'isUpdating'],
+      false)
+}
+
+export const adminDeleteStory = (state) => {
+  return state.setIn(['adminStories', 'isDeleting'], true)
+}
+
+export const adminDeleteStoryFailure = (state) => {
+  return state.setIn(['adminStories', 'isDeleting'], false)
+}
+
+export const adminDeleteStorySuccess = (state, { id }) => {
+  const list = [...state.getIn(['adminStories', 'byId'])]
+  const recordIndex = _.findIndex(list, { id })
+    
+  return state.setIn(['adminStories', 'byId', recordIndex, 'isDeleted'], true)
+    .setIn(['adminStories', 'isDeleting'], false)
+}
+
+export const adminPutStory = (state) => {
+  return state.setIn(['adminStories', 'isUpdating'], true)
+}
+
+export const adminPutStoryFailure = (state) => {
+  return state.setIn(['adminStories', 'isUpdating'], false)
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (state, categoryId) => {
@@ -360,6 +508,7 @@ export const getUserFetchStatus = (state, userId) => {
 export const getBookmarksFetchStatus = (state, userId) => {
   return state.getIn(['bookmarks', userId, 'fetchStatus'], {})
 }
+
 
 // export const getIdsByUser = (state, userId: string) => {
 //   return state.getIn(['storiesByUser', userId, 'byId'], [])
@@ -393,4 +542,15 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_BOOKMARKS_SUCCESS]: getBookmarksSuccess,
   [Types.GET_BOOKMARKS_FAILURE]: getBookmarksFailure,
   [Types.RECEIVE_STORIES_BY_GUIDE]: receiveStoriesByGuide,
+  [Types.ADMIN_GET_STORIES]: adminGetStories,
+  [Types.ADMIN_GET_STORIES_FAILURE]: adminGetStoriesFailure,
+  [Types.ADMIN_GET_STORIES_SUCCESS]: adminGetStoriesSuccess,
+  [Types.ADMIN_GET_STORY]: adminGetStory,
+  [Types.ADMIN_GET_STORY_FAILURE]: adminGetStoryFailure,
+  [Types.ADMIN_GET_STORY_SUCCESS]: adminGetStorySuccess,
+  [Types.ADMIN_DELETE_STORY]: adminDeleteStory,
+  [Types.ADMIN_DELETE_STORY_FAILURE]: adminDeleteStoryFailure,
+  [Types.ADMIN_DELETE_STORY_SUCCESS]: adminDeleteStorySuccess,
+  [Types.ADMIN_PUT_STORY]: adminPutStory,
+  [Types.ADMIN_PUT_STORY_FAILURE]: adminPutStoryFailure,
 })

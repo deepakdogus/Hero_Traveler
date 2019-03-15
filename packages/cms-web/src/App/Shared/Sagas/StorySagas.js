@@ -608,3 +608,70 @@ export function * syncPendingUpdates(api) {
     }
   }
 }
+
+
+export function * adminGetStories (api, action) {
+  const { params } = action
+  const response = yield call(api.adminGetStories, params)
+  if (response.ok && response.data && response.data.data) {
+    const { data, count } = response.data
+    yield put(StoryActions.adminGetStoriesSuccess({ data, count }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(StoryActions.adminGetStoriesFailure(error))
+  }
+}
+
+export function * adminGetStory (api, action) {
+  const { id } = action
+  const response = yield call(api.adminGetStory, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminGetStorySuccess({ record }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(StoryActions.adminGetStoryFailure(error))
+  }
+}
+
+
+export function * adminPutStory (api, action) {
+  const { values, id, message } = action.payload
+  const response = yield call(api.adminPutStory, { values, id })
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminGetStorySuccess({ record }))
+    message.success('Story was updated')
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(StoryActions.adminPutStoryFailure())
+  }
+}
+
+export function * adminDeleteStory (api, action) {
+  const { id, history, message } = action.payload
+  const response = yield call(api.adminDeleteStory, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminDeleteStorySuccess(id))
+    message.success('Story was deleted')
+    history.goBack()
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(StoryActions.adminDeleteStoryFailure())
+  }
+}
+
+export function * adminRestoreStories (api, action) {
+  const { ids, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreStories, ids)
+  if (response.ok && response.data) {
+    const record = response.data
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}

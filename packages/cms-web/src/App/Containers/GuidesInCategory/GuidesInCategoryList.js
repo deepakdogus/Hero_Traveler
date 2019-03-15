@@ -8,7 +8,7 @@ import get from 'lodash/get'
 
 import GenericList from '../../Components/Shared/GenericList'
 
-import AdminGuidesActions from '../../Shared/Redux/Admin/Guides'
+import GuidesActions from '../../Shared/Redux/Entities/Guides'
 
 import {
   Divider,
@@ -127,20 +127,20 @@ GuidesInCategoryList.propTypes = {
 }
 
 function mapStateToProps(state, ownProps) {
-  const newList = [...state.admin.guides.list]
+  const newList = [...get(state, 'entities.stories.adminStories.byId', [])]
   const { categoryId } = get(ownProps, 'match.params', {})
   return {
     categoryId,
     list: newList,
-    total: state.admin.guides.total,
-    params: state.admin.guides.params,
-    isLoading: state.admin.guides.isLoading,
+    total: get(state, 'entities.stories.adminGuides.total'),
+    params: get(state, 'entities.stories.adminGuides.params'),
+    isLoading: get(state, 'entities.stories.adminGuides.fetchStatus.fetching'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGuides: (params) => dispatch(AdminGuidesActions.adminGetGuides(params)),
+    getGuides: (params) => dispatch(GuidesActions.adminGetGuides(params)),
   }
 }
 

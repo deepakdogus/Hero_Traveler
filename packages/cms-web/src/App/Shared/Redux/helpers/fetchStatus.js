@@ -1,15 +1,15 @@
 
 export const fetching = () => ({
   fetching: true,
-  loaded: false,
+  loaded: false
 })
 
 export const fetchingSuccess = () => ({
   fetching: false,
-  loaded: true,
+  loaded: true
 })
 
 export const fetchingError = () => ({
   fetching: false,
-  loaded: false,
+  loaded: false
 })

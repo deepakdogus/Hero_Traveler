@@ -91,7 +91,7 @@ class GenericList extends React.Component {
     getItems({
       ...params,
       query: {
-        isDeleted: true,
+        deleted: true,
       },
     })
     this.setState({
@@ -105,7 +105,7 @@ class GenericList extends React.Component {
       ...params,
       query: {
         ...prefilter,
-        isDeleted: {$in: [null, false]},
+        deleted: {$in: [null, false]},
       },
     })
     this.setState({
@@ -139,6 +139,7 @@ class GenericList extends React.Component {
       isActionLoading: true,
     })
     const key = `${rowKey}s`
+    // we want to chain different calls so we use promise here
     new Promise((resolve, reject) => {
       restoreItems({
         [key]: selectedRowKeys,
@@ -151,7 +152,7 @@ class GenericList extends React.Component {
         ...params,
         query: {
           ...prefilter,
-          isDeleted: true,
+          deleted: true,
         },
       })
       this.setState({

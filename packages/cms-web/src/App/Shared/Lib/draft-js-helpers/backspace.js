@@ -13,8 +13,7 @@ export default function backspace(editorState, command) {
 
   if (contentState.getBlockForKey(selectedKey).getType() == 'atomic' && selectedOffset == 0) {
     atomicBlockKeyToDelete = selectedKey
-  }
- else if (selectedOffset == 0) {
+  } else if (selectedOffset == 0) {
     const blockBeforeSelection = contentState.getBlockBefore(selectedKey)
     if (!blockBeforeSelection) {
       return null
@@ -26,7 +25,7 @@ export default function backspace(editorState, command) {
   }
 
   if (atomicBlockKeyToDelete) {
-    const blockMap = contentState.getBlockMap()
+    const blockMap = contentState.getBlockMap();
     const atomicBlock = contentState.getBlockForKey(atomicBlockKeyToDelete)
     const newBlock = atomicBlock
       .delete('data')
@@ -36,18 +35,18 @@ export default function backspace(editorState, command) {
 
     const newContentState = contentState.merge({
       blockMap: blockMap.set(atomicBlockKeyToDelete, newBlock),
-      selectionAfter: makeSelectionState(atomicBlockKeyToDelete, atomicBlockKeyToDelete, 0, 0, true),
+      selectionAfter: makeSelectionState(atomicBlockKeyToDelete, atomicBlockKeyToDelete, 0, 0, true)
     })
 
     return EditorState.push(
       editorState,
       newContentState,
-      'backspace',
+      'backspace'
     )
   }
 
   if (!command) {
-    return keyCommandPlainBackspace(editorState)
+    return keyCommandPlainBackspace(editorState);
   }
 
   switch (command) {
@@ -57,12 +56,12 @@ export default function backspace(editorState, command) {
     // case 'delete-word':
     //   return keyCommandDeleteWord(editorState);
     case 'backspace':
-      return keyCommandPlainBackspace(editorState)
+      return keyCommandPlainBackspace(editorState);
     case 'backspace-word':
-      return keyCommandBackspaceWord(editorState)
+      return keyCommandBackspaceWord(editorState);
     case 'backspace-to-start-of-line':
-      return keyCommandBackspaceToStartOfLine(editorState)
+      return keyCommandBackspaceToStartOfLine(editorState);
     default:
-      return keyCommandPlainBackspace(editorState)
+      return keyCommandPlainBackspace(editorState);
   }
 }

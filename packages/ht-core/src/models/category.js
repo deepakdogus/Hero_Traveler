@@ -133,7 +133,8 @@ const CategorySchema = new mongoose.Schema({
 })
 
 CategorySchema.statics = {
-  list({ page = 1, perPage = 5, search='', sort, query }) {
+  // includes soft-deleted by default
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
     let queryToApply = {}
 
     if (query) {
@@ -151,8 +152,8 @@ CategorySchema.statics = {
       }
     }
     return Promise.props({
-      count: this.count(queryToApply).exec(),
-      data: this.find(queryToApply)
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)

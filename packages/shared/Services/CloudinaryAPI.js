@@ -1,4 +1,4 @@
-import env from '../Config/Env'
+import env from '../../Config/Env'
 import apisauce from 'apisauce'
 
 function getCloudinaryUploadUrl(resourceType){

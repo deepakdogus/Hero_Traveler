@@ -169,3 +169,68 @@ export function * unlikeGuide(api, {guideId, userId}) {
     ]
   }
 }
+
+export function * adminGetGuides (api, action) {
+  const { params } = action
+  const response = yield call(api.adminGetGuides, params)
+  if (response.ok && response.data && response.data.data) {
+    const { data, count } = response.data
+    yield put(GuideActions.adminGetGuidesSuccess({ data, count }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(GuideActions.adminGetGuidesFailure(error))
+  }
+}
+
+export function * adminGetGuide (api, action) {
+  const { id } = action
+  const response = yield call(api.adminGetGuide, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(GuideActions.adminGetGuideSuccess({ record }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(GuideActions.adminGetGuideFailure(error))
+  }
+}
+
+export function * adminPutGuide (api, action) {
+  const { values, id, message } = action.payload
+  const response = yield call(api.adminPutGuide, { values, id })
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(GuideActions.adminGetGuideSuccess({ record }))
+    message.success('Guide was updated')
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(GuideActions.adminPutGuideFailure())
+  }
+}
+
+export function * adminDeleteGuide (api, action) {
+  const { id, history, message } = action.payload
+  const response = yield call(api.adminDeleteGuide, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(GuideActions.adminDeleteGuideSuccess(id))
+    message.success('Guide was deleted')
+    history.goBack()
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(GuideActions.adminDeleteGuideFailure())
+  }
+}
+
+export function * adminRestoreGuides (api, action) {
+  const { ids, resolve, reject } = action.payload
+  const response = yield call(api.adminRestoreGuides, ids)
+  if (response.ok && response.data) {
+    const record = response.data
+    return resolve(record)
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    return reject(error)
+  }
+}

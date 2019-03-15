@@ -41,11 +41,9 @@ export const validate = (values, _props, fields) => {
   if (checkField('username')) {
     if (!values.username) {
       errors.username = 'Required'
-    }
- else if (values.username.length < FieldConstraints.USERNAME_MIN_LENGTH || values.username.length > FieldConstraints.USERNAME_MAX_LENGTH) {
+    } else if (values.username.length < FieldConstraints.USERNAME_MIN_LENGTH || values.username.length > FieldConstraints.USERNAME_MAX_LENGTH) {
       errors.username = `Must be between ${FieldConstraints.USERNAME_MIN_LENGTH} and ${FieldConstraints.USERNAME_MAX_LENGTH} characters`
-    }
- else if (!FieldConstraints.USERNAME_REGEX.test(values.username)) {
+    } else if (!FieldConstraints.USERNAME_REGEX.test(values.username)) {
       errors.username = 'Usernames may contain letters, numbers, _ and -'
     }
   }
@@ -53,8 +51,7 @@ export const validate = (values, _props, fields) => {
   if (checkField('email')) {
     if (!values.email) {
       errors.email = 'Required'
-    }
- else if (!FieldConstraints.EMAIL_REGEX.test(values.email)) {
+    } else if (!FieldConstraints.EMAIL_REGEX.test(values.email)) {
       errors.email = 'Invalid email address'
     }
   }
@@ -62,8 +59,7 @@ export const validate = (values, _props, fields) => {
   if (checkField('password')) {
     if (!values.password) {
       errors.password = 'Required'
-    }
- else if (values.password.length < FieldConstraints.PASSWORD_MIN_LENGTH || values.password.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
+    } else if (values.password.length < FieldConstraints.PASSWORD_MIN_LENGTH || values.password.length > FieldConstraints.PASSWORD_MAX_LENGTH) {
       errors.password = `Passwords must be ${FieldConstraints.PASSWORD_MIN_LENGTH} to ${FieldConstraints.PASSWORD_MAX_LENGTH} characters long`
     }
   }
@@ -77,7 +73,7 @@ export const validate = (values, _props, fields) => {
   return errors
 }
 
-let originalUsername = ''
+let originalUsername = ""
 export const setOriginalUsername = function(username){
   originalUsername = username
 }

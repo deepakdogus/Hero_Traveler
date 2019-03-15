@@ -1,14 +1,9 @@
 import {Story} from '@hero/ht-core'
 
 const restoreStory = async(id) => {
-  const guidePromise = Story.get({ _id: id })
-
-  return guidePromise
-  .then((guide) => {
-    guide.isDeleted = false
-    return guide.save()
-  });
+  return Story.restoreStory(id)
 }
+
 
 export default function restoreStories(req, res) {
   const ids = req.body.ids

@@ -23,6 +23,7 @@ export const isActivityIncomplete = activity =>
   || (activity.kind === ActivityTypes.guideLike && !activity.guide)
   || (activity.kind === ActivityTypes.guideComment && !activity.guide)
 
+
 export const getFeedItemTitle = activity =>
   _.get(activity, 'story.title')
   || _.get(activity, 'guide.title', '')

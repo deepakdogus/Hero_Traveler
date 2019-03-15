@@ -476,7 +476,7 @@ const create = () => {
 
   const adminDeleteUser = (id) => api.delete(`admin/users/${id}`)
 
-  const adminRestoreUsers = (usernames) => api.post('admin/users/restore', { usernames })
+  const adminRestoreUsers = (ids) => api.post('admin/users/restore', { ids })
 
   const adminGetCategories = (params) => api.get('admin/categories', params)
 
@@ -494,7 +494,7 @@ const create = () => {
 
   const adminGetStory = (id) => api.get(`admin/stories/${id}`)
 
-  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, values)
+  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, { story: values })
 
   const adminDeleteStory = (id) => api.delete(`admin/stories/${id}`)
 

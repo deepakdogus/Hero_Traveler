@@ -18,12 +18,12 @@ export default function customKeyCommandInsertNewline(editorState, textType) {
   var contentState = customDraftModifier.splitBlock(
   	editorState.getCurrentContent(),
   	editorState.getSelection(),
-  	textType,
+  	textType
   )
 
   return EditorState.push(
   	editorState,
   	contentState,
-  	'split-block',
+  	'split-block'
   )
 }

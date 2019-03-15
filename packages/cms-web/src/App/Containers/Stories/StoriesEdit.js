@@ -9,7 +9,7 @@ import find from 'lodash/find'
 import truncate from 'lodash/truncate'
 import isEmpty from 'lodash/isEmpty'
 
-import AdminStoryActions from '../../Shared/Redux/Admin/Stories'
+import StoryActions from '../../Shared/Redux/Entities/Stories'
 import EditFeedItemForm from '../../Components/Shared/EditFeedItemForm'
 
 import StatsTable from '../../Components/Shared/StatsTable'
@@ -24,10 +24,7 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditStory extends React.Component {
-  state = {
-    formSubmitting: false,
-    isDeleting: false,
-  }
+  state = {}
 
   componentDidMount(){
     //get user EditStory on signUp and reset signUp redux
@@ -45,51 +42,19 @@ class EditStory extends React.Component {
 
   handleDelete = () => {
     const { deleteStory, history, id } = this.props
-    this.setState({
-      isDeleting: true,
-    })
-    new Promise((resolve, reject) => {
-      deleteStory({
-        id,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.success('Story was deleted')
-      history.goBack()
-    }).catch((e) => {
-      this.setState({
-        isDeleting: false,
-      })
-      message.error(e.toString())
+    deleteStory({
+      id,
+      message,
+      history,
     })
   }
 
   handleSubmit = (values) => {
     const { putStory, id } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-    new Promise((resolve, reject) => {
-      putStory({
-        id,
-        values,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.success('Story was updated')
-    }).catch((e) => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.error(e.toString())
+    putStory({
+      id,
+      values,
+      message,
     })
   }
 
@@ -151,9 +116,9 @@ class EditStory extends React.Component {
     const {
       record,
       isLoading,
+      isDeleting,
+      isUpdating,
     } = this.props
-
-    const { formSubmitting, isDeleting } = this.state
 
     if (isLoading) return (<Centered><Spin /></Centered>)
 
@@ -174,7 +139,7 @@ class EditStory extends React.Component {
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
                 onDelete={this.handleDelete}
-                formLoading={formSubmitting}
+                formLoading={isUpdating}
                 isDeleting={isDeleting}
               />
             </Col>
@@ -195,25 +160,30 @@ EditStory.propTypes = {
   putStory: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isDeleting: PropTypes.bool.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
-  const list = [...get(state, ['admin','stories', 'list'], [])]
+  const list = [...get(state, ['entities', 'stories', 'adminStories', 'byId'], [])]
   const record = find(list, { id }) || {}
+  console.log('state', state)
   return {
     record,
-    isLoading: state.admin.stories.isLoading,
+    isLoading: get(state, 'entities.stories.adminStories.fetchStatus.fetching'),
+    isDeleting: get(state, 'entities.stories.adminStories.isDeleting'),
+    isUpdating: get(state, 'entities.stories.adminStories.isUpdating'),
     id,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStory: (id) => dispatch(AdminStoryActions.adminGetStory(id)),
-    putStory: (payload) => dispatch(AdminStoryActions.adminPutStory(payload)),
-    deleteStory: (payload) => dispatch(AdminStoryActions.adminDeleteStory(payload)),
+    getStory: (id) => dispatch(StoryActions.adminGetStory(id)),
+    putStory: (payload) => dispatch(StoryActions.adminPutStory(payload)),
+    deleteStory: (payload) => dispatch(StoryActions.adminDeleteStory(payload)),
   }
 }
 

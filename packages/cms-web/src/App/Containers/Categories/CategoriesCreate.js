@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Row, Col, message } from 'antd'
 import { Link } from 'react-router-dom'
+import get from 'lodash/get'
 
-import AdminCategoryActions from '../../Shared/Redux/Admin/Categories'
+import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import EditCategoryForm from '../../Components/Categories/EditCategoryForm'
 import prepareCategoryImages from '../../Utils/prepareCategoryImages'
 
@@ -19,12 +20,7 @@ const MainWrapper = styled.div`
 `
 
 class CreateCategory extends React.Component {
-  state = {
-    formSubmitting: false,
-    isDeleting: false,
-    heroImage: undefined,
-    channelImage: undefined,
-  }
+  state = {}
 
   handleCancel = () => {
     const { history } = this.props
@@ -33,32 +29,15 @@ class CreateCategory extends React.Component {
 
   handleSubmit = (values) => {
     const { postCategory, history } = this.props
-    this.setState({
-      formSubmitting: true,
-    })
-
-    new Promise((resolve, reject) => {
-      postCategory({
-        values: prepareCategoryImages(values),
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.success('Category was created')
-      history.goBack()
-    }).catch((e) => {
-      this.setState({
-        formSubmitting: false,
-      })
-      message.error(e.toString())
+    postCategory({
+      values: prepareCategoryImages(values),
+      history,
+      message,
     })
   }
 
   render() {
-    const { formSubmitting } = this.state
+    const { isUpdating } = this.props
 
     return (
       <Wrapper>
@@ -72,7 +51,7 @@ class CreateCategory extends React.Component {
               <EditCategoryForm
                 handleCancel={this.handleCancel}
                 onSubmit={this.handleSubmit}
-                formLoading={formSubmitting}
+                formLoading={isUpdating}
               />
             </Col>
           </Row>
@@ -85,18 +64,25 @@ class CreateCategory extends React.Component {
 CreateCategory.propTypes = {
   history: PropTypes.object.isRequired,
   postCategory: PropTypes.func.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
   uploadHeroImage: PropTypes.func.isRequired,
   uploadChannelImage: PropTypes.func.isRequired,
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
   return {
-    postCategory: (payload) => dispatch(AdminCategoryActions.adminPostCategory(payload)),
-    uploadHeroImage: (payload) =>
-      dispatch(AdminCategoryActions.adminUploadCategoryHeroImage(payload)),
-    uploadChannelImage: (payload) =>
-      dispatch(AdminCategoryActions.adminUploadCategoryChannelImage(payload)),
+    isUpdating: get(state, 'entities.categories.adminCategories.isUpdating'),
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(CreateCategory)
+function mapDispatchToProps(dispatch) {
+  return {
+    postCategory: (payload) => dispatch(CategoryActions.adminPostCategory(payload)),
+    uploadHeroImage: (payload) =>
+      dispatch(CategoryActions.adminUploadCategoryHeroImage(payload)),
+    uploadChannelImage: (payload) =>
+      dispatch(CategoryActions.adminUploadCategoryChannelImage(payload)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCategory)

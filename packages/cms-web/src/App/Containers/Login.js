@@ -7,11 +7,42 @@ import LoginActions from '../Shared/Redux/LoginRedux'
 
 import RoundedButton from '../Shared/Web/Components/RoundedButton'
 
-import {
-  Title,
-  Text,
-  StyledInput,
-} from '../Components/Login'
+const basicTextStyle = `
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: .2px;
+`
+
+export const Text = styled.p`
+  ${basicTextStyle};
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.grey};
+  text-align: center;
+  letter-spacing: 0.2px;
+`
+
+export const StyledInput = styled.input`
+  ${basicTextStyle};
+  width: 100%;
+  color: ${props => props.theme.Colors.grey};
+  padding-bottom: 5px;
+  border-width: 0 0 1px;
+  border-color: ${props => props.theme.Colors.dividerGrey};
+  margin-bottom: 25px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  letter-spacing: 0.2px;
+`
+
+export const Title = styled.p`
+  font-weight: 400;
+  font-size: 25px;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.6px;
+  text-align: center;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  padding: 30px 0;
+  margin: 0;
+`
 
 const LoginWrapper = styled.div`
   width: 420px;

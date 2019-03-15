@@ -2,12 +2,7 @@ import {Category} from '@hero/ht-core'
 
 const restoreCategory = async(id) => {
   const categoryPromise = Category.get({ _id: id })
-
-  return categoryPromise
-  .then((category) => {
-    category.isDeleted = false
-    return category.save()
-  });
+  return Category.restoreCategory(categoryIdToUpdate)
 }
 
 export default function restoreCategories(req, res) {

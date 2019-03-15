@@ -6,6 +6,6 @@ export default function deeplinkToAction(url) {
 
   return {
     action,
-    id,
+    id
   }
 }

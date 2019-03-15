@@ -5,12 +5,12 @@ export default function insertTextAtPosition(editorState, text, position) {
   	editorState.getCurrentContent(),
   	position,
   	text,
-  	editorState.getCurrentInlineStyle(),
+  	editorState.getCurrentInlineStyle()
   )
 
   return EditorState.push(
   	editorState,
   	newContentState,
-  	'insert-fragment',
+  	'insert-fragment'
   )
 }

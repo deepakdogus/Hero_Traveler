@@ -62,7 +62,7 @@ export class SharedCreateGuide extends Component {
     if (creating) return
     if (!this.isGuideValid()) {
       guideFailure(new Error(
-        'Please ensure the guide has a photo, a title, and at least one location.',
+        "Please ensure the guide has a photo, a title, and at least one location."
       ))
       return
     }
@@ -80,14 +80,14 @@ export class SharedCreateGuide extends Component {
       },
       () => {
         onDoneFunc(guide, user.id)
-      },
+      }
     )
   }
 
   componentDidUpdate = (prevProps) => {
     if (
-      this.state.creating
-      && prevProps.fetching && this.props.fetching === false
+      this.state.creating &&
+      prevProps.fetching && this.props.fetching === false
     ) {
       if (!prevProps.error && this.props.error) {
         this.setState({creating: false})
@@ -112,7 +112,7 @@ export const mapStateToProps = (state, ownProps) => {
     fetchStatus,
     error,
     entities: guides,
-  } = state.entities.guides
+  } =  state.entities.guides
 
   return {
     user: state.entities.users.entities[state.session.userId],

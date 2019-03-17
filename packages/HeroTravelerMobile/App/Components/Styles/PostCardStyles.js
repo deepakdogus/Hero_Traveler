@@ -48,6 +48,14 @@ export default StyleSheet.create({
     paddingLeft: Metrics.paddingLeft,
     paddingRight: Metrics.paddingRight,
   },
+  coverPhoto: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: '100%',
+  },
   caption: {
     position: 'absolute',
     bottom: Metrics.baseMargin / 2,

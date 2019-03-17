@@ -11,8 +11,9 @@ import styles from '../Styles/PostCardStyles'
 
 export default class PostCardCreate extends Component {
   static props = {
-    media: PropTypes.string,
+    media: PropTypes.object,
     mediaType: PropTypes.string,
+    createPostcard: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -65,7 +66,14 @@ export default class PostCardCreate extends Component {
   }
 
   onPublishClick = () => {
-
+    const { createPostcard, media, mediaType } = this.props
+    const { title, location } = this.state
+    const postcard = {
+      title,
+      locationInfo: location,
+      ...media,
+    }
+    createPostcard(postcard)
   }
 
   render() {
@@ -73,7 +81,7 @@ export default class PostCardCreate extends Component {
     const { title, location } = this.state
     return (
       <ImageBackground
-        source={{uri: media}}
+        source={{uri: media.coverImage.uri}}
         style={styles.imageContainer}
       >
         <NavBar

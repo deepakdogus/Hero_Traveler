@@ -19,6 +19,7 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
+import { PostcardTypes } from '../Redux/PostcardRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
 import StoryActions, { StoryTypes } from '../Redux/Entities/Stories'
@@ -119,6 +120,13 @@ import {
   getComments,
   createComment
 } from './CommentsSagas'
+
+import {
+  createPostcard,
+  getPostcard,
+  getPostcards,
+  deletePostcard,
+} from './PostcardSagas'
 
 
 /* ------------- API ------------- */
@@ -234,6 +242,13 @@ export default function * root () {
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
     takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
+
+    // Postcards
+    takeLatest(PostcardTypes.CREATE_POSTCARD_REQUEST, createPostcard, heroAPI),
+    takeLatest(PostcardTypes.GET_POSTCARD_REQUEST, getPostcard, heroAPI),
+    takeLatest(PostcardTypes.GET_POSTCARDS_REQUEST, getPostcards, heroAPI),
+    takeLatest(PostcardTypes.DELETE_POSTCARD_REQUEST, deletePostcard, heroAPI),
+    
     fork(watchRefreshTokens),
   ]
 }

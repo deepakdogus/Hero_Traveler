@@ -37,6 +37,7 @@ const initialFetchStatus = () => ({
 
 export const INITIAL_STATE = Immutable({
   postcards: [],
+  postcard: {},
   fetchStatus: initialFetchStatus(),
   error: null,
 })
@@ -86,12 +87,13 @@ const getPostcardsRequest = (state) => {
   })
 }
 
-const getPostcardsSuccess = (state) => {
+const getPostcardsSuccess = (state, { postcards }) => {
   return state.merge({
     fetchStatus: {
       loaded: true,
       fetching: false
     },
+    postcards,
     error: false,
   })
 }

@@ -16,9 +16,10 @@ import env from '../Config/Env'
 
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
+import { trimVideo } from '../Shared/Lib/mediaHelpers'
+import { Colors } from '../Shared/Themes'
 
 import styles from '../Components/Styles/SearchPlacesPeopleStyles'
-import { Colors } from '../Shared/Themes'
 
 import SearchList from '../Components/SearchList'
 import SearchTabBar from '../Components/SearchTabBar'
@@ -163,40 +164,37 @@ class SearchPlacesPeople extends Component {
     const file = pathAsFileObject(path)
     const update = { coverCaption: '' }
 
-    // const callback = (newSource) => {
-    //   // nesting coverMetrics inside of original.meta to mirror published media asset format
-    //   const modifiedFile = {
-    //     ...file,
-    //     uri: newSource,
-    //     original: {
-    //       meta: coverMetrics,
-    //     },
-    //   }
+    const callback = (newSource) => {
+      // nesting coverMetrics inside of original.meta to mirror published media asset format
+      const modifiedFile = {
+        ...file,
+        uri: newSource,
+        original: {
+          meta: coverMetrics,
+        },
+      }
 
-    //   if (isPhotoType) {
-    //     update.coverImage = modifiedFile
-    //     update.coverVideo = undefined
-    //   } else {
-    //     update.coverImage = undefined
-    //     update.coverVideo = modifiedFile
-    //   }
+      if (isPhotoType) {
+        update.coverImage = modifiedFile
+        update.coverVideo = undefined
+      }
+      else {
+        update.coverImage = undefined
+        update.coverVideo = modifiedFile
+      }
 
-    //   this.setState({
-    //     file,
-    //     isScrollDown: true,
-    //     coverMetrics,
-    //   })
-    //   NavActions.createQuickShare({
-    //     media: update,
-    //     mediaType: isPhotoType ? 'photo' : 'video',
-    //   })
-    // }
+      this.setState({
+        file,
+        isScrollDown: true,
+        coverMetrics,
+      })
+      NavActions.createQuickShare({
+        media: update,
+        mediaType: isPhotoType ? 'photo' : 'video',
+      })
+    }
 
-    // trimVideo(file.uri, callback, this.props.targetId, this)
-    NavActions.createQuickShare({
-      media: path,
-      mediaType: isPhotoType ? 'photo' : 'video',
-    })
+    trimVideo(file.uri, callback, 'postcard', this)
   }
 
   setFocus = () => {
@@ -385,6 +383,7 @@ const mapStateToProps = state => {
     user: state.entities.users.entities[state.session.userId],
     stories: state.entities.stories.entities,
     searchHistory: state.history.searchHistory,
+    postcards: state.postcards.postcards,
     myFollowedUsers: getFollowers(users, 'following', userId),
   }
 }

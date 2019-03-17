@@ -2,43 +2,18 @@ import { connect } from 'react-redux'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 import PostCardList from '../Components/PostCard/PostCardList'
+import PostcardActions from '../Shared/Redux/PostcardRedux'
 
 const mapStateToProps = (state) => {
-  const dummyData = [
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'Winter Mountains'
-    },
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'Wild Ice Hokey'
-    },
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'City Tram'
-    },
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'Puppy'
-    },
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'Earth'
-    },
-    {
-      coverImage: 'test/iafp1skobndeomvpj8om.jpg',
-      caption: 'Mars'
-    }
-  ]
-
   return {
-    entities: dummyData,
+    postcards: state.postcards.postcards,
     sessionError: state.session.error,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getPostcards: () => dispatch(PostcardActions.getPostcardsRequest()),
     clearSessionError: () => dispatch(SessionActions.clearError()),
   }
 }

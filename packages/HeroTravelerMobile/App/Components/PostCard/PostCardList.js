@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, FlatList } from 'react-native'
-
 import PostCardThumbnail from './PostCardThumbnail'
 
 import styles from '../Styles/PostCardStyles'
 
 export default class PostCardList extends Component {
   static propTypes = {
-    entities: PropTypes.array,
+    postcards: PropTypes.array,
+    getPostcards: PropTypes.func.isRequired,
+  }
+
+  componentDidMount() {
+    const { getPostcards } = this.props
+
+    if (getPostcards) {
+      getPostcards()
+    }
   }
 
   renderItem = ({item}) => (
@@ -16,11 +24,12 @@ export default class PostCardList extends Component {
   )
 
   render() {
-    const { entities } = this.props
+    const { postcards } = this.props
+
     return (
       <View style={styles.container}>
         <FlatList
-          data={entities}
+          data={postcards}
           horizontal={true}
           renderItem={this.renderItem}
           style={styles.listContainer}

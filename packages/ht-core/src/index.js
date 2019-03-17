@@ -4,6 +4,7 @@ import * as User from './user'
 import * as Models from './models'
 import * as Story from './story'
 import * as StoryDraft from './storyDraft'
+import * as Postcard from './postcard'
 import * as Category from './category'
 import * as Hashtag from './hashtag'
 import * as Comment from './comment'
@@ -16,6 +17,7 @@ export {
   User,
   Story,
   StoryDraft,
+  Postcard,
   Category,
   Hashtag,
   Models,

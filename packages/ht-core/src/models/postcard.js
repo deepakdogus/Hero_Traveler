@@ -79,18 +79,13 @@ PostcardSchema.statics = {
           path: 'profile.cover profile.avatar'
         }
       })
-      .populate('title location coverImage coverVideo')
+      .populate('locationInfo')
+      .populate('coverImage coverVideo')
   },
 
   list(/* args */) {
     return this.find(...arguments)
-      .populate({
-        path: 'author',
-        populate: {
-          path: 'profile.cover profile.avatar'
-        }
-      })
-      .populate('title location coverImage coverVideo')
+      .populate('coverImage coverVideo')
       .sort({publishedDate: -1})
   },
 

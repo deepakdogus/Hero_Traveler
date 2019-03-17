@@ -476,7 +476,7 @@ const create = () => {
   }
 
   const getPostcards = () => {
-    return api.get('postcards')
+    return api.get('postcard')
   }
 
   const deletePostcard = (cardId) => {

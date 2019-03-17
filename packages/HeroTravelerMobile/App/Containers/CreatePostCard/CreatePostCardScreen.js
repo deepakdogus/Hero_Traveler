@@ -4,11 +4,18 @@ import PostcardActions from '../../Shared/Redux/PostcardRedux'
 
 function mapDispatchToProps(dispatch) {
   return {
-    createPostcard: (postcard) => dispatch(PostcardActions.createPostcard(postcard)),
-    deletePostcard: (cardId) => dispatch(PostcardActions.deletePostcard(cardId)),
-    getPostcard: (cardId) => dispatch(PostcardActions.getPostcard(cardId)),
-    getPostcards: () => dispatch(PostcardActions.getPostcards()),
+    createPostcard: (postcard) => dispatch(PostcardActions.createPostcardRequest(postcard)),
+    deletePostcard: (cardId) => dispatch(PostcardActions.deletePostcardRequest(cardId)),
+    getPostcard: (cardId) => dispatch(PostcardActions.getPostcardRequest(cardId)),
+    getPostcards: () => dispatch(PostcardActions.getPostcardsRequest()),
   }
 }
 
-export default connect(null, mapDispatchToProps)(PostCardScreen)
+function mapStateToProps(state) {
+  return {
+    fetchStatus: state.postcards.fetchStatus,
+    error: state.postcards.error,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostCardScreen)

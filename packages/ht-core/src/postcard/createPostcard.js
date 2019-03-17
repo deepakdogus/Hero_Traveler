@@ -33,14 +33,13 @@ export default async function createPostcard(postcardData, assetFormater) {
   }
 
   await addCover(postcardObject, assetFormater)
-  newPostcard = await Postcard.create(postcardObject)
   postcardObject.publishedDate = new Date()
-
-  const populatedPostcard = await Postcard.get({_id: newPostcard._id})
-
+  newPostcard = await Postcard.create(postcardObject)
+  console.log('__________', newPostcard)
+  const populatedPostcard = await Postcard.get({'_id': newPostcard._id})
+  console.log('__________', populatedPostcard)
   return {
     postcard: populatedPostcard,
-    author: postcardData.author // only want to pass the ID
   }
 }
 

@@ -72,10 +72,10 @@ const StyledIcon = styled(Icon)`
 `
 
 const ActionButtonContainer = styled.div`
+  margin-top: 60px;
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 60px;
 `
 
 const AddToGuideButton = ({ onClickAddToGuide }) => (

@@ -219,6 +219,7 @@ const buttons = ['see', 'do', 'eat', 'stay']
 export default class FeedItemDetails extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
+    user: PropTypes.object,
     onInputChange: PropTypes.func,
     categories: PropTypes.object,
     isGuide: PropTypes.bool,
@@ -434,6 +435,7 @@ export default class FeedItemDetails extends React.Component {
   render() {
     const {
       workingDraft,
+      user,
       isGuide,
     } = this.props
     const {
@@ -589,6 +591,7 @@ export default class FeedItemDetails extends React.Component {
           />
         </InputRowContainer>
         <StyledDivider color='lighter-grey' opaque/>
+        {user && user.role !== 'user' && (
         <InputRowContainer>
           <IconWrapper>
             <IconWithMargin name='addActionButton'/>
@@ -602,7 +605,10 @@ export default class FeedItemDetails extends React.Component {
             readOnly
           />
         </InputRowContainer>
-        <StyledDivider color='lighter-grey' opaque/>
+        )}
+        {user && user.role !== 'user' && (
+          <StyledDivider color='lighter-grey' opaque/>
+        )}
         <Spacer />
         <TravelTipsContainer>
           <DetailLabel>

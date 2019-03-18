@@ -68,6 +68,7 @@ class CreateStoryDetailScreen extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     story: PropTypes.object,
+    user: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     saveDraft: PropTypes.func,
     accessToken: PropTypes.object,
@@ -317,7 +318,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   render() {
-    const { workingDraft } = this.props
+    const { workingDraft, user } = this.props
     const { modalVisible, validationError } = this.state
 
     return (
@@ -396,12 +397,14 @@ class CreateStoryDetailScreen extends React.Component {
             keyboardType="numeric"
             cost={this.state.cost}
           />
-          <FormInput
-            onPress={this.navToAddButton}
-            iconName="addButton"
-            value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
-            placeholder="Add an action button"
-          />
+          {user && user.role !== 'user' && (
+            <FormInput
+              onPress={this.navToAddButton}
+              iconName="addButton"
+              value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
+              placeholder="Add an action button"
+            />
+          )}
           <TouchableMultilineInput
             onDone={this._receiveTravelTips}
             title="TRAVEL TIPS"
@@ -450,6 +453,7 @@ export default connect(
       story: { ...state.storyCreate.workingDraft },
       workingDraft: { ...state.storyCreate.workingDraft },
       storyCreateError: state.storyCreate.error,
+      user: state.entities.users.entities[state.session.userId],
     }
   },
   dispatch => ({

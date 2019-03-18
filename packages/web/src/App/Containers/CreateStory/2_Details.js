@@ -12,6 +12,7 @@ class CreateStoryCoverContent extends Component {
   static propTypes = {
     categories: PropTypes.object,
     workingDraft: PropTypes.object,
+    user: PropTypes.object,
     loadDefaultCategories: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
     reroute: PropTypes.func,
@@ -41,6 +42,7 @@ class CreateStoryCoverContent extends Component {
         categories={this.props.categories}
         reroute={this.props.reroute}
         openGlobalModal={this.props.openGlobalModal}
+        user={this.props.user}
       />
     )
   }
@@ -50,6 +52,7 @@ function mapStateToProps(state) {
   return {
     categories: state.entities.categories.entities,
     workingDraft: state.storyCreate.workingDraft,
+    user: state.entities.users.entities[state.session.userId],
   }
 }
 

@@ -71,6 +71,13 @@ const StyledIcon = styled(Icon)`
   cursor: pointer;
 `
 
+const ActionButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+`
+
 const AddToGuideButton = ({ onClickAddToGuide }) => (
   <RoundedButton
     type={'floating'}
@@ -159,6 +166,27 @@ class Story extends Component {
       && story.locationInfo.longitude
   }
 
+  getButtonText = () => {
+    const { story } = this.props
+    switch (story.actionButton.type) {
+      case 'booking':
+        return 'Book Now'
+      case 'signup':
+        return 'Sign Up'
+      case 'info':
+      default:
+        return 'More Info'
+    }
+  }
+
+  onClickActionButton = () => {
+    const { story: { actionButton: { link }} } = this.props
+    if (link.substring(0, 7) !== 'http://' && link.substring(0, 8) !== 'https://') {
+      return window.open(`http://${link}`)
+    }
+    window.open(link)
+  }
+
   renderHashtags = () => {
     const {story} = this.props
     if (!story.hashtags || !story.hashtags.length) return null
@@ -204,6 +232,19 @@ class Story extends Component {
           />
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
+          {story.actionButton
+            && !!story.actionButton.link
+            && !!story.actionButton.type && (
+              <ActionButtonContainer>
+                <RoundedButton
+                  onClick={this.onClickActionButton}
+                  text={this.getButtonText()}
+                  margin="none"
+                  width="300px"
+                  height="45px"
+                />
+              </ActionButtonContainer>
+            )}
           {this.hasLatLng() && (
             <MapContainer>
               <GoogleMap stories={ [story] } />

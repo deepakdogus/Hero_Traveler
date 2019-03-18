@@ -126,6 +126,32 @@ const UserSchema = new Schema({
       Constants.USER_NOTIFICATION_FOLLOWER,
     ]
   }],
+  birthday: {
+    type: Date,
+  },
+  homeTown: {
+    name: {
+      type: String,
+    },
+    locality: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    latitude: {
+      type: Number
+    },
+    longitude: {
+      type: Number
+    },
+  },
+  gender: {
+    type: String
+  }
 }, {
   timestamps: true,
   toObject: {

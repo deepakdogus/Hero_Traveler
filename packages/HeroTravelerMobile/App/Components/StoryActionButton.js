@@ -24,13 +24,10 @@ export default class StoryActionButton extends Component {
 
   onPress = () => {
     const { link } = this.props
-    Linking.canOpenURL(link).then(supported => {
-      if (!supported) return
-      if (link.substring(0, 7) !== 'http://' || link.substring(0, 8) !== 'https://') {
+      if (link.substring(0, 7) !== 'http://' && link.substring(0, 8) !== 'https://') {
         return Linking.openURL(`http://${link}`)
       }
-      Linking.openURL(`http://${link}`)
-    })
+      Linking.openURL(link)
   }
 
   render = () => (

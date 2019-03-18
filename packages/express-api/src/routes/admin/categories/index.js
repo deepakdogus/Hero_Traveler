@@ -1,12 +1,12 @@
 import express from 'express'
 import {hasValidOauth, populatesUser, isAdmin} from '../../../middleware'
 import endpointWrapper from '../../../utils/endpointWrapper'
-import getAll from './getAll'
-import getOne from './getOne'
-import putOne from './putOne'
-import postOne from './postOne'
-import deleteOne from './deleteOne'
-import restoreCategories from './restoreCategories'
+import getAll from '../../category/getAll'
+import getOne from '../../category/getOne'
+import putOne from '../../category/putOne'
+import postOne from '../../category/postOne'
+import deleteOne from '../../category/deleteOne'
+import restoreCategories from '../../category/restoreCategories'
 
 const router = express.Router()
 

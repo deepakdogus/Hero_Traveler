@@ -8,7 +8,7 @@ import {SessionTypes} from './SessionRedux'
 // related to nav which is device specific so not located in shared folder
 import routes from './Routes'
 
-export default ({ includeAdmin = false }) => {
+export default (includeAdmin = false) => {
   const reducers = {
     login: require('./LoginRedux').reducer,
     signup: require('./SignupRedux').reducer,

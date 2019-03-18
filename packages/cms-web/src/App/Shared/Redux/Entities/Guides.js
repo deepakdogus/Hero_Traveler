@@ -66,6 +66,7 @@ export const INITIAL_STATE = Immutable({
     error: null,
     isDeleting: false,
     isUpdating: false,
+    isRestoring: false,
     params: {
       page: 1,
       limit: 5
@@ -230,6 +231,7 @@ export const adminGetGuidesFailure = (state, { error }) => {
     .setIn(
       ['adminGuides', 'error'],
       error)
+    .setIn(['adminGuides', 'isRestoring'], false)
 }
 
 export const adminGetGuidesSuccess = (state, { res }) => {
@@ -249,6 +251,7 @@ export const adminGetGuidesSuccess = (state, { res }) => {
     .setIn(
       ['adminGuides', 'error'],
       null)
+    .setIn(['adminGuides', 'isRestoring'], false)
 }
 
 export const adminGetGuide = (state, { params = {} }) => {
@@ -325,6 +328,9 @@ export const adminPutGuideFailure = (state) => {
   return state.setIn(['adminGuides', 'isUpdating'], false)
 }
 
+export const adminRestoreGuides = (state) => {
+  return state.setIn(['adminGuides', 'isRestoring'], true)
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -358,4 +364,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_DELETE_GUIDE_SUCCESS]: adminDeleteGuideSuccess,
   [Types.ADMIN_PUT_GUIDE]: adminPutGuide,
   [Types.ADMIN_PUT_GUIDE_FAILURE]: adminPutGuideFailure,
+  [Types.ADMIN_RESTORE_GUIDES]: adminRestoreGuides,
 })

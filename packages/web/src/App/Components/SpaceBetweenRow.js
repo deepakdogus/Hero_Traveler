@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { Row, Col } from './FlexboxGrid'
+import { Row, Col } from '../Shared/Web/Components/FlexboxGrid'
 
 const Left = styled(Row)`
   max-width: ${props => props.data['max-width']};

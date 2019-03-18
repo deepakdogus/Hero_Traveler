@@ -88,6 +88,7 @@ export const INITIAL_STATE = Immutable({
     error: null,
     isDeleting: false,
     isUpdating: false,
+    isRestoring: false,
     params: {
       page: 1,
       limit: 5
@@ -392,6 +393,7 @@ export const adminGetStoriesFailure = (state, { error }) => {
     .setIn(
       ['adminStories', 'error'],
       error)
+    .setIn(['adminStories', 'isRestoring'], false)
 }
 
 export const adminGetStoriesSuccess = (state, { res }) => {
@@ -411,6 +413,7 @@ export const adminGetStoriesSuccess = (state, { res }) => {
     .setIn(
       ['adminStories', 'error'],
       null)
+    .setIn(['adminStories', 'isRestoring'], false)
 }
 
 export const adminGetStory = (state, { params = {} }) => {
@@ -487,6 +490,10 @@ export const adminPutStoryFailure = (state) => {
   return state.setIn(['adminStories', 'isUpdating'], false)
 }
 
+export const adminRestoreStories = (state) => {
+  return state.setIn(['adminStories', 'isRestoring'], true)
+}
+
 /* ------------- Selectors ------------- */
 
 export const getByCategory = (state, categoryId) => {
@@ -553,4 +560,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_DELETE_STORY_SUCCESS]: adminDeleteStorySuccess,
   [Types.ADMIN_PUT_STORY]: adminPutStory,
   [Types.ADMIN_PUT_STORY_FAILURE]: adminPutStoryFailure,
+  [Types.ADMIN_RESTORE_STORIES]: adminRestoreStories,
 })

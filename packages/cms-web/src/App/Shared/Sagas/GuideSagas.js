@@ -224,13 +224,23 @@ export function * adminDeleteGuide (api, action) {
 }
 
 export function * adminRestoreGuides (api, action) {
-  const { ids, resolve, reject } = action.payload
+  const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreGuides, ids)
   if (response.ok && response.data) {
     const record = response.data
-    return resolve(record)
+    message.success('Guides were restored')
+    const guideResponse = yield call(api.adminGetGuides, getParams)
+    if (guideResponse.ok && guideResponse.data && guideResponse.data.data) {
+      const { data, count } = guideResponse.data
+      yield put(GuideActions.adminGetGuidesSuccess({ data, count }))
+    } else {
+      const error = guideResponse.data ? guideResponse.data.message : 'Error fetching data'
+      yield put(GuideActions.adminGetGuidesFailure(error))
+    }
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
+    message.error(error)
   }
 }
+
+

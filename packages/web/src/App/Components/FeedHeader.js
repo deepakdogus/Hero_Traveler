@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import HeaderImageWrapper from './HeaderImageWrapper'
 import FeedCarousel from './FeedCarousel'
-import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
+import HeaderTopGradient from '../Shared/Web/Components/Headers/Shared/HeaderTopGradient'
 import HeaderSlide from './HeaderSlide'
 
 const StyledHeaderImageWrapper = styled(HeaderImageWrapper)`

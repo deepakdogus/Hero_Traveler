@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import UXActions from '../../../Redux/UXRedux'
-import RoundedButton from '../../RoundedButton'
-import { Row } from '../../FlexboxGrid'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
+import { Row } from '../../../Shared/Web/Components/FlexboxGrid'
 import { Container, Title, Text } from '../../Modals/Shared'
 
 class ResetPasswordSuccess extends React.Component {

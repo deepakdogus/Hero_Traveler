@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 function getMargin(props) {
   switch(props.margin) {

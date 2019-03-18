@@ -3,16 +3,16 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
 import {
   Row,
   Col,
-} from '../FlexboxGrid'
+} from '../../Shared/Web/Components/FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
-import { mediaMax } from '../ContentLayout.component'
-import Avatar from '../Avatar'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
+import { mediaMax } from '../../Shared/Web/Components/ContentLayout.component'
+import Avatar from '../../Shared/Web/Components/Avatar'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
 import {
   StyledRow,
   StyledRoundedButton,
@@ -20,11 +20,11 @@ import {
   Divider,
   HamburgerIcon,
   SearchNav,
-} from './Shared'
+} from '../../Shared/Web/Components/Headers/Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import ConditionalLink from '../ConditionalLink'
+import ConditionalLink from '../../Shared/Web/Components/ConditionalLink'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}

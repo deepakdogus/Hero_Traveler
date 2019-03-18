@@ -24,7 +24,6 @@ class GenericList extends React.Component {
   state = {
     selectedRowKeys: [],
     activeTab: 'all',
-    isActionLoading: false,
     selectedFilter: undefined,
   }
 
@@ -134,36 +133,22 @@ class GenericList extends React.Component {
 
   _applyAction = () => {
     const { selectedRowKeys } = this.state
-    const { restoreItems, entity, rowKey, getItems, params, prefilter } = this.props
-    this.setState({
-      isActionLoading: true,
-    })
+    const { restoreItems, rowKey, params, prefilter } = this.props
     const key = `${rowKey}s`
-    // we want to chain different calls so we use promise here
-    new Promise((resolve, reject) => {
-      restoreItems({
-        [key]: selectedRowKeys,
-        resolve,
-        reject,
-      })
-    }).then(() => {
-      message.success(`${capitalize(entity)} were restored`)
-      getItems({
-        ...params,
-        query: {
-          ...prefilter,
-          deleted: true,
-        },
-      })
-      this.setState({
-        isActionLoading: false,
-        selectedRowKeys: [],
-      })
-    }).catch((e) => {
-      this.setState({
-        isActionLoading: false,
-      })
-      message.error(`There was error restoring ${entity}`)
+    const getParams = {
+      ...params,
+      query: {
+        ...prefilter,
+        deleted: true,
+      },
+    }
+    restoreItems({
+      [key]: selectedRowKeys,
+      message,
+      getParams,
+    })
+    this.setState({
+      selectedRowKeys: [],
     })
   }
 
@@ -184,11 +169,11 @@ class GenericList extends React.Component {
       restoreItems,
       renderCustomBreadcrumb,
       renderSubHeader,
+      isRestoring,
     } = this.props
     
     const {
       selectedRowKeys,
-      isActionLoading,
     } = this.state
 
     const paginationProps = {
@@ -288,8 +273,8 @@ class GenericList extends React.Component {
             <Button
               type="primary"
               onClick={this._applyAction}
-              disabled={!hasSelected}
-              loading={isActionLoading}
+              disabled={!isRestoring && !hasSelected}
+              loading={isRestoring}
             >
               Restore
             </Button>
@@ -335,6 +320,7 @@ GenericList.propTypes = {
   renderCustomBreadcrumb: PropTypes.func,
   renderSubHeader: PropTypes.func,
   prefilter: PropTypes.object,
+  isRestoring: PropTypes.bool.isRequired,
 }
 
 GenericList.defaultProps = {

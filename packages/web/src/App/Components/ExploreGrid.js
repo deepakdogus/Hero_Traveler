@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Grid, Row, Col } from './FlexboxGrid'
+import { Grid, Row, Col } from '../Shared/Web/Components/FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import Icon from './Icon'
-import { VerticalCenterStyles } from './VerticalCenter'
+import Icon from '../Shared/Web/Components/Icon'
+import { VerticalCenterStyles } from '../Shared/Web/Components/VerticalCenter'
 import OverlayHover from './OverlayHover'
 
 const StyledGrid = styled(Grid)`

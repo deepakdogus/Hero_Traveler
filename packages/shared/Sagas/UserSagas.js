@@ -267,16 +267,23 @@ export function * adminDeleteUser (api, action) {
   }
 }
 
-
 export function * adminRestoreUsers (api, action) {
-  const { ids, resolve, reject } = action.payload
+  const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreUsers, ids)
   if (response.ok && response.data) {
     const record = response.data
-    return resolve(record)
+    message.success('Users were restored')
+    const userResponse = yield call(api.adminGetUsers, getParams)
+    if (userResponse.ok && userResponse.data && userResponse.data.data) {
+      const { data, count } = userResponse.data
+      yield put(UserActions.adminGetUsersSuccess({ data, count }))
+    } else {
+      const error = userResponse.data ? userResponse.data.message : 'Error fetching data'
+      yield put(UserActions.adminGetUsersFailure(error))
+    }
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
+    message.error(error)
   }
 }
 

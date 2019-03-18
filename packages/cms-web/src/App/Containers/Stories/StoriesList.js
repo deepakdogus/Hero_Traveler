@@ -76,6 +76,7 @@ class StoriesList extends React.Component {
       params,
       getStories,
       restoreStories,
+      isRestoring,
     } = this.props
 
     return (
@@ -89,6 +90,7 @@ class StoriesList extends React.Component {
         total={total}
         getItems={getStories}
         restoreItems={restoreStories}
+        isRestoring={isRestoring}
         showFlagged
       />
     )
@@ -98,6 +100,7 @@ class StoriesList extends React.Component {
 StoriesList.propTypes = {
   list: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isRestoring: PropTypes.bool.isRequired,
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getStories: PropTypes.func.isRequired,
@@ -111,6 +114,7 @@ function mapStateToProps(state) {
     total: get(state, 'entities.stories.adminStories.total'),
     params: get(state, 'entities.stories.adminStories.params'),
     isLoading: get(state, 'entities.stories.adminStories.fetchStatus.fetching'),
+    isRestoring: get(state, 'entities.stories.adminStories.isRestoring'),
   }
 }
 

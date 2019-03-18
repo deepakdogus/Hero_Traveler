@@ -6,13 +6,13 @@ import moment from 'moment'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getVideoUrls } from '../Shared/Lib/getVideoUrl'
 
-import Avatar from './Avatar'
-import VerticalCenter from './VerticalCenter'
+import Avatar from '../Shared/Web/Components/Avatar'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
-import {Row} from './FlexboxGrid'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 import Video from './Video'
-import RoundedButton from './RoundedButton'
-import Icon from './Icon'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import Icon from '../Shared/Web/Components/Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 
 import {

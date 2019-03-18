@@ -17,11 +17,11 @@ import UXActions from '../Redux/UXRedux'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { runIfAuthed } from '../Lib/authHelpers'
 
-import Avatar from './Avatar'
+import Avatar from '../Shared/Web/Components/Avatar'
 import LikeComponent from './LikeComponent'
-import { Row } from './FlexboxGrid'
-import VerticalCenter from './VerticalCenter'
-import Icon from './Icon'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
+import Icon from '../Shared/Web/Components/Icon'
 
 import OverlayHover from './OverlayHover'
 

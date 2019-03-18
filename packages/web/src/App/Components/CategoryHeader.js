@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
-import RoundedButton from './RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import {OverlayStyles} from './Overlay'
-import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
+import HeaderTopGradient from '../Shared/Web/Components/Headers/Shared/HeaderTopGradient'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`

@@ -66,14 +66,22 @@ export function * adminDeleteCategory (api, action) {
 }
 
 export function * adminRestoreCategories (api, action) {
-  const { ids, resolve, reject } = action.payload
+  const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreCategories, ids)
   if (response.ok && response.data) {
     const record = response.data
-    return resolve(record)
+    message.success('Categories were restored')
+    const categoryResponse = yield call(api.adminGetCategories, getParams)
+    if (categoryResponse.ok && categoryResponse.data && categoryResponse.data.data) {
+      const { data, count } = categoryResponse.data
+      yield put(CategoryActions.adminGetCategoriesSuccess({ data, count }))
+    } else {
+      const error = categoryResponse.data ? categoryResponse.data.message : 'Error fetching data'
+      yield put(CategoryActions.adminGetCategoriesFailure(error))
+    }
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
+    message.error(error)
   }
 }
 

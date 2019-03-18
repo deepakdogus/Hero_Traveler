@@ -6,8 +6,8 @@ import _ from 'lodash'
 
 import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
-import RoundedButton from '../../Components/RoundedButton'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
 import FollowFollowingRow from '../../Components/FollowFollowingRow'
 

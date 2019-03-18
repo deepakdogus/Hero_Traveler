@@ -76,6 +76,7 @@ class GuidesList extends React.Component {
       params,
       getGuides,
       restoreGuides,
+      isRestoring,
     } = this.props
 
     return (
@@ -89,6 +90,7 @@ class GuidesList extends React.Component {
         total={total}
         getItems={getGuides}
         restoreItems={restoreGuides}
+        isRestoring={isRestoring}
         showFlagged
       />
     )
@@ -98,6 +100,7 @@ class GuidesList extends React.Component {
 GuidesList.propTypes = {
   list: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isRestoring: PropTypes.bool.isRequired,
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getGuides: PropTypes.func.isRequired,
@@ -106,12 +109,12 @@ GuidesList.propTypes = {
 
 function mapStateToProps(state) {
   const newList = [...get(state, 'entities.guides.adminGuides.byId', [])]
-  console.log('state', state)
   return {
     list: newList,
     total: get(state, 'entities.guides.adminGuides.total'),
     params: get(state, 'entities.guides.adminGuides.params'),
     isLoading: get(state, 'entities.guides.adminGuides.fetchStatus.fetching'),
+    isRestoring: get(state, 'entities.guides.adminGuides.isRestoring'),
   }
 }
 

@@ -1,11 +1,11 @@
 import express from 'express'
 import {hasValidOauth, populatesUser, isAdmin} from '../../../middleware'
 import endpointWrapper from '../../../utils/endpointWrapper'
-import getAll from './getAll'
+import getAll from '../../guide/getAll'
 import getGuide from '../../guide/getGuide'
-import putOne from './putOne'
+import putOne from '../../guide/putOne'
 import deleteGuide from '../../guide/deleteGuide'
-import restoreGuides from './restoreGuides'
+import restoreGuides from '../../guide/restoreGuides'
 
 const router = express.Router()
 

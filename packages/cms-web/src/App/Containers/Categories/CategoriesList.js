@@ -97,6 +97,7 @@ class CategoriesList extends React.Component {
       params,
       getCategories,
       restoreCategories,
+      isRestoring,
     } = this.props
 
     const additionalControls = [
@@ -118,6 +119,7 @@ class CategoriesList extends React.Component {
         total={total}
         getItems={getCategories}
         restoreItems={restoreCategories}
+        isRestoring={isRestoring}
         filterField="featured"
         filterPlaceholder="featured"
         filterOptions={filterOptions}
@@ -131,6 +133,7 @@ class CategoriesList extends React.Component {
 CategoriesList.propTypes = {
   list: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isRestoring: PropTypes.bool.isRequired,
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getCategories: PropTypes.func.isRequired,
@@ -145,6 +148,8 @@ function mapStateToProps(state) {
     params: get(state, 'entities.categories.adminCategories.params'),
     isLoading:
       get(state, 'entities.categories.adminCategories.fetchStatus.fetching'),
+    isRestoring:
+      get(state, 'entities.categories.adminCategories.isRestoring'),
   }
 }
 

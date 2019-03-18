@@ -7,13 +7,13 @@ import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   Container,
   Title,
   Text,
 } from './Shared'
-import {Row} from '../FlexboxGrid'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
 
 class DeleteFeedItem extends React.Component {
   static propTypes = {

@@ -10,7 +10,7 @@ import UXActions from '../../../Redux/UXRedux'
 import SignupActions, {hasSignedUp} from '../../../Shared/Redux/SignupRedux'
 
 import OnClickOutsideModal from '../OnClickOutsideModal'
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import FormInput from '../../FormInput'
 import SocialMediaButton from '../Shared/SocialMediaButton'
 import {

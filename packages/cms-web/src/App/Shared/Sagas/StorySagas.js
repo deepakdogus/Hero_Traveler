@@ -634,7 +634,6 @@ export function * adminGetStory (api, action) {
   }
 }
 
-
 export function * adminPutStory (api, action) {
   const { values, id, message } = action.payload
   const response = yield call(api.adminPutStory, { values, id })
@@ -665,13 +664,22 @@ export function * adminDeleteStory (api, action) {
 }
 
 export function * adminRestoreStories (api, action) {
-  const { ids, resolve, reject } = action.payload
+  const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreStories, ids)
   if (response.ok && response.data) {
     const record = response.data
-    return resolve(record)
+    message.success('Stories were restored')
+    const storyResponse = yield call(api.adminGetStories, getParams)
+    if (storyResponse.ok && storyResponse.data && storyResponse.data.data) {
+      const { data, count } = storyResponse.data
+      yield put(StoryActions.adminGetStoriesSuccess({ data, count }))
+    } else {
+      const error = storyResponse.data ? storyResponse.data.message : 'Error fetching data'
+      yield put(StoryActions.adminGetStoriesFailure(error))
+    }
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
-    return reject(error)
+    message.error(error)
   }
 }
+

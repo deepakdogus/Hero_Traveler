@@ -44,6 +44,7 @@ export const INITIAL_STATE = Immutable({
     error: null,
     isDeleting: false,
     isUpdating: false,
+    isRestoring: false,
     params: {
       page: 1,
       limit: 5
@@ -119,6 +120,7 @@ export const adminGetCategoriesFailure = (state, { error }) => {
     .setIn(
       ['adminCategories', 'error'],
       error)
+    .setIn(['adminCategories', 'isRestoring'], false)
 }
 
 export const adminGetCategoriesSuccess = (state, { res }) => {
@@ -138,6 +140,7 @@ export const adminGetCategoriesSuccess = (state, { res }) => {
     .setIn(
       ['adminCategories', 'error'],
       null)
+    .setIn(['adminCategories', 'isRestoring'], false)
 }
 
 export const adminGetCategory = (state, { params = {} }) => {
@@ -215,6 +218,10 @@ export const adminPutCategoryFailure = (state) => {
   return state.setIn(['adminCategories', 'isUpdating'], false)
 }
 
+export const adminRestoreCategories = (state) => {
+  return state.setIn(['adminCategories', 'isRestoring'], true)
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -233,4 +240,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_DELETE_CATEGORY_SUCCESS]: adminDeleteCategorySuccess,
   [Types.ADMIN_PUT_CATEGORY]: adminPutCategory,
   [Types.ADMIN_PUT_CATEGORY_FAILURE]: adminPutCategoryFailure,
+  [Types.ADMIN_RESTORE_CATEGORIES]: adminRestoreCategories,
 })

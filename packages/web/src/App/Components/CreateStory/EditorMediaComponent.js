@@ -14,8 +14,8 @@ import { CloseXContainer } from './Shared'
 import CloseX from '../CloseX'
 import Placeholder from './EditorCustomPlaceholder'
 import Caption from '../MediaCaption'
-import Loader from '../Loader'
-import {Row} from '../FlexboxGrid'
+import Loader from '../../Shared/Web/Components/Loader'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
 
 const cx = require('draft-js/node_modules/fbjs/lib/cx');
 

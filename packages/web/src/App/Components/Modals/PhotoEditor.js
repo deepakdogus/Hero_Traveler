@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row} from '../FlexboxGrid'
-import RoundedButton from '../RoundedButton'
-import Loader from '../Loader'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Loader from '../../Shared/Web/Components/Loader'
 import {Title} from './Shared'
 import Cropper from '../Extensions/ExtendedCropper'
 

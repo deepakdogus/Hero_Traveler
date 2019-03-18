@@ -7,15 +7,15 @@ import { NavLink } from 'react-router-dom'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
-import Avatar from './Avatar'
+import Avatar from '../Shared/Web/Components/Avatar'
 import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
-import { Row } from './FlexboxGrid'
+import VerticalCenter, {VerticalCenterStyles} from '../Shared/Web/Components/VerticalCenter'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
-import { NavLinkStyled } from './NavLinkStyled'
+import { NavLinkStyled } from '../Shared/Web/Components/NavLinkStyled'
 import RotatedArrow from './RotatedArrow'
-import RoundedButton from './RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 
 const ProfileLink = styled(NavLinkStyled)`
   ${VerticalCenterStyles}

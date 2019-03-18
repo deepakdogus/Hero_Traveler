@@ -64,7 +64,7 @@ const { Types, Creators } = createActions({
   adminDeleteUser: ['payload'],
   adminDeleteUserSuccess: ['id'],
   adminDeleteUserFailure: ['error'],
-  adminRestoreUsers: ['payload']
+  adminRestoreUsers: ['payload'],
 })
 
 export const UserTypes = Types
@@ -95,6 +95,7 @@ export const INITIAL_STATE = Immutable({
     error: null,
     isDeleting: false,
     isUpdating: false,
+    isRestoring: false,
     params: {
       page: 1,
       limit: 5
@@ -523,6 +524,7 @@ export const adminGetUserFailure = (state, { error }) => {
     .setIn(
       ['adminUsers', 'error'],
       error)
+    .setIn(['adminUsers', 'isRestoring'], false)
 }
 
 
@@ -556,6 +558,7 @@ export const adminGetUserSuccess = (state, { res }) => {
     .setIn(
       ['adminUsers', 'isUpdating'],
       false)
+    .setIn(['adminUsers', 'isRestoring'], false)
 }
 
 export const adminDeleteUser = (state) => {
@@ -582,6 +585,9 @@ export const adminPutUserFailure = (state) => {
   return state.setIn(['adminUsers', 'isUpdating'], false)
 }
 
+export const adminRestoreUsers = (state) => {
+  return state.setIn(['adminUsers', 'isRestoring'], true)
+}
 
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
@@ -684,4 +690,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_DELETE_USER_SUCCESS]: adminDeleteUserSuccess,
   [Types.ADMIN_PUT_USER]: adminPutUser,
   [Types.ADMIN_PUT_USER_FAILURE]: adminPutUserFailure,
+  [Types.ADMIN_RESTORE_USERS]: adminRestoreUsers,
 })

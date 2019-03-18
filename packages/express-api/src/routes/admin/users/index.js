@@ -1,11 +1,11 @@
 import express from 'express'
 import {hasValidOauth, populatesUser, isAdmin} from '../../../middleware'
 import endpointWrapper from '../../../utils/endpointWrapper'
-import getAll from './getAll'
+import getAll from '../../user/getAll'
 import getUser from '../../user/getUser'
 import update from '../../user/update'
 import deleteUser from '../../user/deleteUser'
-import restoreUsers from './restoreUsers'
+import restoreUsers from '../../user/restoreUsers'
 
 const router = express.Router()
 

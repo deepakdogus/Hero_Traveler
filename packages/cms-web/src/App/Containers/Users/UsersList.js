@@ -65,6 +65,7 @@ class UsersList extends React.Component {
       params,
       getUsers,
       restoreUsers,
+      isRestoring,
     } = this.props
 
     return (
@@ -78,6 +79,7 @@ class UsersList extends React.Component {
         total={total}
         getItems={getUsers}
         restoreItems={restoreUsers}
+        isRestoring={isRestoring}
         filterField="role"
         filterPlaceholder="user role"
         filterOptions={filterOptions}
@@ -93,6 +95,7 @@ UsersList.propTypes = {
   total: PropTypes.number.isRequired,
   getUsers: PropTypes.func.isRequired,
   restoreUsers: PropTypes.func.isRequired,
+  isRestoring: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -102,6 +105,7 @@ function mapStateToProps(state) {
     total: state.entities.users.adminUsers.total,
     params: state.entities.users.adminUsers.params,
     isLoading: state.entities.users.adminUsers.fetchStatus.fetching,
+    isRestoring: state.entities.users.adminUsers.isRestoring,
   }
 }
 

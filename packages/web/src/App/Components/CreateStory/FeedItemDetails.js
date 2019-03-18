@@ -95,6 +95,7 @@ export const StyledInput = styled.input`
   border-width: 0;
   margin: 10px 0 10px 25px;
   outline: none;
+  cursor: ${props => props.onClick ? 'pointer' : 'auto'};
   ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
@@ -222,6 +223,7 @@ export default class FeedItemDetails extends React.Component {
     categories: PropTypes.object,
     isGuide: PropTypes.bool,
     reroute: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
   constructor(props) {
     super(props)
@@ -377,6 +379,8 @@ export default class FeedItemDetails extends React.Component {
     })
   }
 
+  onChangeActionButton = actionButton => this.props.onInputChange({actionButton})
+
   togglePrivacy = () => {
     this.props.onInputChange({
       isPrivate: !this.props.workingDraft.isPrivate,
@@ -386,6 +390,15 @@ export default class FeedItemDetails extends React.Component {
   getCostPlaceHolderText = (type) =>{
     if (type === 'stay') return 'Cost Per Night'
     return 'Cost Per Person'
+  }
+
+  hasActionButton = () => {
+    const { workingDraft } = this.props
+    return workingDraft && workingDraft.actionButton && workingDraft.actionButton.link
+  }
+
+  openActionButtonModal = () => {
+    this.props.openGlobalModal('addActionButton')
   }
 
   renderLocations() {
@@ -430,6 +443,8 @@ export default class FeedItemDetails extends React.Component {
     } = this.state
     // normally this only happens when you just published a draft
     if (!workingDraft) return null
+
+    const actionButtonLink = this.hasActionButton() ? workingDraft.actionButton.link : ''
 
     return (
       <Container>
@@ -571,6 +586,20 @@ export default class FeedItemDetails extends React.Component {
             min='0'
             name='cost'
             onChange={this.onGenericChange}
+          />
+        </InputRowContainer>
+        <StyledDivider color='lighter-grey' opaque/>
+        <InputRowContainer>
+          <IconWrapper>
+            <IconWithMargin name='addActionButton'/>
+          </IconWrapper>
+          <StyledInput
+            type='number'
+            placeholder={actionButtonLink || 'Enter Url'}
+            value={actionButtonLink}
+            name='actionButton'
+            onClick={this.openActionButtonModal}
+            readOnly
           />
         </InputRowContainer>
         <StyledDivider color='lighter-grey' opaque/>

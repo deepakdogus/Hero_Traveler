@@ -6,6 +6,7 @@ import {push} from 'react-router-redux'
 import FeedItemDetails from '../../Components/CreateStory/FeedItemDetails'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import UXActions from '../../Redux/UXRedux'
 
 class CreateStoryCoverContent extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ class CreateStoryCoverContent extends Component {
     loadDefaultCategories: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
     reroute: PropTypes.func,
+    openGlobalModal: PropTypes.func,
   }
 
   onInputChange = (update) => {
@@ -38,6 +40,7 @@ class CreateStoryCoverContent extends Component {
         workingDraft={this.props.workingDraft}
         categories={this.props.categories}
         reroute={this.props.reroute}
+        openGlobalModal={this.props.openGlobalModal}
       />
     )
   }
@@ -55,6 +58,7 @@ function mapDispatchToProps(dispatch) {
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     updateWorkingDraft: (story) => dispatch(StoryCreateActions.updateWorkingDraft(story)),
     reroute: (path) => dispatch(push(path)),
+    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }
 }
 

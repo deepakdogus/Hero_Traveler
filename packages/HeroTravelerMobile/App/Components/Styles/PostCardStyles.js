@@ -13,6 +13,14 @@ export default StyleSheet.create({
     height: '100%',
     backgroundColor: Colors.backgroundDark,
   },
+  imageOverlayContainer: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,.25)',
+  },
   listContainer: {
     paddingBottom: Metrics.baseMargin,
   },
@@ -122,5 +130,8 @@ export default StyleSheet.create({
   publishBtnTextStyle: {
     fontWeight: '600',
     color: '#000',
+  },
+  disabledBtnTextStyle: {
+    color: 'rgba(0,0,0,.3)',
   },
 })

@@ -124,12 +124,12 @@ const createPostcardSuccess = (state, { postcard }) => {
       loaded: true,
       fetching: false
     },
-    postcard,
+    postcards: [...state.postcards, postcard],
     error: false,
   })
 }
 
-const createPostcardFailure = (state) => {
+const createPostcardFailure = (state, { error }) => {
   return state.merge({
     fetchStatus: {
       loaded: true,

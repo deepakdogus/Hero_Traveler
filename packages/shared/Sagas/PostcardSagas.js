@@ -150,8 +150,8 @@ export function * createPostcard(api, action) {
 
   const response = yield call(api.createPostcard, postcard)
   if (response.ok) {
-    moveVideosFromPrecacheToCache(postcard.id)
     const { postcard } = response.data
+    moveVideosFromPrecacheToCache(postcard._id)
     yield [
       put(PostcardActions.createPostcardSuccess(postcard)),
     ]

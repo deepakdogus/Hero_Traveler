@@ -7,8 +7,6 @@ import ImageWrapper from '../../Components/ImageWrapper'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import styles from '../Styles/PostCardStyles'
 
-import Reactotron from 'reactotron-react-native'
-
 export default class PostCardThumbnail extends Component {
   static propTypes = {
     postcard: PropTypes.object,
@@ -21,7 +19,6 @@ export default class PostCardThumbnail extends Component {
 
   render() {
     const { postcard } = this.props
-    Reactotron.log('Image URL' + getImageUrl(postcard.coverImage))
     return (
       <View style={styles.contentContainer}>
         <TouchableOpacity

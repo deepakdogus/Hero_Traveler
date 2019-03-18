@@ -36,7 +36,7 @@ export default async function createPostcard(postcardData, assetFormater) {
   postcardObject.publishedDate = new Date()
   newPostcard = await Postcard.create(postcardObject)
   console.log('__________', newPostcard)
-  const populatedPostcard = await Postcard.get({'_id': newPostcard._id})
+  const populatedPostcard = await Postcard.findOne({'_id': newPostcard._id})
   console.log('__________', populatedPostcard)
   return {
     postcard: populatedPostcard,

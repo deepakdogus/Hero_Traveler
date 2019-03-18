@@ -6,6 +6,7 @@ import { Colors } from '../../Shared/Themes'
 import FormInput from '../FormInput'
 import NavBar from '../../Containers/CreateStory/NavBar'
 import RoundedButton from '../RoundedButton'
+import Reactotron from 'reactotron-react-native'
 
 import styles from '../Styles/PostCardStyles'
 
@@ -13,6 +14,7 @@ export default class PostCardCreate extends Component {
   static props = {
     media: PropTypes.object,
     mediaType: PropTypes.string,
+    fetchStatus: PropTypes.object,
     createPostcard: PropTypes.func.isRequired,
   }
 
@@ -23,6 +25,12 @@ export default class PostCardCreate extends Component {
       location: '',
       title: '',
       titleHeight: 37,
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.fetchStatus.loaded) {
+      Reactotron.log('POSTCARD CREATED' + nextProps)
     }
   }
 
@@ -58,6 +66,14 @@ export default class PostCardCreate extends Component {
     })
   }
 
+  checkValidation = () => {
+    const { title, location } = this.state
+    if (title && location) {
+      return true
+    }
+    return false
+  }
+
   onCancelClick = () => {
     NavActions.pop()
     setTimeout(() => {
@@ -66,7 +82,7 @@ export default class PostCardCreate extends Component {
   }
 
   onPublishClick = () => {
-    const { createPostcard, media, mediaType } = this.props
+    const { createPostcard, media, mediaType, fetchStatus } = this.props
     const { title, location } = this.state
     const postcard = {
       title,
@@ -74,59 +90,64 @@ export default class PostCardCreate extends Component {
       ...media,
     }
     createPostcard(postcard)
+    if (fetchStatus.loaded) {
+    //   NavActions.tabbar()
+    }
   }
 
   render() {
-    const { media, mediaType } = this.props
+    const { media, mediaType, fetchStatus } = this.props
     const { title, location } = this.state
     return (
       <ImageBackground
         source={{uri: media.coverImage.uri}}
         style={styles.imageContainer}
       >
-        <NavBar
-          title='CREATE QUICKSHARE'
-          titleStyle={styles.navBarTitleStyle}
-          onLeft={NavActions.pop}
-          leftIcon='arrowLeftRed'
-          leftTextStyle={styles.navBarLeftTextStyle}
-          leftIconStyle={styles.navBarLeftTextStyle}
-          onRight={this.onCancelClick}
-          rightTitle='Cancel'
-          rightTextStyle={styles.navBarRightTextStyle}
-          style={styles.navBarStyle}
-        />
-        <View style={styles.formContainer}>
-          <FormInput
-            onPress={this.navToLocation}
-            iconName='location'
-            value={location ? location.name : ''}
-            placeholder='Add a location'
-            placeholderColor={Colors.white}
-            style={styles.locationInputStyle}
+        <View style={styles.imageOverlayContainer}>
+          <NavBar
+            title='CREATE QUICKSHARE'
+            titleStyle={styles.navBarTitleStyle}
+            onLeft={NavActions.pop}
+            leftIcon='arrowLeftRed'
+            leftTextStyle={styles.navBarLeftTextStyle}
+            leftIconStyle={styles.navBarLeftTextStyle}
+            onRight={this.onCancelClick}
+            rightTitle='Cancel'
+            rightTextStyle={styles.navBarRightTextStyle}
+            style={styles.navBarStyle}
           />
-          <TextInput
-            style={[
-              styles.titleInput,
-              {height: this.state.titleHeight},
-            ]}
-            placeholder='Add a title'
-            placeholderTextColor={Colors.white}
-            value={title}
-            onChangeText={this.setTitleAndFocus}
-            returnKeyType='done'
-            maxLength={40}
-            multiline={true}
-            blurOnSubmit
-            onContentSizeChange={this.setTitleHeight}
+          <View style={styles.formContainer}>
+            <FormInput
+              onPress={this.navToLocation}
+              iconName='location'
+              value={location ? location.name : ''}
+              placeholder='Add a location'
+              placeholderColor={Colors.white}
+              style={styles.locationInputStyle}
+            />
+            <TextInput
+              style={[
+                styles.titleInput,
+                {height: this.state.titleHeight},
+              ]}
+              placeholder='Add a title'
+              placeholderTextColor={Colors.white}
+              value={title}
+              onChangeText={this.setTitleAndFocus}
+              returnKeyType='done'
+              maxLength={40}
+              multiline={true}
+              blurOnSubmit
+              onContentSizeChange={this.setTitleHeight}
+            />
+          </View>
+          <RoundedButton
+            style={styles.publishBtnStyle}
+            textStyle={(!this.checkValidation() || fetchStatus.fetching) ? styles.disabledBtnTextStyle : styles.publishBtnTextStyle}
+            text='PUBLISH'
+            onPress={(!this.checkValidation() || fetchStatus.fetching) ? () => {} : this.onPublishClick}
           />
         </View>
-        <RoundedButton
-          style={styles.publishBtnStyle}
-          textStyle={styles.publishBtnTextStyle}
-          text='PUBLISH'
-          onPress={this.onPublishClick}
-        />
       </ImageBackground>
     )
   }

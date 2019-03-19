@@ -129,7 +129,7 @@ const UserSchema = new Schema({
   birthday: {
     type: Date,
   },
-  homeTown: {
+  locationInfo: {
     name: {
       type: String,
     },

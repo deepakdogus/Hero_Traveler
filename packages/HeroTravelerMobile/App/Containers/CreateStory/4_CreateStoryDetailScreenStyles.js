@@ -100,40 +100,8 @@ export default StyleSheet.create({
   radioGroup: {
     flexDirection: 'row',
     flex: 1,
-  },
-  radio: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Metrics.baseMargin,
-  },
-  radioBtnOuter: {
-    borderRadius: 100,
-    width: 15,
-    height: 15,
-    backgroundColor: Colors.snow,
-    borderWidth: 1.5,
-    borderColor: Colors.navBarText,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  radioBtnInner: {
-    borderRadius: 100,
-    width: 7,
-    height: 7,
-    backgroundColor: Colors.snow,
-  },
-  radioBtnActiveBorder: {
-    borderColor: Colors.redHighlights,
-  },
-  radioBtnActiveBackground: {
-    backgroundColor: Colors.redHighlights,
-  },
-  radioText: {
+    justifyContent: 'space-around',
     marginLeft: Metrics.baseMargin,
-    fontWeight: '500',
-    fontSize: 16,
   },
   draftButton: {
     borderColor: Colors.red,

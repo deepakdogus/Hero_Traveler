@@ -21,6 +21,7 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+import RadioButton from '../../Components/RadioButton'
 
 const api = API.create()
 
@@ -39,19 +40,6 @@ const dateLikeItemAsDateString = (dateLikeItem) => {
   const date = dateLikeItemAsDate(dateLikeItem)
   const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
-}
-
-const Radio = ({text, onPress, selected}) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.radio}>
-        <View style={[styles.radioBtnOuter, selected ? styles.radioBtnActiveBorder : {}]}>
-          <View style={[styles.radioBtnInner, selected ? styles.radioBtnActiveBackground : {}]}/>
-        </View>
-        <Text style={styles.radioText}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
 }
 
 class CreateStoryDetailScreen extends React.Component {
@@ -140,9 +128,7 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
-  _updateType = (type) => {
-    this.props.updateWorkingDraft({type})
-  }
+  _updateType = (type) => () => this.props.updateWorkingDraft({type})
 
   _updateCostText = (value) => {
     this.setState({cost:value})
@@ -314,26 +300,26 @@ class CreateStoryDetailScreen extends React.Component {
             <View style={styles.fieldWrapper}>
               <Text style={styles.fieldLabel}>Activity: </Text>
               <View style={styles.radioGroup}>
-                <Radio
+                <RadioButton
                   selected={workingDraft.type === 'see'}
-                  onPress={() => this._updateType('see')}
+                  onPress={this._updateType('see')}
                   text='SEE'
                 />
-                <Radio
+                <RadioButton
                   style={{marginLeft: Metrics.baseMargin}}
                   selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
+                  onPress={this._updateType('do')}
                   text='DO'
                 />
-                <Radio
+                <RadioButton
                   selected={workingDraft.type === 'eat'}
-                  onPress={() => this._updateType('eat')}
+                  onPress={this._updateType('eat')}
                   text='EAT'
                 />
-                <Radio
+                <RadioButton
                   style={{marginLeft: Metrics.baseMargin}}
                   selected={workingDraft.type === 'stay'}
-                  onPress={() => this._updateType('stay')}
+                  onPress={this._updateType('stay')}
                   text='STAY'
                 />
               </View>

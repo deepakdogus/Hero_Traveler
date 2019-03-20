@@ -40,13 +40,13 @@ import {
   verifyEmail,
   changePassword,
 } from './LoginSagas'
-// import {
-//   signupEmail,
-//   signupFacebook,
-//   getUsersCategories,
-//   followCategory,
-//   unfollowCategory,
-// } from './SignupSagas'
+import {
+  signupEmail,
+  signupFacebook,
+  getUsersCategories,
+  followCategory,
+  unfollowCategory,
+} from './SignupSagas'
 import {
   logout,
   resumeSession,

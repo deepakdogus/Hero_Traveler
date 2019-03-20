@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import PostCardScreen from '../../Components/PostCard/PostCardScreen'
-import PostcardActions from '../../Shared/Redux/PostcardRedux'
+import CreatePostCard from '../../Components/PostCard/CreatePostCard'
+import PostcardActions from '../../Shared/Redux/Entities/Postcards'
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -13,9 +13,9 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    fetchStatus: state.postcards.fetchStatus,
-    error: state.postcards.error,
+    fetchStatus: state.entities.postcards.fetchStatus,
+    error: state.entities.postcards.error,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostCardScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePostCard)

@@ -1,22 +1,7 @@
 import _ from 'lodash'
-import {getLocationInfo} from '@hero/ht-util'
-import {Postcard, Image, Video, User} from '../models'
-
-export async function getUserDetails(userId) {
-  return User.findOne({_id:userId})
-}
-
-export async function addCover(postcard, assetFormater){
-  const {coverImage, coverVideo} = postcard
-  const isCoverImage = !!coverImage
-  const cover = await createCover(
-    coverImage || coverVideo,
-    assetFormater,
-    !!coverImage ? 'coverImage' : 'coverVideo'
-  )
-  postcard.coverImage = isCoverImage ? cover._id : undefined
-  postcard.coverVideo = isCoverImage ? undefined : cover._id
-}
+import { getLocationInfo } from '@hero/ht-util'
+import { Postcard } from '../models'
+import { addCover } from '../story/createStory'
 
 export default async function createPostcard(postcardData, assetFormater) {
   let newPostcard
@@ -25,31 +10,17 @@ export default async function createPostcard(postcardData, assetFormater) {
     ...postcardData
   }
 
-  if (
-    postcardObject.locationInfo
-    && !postcardObject.locationInfo.latitude
-  ) {
-    postcardObject.locationInfo = await getLocationInfo(postcardObject.locationInfo.name)
+  if (postcardObject.locationInfo && !postcardObject.locationInfo.latitude) {
+    postcardObject.locationInfo = await getLocationInfo(
+      postcardObject.locationInfo.name
+    )
   }
 
   await addCover(postcardObject, assetFormater)
   postcardObject.publishedDate = new Date()
   newPostcard = await Postcard.create(postcardObject)
-  console.log('__________', newPostcard)
-  const populatedPostcard = await Postcard.findOne({'_id': newPostcard._id})
-  console.log('__________', populatedPostcard)
+  const populatedPostcard = await Postcard.findOne({ _id: newPostcard._id })
   return {
-    postcard: populatedPostcard,
+    postcard: populatedPostcard
   }
-}
-
-function createCover(cover, assetFormater, purpose) {
-  if (typeof cover === 'string') cover = JSON.parse(cover)
-  const createMethod = purpose === 'coverImage' ? Image : Video
-  return createMethod.create(
-    assetFormater(
-      cover,
-      {purpose}
-    )
-  )
 }

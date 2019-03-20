@@ -2,11 +2,11 @@ import { connect } from 'react-redux'
 
 import SessionActions from '../Shared/Redux/SessionRedux'
 import PostCardList from '../Components/PostCard/PostCardList'
-import PostcardActions from '../Shared/Redux/PostcardRedux'
+import PostcardActions from '../Shared/Redux/Entities/Postcards'
 
 const mapStateToProps = (state) => {
   return {
-    postcards: state.postcards.postcards,
+    postcards: state.entities.postcards.postcards,
     sessionError: state.session.error,
   }
 }

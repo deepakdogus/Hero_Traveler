@@ -383,7 +383,7 @@ const mapStateToProps = state => {
     user: state.entities.users.entities[state.session.userId],
     stories: state.entities.stories.entities,
     searchHistory: state.history.searchHistory,
-    postcards: state.postcards.postcards,
+    postcards: state.entities.postcards.postcards,
     myFollowedUsers: getFollowers(users, 'following', userId),
   }
 }

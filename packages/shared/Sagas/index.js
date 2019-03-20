@@ -19,7 +19,6 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { SignupTypes } from '../Redux/SignupRedux'
 import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
-import { PostcardTypes } from '../Redux/PostcardRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
 import StoryActions, { StoryTypes } from '../Redux/Entities/Stories'
@@ -28,6 +27,7 @@ import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
 import { GuideTypes } from '../Redux/Entities/Guides'
 import { CommentTypes } from '../Redux/Entities/Comments'
+import { PostcardTypes } from '../Redux/Entities/Postcards'
 
 /* ------------- Sagas ------------- */
 

@@ -2,12 +2,9 @@
 import {
   call,
   put,
-  select,
 } from 'redux-saga/effects'
-import Reactotron from 'reactotron-react-native'
-import _ from 'lodash'
 
-import PostcardActions from '../Redux/PostcardRedux'
+import PostcardActions from '../Redux/Entities/Postcards'
 import {
   getNewCover,
 } from '../Redux/helpers/coverUpload'
@@ -21,11 +18,6 @@ import pathAsFileObject from '../Lib/pathAsFileObject'
 import {
   isLocalMediaAsset,
 } from '../Lib/getVideoUrl'
-import hasConnection from '../../Lib/hasConnection'
-import {
-  currentUserId,
-} from './SessionSagas'
-
 
 export const extractUploadData = (uploadData) => {
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
@@ -52,7 +44,7 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
     mediaType,
   )
 
-  if (typeof cloudinaryMedia.data === "string") {
+  if (typeof cloudinaryMedia.data === 'string') {
     cloudinaryMedia.data = JSON.parse(cloudinaryMedia.data)
   }
   const failureMessage = _.get(cloudinaryMedia, 'data.error')
@@ -77,20 +69,18 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
 }
 
 export function * createCover(api, postcard){
-  Reactotron.log(postcard)
   const videoFileUri =
     postcard.coverVideo && postcard.coverVideo.uri && isLocalMediaAsset(postcard.coverVideo.uri)
     ? postcard.coverVideo.uri
     : undefined
   const isImageCover = postcard.coverImage
   const cover = getNewCover(postcard.coverImage, postcard.coverVideo)
-  Reactotron.log(cover)
   if (!cover) return postcard
 
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
 
   // Web and mobile receive two different responses.
-  if (typeof cloudinaryCover.data === "string") {
+  if (typeof cloudinaryCover.data === 'string') {
     cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   }
 
@@ -106,9 +96,6 @@ export function * createCover(api, postcard){
     postcard.coverVideo = cloudinaryCover.data
   }
 
-  // if (!isGuide)
-  //   yield put(StoryCreateActions.incrementSyncProgress())
-
   if (videoFileUri && cloudinaryCover.data && cloudinaryCover.data.public_id) {
     moveVideoToPreCache(postcard.id, videoFileUri, cloudinaryCover.data.public_id)
   }
@@ -118,8 +105,6 @@ export function * createCover(api, postcard){
 
 function * createPostcardErrorHandling(postcard, response){
   let err = new Error('Failed to publish postcard')
-  // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
-  //       methods, maybe Object.assign(err, response) is better?
   err.status = response.status
   err.problem = response.problem
 
@@ -129,19 +114,6 @@ function * createPostcardErrorHandling(postcard, response){
 
 export function * createPostcard(api, action) {
   const { postcard } = action
-  // yield [
-  //   put(PendingUpdatesActions.addPendingUpdate(
-  //     draft,
-  //     'Failed to publish',
-  //     'saveLocalDraft',
-  //     'retrying',
-  //   )),
-  //   put(StoryCreateActions.initializeSyncProgress(
-  //     getSyncProgressSteps(draft),
-  //     `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
-  //   )),
-  // ]
-
   const coverResponse = yield createCover(api, postcard)
   if (coverResponse.error) {
     yield createPostcardErrorHandling(postcard, coverResponse.error)
@@ -184,7 +156,7 @@ export function * getPostcards(api) {
     const postcards = response.data.feed
     yield put(PostcardActions.getPostcardsSuccess(postcards))
   } else {
-    yield put(StoryActions.getPostcardFailure(
+    yield put(PostcardActions.getPostcardsFailure(
       new Error('Failed to load drafts'),
     ))
   }

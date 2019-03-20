@@ -6,7 +6,6 @@ import { Colors } from '../../Shared/Themes'
 import FormInput from '../FormInput'
 import NavBar from '../../Containers/CreateStory/NavBar'
 import RoundedButton from '../RoundedButton'
-import Reactotron from 'reactotron-react-native'
 
 import styles from '../Styles/PostCardStyles'
 
@@ -25,12 +24,6 @@ export default class PostCardCreate extends Component {
       location: '',
       title: '',
       titleHeight: 37,
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.fetchStatus.loaded) {
-      Reactotron.log('POSTCARD CREATED' + nextProps)
     }
   }
 
@@ -90,9 +83,7 @@ export default class PostCardCreate extends Component {
       ...media,
     }
     createPostcard(postcard)
-    if (fetchStatus.loaded) {
-    //   NavActions.tabbar()
-    }
+    NavActions.tabbar({type: 'reset'})
   }
 
   render() {

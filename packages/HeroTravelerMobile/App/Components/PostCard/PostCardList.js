@@ -19,6 +19,8 @@ export default class PostCardList extends Component {
     }
   }
 
+  keyExtractor = item => item._id
+
   renderItem = ({item}) => (
     <PostCardThumbnail postcard={item} />
   )
@@ -30,6 +32,7 @@ export default class PostCardList extends Component {
       <View style={styles.container}>
         <FlatList
           data={postcards}
+          keyExtractor={this.keyExtractor}
           horizontal={true}
           renderItem={this.renderItem}
           style={styles.listContainer}

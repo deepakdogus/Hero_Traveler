@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
@@ -47,13 +46,12 @@ export const INITIAL_STATE = Immutable({
  * Reducers
  * 
  **/
-const getPostcardRequest = (state, { cardId }) => {
+const getPostcardRequest = (state) => {
   return state.merge({
     fetchStatus: {
       loaded: false,
       fetching: true
     },
-    cardId,
   })
 }
 
@@ -124,9 +122,9 @@ const createPostcardSuccess = (state, { postcard }) => {
       loaded: true,
       fetching: false
     },
-    postcards: [...state.postcards, postcard],
+    postcards: [postcard, ...state.postcards],
     error: false,
-  })
+  }, {deep: true})
 }
 
 const createPostcardFailure = (state, { error }) => {

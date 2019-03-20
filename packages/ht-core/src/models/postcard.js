@@ -1,76 +1,65 @@
 import Promise from 'bluebird'
-import mongoose, {Schema} from 'mongoose'
-import _ from 'lodash'
+import mongoose, { Schema } from 'mongoose'
 import softDelete from 'mongoose-delete'
 import slug from 'mongoose-slug-generator'
-import {ModelName as UserRef} from './user'
-import {ModelName as UploadRef} from './upload'
-import {Constants} from '@hero/ht-util'
+import { ModelName as UserRef } from './user'
+import { ModelName as UploadRef } from './upload'
 export const ModelName = 'Postcard'
 
-const PostcardSchema = new Schema({
-  title: {
-    type: String,
-  },
-  author: {
-    type: Schema.ObjectId,
-    ref: UserRef,
-    required: true
-  },
-  locationInfo: {
-    name: {
-      type: String,
+const PostcardSchema = new Schema(
+  {
+    title: {
+      type: String
     },
-    locality: {
-      type: String,
+    author: {
+      type: Schema.ObjectId,
+      ref: UserRef,
+      required: true
     },
-    state: {
-      type: String,
+    locationInfo: {
+      name: {
+        type: String
+      },
+      locality: {
+        type: String
+      },
+      state: {
+        type: String
+      },
+      country: {
+        type: String
+      },
+      latitude: {
+        type: Number
+      },
+      longitude: {
+        type: Number
+      }
     },
-    country: {
-      type: String,
+    coverImage: {
+      type: Schema.ObjectId,
+      ref: UploadRef
     },
-    latitude: {
-      type: Number
+    coverVideo: {
+      type: Schema.ObjectId,
+      ref: UploadRef
     },
-    longitude: {
-      type: Number
+    publishedDate: {
+      type: Date
+    }
+  },
+  {
+    timestamps: true,
+    toObject: {
+      virtuals: true
     },
-  },
-  // location is being phased out in favor of locationInfo and
-  // will be removed in future.
-  location: {
-    type: String
-  },
-  latitude: {
-    type: Number
-  },
-  longitude: {
-    type: Number
-  },
-  coverImage: {
-    type: Schema.ObjectId,
-    ref: UploadRef,
-  },
-  coverVideo: {
-    type: Schema.ObjectId,
-    ref: UploadRef,
-  },
-  publishedDate: {
-    type: Date,
-  },
-}, {
-  timestamps: true,
-  toObject: {
-    virtuals: true
-  },
-  toJSON: {
-    virtuals: true
+    toJSON: {
+      virtuals: true
+    }
   }
-})
+)
 
 PostcardSchema.statics = {
-
   get(/* args */) {
     return this.findOne(...arguments)
       .populate({
@@ -86,22 +75,26 @@ PostcardSchema.statics = {
   list(/* args */) {
     return this.find(...arguments)
       .populate('coverImage coverVideo')
-      .sort({publishedDate: -1})
+      .sort({ publishedDate: -1 })
   },
 
   getPostcards(limit = 100) {
     return Promise.props({
       count: this.count().exec(),
-      feed: this
-        .list()
+      feed: this.list({
+        publishedDate: {
+          $gte: new Date(new Date().getTime() - 24 * 3600 * 1000), // 24 hours agp
+          $lt: new Date()
+        }
+      })
         .skip(0)
         .limit(limit)
-        .exec(),
+        .exec()
     })
-  },
+  }
 }
 
-PostcardSchema.plugin(slug, {truncate: 120})
-PostcardSchema.plugin(softDelete, {overrideMethods: true})
+PostcardSchema.plugin(slug, { truncate: 120 })
+PostcardSchema.plugin(softDelete, { overrideMethods: true })
 
 export default mongoose.model(ModelName, PostcardSchema)

@@ -63,16 +63,15 @@ export default async function createStory(storyData, assetFormater) {
     storyObject.locationInfo = await getLocationInfo(storyObject.locationInfo.name)
   }
 
+  if (storyObject.draft === false) {
+    storyObject.publishedDate = new Date()
+  }
+
   if (isLocalStory) {
     await addCover(storyObject, assetFormater)
     storyData.id = undefined
     newStory = await Story.create(storyObject)
   }
-
-  if (storyObject.draft === false) {
-    storyObject.publishedDate = new Date()
-  }
-
   else newStory = await updateDraft(storyData.id, storyObject)
 
   // make a query for the story with just the fields

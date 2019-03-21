@@ -52,7 +52,6 @@ class Signup extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
     openGlobalModal: PropTypes.func,
-    closeGlobalModal: PropTypes.func,
     onAttemptSignup: PropTypes.func,
     fetching: PropTypes.bool,
     fullName: PropTypes.string,
@@ -208,7 +207,6 @@ export default R.compose(
         openGlobalModal: (modalName, params) => {
           return dispatch(UXActions.openGlobalModal(modalName, params))
         },
-        closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
       }
     },
   ),

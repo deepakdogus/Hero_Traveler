@@ -33,6 +33,12 @@ const SignupSocial = Loadable({
   delay: 300,
 })
 
+const SignupAdditionalInfo = Loadable({
+  loader: () => import('./Signup/SignupAdditionalInfo'),
+  loading: Loading,
+  delay: 300,
+})
+
 const SignupTopics = Loadable({
   loader: () => import('./Signup/SignupTopics'),
   loading: Loading,
@@ -120,6 +126,10 @@ class AppRoot extends Component {
         <AuthRoute
           path="/signup/topics"
           component={SignupTopics}
+        />
+        <AuthRoute
+          path="/signup/info"
+          component={SignupAdditionalInfo}
         />
         <AuthRoute
           path="/profile/editTopics"

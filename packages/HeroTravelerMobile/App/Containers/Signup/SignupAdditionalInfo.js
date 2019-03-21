@@ -57,7 +57,7 @@ class SignupAdditionalInfo extends Component {
     this.conditionalNavForward()
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.conditionalNavForward()
   }
 
@@ -105,7 +105,7 @@ class SignupAdditionalInfo extends Component {
     if (Object.keys(attrs).length) this.props.updateUser(attrs)
 
     // induce navigation
-    this.setState({submitted: true})
+    this.setState({ submitted: true })
   }
 
   render = () => {
@@ -223,7 +223,7 @@ class SignupAdditionalInfo extends Component {
                 onDateChange={this.onDateChange}
               />
               <RoundedButton text="Confirm"
-onPress={this.confirmDate} />
+                onPress={this.confirmDate} />
             </View>
           </View>
         )}

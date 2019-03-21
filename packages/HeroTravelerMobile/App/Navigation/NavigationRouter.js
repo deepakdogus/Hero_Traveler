@@ -35,6 +35,7 @@ import ChangeEmailScreen from '../Containers/ChangeEmailScreen'
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import CommentsScreen from '../Containers/CommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
+import CreateSlideshowScreen from '../Containers/CreateStory/CreateSlideshow'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
@@ -398,7 +399,19 @@ export default function NavigationRouter({ openAddStoryModal }) {
           panHandlers={null}
           component={LocationScreen}
         />
+        <Scene
+          key='createStory_slideshow'
+          component={CreateSlideshowScreen}
+          panHandlers={null}
+          direction="horizontal"
+        />
       </Scene>
+      <Scene
+        key='createStory_slideshow'
+        component={CreateSlideshowScreen}
+        panHandlers={null}
+        direction="horizontal"
+      />
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}

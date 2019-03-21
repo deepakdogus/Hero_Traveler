@@ -59,7 +59,6 @@ export default class AddStoryModal extends Component {
     const {closeModal, addStory, addSlideshow} = this.props
     const {viewHeight} = this.state
 
-    console.log('viewHeight', viewHeight)
     if (!this.state.showModal) return null
     return (
       <TouchableOpacity

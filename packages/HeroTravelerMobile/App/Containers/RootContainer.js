@@ -147,7 +147,7 @@ class RootContainer extends Component {
   _addStory = () => {
     const { closeAddStoryModal } = this.props
     NavActions.createStoryFlow({
-      type: 'reset',
+      type: 'push',
       shouldLoadStory: true,
     })
     closeAddStoryModal()
@@ -155,9 +155,8 @@ class RootContainer extends Component {
 
   _addSlideshow = () => {
     const { closeAddStoryModal } = this.props
-    NavActions.createSlideshow({
-      type: 'reset',
-    })
+    NavActions.createStoryFlow({ type:'push' })
+    NavActions.createStory_slideshow({ shouldLoadStory: true, type:'push' })
     closeAddStoryModal()
   }
 

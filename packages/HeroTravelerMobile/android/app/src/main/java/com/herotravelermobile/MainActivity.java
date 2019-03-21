@@ -1,6 +1,8 @@
 package com.herotravelermobile;
 
 import com.facebook.react.ReactActivity;
+import io.branch.rnbranch.*;
+import android.content.Intent;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +13,19 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "HeroTravelerMobile";
+    }
+
+    // branch override
+    @Override
+    protected void onStart() {
+        super.onStart();
+        RNBranchModule.initSession(getIntent().getData(), this);
+    }
+
+    // branch override
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

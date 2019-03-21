@@ -3,6 +3,7 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.branch.rnbranch.RNBranchPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -10,6 +11,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import io.branch.referral.Branch;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBranchPackage(),
             new FBSDKPackage(),
             new RNFetchBlobPackage(),
             new ReactNativePushNotificationPackage()
@@ -47,5 +50,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    RNBranchModule.getAutoInstance(this);
   }
 }

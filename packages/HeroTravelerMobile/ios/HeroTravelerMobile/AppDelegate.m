@@ -12,13 +12,14 @@
 #import <React/RCTRootView.h>
 #import "RCTPushNotificationManager.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <react-native-branch/RNBranch.h>
 
 @implementation AppDelegate
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   [FBSDKAppEvents activateApp];
 }
-  
+
 ////// RCTPushNotification Code https://facebook.github.io/react-native/docs/pushnotificationios.html
 
 // Required to register for notifications
@@ -52,6 +53,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+  // Uncomment this line to use the test key instead of the live one.
+  // [RNBranch useTestInstance]
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
+
+  NSURL *jsCodeLocation;
+
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"HeroTravelerMobile"
@@ -61,24 +69,39 @@
 
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
   return YES;
 }
-  
+
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-  return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                        openURL:url
-                                              sourceApplication:sourceApplication
-                                                     annotation:annotation];
+            sourceApplication:(NSString *)sourceApplication
+            annotation:(id)annotation {
+
+  NSString *myUrl = url.absoluteString;
+
+  if ([myUrl containsString:@"com.herotraveler.herotraveler-beta"]) {
+    return YES;
+    // return [RCTLinkingManager application:application
+    //                           openURL:url
+    //                           sourceApplication:sourceApplication
+    //                           annotation:annotation];
+  } else {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                      openURL:url
+                                                      sourceApplication:sourceApplication
+                                                      annotation:annotation];
+  }
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
+    return [RNBranch continueUserActivity:userActivity];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

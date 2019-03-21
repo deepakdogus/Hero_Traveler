@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text } from 'react-native'
 import { Provider } from 'react-redux'
-// import RootContainer from './RootContainer'
+import RootContainer from './RootContainer'
 import createStore from '../Shared/Redux'
 
 // create our store

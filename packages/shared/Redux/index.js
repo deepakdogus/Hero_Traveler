@@ -34,6 +34,5 @@ export default () => {
     return appReducer(state, action)
   }
 
-  // return configureStore(rootReducer, rootSaga)
-  return configureStore(rootReducer)
+  return configureStore(rootReducer, rootSaga)
 }

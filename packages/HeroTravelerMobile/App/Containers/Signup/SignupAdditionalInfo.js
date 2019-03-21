@@ -73,6 +73,7 @@ class SignupAdditionalInfo extends Component {
   navToLocation = () => {
     NavActions.locationSelectorScreen({
       onSelectLocation: this.receiveLocation,
+      locationType: 'cities',
     })
   }
 

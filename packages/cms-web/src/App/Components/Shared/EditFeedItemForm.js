@@ -7,9 +7,6 @@ import FormControls from './FormControls'
 const FormItem = Form.Item
 
 class EditFeedItemForm extends React.Component {
-  state = {
-  }
-
   handleSubmit = (e) => {
     e.preventDefault()
     const { form, onSubmit } = this.props

@@ -33,7 +33,6 @@ import { CommentTypes } from '../Redux/Entities/Comments'
 
 import { startup, heroStartup } from './StartupSagas'
 import {
-  loginAdmin,
   login,
   loginFacebook,
   resetPasswordRequest,
@@ -157,7 +156,6 @@ export default function * root () {
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
-    takeLatest(LoginTypes.LOGIN_ADMIN_REQUEST, loginAdmin, heroAPI),
     takeLatest(LoginTypes.LOGIN_REQUEST, login, heroAPI),
     takeLatest(LoginTypes.LOGIN_FACEBOOK, loginFacebook),
     takeLatest(LoginTypes.RESET_PASSWORD_REQUEST, resetPasswordRequest, heroAPI),

@@ -236,8 +236,8 @@ function mapStateToProps(state) {
     totalStats,
     newStats,
     profile, 
-    newIsLoading: get(state, ['admin.stats.newIsLoading']),
-    totalIsLoading: get(state, ['admin.stats.totalIsLoading']),
+    newIsLoading: get(state, 'admin.stats.newIsLoading'),
+    totalIsLoading: get(state, 'admin.stats.totalIsLoading'),
   }
 }
 

@@ -20,8 +20,8 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   total: {},
-  totalIsLoading: false,
-  newIsLoading: false,
+  totalIsLoading: true,
+  newIsLoading: true,
   new: {},
 })
 

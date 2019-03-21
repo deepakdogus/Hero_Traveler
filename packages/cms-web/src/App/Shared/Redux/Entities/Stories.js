@@ -478,7 +478,7 @@ export const adminDeleteStorySuccess = (state, { id }) => {
   const list = [...state.getIn(['adminStories', 'byId'])]
   const recordIndex = _.findIndex(list, { id })
     
-  return state.setIn(['adminStories', 'byId', recordIndex, 'isDeleted'], true)
+  return state.setIn(['adminStories', 'byId', recordIndex, 'deleted'], true)
     .setIn(['adminStories', 'isDeleting'], false)
 }
 

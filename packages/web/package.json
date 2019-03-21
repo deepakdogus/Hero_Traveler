@@ -53,11 +53,13 @@
     "postbuild": "node check-service-worker.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "share": "rm -rf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/shared",
-    "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared --watch"
+    "share": "rm -rf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared && rm -rf src/App/Shared/Web && mkdir src/App/Shared/Web && cpx \"../sharedWeb/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared/Web",
+    "watchShared": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared --watch",
+    "watchSharedWeb": "rimraf src/App/Shared/Web && mkdir src/App/Shared/Web && cpx \"../sharedWeb/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared/Web --watch",
+    "share:watch": "concurrently --kill-others \"npm run watchShared\" \"npm run watchSharedWeb\""
   },
   "devDependencies": {
-    "concurrently": "^3.5.0",
+    "concurrently": "^3.6.1",
     "cpx": "^1.5.0",
     "reactotron-apisauce": "^1.12.2",
     "reactotron-react-js": "^1.12.2",

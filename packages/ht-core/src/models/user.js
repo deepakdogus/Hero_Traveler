@@ -42,6 +42,27 @@ const AccountSchema = Schema({
   uid: String
 })
 
+const LocationInfoSchema = Schema({
+  name: {
+    type: String,
+  },
+  locality: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
+})
+
 export const ModelName = 'User'
 
 const UserSchema = new Schema({
@@ -128,28 +149,14 @@ const UserSchema = new Schema({
   }],
   birthday: {
     type: Date,
+    hideJSON: true,
   },
   locationInfo: {
-    name: {
-      type: String,
-    },
-    locality: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    country: {
-      type: String,
-    },
-    latitude: {
-      type: Number
-    },
-    longitude: {
-      type: Number
-    },
+    type: [LocationInfoSchema],
+    hideJSON: true,
   },
   gender: {
+    hideJSON: true,
     type: String
   }
 }, {

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Metrics, Colors, Fonts } from '../../Shared/Themes/'
-import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -10,7 +9,7 @@ export default StyleSheet.create({
   fakeNavBar: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: Metrics.navBarHeight + 20, // 120 nav height = 60 + 40 tab bar + 20
+    height: 50,
     backgroundColor: Colors.snow,
     zIndex: 2, // need to set this so embedded NativeFeeds can't capture clicks in the navBar
   },
@@ -34,10 +33,10 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.baseMargin,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: isIPhoneX() ? 60 : 45,
+    height: 45,
   },
   searchWrapper: {
-    marginTop: isIPhoneX() ? Metrics.baseMargin + 25 : Metrics.baseMargin,
+    marginTop: Metrics.baseMargin,
     flex: 1,
     flexDirection: 'row',
     height: Metrics.searchBarHeight,
@@ -66,7 +65,7 @@ export default StyleSheet.create({
     marginRight: 25,
   },
   cancelBtn: {
-    marginTop: isIPhoneX() ? 30 : 5,
+    marginTop: 5,
     padding: Metrics.baseMargin,
     paddingRight: 0,
   },

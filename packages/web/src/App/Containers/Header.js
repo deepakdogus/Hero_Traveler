@@ -40,6 +40,19 @@ const HeaderSpacer = styled.div`
   height: ${props => props.spacerSize};
 `
 
+/**
+ * This function will log CompletedRegistration App Event
+ * @param {string} registrationMethod
+ * pulled from https://developers.facebook.com/docs/app-events/getting-started-app-events-web#predefined-events
+ * To Generate Code for a Standard Event
+ */
+function logCompletedRegistrationEvent(registrationMethod) {
+    const FB = window.FB
+    var params = {}
+    // params[FB.AppEvents.ParameterNames.REGISTRATION_METHOD] = registrationMethod
+    FB.AppEvents.logEvent(FB.AppEvents.EventNames.COMPLETED_REGISTRATION, null, params)
+}
+
 class Header extends React.Component {
   static propTypes = {
     currentUserId: PropTypes.string,
@@ -132,6 +145,7 @@ class Header extends React.Component {
       }
     }
     if (!prevProps.signedUp && signedUp) {
+      logCompletedRegistrationEvent()
       reroute('/signup/topics')
     }
     if (prevProps.pathname !== pathname) {

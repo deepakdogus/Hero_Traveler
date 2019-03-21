@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import moment from 'moment'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getVideoUrls } from '../Shared/Lib/getVideoUrl'
@@ -14,6 +13,7 @@ import Video from './Video'
 import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import Icon from '../Shared/Web/Components/Icon'
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
+import { showPublishDate } from '../Shared/Lib/dateHelpers'
 
 import {
   roleToIconName,
@@ -309,7 +309,7 @@ export default class FeedItemHeader extends React.Component {
                   </SpacedVerticalCenter>
                 )}
               </Row>
-              <TimeStamp>{moment(feedItem.createdAt).fromNow()}</TimeStamp>
+              <TimeStamp>{showPublishDate(feedItem)}</TimeStamp>
             </SpacedVerticalCenter>
           </UserInfoRow>
           <Row>

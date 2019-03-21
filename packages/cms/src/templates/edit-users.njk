@@ -15,12 +15,13 @@
     <input name="username" type="text" value="{{data.username}}" class="block col-12 mb1 field">
     <label>Role</label>
     <select name="role" value="{{data.username}}" class="block col-12 mb1 field">
-      {{ optionTag('user', data.role)}}
       {{ optionTag('admin', data.role)}}
-      {{ optionTag('contributor', data.role)}}
       {{ optionTag('brand', data.role)}}
-      {{ optionTag('founding member', data.role)}}
+      {{ optionTag('contributor', data.role)}}
       {{ optionTag('fellow', data.role)}}
+      {{ optionTag('founding member', data.role)}}
+      {{ optionTag('local hero', data.role)}}
+      {{ optionTag('user', data.role)}}
     </select>
     <label class="block col-12 mb2">
       <input name="featured" type="checkbox" checked>

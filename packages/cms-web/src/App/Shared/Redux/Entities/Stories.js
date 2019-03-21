@@ -25,9 +25,7 @@ const { Types, Creators } = createActions({
   removeDraft: ['draftId'],
   resetDrafts: null,
   changeCountOfType: ['feedItemId', 'countType', 'isIncrement'],
-  storyLike: ['userId', 'storyId'],
   flagStory: ['userId', 'storyId'],
-  toggleBookmark: ['storyId', 'wasLiked'],
   storyBookmark: ['userId', 'storyId'],
   getBookmarks: ['userId'],
   getBookmarksSuccess: ['userId', 'bookmarks'],
@@ -40,6 +38,10 @@ const { Types, Creators } = createActions({
   getGuideStories: ['guideId'],
   receiveStoriesByGuide: ['guideId', 'storiesByGuide'],
   getDeletedStories: ['userId'],
+  likeStoryRequest: ['storyId', 'userId'],
+  unlikeStoryRequest: ['storyId', 'userId'],
+  bookmarkStoryRequest: ['storyId'],
+  removeStoryBookmarkRequest: ['storyId'],
   syncPendingUpdates: null,
   adminGetStories: ['params'],
   adminGetStoriesSuccess: ['res'],
@@ -53,6 +55,7 @@ const { Types, Creators } = createActions({
   adminDeleteStorySuccess: ['id'],
   adminDeleteStoryFailure: ['error'],
   adminRestoreStories: ['payload'],
+  storyFailure: ['error'],
 })
 
 export const StoryTypes = Types
@@ -516,6 +519,15 @@ export const getBookmarksFetchStatus = (state, userId) => {
   return state.getIn(['bookmarks', userId, 'fetchStatus'], {})
 }
 
+export const genericFailure = (state, {error}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+    },
+    error,
+  })
+}
+
 
 // export const getIdsByUser = (state, userId: string) => {
 //   return state.getIn(['storiesByUser', userId, 'byId'], [])
@@ -561,4 +573,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_PUT_STORY]: adminPutStory,
   [Types.ADMIN_PUT_STORY_FAILURE]: adminPutStoryFailure,
   [Types.ADMIN_RESTORE_STORIES]: adminRestoreStories,
+  [Types.STORY_FAILURE]: genericFailure,
 })

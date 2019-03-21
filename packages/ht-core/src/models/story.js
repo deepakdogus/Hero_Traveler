@@ -111,10 +111,6 @@ const StorySchema = new Schema({
       type: Number,
       default: 0
     },
-    bookmarks: {
-      type: Number,
-      default: 0
-    },
     comments: {
       type: Number,
       default: 0
@@ -140,9 +136,8 @@ const StorySchema = new Schema({
   travelTips: {
     type: String,
   },
-  isDeleted: {
-    type: Boolean,
-    default: false
+  publishedDate: {
+    type: Date,
   },
 }, {
   timestamps: true,
@@ -180,7 +175,7 @@ StorySchema.statics = {
       .populate('categories')
       .populate('hashtags')
       .populate('coverImage coverVideo')
-      .sort({createdAt: -1})
+      .sort({publishedDate: -1})
   },
 
   // includes soft-deleted by default

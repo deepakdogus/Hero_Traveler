@@ -7,7 +7,6 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native'
-import moment from 'moment'
 import {Actions as NavActions} from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
@@ -28,6 +27,7 @@ import {
   roleToIconName,
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
+import { showPublishDate } from '../Shared/Lib/dateHelpers'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -39,6 +39,7 @@ export default class FeedItemPreview extends Component {
     onPressGuide: PropTypes.func,
     onPressStory: PropTypes.func,
     onPressStoryLike: PropTypes.func,
+    onPressStoryUnlike: PropTypes.func,
     onPressGuideLike: PropTypes.func,
     onPressGuideUnlike: PropTypes.func,
     onPress: PropTypes.func,
@@ -65,6 +66,7 @@ export default class FeedItemPreview extends Component {
     showPlayButton: PropTypes.bool,
     titleStyle: PropTypes.number,
     onPressBookmark: PropTypes.func,
+    onPressRemoveBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,
     selectedStories: PropTypes.array,
     location: PropTypes.string,
@@ -136,6 +138,11 @@ export default class FeedItemPreview extends Component {
     this.props.onPressUnfollow(this.props.user.id)
   }
 
+  _onPressBookmark = () => {
+    if (this.props.isBookmarked) return this.props.onPressRemoveBookmark()
+    return this.props.onPressBookmark()
+  }
+
   renderDate(){
     const {isReadingScreen, feedItem} = this.props
     return (
@@ -143,7 +150,7 @@ export default class FeedItemPreview extends Component {
         styles.dateText,
         isReadingScreen && styles.dateTextReading,
       ]}>
-        {moment(feedItem.tripDate || feedItem.createdAt).format('LL')}
+        {showPublishDate(feedItem)}
       </Text>
     )
   }
@@ -348,7 +355,7 @@ export default class FeedItemPreview extends Component {
                 && (
                   <View style={styles.bookmarkContainer}>
                     <TouchableOpacity
-                      onPress={this.props.onPressBookmark}
+                      onPress={this._onPressBookmark}
                     >
                       <TabIcon
                         name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
@@ -439,11 +446,15 @@ export default class FeedItemPreview extends Component {
 
   _onPressLike = () => {
     const {
-      feedItem, isStory, isGuideLiked, sessionUserId,
-      onPressStoryLike, onPressGuideLike, onPressGuideUnlike,
+      feedItem, isStory, sessionUserId,
+      isGuideLiked, onPressGuideLike, onPressGuideUnlike,
+      isStoryLiked, onPressStoryLike, onPressStoryUnlike,
     } = this.props
 
-    if (isStory && onPressStoryLike) onPressStoryLike(feedItem)
+    if (isStory) {
+      if (isStoryLiked) onPressStoryUnlike(feedItem.id, sessionUserId)
+      else onPressStoryLike(feedItem.id, sessionUserId)
+    }
     else {
       if (isGuideLiked) onPressGuideUnlike(feedItem.id, sessionUserId)
       else onPressGuideLike(feedItem.id, sessionUserId)

@@ -29,6 +29,7 @@ const getTabBarHeight = () => {
 const mobileMetrics = {
   screenWidth: width < height ? width : height,
   screenHeight: width < height ? height + (isIPhoneX() ? 50 : 0) : width,
+  statusBarHeight: isIPhoneX() ? 35 : 22,
   navBarHeight: getNavBarHeight(),
   tabBarHeight: getTabBarHeight(),
   pixelRatio: PixelRatio.get(),

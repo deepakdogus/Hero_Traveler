@@ -25,8 +25,6 @@ const { Types, Creators } = createActions({
   dismissError: null,
   likeGuideRequest: ['guideId', 'userId'],
   unlikeGuideRequest: ['guideId', 'userId'],
-  likeGuide: ['guideId', 'userId'],
-  unlikeGuide: ['guideId', 'userId'],
   changeCountOfType:['feedItemId', 'countType', 'isIncrement'],
   deleteStoryFromGuides: ['storyId'],
   adminGetGuides: ['params'],

@@ -166,7 +166,7 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     attemptLogin: (userIdentifier, password) => 
-      dispatch(LoginActions.loginRequest(userIdentifier, password)),
+      dispatch(LoginActions.loginRequest(userIdentifier, password, 'admin')),
   }
 }
 

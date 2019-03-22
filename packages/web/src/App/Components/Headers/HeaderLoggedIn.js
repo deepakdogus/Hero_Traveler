@@ -285,6 +285,7 @@ class HeaderLoggedIn extends React.Component {
                   <Avatar
                     type='avatar'
                     size={profileAvatar ? 'avatar' : 'mediumSmall'}
+                    isProfileHeader
                     avatarUrl={getImageUrl(profileAvatar, 'avatar')}
                     iconTextProps={AvatarIconTextStyles}
                     imageTextProps={AvatarImageTextStyles}

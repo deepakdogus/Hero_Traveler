@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { CookiesProvider } from 'react-cookie'
 
 import createStore from '../Shared/Redux'
-import {history} from '../Shared/Redux/Routes'
+import {history} from '../Redux/Routes'
 import themes from '../Shared/Themes'
 
 import Routes from '../Routes'

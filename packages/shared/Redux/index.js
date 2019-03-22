@@ -6,7 +6,7 @@ import entities from './Entities'
 import admin from './Admin'
 import {SessionTypes} from './SessionRedux'
 // related to nav which is device specific so not located in shared folder
-import routes from './Routes'
+import routes from '../../Redux/Routes'
 
 export default (includeAdmin = false) => {
   const reducers = {

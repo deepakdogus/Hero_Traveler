@@ -11,7 +11,7 @@ import {
 import branch from 'react-native-branch'
 
 import OpenScreenActions from '../Shared/Redux/OpenScreenRedux'
-// import NavigationScenes from '../Navigation/NavigationRouter'
+import NavigationScenes from '../Navigation/NavigationRouter'
 import StartupActions from '../Shared/Redux/StartupRedux'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import styles from './Styles/RootContainerStyles'
@@ -138,7 +138,7 @@ class RootContainer extends Component {
             : 'dark-content'
           } />
           {
-        // <ConnectedRouter scenes={NavigationScenes} />
+        <ConnectedRouter scenes={NavigationScenes} />
 
           }
       </View>

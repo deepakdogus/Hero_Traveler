@@ -23,7 +23,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1946A423D63A450CAE666F8D /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA9467E70C4E41D8AF20435E /* SourceSansPro-Light.ttf */; };
 		1C0D258FF8D946A9B1A15BEA /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0303DE4BA544B50B7CB97C7 /* libRCTFBSDK.a */; };
+		23444CA2421449F98F25BC6A /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC5C9718EC4D492AB09B170F /* SourceSansPro-LightItalic.ttf */; };
+		2BC1E74002E1430FAD1F1E49 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CF26085CCC04C6FB66B5B1A /* Montserrat-Light.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -35,15 +38,28 @@
 		2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E941DF850E9000B6D8A /* libRCTText-tvOS.a */; };
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
+		2D44197F66D3464FB4B7F250 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 762E45BE90254ED590896316 /* SourceSansPro-Regular.ttf */; };
 		2DCD954D1E0B4F2C00145EB5 /* HeroTravelerMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		30CE9F09401E4C93BFDC3327 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1935D6D693734BABA52C762B /* SourceSansPro-BoldItalic.ttf */; };
+		551B12F485C2445C9A576522 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E3E08DC282E423DA212B971 /* FontAwesome.ttf */; };
+		6233E17F48914491B89F3863 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BC752DFE8C0466FBEBD9B02 /* libSplashScreen.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		85371E48A74C4F2DBD54BCBE /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3663E5F12F144FEAA78BF42C /* SourceSansPro-Italic.ttf */; };
 		927B9B1B3E624A0F971CB381 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C6DEE5F9AFF461A87470BF5 /* libRNFetchBlob.a */; };
+		9D4AB52ABEED4DEEA9C21D44 /* CrimsonText-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 291C179B2A7E47E8B6B90B1C /* CrimsonText-Italic.ttf */; };
+		9F74313D6AC6404395D56173 /* CrimsonText-Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 833DA996CF9245ACADBA399F /* CrimsonText-Roman.ttf */; };
 		A54D6A63AAF34F9995CBB2FD /* branch.json in Resources */ = {isa = PBXBuildFile; fileRef = DD76AEE2EBC14497999D5D8C /* branch.json */; };
+		AB43DFD4BE81498CB1455AEA /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2B964CD48E849D4B04223C0 /* Montserrat-Regular.ttf */; };
+		ACA4922637F04233B35264CB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D505D08F61F438491F679F2 /* Montserrat-Bold.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B8D3F78FF13C42A9B2B0F4A1 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74A9064E626D401EB05C94EC /* SourceSansPro-SemiBoldItalic.ttf */; };
+		CFED0746179C4ADE8A4387A5 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 675408BBF88F41DFA01A7323 /* SourceSansPro-Bold.ttf */; };
+		D3A56D9EC25648919BE0D53B /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D65EF8D16CC5476D8A2B200A /* Montserrat-Medium.ttf */; };
 		D674C2A375DB446F92261604 /* libreact-native-branch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDD0046416F1452DAE2FB172 /* libreact-native-branch.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
+		ED69CE489B404E5BB073AF25 /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF522AAD920A4A7A910B5406 /* SourceSansPro-SemiBold.ttf */; };
 		EF6241212242DD95009AABA6 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241202242DD95009AABA6 /* Bolts.framework */; };
 		EF6241252242DDA6009AABA6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241222242DDA6009AABA6 /* FBSDKCoreKit.framework */; };
 		EF6241262242DDA6009AABA6 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241232242DDA6009AABA6 /* FBSDKShareKit.framework */; };
@@ -304,6 +320,13 @@
 			remoteGlobalIDString = A15C300E1CD25C330074CB35;
 			remoteInfo = RNFetchBlob;
 		};
+		EF962D1922469D1900B72870 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 32B5EC8AD05C4B4EBDC3E4E7 /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
+		};
 		EFD9D5F72243F159008A7E97 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7F39B3B1546D4680B2A4D456 /* RNBranch.xcodeproj */;
@@ -372,6 +395,7 @@
 		00E356EE1AD99517003FC87E /* HeroTravelerMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeroTravelerMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeroTravelerMobileTests.m; sourceTree = "<group>"; };
+		0E3E08DC282E423DA212B971 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../App/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* HeroTravelerMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroTravelerMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -382,18 +406,33 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = HeroTravelerMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = HeroTravelerMobile/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		1935D6D693734BABA52C762B /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldItalic.ttf"; path = "../App/Fonts/SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; };
 		1C6DEE5F9AFF461A87470BF5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		271BAC47E51149E08EE8F4A0 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
+		291C179B2A7E47E8B6B90B1C /* CrimsonText-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CrimsonText-Italic.ttf"; path = "../App/Fonts/CrimsonText-Italic.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* HeroTravelerMobile-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HeroTravelerMobile-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* HeroTravelerMobile-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "HeroTravelerMobile-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		32B5EC8AD05C4B4EBDC3E4E7 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		3663E5F12F144FEAA78BF42C /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../App/Fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
 		3F894B8E60D04D939DC607D2 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		4CF26085CCC04C6FB66B5B1A /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../App/Fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		675408BBF88F41DFA01A7323 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Bold.ttf"; path = "../App/Fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
+		6D505D08F61F438491F679F2 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../App/Fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		74A9064E626D401EB05C94EC /* SourceSansPro-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBoldItalic.ttf"; path = "../App/Fonts/SourceSansPro-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		762E45BE90254ED590896316 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../App/Fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7BC752DFE8C0466FBEBD9B02 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		7F39B3B1546D4680B2A4D456 /* RNBranch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBranch.xcodeproj; path = "../node_modules/react-native-branch/ios/RNBranch.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		833DA996CF9245ACADBA399F /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CrimsonText-Roman.ttf"; path = "../App/Fonts/CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B0303DE4BA544B50B7CB97C7 /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
+		B2B964CD48E849D4B04223C0 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../App/Fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D65EF8D16CC5476D8A2B200A /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../App/Fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		DA9467E70C4E41D8AF20435E /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../App/Fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
+		DC5C9718EC4D492AB09B170F /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-LightItalic.ttf"; path = "../App/Fonts/SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; };
 		DD76AEE2EBC14497999D5D8C /* branch.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = branch.json; path = ../branch.json; sourceTree = "<group>"; };
 		DDD0046416F1452DAE2FB172 /* libreact-native-branch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libreact-native-branch.a"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -404,6 +443,7 @@
 		EF6241242242DDA6009AABA6 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		EFDB20F7223AD6BB00B182BA /* HeroTravelerMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HeroTravelerMobile.entitlements; path = HeroTravelerMobile/HeroTravelerMobile.entitlements; sourceTree = "<group>"; };
 		EFDB20F8223AD79D00B182BA /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		FF522AAD920A4A7A910B5406 /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBold.ttf"; path = "../App/Fonts/SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -440,6 +480,7 @@
 				927B9B1B3E624A0F971CB381 /* libRNFetchBlob.a in Frameworks */,
 				1C0D258FF8D946A9B1A15BEA /* libRCTFBSDK.a in Frameworks */,
 				D674C2A375DB446F92261604 /* libreact-native-branch.a in Frameworks */,
+				6233E17F48914491B89F3863 /* libSplashScreen.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +680,7 @@
 				3F894B8E60D04D939DC607D2 /* RNFetchBlob.xcodeproj */,
 				271BAC47E51149E08EE8F4A0 /* RCTFBSDK.xcodeproj */,
 				7F39B3B1546D4680B2A4D456 /* RNBranch.xcodeproj */,
+				32B5EC8AD05C4B4EBDC3E4E7 /* SplashScreen.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -661,6 +703,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				EF2A7065223AF31A003CA54C /* Recovered References */,
+				BBD342A480F2430AA04F6069 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -687,12 +730,35 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BBD342A480F2430AA04F6069 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				291C179B2A7E47E8B6B90B1C /* CrimsonText-Italic.ttf */,
+				833DA996CF9245ACADBA399F /* CrimsonText-Roman.ttf */,
+				0E3E08DC282E423DA212B971 /* FontAwesome.ttf */,
+				6D505D08F61F438491F679F2 /* Montserrat-Bold.ttf */,
+				4CF26085CCC04C6FB66B5B1A /* Montserrat-Light.ttf */,
+				D65EF8D16CC5476D8A2B200A /* Montserrat-Medium.ttf */,
+				B2B964CD48E849D4B04223C0 /* Montserrat-Regular.ttf */,
+				675408BBF88F41DFA01A7323 /* SourceSansPro-Bold.ttf */,
+				1935D6D693734BABA52C762B /* SourceSansPro-BoldItalic.ttf */,
+				3663E5F12F144FEAA78BF42C /* SourceSansPro-Italic.ttf */,
+				DA9467E70C4E41D8AF20435E /* SourceSansPro-Light.ttf */,
+				DC5C9718EC4D492AB09B170F /* SourceSansPro-LightItalic.ttf */,
+				762E45BE90254ED590896316 /* SourceSansPro-Regular.ttf */,
+				FF522AAD920A4A7A910B5406 /* SourceSansPro-SemiBold.ttf */,
+				74A9064E626D401EB05C94EC /* SourceSansPro-SemiBoldItalic.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		EF2A7065223AF31A003CA54C /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				1C6DEE5F9AFF461A87470BF5 /* libRNFetchBlob.a */,
 				B0303DE4BA544B50B7CB97C7 /* libRCTFBSDK.a */,
 				DDD0046416F1452DAE2FB172 /* libreact-native-branch.a */,
+				7BC752DFE8C0466FBEBD9B02 /* libSplashScreen.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -701,6 +767,14 @@
 			isa = PBXGroup;
 			children = (
 				EF2A7091223AF31C003CA54C /* libRNFetchBlob.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF962D1622469D1900B72870 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF962D1A22469D1900B72870 /* libSplashScreen.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -915,6 +989,10 @@
 				{
 					ProductGroup = EF2A708D223AF31C003CA54C /* Products */;
 					ProjectRef = 3F894B8E60D04D939DC607D2 /* RNFetchBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = EF962D1622469D1900B72870 /* Products */;
+					ProjectRef = 32B5EC8AD05C4B4EBDC3E4E7 /* SplashScreen.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1166,6 +1244,13 @@
 			remoteRef = EF2A7090223AF31C003CA54C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EF962D1A22469D1900B72870 /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = EF962D1922469D1900B72870 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		EFD9D5F82243F159008A7E97 /* libreact-native-branch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1239,6 +1324,21 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				A54D6A63AAF34F9995CBB2FD /* branch.json in Resources */,
+				9D4AB52ABEED4DEEA9C21D44 /* CrimsonText-Italic.ttf in Resources */,
+				9F74313D6AC6404395D56173 /* CrimsonText-Roman.ttf in Resources */,
+				551B12F485C2445C9A576522 /* FontAwesome.ttf in Resources */,
+				ACA4922637F04233B35264CB /* Montserrat-Bold.ttf in Resources */,
+				2BC1E74002E1430FAD1F1E49 /* Montserrat-Light.ttf in Resources */,
+				D3A56D9EC25648919BE0D53B /* Montserrat-Medium.ttf in Resources */,
+				AB43DFD4BE81498CB1455AEA /* Montserrat-Regular.ttf in Resources */,
+				CFED0746179C4ADE8A4387A5 /* SourceSansPro-Bold.ttf in Resources */,
+				30CE9F09401E4C93BFDC3327 /* SourceSansPro-BoldItalic.ttf in Resources */,
+				85371E48A74C4F2DBD54BCBE /* SourceSansPro-Italic.ttf in Resources */,
+				1946A423D63A450CAE666F8D /* SourceSansPro-Light.ttf in Resources */,
+				23444CA2421449F98F25BC6A /* SourceSansPro-LightItalic.ttf in Resources */,
+				2D44197F66D3464FB4B7F250 /* SourceSansPro-Regular.ttf in Resources */,
+				ED69CE489B404E5BB073AF25 /* SourceSansPro-SemiBold.ttf in Resources */,
+				B8D3F78FF13C42A9B2B0F4A1 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1366,12 +1466,14 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = HeroTravelerMobileTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1396,12 +1498,14 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = HeroTravelerMobileTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1431,6 +1535,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1459,6 +1564,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1490,11 +1596,13 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = "HeroTravelerMobile-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1528,11 +1636,13 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = "HeroTravelerMobile-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1565,11 +1675,13 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = "HeroTravelerMobile-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1602,11 +1714,13 @@
 					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-branch/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = "HeroTravelerMobile-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

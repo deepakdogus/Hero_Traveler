@@ -5,7 +5,7 @@ import {
 } from 'react-native-router-flux'
 import _ from 'lodash'
 
-// import LaunchScreen from '../Containers/LaunchScreen'
+import LaunchScreen from '../Containers/LaunchScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
 // // Tabs
@@ -168,13 +168,12 @@ export default NavActions.create(
             onRight={launchOnRight}
         */}
         {
-
-      // <Scene
-      //   key='launchScreen'
-      //   component={LaunchScreen}
-      //   hideNavBar={false}
-      //   hideBackImage={true}
-      // />
+      <Scene
+        key='launchScreen'
+        component={LaunchScreen}
+        hideNavBar={false}
+        hideBackImage={true}
+      />
         }
     </Scene>,
 )

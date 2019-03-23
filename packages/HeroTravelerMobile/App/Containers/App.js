@@ -1,3 +1,4 @@
+import '../Config'
 import React, { Component } from 'react'
 import { Text } from 'react-native'
 import { Provider } from 'react-redux'
@@ -26,16 +27,9 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Text style={{marginTop: 20}}>
-          Testing 5
-        </Text>
+        <RootContainer />
       </Provider>
     )
-    // return (
-    //   <Provider store={store}>
-    //     <RootContainer />
-    //   </Provider>
-    // )
   }
 }
 

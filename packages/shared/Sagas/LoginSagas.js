@@ -8,6 +8,7 @@ import errorFormatter from '../Lib/errorFormatter'
 
 // attempts to login
 export function * login (api, { userIdentifier, password }) {
+  console.log("calling login")
   try {
     const response = yield call(
       api.login,

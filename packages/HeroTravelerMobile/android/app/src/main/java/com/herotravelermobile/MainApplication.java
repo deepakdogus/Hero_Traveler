@@ -3,6 +3,8 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import io.branch.rnbranch.RNBranchPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
+            new FastImageViewPackage(),
             new SplashScreenReactPackage(),
             new RNBranchPackage(),
             new FBSDKPackage(),

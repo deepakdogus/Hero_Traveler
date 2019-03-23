@@ -43,10 +43,10 @@ import Styles from './Styles/NavigationContainerStyles'
 // import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
 // // Signup & login
-// import LoginScreen from '../Containers/LoginScreen'
+import LoginScreen from '../Containers/LoginScreen'
 // import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen'
 // import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
-// import SignupScreen from '../Containers/Signup/SignupScreen'
+import SignupScreen from '../Containers/Signup/SignupScreen'
 // import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
 // import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
 // import SignupTopics from '../Containers/Signup/SignupTopics'
@@ -63,7 +63,7 @@ import Styles from './Styles/NavigationContainerStyles'
 // import SearchResultsScreen from '../Containers/SearchResultsScreen'
 // import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
-// import { Images } from '../Shared/Themes'
+import { Images } from '../Shared/Themes'
 
 const navBarProps = {
   navigationBarStyle: Styles.navBar,
@@ -167,14 +167,24 @@ export default NavActions.create(
             renderRightButton={launchNavButton}.
             onRight={launchOnRight}
         */}
-        {
       <Scene
         key='launchScreen'
         component={LaunchScreen}
         hideNavBar={false}
         hideBackImage={true}
       />
-        }
+      <Scene
+        key='login'
+        backButtonImage={Images.iconArrowLeft}
+        leftButtonIconStyle={Styles.buttonGrey}
+        component={LoginScreen}
+      />
+      <Scene
+        key='signup'
+        component={SignupScreen}
+        backButtonImage={Images.iconArrowLeft}
+        leftButtonIconStyle={Styles.buttonGrey}
+      />
     </Scene>,
 )
 

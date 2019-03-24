@@ -18,16 +18,17 @@ export default (rootReducer, rootSaga) => {
   const middleware = []
   const enhancers = []
 
+  /* ------------- Logger Middleware ------------- */
+  if (Config.reduxLogging) {
+    middleware.push(createLogger({ collapsed: true }))
+  }
+
   /* ------------- Saga Middleware ------------- */
 
   // const sagaMonitor = process.env.NODE_ENV === 'development' ? console.tron.createSagaMonitor() : null
-  const sagaMonitor = null
-  const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
+  // const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
+  const sagaMiddleware = createSagaMiddleware()
   middleware.push(sagaMiddleware)
-
-  if (Config.reduxLogging) {
-    middleware.push(createLogger({collapsed: true}))
-  }
 
   /* ------------- Navigation Middleware ------------- */
   // do we use this - look at history?

@@ -2,19 +2,6 @@ import _ from 'lodash'
 import AsyncStorage from '@react-native-community/async-storage'
 import { createTransform, PersistConfig } from 'redux-persist'
 import Immutable from 'seamless-immutable'
-import immutablePersistenceTransform from '../Shared/Services/ImmutablePersistenceTransform'
-
-// const REDUX_PERSIST = {
-//   active: true,
-//   reducerVersion: '12',
-//   storeConfig: {
-//     storage: AsyncStorage,
-//     // blacklist: ['login', 'search', 'feed'], // reducer keys that you do NOT want stored to persistence here
-//     whitelist: ['session', 'entities', 'history', 'pendingUpdates'], // Optionally, just specify the keys you DO want stored to
-//     // persistence. An empty array means 'don't store any reducers' -> infinitered/ignite#409
-//     transforms: [immutablePersistenceTransform],
-//   },
-// }
 
 const transform = createTransform(
   // transform state on its way to being serialized and persisted.
@@ -46,5 +33,3 @@ export const persistConfig = {
     })
   },
 }
-
-// export default REDUX_PERSIST

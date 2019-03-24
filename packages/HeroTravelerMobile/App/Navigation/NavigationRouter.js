@@ -9,16 +9,16 @@ import LaunchScreen from '../Containers/LaunchScreen'
 import Styles from './Styles/NavigationContainerStyles'
 
 // // Tabs
-// import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
-// import ExploreScreen from '../Containers/Tabs/ExploreScreen'
-// import TabIcon from '../Components/TabIcon'
+import MyFeedScreen from '../Containers/Tabs/MyFeedScreen'
+import ExploreScreen from '../Containers/Tabs/ExploreScreen'
+import TabIcon from '../Components/TabIcon'
 // // Profile tab
-// import ProfileScreen from '../Containers/Tabs/ProfileScreen'
+import ProfileScreen from '../Containers/Tabs/ProfileScreen'
 // import ProfileEditScreen from '../Containers/ProfileEditScreen'
 // import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 // import SettingsScreen from '../Containers/SettingsScreen'
 // import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
-// import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
+import CategoryFeedScreen from '../Containers/Explore/CategoryFeedScreen'
 // import FollowersScreen from '../Containers/FollowersScreen'
 // import ViewBioScreen from '../Components/ViewBioScreen'
 // // import FollowingScreen from '../Containers/FollowingScreen'
@@ -40,18 +40,18 @@ import Styles from './Styles/NavigationContainerStyles'
 // import LocationScreen from '../Containers/CreateStory/LocationScreen'
 // import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
 
-// import ActivityScreen from '../Containers/Tabs/ActivityScreen'
+import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
 // // Signup & login
 import LoginScreen from '../Containers/LoginScreen'
 // import ResetPasswordRequestScreen from '../Containers/ResetPasswordRequestScreen'
 // import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
-// import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
-// import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
-// import SignupTopics from '../Containers/Signup/SignupTopics'
-// import SignupSocial from '../Containers/Signup/SignupSocial'
-// import NavButton from './NavButton'
+import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
+import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
+import SignupTopics from '../Containers/Signup/SignupTopics'
+import SignupSocial from '../Containers/Signup/SignupSocial'
+import NavButton from './NavButton'
 
 // // Guides
 // import AddStoryToGuides from '../Containers/Guides/AddStoryToGuides'
@@ -185,6 +185,106 @@ export default NavActions.create(
         backButtonImage={Images.iconArrowLeft}
         leftButtonIconStyle={Styles.buttonGrey}
       />
+      <Scene
+        key='signupFlow'
+        {...navBarProps}
+      >
+        <Scene
+          initial
+          key='signupFlow_changeUsername'
+          hideNavBar={true}
+          component={SignupChangeUsername}
+          onRight={navToSignupChangeEmail}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          key='signupFlow_changeEmail'
+          hideNavBar={true}
+          component={SignupChangeEmail}
+          onRight={navToSignupTopics}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          hideBackImage={true}
+          hideNavBar={false}
+          panHandlers={null}
+          key='signupFlow_topics'
+          component={SignupTopics}
+          renderRightButton={topicsRightBtn}
+          onRight={navToSignupSocial}
+          onBack={noop}
+        />
+        <Scene
+          key='signupFlow_social'
+          hideNavBar={false}
+          component={SignupSocial}
+          renderRightButton={socialRightBtn}
+          backTitle='Back'
+          {..._.merge({}, navBarProps, backButtonWithText)}
+          backButtonImage={Images.iconArrowLeft}
+          backButtonTextStyle={Styles.buttonGreyText}
+          onRight={navToTabbar}
+        />
+      </Scene>
+      <Scene
+        key='tabbar'
+        type='reset'
+        {...tabBarProps}
+      >
+        <Scene
+          key='myFeed'
+          initial
+          icon={TabIcon}
+          component={MyFeedScreen}
+          title='Feed'
+          renderBackButton={alwaysNull}
+          hideNavBar={true}
+          onPress={navToMyFeed}
+        />
+        <Scene
+          key='explore'
+          icon={TabIcon}
+          hideNavBar={false}
+          onPress={navToExplore}
+        >
+          <Scene
+            key='explore_grid'
+            initial
+            component={ExploreScreen}
+            hideNavBar={true}
+          />
+          <Scene
+            key='explore_categoryFeed'
+            component={CategoryFeedScreen}
+            onLeft={NavActions.pop}
+            backButtonImage={Images.iconArrowLeft}
+            hideNavBar={true}
+          />
+        </Scene>
+        <Scene
+          key='createStory'
+          title='Create Story'
+          icon={TabIcon}
+          onPress={navToCreateFlow}
+          style={Styles.createStory}
+        />
+        <Scene
+          key='activity'
+          icon={TabIcon}
+          component={ActivityScreen}
+          title='NOTIFICATIONS'
+          {...navBarProps}
+          onPress={navToActivity}
+        />
+        <Scene
+          key='profile'
+          icon={TabIcon}
+          component={ProfileScreen}
+          hideNavBar
+          onPress={navToProfile}
+        />
+      </Scene>
+
     </Scene>,
 )
 

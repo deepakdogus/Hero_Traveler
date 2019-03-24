@@ -1,4 +1,5 @@
-import { NetInfo, Platform } from 'react-native'
+import { Platform } from 'react-native'
+import NetInfo from "@react-native-community/netinfo"
 
 const getConnectionInfo = async () => {
   if (Platform.OS === 'ios') {

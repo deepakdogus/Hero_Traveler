@@ -3,7 +3,7 @@ import {
   applyMiddleware,
   compose,
 } from 'redux'
-import { autoRehydrate, persistReducer } from 'redux-persist'
+import { autoRehydrate, persistReducer, persistStore } from 'redux-persist'
 import Config from '../../Config/DebugConfig'
 import createSagaMiddleware from 'redux-saga'
 import RehydrationServices from '../Services/RehydrationServices'
@@ -55,6 +55,10 @@ export default (rootReducer, rootSaga) => {
     reducerToUse = persistReducer(persistConfig, rootReducer)
   }
   const store = createStore(reducerToUse, compose(...enhancers))
+  let persistor
+  if (persistConfig) {
+    persistor = persistStore(store)
+  }
 
   // configure persistStore and check reducer version number
   if (!persistConfig && ReduxPersist.active) {
@@ -64,5 +68,8 @@ export default (rootReducer, rootSaga) => {
   // kick off root saga
   sagaMiddleware.run(rootSaga)
 
-  return store
+  return {
+    store,
+    persistor,
+  }
 }

@@ -44,6 +44,7 @@ class RootContainer extends Component {
   async componentDidMount() {
     this._initializeDeepLinking()
 
+    this.props.startup()
     // HockeyApp.start()
     Linking.addEventListener('url', this._handleOpenURL)
     return Linking.getInitialURL().then((url) => {

@@ -19,11 +19,14 @@ const transform = createTransform(
   },
 )
 
+const version = 1
+
 export const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  version: 1,
+  version,
   transforms: [transform],
+  whitelist: ['session', 'entities', 'history', 'pendingUpdates'],
   migrate: state => {
     if (_.get(state, '_persist.version') === version) {
       return Promise.resolve(state)

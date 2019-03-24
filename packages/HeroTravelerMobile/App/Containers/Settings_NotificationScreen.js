@@ -22,6 +22,7 @@ const enhancedRow = withHandlers({
     props.onPress(props.value)
   }
 })
+
 const Row = enhancedRow(({text, selected, onValChange}) => {
   return (
     <View style={styles.rowWrapper}>

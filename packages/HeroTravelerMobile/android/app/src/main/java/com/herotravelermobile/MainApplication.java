@@ -3,6 +3,9 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -35,6 +38,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
+            new ImagePickerPackage(),
+            new RNVersionNumberPackage(),
             new NetInfoPackage(),
             new MapsPackage(),
             new VectorIconsPackage(),

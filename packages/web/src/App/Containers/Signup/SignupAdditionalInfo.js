@@ -79,6 +79,9 @@ const GenderRow = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${props => props.theme.Colors.navBarText};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    flex-direction: column;
+  }
 `
 
 const DropdownContainer = styled.div`
@@ -88,9 +91,12 @@ const DropdownContainer = styled.div`
   background-color: white;
   border: none;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  width: 540px;
+  width: 100%;
   z-index: 100;
   margin: 10px 0px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    top: 45px;
+  }
 `
 
 const InactiveAutocompleteItemContainer = styled.div`
@@ -150,13 +156,16 @@ const Input = styled.input`
   &:disabled {
     color: ${props => props.theme.Colors.navBarText};
   }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 15px 0;
+    width: 100%;
+  }
 `
 
 // radio button Styles
 const styles = {
   radioButton: {
     justifyContent: 'flex-end',
-    // backgroundColor: 'blue',
   },
   radioButtonLabel: {
     fontWeight: '400',
@@ -164,31 +173,20 @@ const styles = {
     fontSize: '16px',
     border: 'none',
     color: '#757575',
-    // width: '45px',
   },
   radioIcon: {
     fill: '#ed1e2e',
   },
   radioButtonGroup: {
     display: 'flex',
-    // justifyContent: 'space-between',
     alignItems: 'center',
-    width: '400px',
+    width: '100%',
   },
   radioButtonFilled: {
     fill: '#ed1e2e',
   },
   radioButtonUnfilled: {
     fill: '#bdbdbd',
-  },
-  radioMaleLabel: {
-    width: '26px',
-  },
-  radioFemaleLabel: {
-    width: '45px',
-  },
-  radioOtherLabel: {
-    // width: '33px',
   },
 }
 
@@ -350,7 +348,7 @@ class SignupAdditionalInfo extends Component {
                         value={'male'}
                         label={'Male'}
                         style={styles.radioButton}
-                        labelStyle={{ ...styles.radioButtonLabel, ...styles.radioMaleLabel }}
+                        labelStyle={styles.radioButtonLabel}
                         checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
                         uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
                       />
@@ -358,7 +356,7 @@ class SignupAdditionalInfo extends Component {
                         value={'female'}
                         label={'Female'}
                         style={styles.radioButton}
-                        labelStyle={{ ...styles.radioButtonLabel, ...styles.radioFemaleLabel }}
+                        labelStyle={styles.radioButtonLabel}
                         checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
                         uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
                       />
@@ -367,7 +365,7 @@ class SignupAdditionalInfo extends Component {
                         label={'Other:'}
                         style={styles.radioButton}
                         inputStyle={{ backgroundColor: 'green' }}
-                        labelStyle={{ ...styles.radioButtonLabel, ...styles.radioOtherLabel }}
+                        labelStyle={styles.radioButtonLabel}
                         checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
                         uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
                       />

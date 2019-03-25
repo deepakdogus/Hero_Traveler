@@ -372,10 +372,7 @@ export default class FeedItemHeader extends React.Component {
             {feedItem.rating && (
               <OverallExperience>
                 <OverallExperienceText>Overall Experience:</OverallExperienceText>
-                <StarRating
-                  selectedValue={feedItem.rating}
-                  readOnly
-                />
+                <StarRating valueSelected={feedItem.rating} />
               </OverallExperience>
             )}
           </div>

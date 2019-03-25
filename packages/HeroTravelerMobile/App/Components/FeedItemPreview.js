@@ -348,10 +348,7 @@ export default class FeedItemPreview extends Component {
             <Text style={storyReadingScreenStyles.experience}>
               Overall Experience:
             </Text>
-            <StarRating
-              valueSelected={rating}
-              readOnly
-            />
+            <StarRating valueSelected={rating} />
           </View>
         )}
         <View style={styles.lastRow}>

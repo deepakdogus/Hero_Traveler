@@ -361,7 +361,7 @@ class CreateStoryDetailScreen extends React.Component {
               Rate this experience:{' '}
             </Text>
             <StarRating
-              onChangeRating={this._updateRating}
+              onChange={this._updateRating}
               valueSelected={workingDraft.rating}
             />
           </View>

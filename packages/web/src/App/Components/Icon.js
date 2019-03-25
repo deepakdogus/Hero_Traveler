@@ -246,6 +246,10 @@ export default class Icon extends React.Component {
         return Images.iconInfoDark
       case 'infoLarge':
         return Images.iconInfoDarkLarge
+      case 'ratingStarActive':
+        return Images.iconStarRatingActive
+      case 'ratingStarInactive':
+        return Images.iconStarRatingInactive
       default:
         return Images.iconHeaderProfile
     }

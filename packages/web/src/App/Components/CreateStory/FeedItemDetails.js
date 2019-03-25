@@ -503,7 +503,7 @@ export default class FeedItemDetails extends React.Component {
           <InputRowContainer>
             <BoldDetailLabel>Rate this experience:</BoldDetailLabel>
             <StarRating
-              onClick={this.handleRatingChange}
+              onChange={this.handleRatingChange}
               valueSelected={workingDraft.rating}
             />
           </InputRowContainer>

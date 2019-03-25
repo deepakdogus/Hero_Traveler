@@ -357,7 +357,9 @@ class CreateStoryDetailScreen extends React.Component {
             </View>
           </View>
           <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
-            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>Activity: </Text>
+            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
+              Rate this experience:{' '}
+            </Text>
             <StarRating
               onChangeRating={this._updateRating}
               valueSelected={workingDraft.rating}

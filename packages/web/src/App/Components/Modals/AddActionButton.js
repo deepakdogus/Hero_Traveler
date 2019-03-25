@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { AddButton as AbstractAddButton } from '../../Shared/AbstractComponents'
 import OnClickOutsideModal from './OnClickOutsideModal'
 import { Title } from './Shared'
 import RoundedButton from '../RoundedButton'
@@ -91,37 +92,19 @@ const StyledRoundedButton = styled(RoundedButton)`
   letter-spacing: 0.6px;
 `
 
-class AddActionButton extends Component {
-  static propTypes = {
-    type: PropTypes.string,
-    link: PropTypes.string,
-    closeModal: PropTypes.func,
-    updateWorkingDraft: PropTypes.func,
-  }
-
-  state = {
-    type: this.props.type || 'info',
-    link: this.props.link || '',
-    hasAttemptedSubmit: false,
-    hasDeletedButton: false,
-  }
-
-  setMoreInfoType = () => this.setState({ type: 'info' })
-
-  setBookNowType = () => this.setState({ type: 'booking' })
-
-  setSignupType = () => this.setState({ type: 'signup' })
+class AddActionButton extends AbstractAddButton {
+  static propTypes = { ...AbstractAddButton.propTypes, closeModal: PropTypes.func }
 
   handleChangeText = event => this.setState({ link: event.target.value.trim() })
 
   handleDeleteButton = () => this.setState({ link: '', type: '', hasDeletedButton: true })
 
   handleConfirm = () => {
-    const { type, link } = this.state
+    const { type, link, hasDeletedButton } = this.state
 
     this.setState({ hasAttemptedSubmit: true })
-    if (this.isValid()) {
-      if (this.state.link === '' && this.state.hasDeletedButton) {
+    if (this.isValid(link)) {
+      if (link === '' && hasDeletedButton) {
         this.props.updateWorkingDraft({ actionButton: { type: '', link: '' } })
       }
       else {
@@ -131,101 +114,79 @@ class AddActionButton extends Component {
     }
   }
 
-  // does not check for valid TLD/query param structure
-  isValidURL = () => {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-      + '(\\#[-a-z\\d_]*)?$',
-      'i',
-    )
-    return !!pattern.test(this.state.link)
-  }
-
-  isValid = () => {
+  render() {
+    const { type, link, hasAttemptedSubmit, hasDeletedButton } = this.state
     return (
-      (this.state.type && this.state.link && this.isValidURL())
-      || (!this.state.link && this.state.hasDeletedButton)
+      <OnClickOutsideModal>
+        <FlexContainer>
+          <Title>Add a Button</Title>
+          <ContentContainer>
+            <TypeContainer>
+              <Label>Choose a button:</Label>
+              <ButtonTypeRow>
+                <ButtonTypeText>More info button</ButtonTypeText>
+                <Checkbox
+                  name={type === 'info' ? 'redCheck' : 'greyCheck'}
+                  onClick={this.setMoreInfoType}
+                />
+              </ButtonTypeRow>
+              <ButtonTypeRow>
+                <ButtonTypeText>Book now button</ButtonTypeText>
+                <Checkbox
+                  name={type === 'booking' ? 'redCheck' : 'greyCheck'}
+                  onClick={this.setBookNowType}
+                />
+              </ButtonTypeRow>
+              <ButtonTypeRow>
+                <ButtonTypeText>Sign up button</ButtonTypeText>
+                <Checkbox
+                  name={type === 'signup' ? 'redCheck' : 'greyCheck'}
+                  onClick={this.setSignupType}
+                />
+              </ButtonTypeRow>
+            </TypeContainer>
+            <Label>Add a Url to your button:</Label>
+            <StyledInput
+              type="text"
+              placeholder="Enter Url"
+              value={link || ''}
+              onChange={this.handleChangeText}
+            />
+            {!!link && hasAttemptedSubmit && !this.isValidUrl(link) && (
+              <SubmitError>Please make sure your Url is valid</SubmitError>
+            )}
+            {!!this.props.currentLink
+              && this.props.currentLink === link
+              && !hasDeletedButton && (
+                <DeleteText onClick={this.handleDeleteButton}>Delete button</DeleteText>
+              )}
+          </ContentContainer>
+          <ConfirmButtonRow>
+            <StyledRoundedButton
+              text="Cancel"
+              type="blackWhite"
+              onClick={this.props.closeModal}
+              margin={'small'}
+            />
+            <StyledRoundedButton
+              text={this.props.currentLink ? 'Save Button' : 'Create Button'}
+              onClick={this.handleConfirm}
+              buttonProps={`&& { width: 200px }`}
+              margin={'small'}
+              padding={'smallEven'}
+            />
+          </ConfirmButtonRow>
+        </FlexContainer>
+        <div />
+      </OnClickOutsideModal>
     )
   }
-
-  render = () => (
-    <OnClickOutsideModal>
-      <FlexContainer>
-        <Title>Add a Button</Title>
-        <ContentContainer>
-          <TypeContainer>
-            <Label>Choose a button:</Label>
-            <ButtonTypeRow>
-              <ButtonTypeText>More info button</ButtonTypeText>
-              <Checkbox
-                name={this.state.type === 'info' ? 'redCheck' : 'greyCheck'}
-                onClick={this.setMoreInfoType}
-              />
-            </ButtonTypeRow>
-            <ButtonTypeRow>
-              <ButtonTypeText>Book now button</ButtonTypeText>
-              <Checkbox
-                name={this.state.type === 'booking' ? 'redCheck' : 'greyCheck'}
-                onClick={this.setBookNowType}
-              />
-            </ButtonTypeRow>
-            <ButtonTypeRow>
-              <ButtonTypeText>Sign up button</ButtonTypeText>
-              <Checkbox
-                name={this.state.type === 'signup' ? 'redCheck' : 'greyCheck'}
-                onClick={this.setSignupType}
-              />
-            </ButtonTypeRow>
-          </TypeContainer>
-          <Label>Add a Url to your button:</Label>
-          <StyledInput
-            placeholder="Enter Url"
-            type="text"
-            value={this.state.link || ''}
-            onChange={this.handleChangeText}
-          />
-          {!!this.state.link
-          && this.state.hasAttemptedSubmit
-          && !this.isValidURL() && (
-            <SubmitError>
-                Please make sure your Url is valid
-            </SubmitError>
-          )}
-          {!!this.props.link
-            && this.props.link === this.state.link
-            && !this.state.hasDeletedButton && (
-              <DeleteText onClick={this.handleDeleteButton}>Delete button</DeleteText>
-            )}
-        </ContentContainer>
-        <ConfirmButtonRow>
-          <StyledRoundedButton
-            text="Cancel"
-            type="blackWhite"
-            onClick={this.props.closeModal}
-            margin={'small'}
-          />
-          <StyledRoundedButton
-            text={this.props.link ? 'Save Button' : 'Create Button'}
-            onClick={this.handleConfirm}
-            buttonProps={`&& { width: 200px }`}
-            margin={'small'}
-            padding={'smallEven'}
-          />
-        </ConfirmButtonRow>
-      </FlexContainer>
-      <div />
-    </OnClickOutsideModal>
-  )
 }
 
 const mapState = ({ storyCreate }) => {
   const hasActionButton = storyCreate.workingDraft && storyCreate.workingDraft.actionButton
   return {
-    link: hasActionButton ? storyCreate.workingDraft.actionButton.link : '',
+    currentLink: hasActionButton ? storyCreate.workingDraft.actionButton.link : '',
     type: hasActionButton ? storyCreate.workingDraft.actionButton.type : '',
   }
 }

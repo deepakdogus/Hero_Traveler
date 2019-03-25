@@ -597,7 +597,7 @@ export default class FeedItemDetails extends React.Component {
             <IconWithMargin name='addActionButton'/>
           </IconWrapper>
           <StyledInput
-            type='number'
+            type='text'
             placeholder={actionButtonLink || 'Enter Url'}
             value={actionButtonLink}
             name='actionButton'

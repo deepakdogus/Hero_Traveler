@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 
+import { AddButton as AbstractAddButton } from '../../Shared/AbstractComponents'
 import NavBar from './NavBar'
 import Checkbox from '../../Components/Checkbox'
 import FormInput from '../../Components/FormInput'
@@ -11,84 +12,41 @@ import Modal from '../../Components/Modal'
 import styles from './AddButtonScreenStyles'
 import modalStyles, { modalWrapperStyles } from './2_StoryCoverScreenStyles'
 
-export default class AddButtonScreen extends Component {
-  static propTypes = {
-    onAddButton: PropTypes.func,
-    buttonType: PropTypes.string,
-    link: PropTypes.string,
-  }
+export default class AddButtonScreen extends AbstractAddButton {
+  static propTypes = { ...AbstractAddButton.propTypes, onAddButton: PropTypes.func }
 
-  state = {
-    type: this.props.buttonType || 'info',
-    link: this.props.link || '',
-    hasAttemptedSubmit: false,
-    hasDeletedButton: false,
-    activeModal: undefined,
-  }
-
-  setMoreInfoType = () => this.setState({ type: 'info' })
-
-  setBookNowType = () => this.setState({ type: 'booking' })
-
-  setSignupType = () => this.setState({ type: 'signup' })
+  static state = {...AbstractAddButton.state, activeModal: undefined}
 
   handleChangeText = link => this.setState({ link: link.trim() })
 
-  handleDeleteButton = () => this.setState({ activeModal: 'confirmDeleteButton'})
+  handleDeleteButton = () =>
+    this.setState({ activeModal: 'confirmDeleteButton' })
 
   handleDeleteConfirm = () => {
     this.setState({ link: '', type: '', hasDeletedButton: true })
     this.closeModal()
   }
 
+  closeModal = () => this.setState({ activeModal: undefined })
+
   onLeft = () => NavActions.pop()
 
   onRight = () => {
-    const { type, link } = this.state
+    const { type, link, hasDeletedButton } = this.state
 
     this.setState({ hasAttemptedSubmit: true })
-    if (this.isValid()) {
-      if (this.state.link === '' && this.state.hasDeletedButton) {
-        this.props.onAddButton({ type: '', link: '' })
-      }
-      else {
-        this.props.onAddButton({ type, link })
-      }
+    if (this.isValid(link)) {
+      if (link === '' && hasDeletedButton) this.props.onAddButton({ type: '', link: '' })
+      else this.props.onAddButton({ type, link })
       NavActions.pop()
     }
   }
 
-  // doesn't validate well after domain, allows any TLD
-  isValidURL = () => {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-        + '(\\#[-a-z\\d_]*)?$',
-      'i',
-    )
-    return !!pattern.test(this.state.link)
-  }
-
-  isValid = () => {
-    return (
-      (this.state.type && this.state.link && this.isValidURL())
-      || (!this.state.link && this.state.hasDeletedButton)
-    )
-  }
-
-  closeModal = () => this.setState({activeModal: undefined})
-
-  renderConfirmDeleteButton = () => {
+  renderConfirmDeleteButton() {
     const title = 'Delete Button'
     const message = 'Are you sure you want to delete your button?'
     return (
-      <Modal
-        closeModal={this.closeModal}
-        modalStyle={modalWrapperStyles}
-      >
+      <Modal closeModal={this.closeModal} modalStyle={modalWrapperStyles}>
         <Text style={modalStyles.modalTitle}>{title}</Text>
         <Text style={modalStyles.modalMessage}>{message}</Text>
         <View style={modalStyles.modalBtnWrapper}>
@@ -109,82 +67,90 @@ export default class AddButtonScreen extends Component {
     )
   }
 
-  render = () => (
-    <View style={styles.root}>
-      <NavBar
-        title="ADD A BUTTON"
-        onLeft={this.onLeft}
-        leftTitle="Cancel"
-        onRight={this.onRight}
-        isRightValid={this.isValid()}
-        rightTitle="Done"
-        rightTextStyle={styles.navBarRightTextStyle}
-        style={styles.navBarStyle}
-      />
-      <View style={styles.content}>
-        <View style={styles.labelRow}>
-          <Text style={styles.label}>Choose a button:</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonRow}>
-            <Text style={styles.buttonText}>More info button</Text>
-            <Checkbox
-              checked={this.state.type === 'info'}
-              onPress={this.setMoreInfoType}
-            />
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonRow}>
-            <Text style={styles.buttonText}>Book now button</Text>
-            <Checkbox
-              checked={this.state.type === 'booking'}
-              onPress={this.setBookNowType}
-            />
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonRow}>
-            <Text style={styles.buttonText}>Sign up button</Text>
-            <Checkbox
-              checked={this.state.type === 'signup'}
-              onPress={this.setSignupType}
-            />
-          </View>
-        </View>
-        <View style={styles.labelRow}>
-          <Text style={styles.label}>Add a Url to your button:</Text>
-        </View>
-        <FormInput
-          autoCapitalize="none"
-          onChangeText={this.handleChangeText}
-          onSubmitEditing={this.onRight}
-          placeholder="Enter Url"
-          keyboardType="url"
-          returnKeyType="done"
-          value={this.state.link}
+  render() {
+    const {
+      link,
+      type,
+      hasAttemptedSubmit,
+      hasDeletedButton,
+      activeModal,
+    } = this.state
+    return (
+      <View style={styles.root}>
+        <NavBar
+          title="ADD A BUTTON"
+          onLeft={this.onLeft}
+          leftTitle="Cancel"
+          onRight={this.onRight}
+          isRightValid={this.isValid(link)}
+          rightTitle="Done"
+          rightTextStyle={styles.navBarRightTextStyle}
+          style={styles.navBarStyle}
         />
-        {!!this.state.link
-          && this.state.hasAttemptedSubmit
-          && !this.isValidURL() && (
+        <View style={styles.content}>
+          <View style={styles.labelRow}>
+            <Text style={styles.label}>Choose a button:</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonRow}>
+              <Text style={styles.buttonText}>More info button</Text>
+              <Checkbox
+                checked={type === 'info'}
+                onPress={this.setMoreInfoType}
+              />
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonRow}>
+              <Text style={styles.buttonText}>Book now button</Text>
+              <Checkbox
+                checked={type === 'booking'}
+                onPress={this.setBookNowType}
+              />
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonRow}>
+              <Text style={styles.buttonText}>Sign up button</Text>
+              <Checkbox
+                checked={type === 'signup'}
+                onPress={this.setSignupType}
+              />
+            </View>
+          </View>
+          <View style={styles.labelRow}>
+            <Text style={styles.label}>Add a Url to your button:</Text>
+          </View>
+          <FormInput
+            autoCapitalize="none"
+            onChangeText={this.handleChangeText}
+            onSubmitEditing={this.onRight}
+            placeholder="Enter Url"
+            keyboardType="url"
+            returnKeyType="done"
+            value={link}
+          />
+          {!!link && hasAttemptedSubmit && !this.isValidUrl(link) && (
             <View style={styles.errorRow}>
               <Text style={styles.errorText}>
                 Please make sure your Url is valid
               </Text>
             </View>
           )}
-        {!!this.props.link
-          && this.props.link === this.state.link
-          && !this.state.hasDeletedButton && (
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={this.handleDeleteButton}
-            >
-              <Text style={styles.deleteText}>Delete button</Text>
-            </TouchableOpacity>
-        )}
+          {!!this.props.currentLink
+            && this.props.currentLink === link
+            && !hasDeletedButton && (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={this.handleDeleteButton}
+              >
+                <Text style={styles.deleteText}>Delete button</Text>
+              </TouchableOpacity>
+            )}
+        </View>
+        {activeModal === 'confirmDeleteButton'
+          && this.renderConfirmDeleteButton()}
       </View>
-      {this.state.activeModal === 'confirmDeleteButton' && this.renderConfirmDeleteButton()}
-    </View>
-  )
+    )
+  }
 }

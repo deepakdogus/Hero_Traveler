@@ -263,7 +263,7 @@ class CreateStoryDetailScreen extends React.Component {
     const hasActionButton = this.hasActionButton()
     NavActions.createStory_addButton({
       onAddButton: this.receiveButton,
-      link: hasActionButton ? this.props.workingDraft.actionButton.link : '',
+      currentLink: hasActionButton ? this.props.workingDraft.actionButton.link : '',
       buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
     })
   }

@@ -1,13 +1,13 @@
-import React , { Component } from 'react'
+import React , { Component, Fragment } from 'react'
 import {
   View,
   Text,
-  Image,
   Alert,
 } from 'react-native'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import ParallaxScrollView from 'react-native-parallax-scroll-view'
+import { ImageCrop } from 'react-native-image-cropper'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 import NavBar from './NavBar'
 import CameraRollPicker from '../../Components/CameraRollPicker/CameraRollPicker'
@@ -17,28 +17,42 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import UserActions from '../../Shared/Redux/Entities/Users'
 
 import {
+  isFieldSame,
   haveFieldsChanged,
   hasChangedSinceSave,
 } from '../../Shared/Lib/draftChangedHelpers'
 import navbarStyles from './2_StoryCoverScreenStyles'
+import TabIcon from '../../Components/TabIcon'
 
 import styles from './SlideshowCoverStyles'
+import coverImageStyles from '../../Components/Styles/EditableCoverMediaStyles'
+import Metrics from '../../Themes/Metrics'
 
 class SlideshowCover extends Component{
   constructor(props) {
     super(props)
     this.state = {
       selectedImages: [],
-      galleryImagePath:false,
+      galleryImagePath: null,
     }
   }
 
   getSelectedImages = (image, current) => {
     const { selectedImages } = this.state
-    console.log("====image path ===", current.uri)
+    if (selectedImages.length >= 8) return
+    let galleryImagePath = current.uri
+    console.log("====image path ===", galleryImagePath)
+    const existingIndex = selectedImages.indexOf(galleryImagePath)
+    if (existingIndex >= 0) {
+      selectedImages.splice(existingIndex, 1)
+      galleryImagePath = _.last(selectedImages)
+    }
+    else {
+      selectedImages.push(current.uri)
+    }
     this.setState({
-      galleryImagePath:current.uri,
-      selectedImages: [...selectedImages, current.uri],
+      galleryImagePath,
+      selectedImages,
     })
   }
 
@@ -48,6 +62,23 @@ class SlideshowCover extends Component{
       !!coverImage || !!coverVideo,
       !!_.trim(title),
     ])
+  }
+
+  isSavedDraft = () => {
+    return this.props.originalDraft
+      && this.props.originalDraft.id
+      && this.props.originalDraft.id === this.props.workingDraft.id
+  }
+
+  navBack = () => {
+    this.props.resetCreateStore()
+    if (this.props.navigatedFromProfile) {
+      NavActions.tabbar({type: 'reset'})
+      NavActions.profile()
+    }
+    else {
+      NavActions.tabbar({type: 'reset'})
+    }
   }
 
   _onTitle = () => {
@@ -81,6 +112,30 @@ class SlideshowCover extends Component{
     console.log('onRight is clicked')
   }
 
+  _onLeftYes = () => {
+    if (!this.isValid()) {
+      this.setState({
+        validationError: 'Please add a cover and title to continue',
+        activeModal: undefined,
+      })
+    }
+    else {
+      this.saveStory().then(() => {
+        this.navBack()
+      })
+    }
+  }
+
+  _onLeftNo = () => {
+    if (!this.isSavedDraft()) {
+      this.props.discardDraft(this.props.workingDraft.id)
+    }
+    else {
+      this.props.resetCreateStore()
+    }
+    this.navBack()
+  }
+
   _onLeft = () => {
     const {workingDraft, originalDraft, draftToBeSaved} = this.props
     const cleanedDraft = this.cleanDraft(workingDraft)
@@ -96,18 +151,58 @@ class SlideshowCover extends Component{
     }
   }
 
+  cleanDraft(){
+    const {workingDraft, originalDraft, draftIdToDBId} = this.props
+    const draft = _.merge({}, workingDraft)
+    if (!isFieldSame('title', workingDraft, originalDraft)) draft.title = _.trim(draft.title)
+    if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
+    if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
+    if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
+    return draft
+  }
+
+  renderImageCropper = () => {
+    return (
+      <Fragment>
+        <ImageCrop 
+          ref={'cropper'}
+          image={this.state.galleryImagePath}
+          cropHeight={300}
+          cropWidth={Metrics.screenWidth}
+          maxZoom={80}
+          minZoom={20}
+          panToMove={true}
+          pinchToZoom={true}
+        />
+        <View style={styles.horizontalGrid} />
+        <View style={styles.verticalGrid} />
+      </Fragment>
+    )
+  }
+
   renderSelectedImage = () => {
     return (
-      <View style={styles.galleryView}>
-        <View style={styles.imagePreview}>
-          {
-            this.state.galleryImagePath
-            && <Image
-                source={{uri: this.state.galleryImagePath}}
-                style={{ height:400 }}
-              />
-          }
+      <View style={styles.imagePreview}>
+        {
+          this.state.galleryImagePath
+          ? this.renderImageCropper()
+          : <View style={[styles.addPhotoView]}>
+          <View
+            style={styles.addPhotoButton}
+          >
+            <TabIcon
+              name='cameraDark'
+              style={{
+                view: coverImageStyles.cameraIcon,
+                image: coverImageStyles.cameraIconImage,
+              }}
+            />
+            <Text style={[coverImageStyles.baseTextColor, coverImageStyles.coverPhotoText]}>
+              CHOOSE COVER PHOTO OR VIDEO
+            </Text>
+          </View>
         </View>
+        }
       </View>
     )
   }
@@ -115,7 +210,7 @@ class SlideshowCover extends Component{
   renderHeader = () => {
     return (
       <NavBar
-        title='SAVE'
+        title='ALL PHOTOS'
         onTitle={this._onTitle}
         onLeft={this._onLeft}
         leftTitle='Close'
@@ -130,40 +225,41 @@ class SlideshowCover extends Component{
   }
 
   renderIcon = (item) => {
-    console.log('item', item)
     const { selectedImages } = this.state
-    console.log('selectedImages', selectedImages)
     const uri = _.get(item, 'node.image.uri')
-    const number = _.findIndex(selectedImages, uri)
-    return (<View><Text>{number}</Text></View>)
+    const number = selectedImages.indexOf(uri) + 1
+    return (
+      <Fragment>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{number}</Text>
+        </View>
+        {number === selectedImages.length
+          && <View style={styles.overlay} />
+        }
+      </Fragment>
+    )
   }
 
   render(){
     return(
       <View style={{ flex: 1 }}>
-          <ParallaxScrollView
-            style={{ flex: 1, backgroundColor: 'hotpink', overflow: 'hidden' }}
-            renderBackground={this.renderSelectedImage}
-            renderFixedHeader={this.renderHeader}
-            parallaxHeaderHeight={ 350 }
-            stickyHeaderHeight={55}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <CameraRollPicker
-                scrollRenderAheadDistance={100}
-                initialListSize={1}
-                pageSize={3}
-                removeClippedSubviews={true}
-                groupTypes='SavedPhotos'
-                maximum={8}
-                assetType='Photos'
-                selectedMarker={this.renderIcon}
-                imagesPerRow={4}
-                imageMargin={1}
-                callback={this.getSelectedImages}
-              />
-            </View>
-          </ParallaxScrollView>
+        {this.renderHeader()}
+        {this.renderSelectedImage()}
+        <View style={{ alignItems: 'center' }}>
+          <CameraRollPicker
+            scrollRenderAheadDistance={100}
+            initialListSize={1}
+            pageSize={3}
+            removeClippedSubviews={true}
+            groupTypes='SavedPhotos'
+            maximum={8}
+            assetType='All'
+            selectedMarker={this.renderIcon}
+            imagesPerRow={4}
+            imageMargin={1}
+            callback={this.getSelectedImages}
+          />
+        </View>
       </View>
     )
   }

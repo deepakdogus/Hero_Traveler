@@ -410,6 +410,7 @@ export default function NavigationRouter({ openAddStoryModal }) {
         key='createStory_slideshow'
         component={CreateSlideshowScreen}
         panHandlers={null}
+        hideNavBar
         direction="horizontal"
       />
       <Scene

@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Image,
   StyleSheet,
   Dimensions,
+  View,
   TouchableOpacity,
-} from 'react-native';
-import PropTypes from 'prop-types';
+} from 'react-native'
+import PropTypes from 'prop-types'
 
 class ImageItem extends Component {
   constructor(props) {
@@ -13,19 +14,25 @@ class ImageItem extends Component {
   }
 
   componentWillMount() {
-    var { width } = Dimensions.get('window');
-    var { imageMargin, imagesPerRow, containerWidth } = this.props;
+    var { width } = Dimensions.get('window')
+    var { imageMargin, imagesPerRow, containerWidth } = this.props
 
-    if (typeof containerWidth != "undefined") {
-      width = containerWidth;
+    if (typeof containerWidth !== 'undefined') {
+      width = containerWidth
     }
-    this._imageSize = (width - (imagesPerRow + 1) * imageMargin) / imagesPerRow;
+    this._imageSize = (width - (imagesPerRow + 1) * imageMargin) / imagesPerRow
+  }
+
+  renderDefaultMarker = () => {
+    return (
+      <View style={styles.circle} />
+    )
   }
 
   render() {
-    var { item, selected, selectedMarker, imageMargin } = this.props;
+    var { item, selected, selectedMarker, imageMargin } = this.props
 
-    var image = item.node.image;
+    var image = item.node.image
 
     return (
       <TouchableOpacity
@@ -34,13 +41,13 @@ class ImageItem extends Component {
         <Image
           source={{ uri: image.uri }}
           style={{ height: this._imageSize, width: this._imageSize }} />
-        {(selected) ? selectedMarker(item) : null}
+        {(selected) ? selectedMarker(item) : this.renderDefaultMarker()}
       </TouchableOpacity>
-    );
+    )
   }
 
   _handleClick(item) {
-    this.props.onClick(item);
+    this.props.onClick(item)
   }
 }
 
@@ -50,6 +57,18 @@ const styles = StyleSheet.create({
     top: 5,
     right: 5,
     backgroundColor: 'transparent',
+  },
+  circle: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: '#efefef',
+    width: 20,
+    height: 20,
+    borderRadius: 20 / 2,
+    borderColor: 'white',
+    borderWidth: 3,
+    opacity: 0.7,
   },
 })
 
@@ -67,4 +86,4 @@ ImageItem.propTypes = {
   onClick: PropTypes.func,
 }
 
-export default ImageItem;
+export default ImageItem

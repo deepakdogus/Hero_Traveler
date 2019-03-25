@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native'
+import Metrics from '../../Themes/Metrics'
+import Colors from '../../Shared/Themes/Colors'
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6AE2D',
   },
-  content: {
-    marginTop: 15,
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+  imagePreview: {
+    backgroundColor: '#efefef',
+    position: 'relative',
+    height: 300,
+    width: Metrics.screenWidth,
   },
   text: {
     fontSize: 16,
@@ -23,5 +23,58 @@ export default StyleSheet.create({
   },
   info: {
     fontSize: 12,
+  },
+  addPhotoButton: {
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height: 300,
+    width: Metrics.screenWidth,
+  },
+  parallaxStyles: {
+    flex: 1,
+    backgroundColor: 'hotpink',
+    overflow: 'hidden',
+  },
+  badge: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: Colors.red,
+    width: 20,
+    height: 20,
+    borderRadius: 20 / 2,
+    flex: 1,
+  },
+  overlay: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'white',
+    opacity: 0.5,
+  },
+  badgeText: {
+    color: 'white',
+    alignSelf: 'center',
+    flex: 1,
+  },
+  horizontalGrid: {
+    width: Metrics.screenWidth,
+    height: 100,
+    position: 'absolute',
+    top: 100,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.5)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  verticalGrid: {
+    width: Metrics.screenWidth / 3,
+    height: 300,
+    position: 'absolute',
+    left: Metrics.screenWidth / 3,
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(255, 255, 255, 0.5)',
+    borderRightWidth: 1,
+    borderRightColor: 'rgba(255, 255, 255, 0.5)',
   },
 })

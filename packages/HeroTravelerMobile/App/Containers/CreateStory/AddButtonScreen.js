@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
-import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import { AbstractAddButton } from '../../Shared/AbstractComponents'
@@ -13,17 +12,15 @@ import styles from './AddButtonScreenStyles'
 import modalStyles, { modalWrapperStyles } from './2_StoryCoverScreenStyles'
 
 export default class AddButtonScreen extends AbstractAddButton {
-  static propTypes = { ...AbstractAddButton.propTypes, onAddButton: PropTypes.func }
-
   static state = {...AbstractAddButton.state, activeModal: undefined}
 
   handleChangeText = link => this.setState({ link: link.trim() })
 
-  handleDeleteButton = () =>
-    this.setState({ activeModal: 'confirmDeleteButton' })
+  handleDeleteButton = () => this.setState({ activeModal: 'confirmDeleteButton' })
 
   handleDeleteConfirm = () => {
     this.setState({ link: '', type: '', hasDeletedButton: true })
+    this.props.updateWorkingDraft({actionButton: { type: '', link: '' }})
     this.closeModal()
   }
 
@@ -32,14 +29,9 @@ export default class AddButtonScreen extends AbstractAddButton {
   onLeft = () => NavActions.pop()
 
   onRight = () => {
-    const { type, link, hasDeletedButton } = this.state
-
-    this.setState({ hasAttemptedSubmit: true })
-    if (this.isValid(link)) {
-      if (link === '' && hasDeletedButton) this.props.onAddButton({ type: '', link: '' })
-      else this.props.onAddButton({ type, link })
-      NavActions.pop()
-    }
+    const { type, link } = this.state
+    this.handleSubmit(type, link)
+    NavActions.pop()
   }
 
   renderConfirmDeleteButton() {
@@ -82,7 +74,7 @@ export default class AddButtonScreen extends AbstractAddButton {
           onLeft={this.onLeft}
           leftTitle="Cancel"
           onRight={this.onRight}
-          isRightValid={this.isValid(link)}
+          isRightValid={this.isValid(link) || (hasDeletedButton && link === '')}
           rightTitle="Done"
           rightTextStyle={styles.navBarRightTextStyle}
           style={styles.navBarStyle}
@@ -148,8 +140,7 @@ export default class AddButtonScreen extends AbstractAddButton {
               </TouchableOpacity>
             )}
         </View>
-        {activeModal === 'confirmDeleteButton'
-          && this.renderConfirmDeleteButton()}
+        {activeModal === 'confirmDeleteButton' && this.renderConfirmDeleteButton()}
       </View>
     )
   }

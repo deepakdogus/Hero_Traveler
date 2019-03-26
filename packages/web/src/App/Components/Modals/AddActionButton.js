@@ -100,18 +100,9 @@ class AddActionButton extends AbstractAddButton {
   handleDeleteButton = () => this.setState({ link: '', type: '', hasDeletedButton: true })
 
   handleConfirm = () => {
-    const { type, link, hasDeletedButton } = this.state
-
-    this.setState({ hasAttemptedSubmit: true })
-    if (this.isValid(link)) {
-      if (link === '' && hasDeletedButton) {
-        this.props.updateWorkingDraft({ actionButton: { type: '', link: '' } })
-      }
-      else {
-        this.props.updateWorkingDraft({ actionButton: { type, link } })
-      }
-      this.props.closeModal()
-    }
+    const { type, link } = this.state
+    this.handleSubmit(type, link)
+    this.props.closeModal()
   }
 
   render() {

@@ -255,14 +255,10 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
-  receiveButton = actionButton => {
-    this.props.updateWorkingDraft({ actionButton })
-  }
-
   navToAddButton = () => {
     const hasActionButton = this.hasActionButton()
     NavActions.createStory_addButton({
-      onAddButton: this.receiveButton,
+      updateWorkingDraft: this.props.updateWorkingDraft,
       currentLink: hasActionButton ? this.props.workingDraft.actionButton.link : '',
       buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
     })

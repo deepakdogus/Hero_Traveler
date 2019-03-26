@@ -584,7 +584,7 @@ export default class FeedItemDetails extends React.Component {
           <StyledInput
             type='number'
             placeholder={this.getCostPlaceHolderText(workingDraft.type)}
-            value={workingDraft.cost}
+            value={workingDraft.cost || ''}
             min='0'
             name='cost'
             onChange={this.onGenericChange}

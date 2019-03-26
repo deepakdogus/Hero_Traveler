@@ -7,7 +7,7 @@ export default class AbstractAddButton extends Component {
   static propTypes = {
     currentLink: PropTypes.string,
     buttonType: PropTypes.string,
-    updateWorkingDraft: PropTypes.func,
+    updateWorkingDraft: PropTypes.func.isRequired,
   }
 
   state = {
@@ -31,12 +31,12 @@ export default class AbstractAddButton extends Component {
     throw new Error('You must implement the method handleDeleteButton in your subclass')
   }
 
+  handleSubmit = (type, link ) => {
+    this.setState({ hasAttemptedSubmit: true })
+    if (this.isValid(link)) this.props.updateWorkingDraft({actionButton: { type, link }})
+  }
+
   isValidUrl = link => isValidUrl(link)
 
-  isValid = link => {
-    return (
-      (this.state.type && this.state.link && this.isValidUrl(link))
-      || (!this.state.link && this.state.hasDeletedButton)
-    )
-  }
+  isValid = link => this.state.type && this.state.link && this.isValidUrl(link)
 }

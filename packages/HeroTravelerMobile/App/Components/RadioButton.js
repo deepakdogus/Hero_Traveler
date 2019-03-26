@@ -1,36 +1,44 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Colors, Metrics } from '../Shared/Themes'
 import { TouchableWithoutFeedback, View, Text, StyleSheet } from 'react-native'
 
-const RadioButton = ({ text, onPress, selected, whiteText }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.radio}>
-        <View
-          style={[
-            styles.radioBtnOuter,
-            selected ? styles.radioBtnActiveBorder : {},
-          ]}
-        >
+class RadioButton extends Component {
+  static propTypes = {
+    text: PropTypes.string,
+    onPress: PropTypes.func,
+    selected: PropTypes.bool,
+    value: PropTypes.string,
+    lightText: PropTypes.bool,
+  }
+
+  handlePress = () => this.props.onPress(this.props.value)
+
+  render() {
+    const { text, selected, lightText } = this.props
+    return (
+      <TouchableWithoutFeedback onPress={this.handlePress}>
+        <View style={styles.radio}>
           <View
             style={[
-              styles.radioBtnInner,
-              selected ? styles.radioBtnActiveBackground : {},
+              styles.radioBtnOuter,
+              selected ? styles.radioBtnActiveBorder : {},
             ]}
-          />
+          >
+            <View
+              style={[
+                styles.radioBtnInner,
+                selected ? styles.radioBtnActiveBackground : {},
+              ]}
+            />
+          </View>
+          <Text style={[styles.radioText, lightText ? styles.lightText : {}]}>
+            {text}
+          </Text>
         </View>
-        <Text style={[styles.radioText, whiteText ? styles.whiteText : {}]}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
-
-RadioButton.propTypes = {
-  text: PropTypes.string,
-  onPress: PropTypes.func,
-  selected: PropTypes.bool,
-  whiteText: PropTypes.bool,
+      </TouchableWithoutFeedback>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -67,8 +75,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
   },
-  whiteText: {
-    color: Colors.snow,
+  lightText: {
+    color: Colors.grey,
   },
 })
 

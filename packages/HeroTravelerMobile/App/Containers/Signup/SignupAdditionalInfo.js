@@ -23,9 +23,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import styles from './SignupAdditionalInfoStyles'
 
 /***
-
  Helper functions
-
 ***/
 
 const dateLikeItemAsDate = dateLikeItem => {
@@ -36,33 +34,21 @@ const dateLikeItemAsDate = dateLikeItem => {
 class SignupAdditionalInfo extends Component {
   static propTypes = {
     updateUser: PropTypes.func,
+    updating: PropTypes.bool,
+    error: PropTypes.string,
   }
 
   state = {
     locationInfo: null,
     birthday: null,
     gender: '',
-    genderPristine: true,
-    modalVisible: false,
-    submitted: false,
+    showDatePicker: false,
   }
 
-  conditionalNavForward = () => {
-    if (this.state.submitted) {
+  componentDidUpdate (prevProps) {
+    if (prevProps.updating && !this.props.updating && !this.props.error) {
       NavActions.signupFlow_topics()
     }
-  }
-
-  componentDidMount() {
-    this.conditionalNavForward()
-  }
-
-  componentDidUpdate() {
-    this.conditionalNavForward()
-  }
-
-  _setModalVisible = (visible = true) => {
-    this.setState({ modalVisible: visible })
   }
 
   receiveLocation = locationInfo => {
@@ -77,46 +63,33 @@ class SignupAdditionalInfo extends Component {
     })
   }
 
-  openDatePicker = () => this.setState({ modalVisible: true })
+  openDatePicker = () => this.setState({ showDatePicker: true })
 
-  getToday = () => new Date()
+  getEndRange = () => moment().subtract('year', 13).toDate()
 
   onDateChange = birthday => this.setState({ birthday })
 
-  confirmDate = () => this.setState({ modalVisible: false })
+  confirmDate = () => this.setState({ showDatePicker: false })
 
-  selectGenderOption = gender => () =>
-    this.setState({ gender, genderPristine: false })
+  selectGenderOption = gender => this.setState({ gender })
 
   onGenderTextChange = gender => {
-    if (!gender) this.setState({ gender: 'other', genderPristine: true })
-    this.setState({ gender, genderPristine: false })
+    if (!gender) return this.setState({ gender: 'other' })
+    this.setState({ gender })
   }
 
   onRight = () => {
     const { locationInfo, birthday, gender } = this.state
-
-    // data prep
     const attrs = {}
     if (locationInfo) attrs.locationInfo = locationInfo
     if (birthday) attrs.birthday = birthday
     if (gender) attrs.gender = gender.toLowerCase()
 
-    // update user
     if (Object.keys(attrs).length) this.props.updateUser(attrs)
-
-    // induce navigation
-    this.setState({ submitted: true })
   }
 
   render = () => {
-    const {
-      locationInfo,
-      birthday,
-      gender,
-      genderPristine,
-      modalVisible,
-    } = this.state
+    const { locationInfo, birthday, gender, showDatePicker } = this.state
     return (
       <ImageWrapper
         background={true}
@@ -167,38 +140,35 @@ class SignupAdditionalInfo extends Component {
                 <RadioButton
                   style={styles.radioButton}
                   selected={gender === 'male'}
-                  onPress={this.selectGenderOption('male')}
+                  value="male"
+                  onPress={this.selectGenderOption}
                   text="Male"
-                  whiteText
+                  lightText
                 />
               </View>
               <View style={styles.radioButtonContainer}>
                 <RadioButton
                   style={styles.radioButton}
                   selected={gender === 'female'}
-                  onPress={this.selectGenderOption('female')}
+                  onPress={this.selectGenderOption}
+                  value="female"
                   text="Female"
-                  whiteText
+                  lightText
                 />
               </View>
               <View style={styles.radioWithTextInput}>
                 <RadioButton
-                  selected={
-                    !genderPristine && !['male', 'female'].includes(gender)
-                  }
-                  onPress={this.selectGenderOption('other')}
+                  selected={!!gender && !['male', 'female'].includes(gender)}
+                  onPress={this.selectGenderOption}
+                  value="other"
                   text="Other:"
-                  whiteText
+                  lightText
                 />
                 <View style={styles.radioTextInputContainer}>
                   <TextInput
                     style={styles.input}
                     placeholder="Self Describe"
-                    value={
-                      !['male', 'female', 'other'].includes(gender)
-                        ? gender
-                        : ''
-                    }
+                    value={!['male', 'female', 'other'].includes(gender) ? gender : ''}
                     returnKeyType="done"
                     onChangeText={this.onGenderTextChange}
                     placeholderTextColor={Colors.whiteAlphaPt3}
@@ -208,7 +178,7 @@ class SignupAdditionalInfo extends Component {
             </View>
           </View>
         </View>
-        {modalVisible && (
+        {showDatePicker && (
           <View
             style={styles.dateWrapper}
             shadowColor="black"
@@ -220,7 +190,7 @@ class SignupAdditionalInfo extends Component {
               <DatePickerIOS
                 date={dateLikeItemAsDate(this.state.birthday)}
                 mode="date"
-                maximumDate={this.getToday()}
+                maximumDate={this.getEndRange()}
                 onDateChange={this.onDateChange}
               />
               <RoundedButton text="Confirm"
@@ -233,11 +203,18 @@ class SignupAdditionalInfo extends Component {
   }
 }
 
+const mapState = state => {
+  return {
+    error: state.entities.users.error,
+    updating: state.entities.users.updating || false,
+  }
+}
+
 const mapDispatch = dispatch => ({
   updateUser: attrs => dispatch(UserActions.updateUser(attrs)),
 })
 
 export default connect(
-  null,
+  mapState,
   mapDispatch,
 )(SignupAdditionalInfo)

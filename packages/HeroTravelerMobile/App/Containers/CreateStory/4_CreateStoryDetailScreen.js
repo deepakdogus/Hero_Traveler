@@ -128,7 +128,7 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
-  _updateType = (type) => () => this.props.updateWorkingDraft({type})
+  updateType = (type) => this.props.updateWorkingDraft({type})
 
   _updateCostText = (value) => {
     this.setState({cost:value})
@@ -141,19 +141,19 @@ class CreateStoryDetailScreen extends React.Component {
   _getCostPlaceholderText = (draft) => {
     let placeholder
     switch (draft.type) {
-      case 'see':
-      case 'do':
-        placeholder = 'Cost'
-        break
-      case 'eat':
-        placeholder = 'Cost per person'
-        break
-      case 'stay':
-        placeholder = 'Cost per night'
-        break
-      default:
-        placeholder = 'Cost'
-        break
+    case 'see':
+    case 'do':
+      placeholder = 'Cost'
+      break
+    case 'eat':
+      placeholder = 'Cost per person'
+      break
+    case 'stay':
+      placeholder = 'Cost per night'
+      break
+    default:
+      placeholder = 'Cost'
+      break
     }
     // The currency is hardcoded for now, might want to change it later.
     let currency = draft.currency || 'USD'
@@ -283,86 +283,90 @@ class CreateStoryDetailScreen extends React.Component {
 
     return (
       <View style={styles.wrapper}>
-          {this.renderErrors()}
-          <NavBar
-            title='STORY DETAILS'
-            leftIcon='arrowLeftRed'
-            leftTitle='Back'
-            onLeft={this._onLeft}
-            leftTextStyle={styles.navBarLeftText}
-            onRight={this._onRight}
-            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
-            rightTextStyle={styles.redText}
-            isRightValid={this.isValid()}
-          />
-          <ScrollView style={styles.root}>
-            <Text style={styles.title}>{this.props.story.title} Details </Text>
-            <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Activity: </Text>
-              <View style={styles.radioGroup}>
-                <RadioButton
-                  selected={workingDraft.type === 'see'}
-                  onPress={this._updateType('see')}
-                  text='SEE'
-                />
-                <RadioButton
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={this._updateType('do')}
-                  text='DO'
-                />
-                <RadioButton
-                  selected={workingDraft.type === 'eat'}
-                  onPress={this._updateType('eat')}
-                  text='EAT'
-                />
-                <RadioButton
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'stay'}
-                  onPress={this._updateType('stay')}
-                  text='STAY'
-                />
-              </View>
+        {this.renderErrors()}
+        <NavBar
+          title='STORY DETAILS'
+          leftIcon='arrowLeftRed'
+          leftTitle='Back'
+          onLeft={this._onLeft}
+          leftTextStyle={styles.navBarLeftText}
+          onRight={this._onRight}
+          rightTitle={this.isDraft() ? 'Publish' : 'Save'}
+          rightTextStyle={styles.redText}
+          isRightValid={this.isValid()}
+        />
+        <ScrollView style={styles.root}>
+          <Text style={styles.title}>{this.props.story.title} Details </Text>
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.fieldLabel}>Activity: </Text>
+            <View style={styles.radioGroup}>
+              <RadioButton
+                selected={workingDraft.type === 'see'}
+                value="see"
+                onPress={this.updateType}
+                text='SEE'
+              />
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
+                selected={workingDraft.type === 'do'}
+                value="do"
+                onPress={this.updateType}
+                text='DO'
+              />
+              <RadioButton
+                selected={workingDraft.type === 'eat'}
+                value="eat"
+                onPress={this.updateType}
+                text='EAT'
+              />
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
+                selected={workingDraft.type === 'stay'}
+                value="stay"
+                onPress={this.updateType}
+                text='STAY'
+              />
             </View>
-            <FormInput
-              onPress={this.navToLocation}
-              iconName='location'
-              value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
-              placeholder='Location'
-            />
-            <FormInput
-              onPress={this._setModalVisible}
-              iconName='date'
-              value={dateLikeItemAsDateString(workingDraft.tripDate)}
-            />
-            <FormInput
-              onChangeText={this._updateCostText}
-              iconName='cost'
-              value={this.state.cost.toString()}
-              placeholder={this._getCostPlaceholderText(workingDraft)}
-              keyboardType='numeric'
-              cost={this.state.cost}
-            />
-            <FormInput
-              onPress={this.navToCategories}
-              iconName='tag'
-              value={this.getCategoriesValue()}
-              placeholder='Add categories...'
-            />
-            <FormInput
-              onPress={this.navToHashtags}
-              iconName='hashtag'
-              value={this.getHashtagsValue()}
-              placeholder='Add hashtags'
-            />
-            <TouchableMultilineInput
-              onDone={this._receiveTravelTips}
-              title='TRAVEL TIPS'
-              label='Travel Tips: '
-              value={workingDraft.travelTips}
-              placeholder='What should your fellow travelers know?'
-            />
-          </ScrollView>
+          </View>
+          <FormInput
+            onPress={this.navToLocation}
+            iconName='location'
+            value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
+            placeholder='Location'
+          />
+          <FormInput
+            onPress={this._setModalVisible}
+            iconName='date'
+            value={dateLikeItemAsDateString(workingDraft.tripDate)}
+          />
+          <FormInput
+            onChangeText={this._updateCostText}
+            iconName='cost'
+            value={this.state.cost.toString()}
+            placeholder={this._getCostPlaceholderText(workingDraft)}
+            keyboardType='numeric'
+            cost={this.state.cost}
+          />
+          <FormInput
+            onPress={this.navToCategories}
+            iconName='tag'
+            value={this.getCategoriesValue()}
+            placeholder='Add categories...'
+          />
+          <FormInput
+            onPress={this.navToHashtags}
+            iconName='hashtag'
+            value={this.getHashtagsValue()}
+            placeholder='Add hashtags'
+          />
+          <TouchableMultilineInput
+            onDone={this._receiveTravelTips}
+            title='TRAVEL TIPS'
+            label='Travel Tips: '
+            value={workingDraft.travelTips}
+            placeholder='What should your fellow travelers know?'
+          />
+        </ScrollView>
         {modalVisible &&
         <View
           style={styles.dateWrapper}

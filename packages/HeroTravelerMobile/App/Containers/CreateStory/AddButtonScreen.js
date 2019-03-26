@@ -67,6 +67,11 @@ export default class AddButtonScreen extends AbstractAddButton {
       hasDeletedButton,
       activeModal,
     } = this.state
+    const showSubmitError = !!link && hasAttemptedSubmit && !this.isValidUrl(link)
+    const showDeleteButton = !!this.props.currentLink
+      && this.props.currentLink === link
+      && !hasDeletedButton
+
     return (
       <View style={styles.root}>
         <NavBar
@@ -122,23 +127,21 @@ export default class AddButtonScreen extends AbstractAddButton {
             returnKeyType="done"
             value={link}
           />
-          {!!link && hasAttemptedSubmit && !this.isValidUrl(link) && (
+          {showSubmitError && (
             <View style={styles.errorRow}>
               <Text style={styles.errorText}>
                 Please make sure your Url is valid
               </Text>
             </View>
           )}
-          {!!this.props.currentLink
-            && this.props.currentLink === link
-            && !hasDeletedButton && (
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={this.handleDeleteButton}
-              >
-                <Text style={styles.deleteText}>Delete button</Text>
-              </TouchableOpacity>
-            )}
+          {showDeleteButton && (
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={this.handleDeleteButton}
+            >
+              <Text style={styles.deleteText}>Delete button</Text>
+            </TouchableOpacity>
+          )}
         </View>
         {activeModal === 'confirmDeleteButton' && this.renderConfirmDeleteButton()}
       </View>

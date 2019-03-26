@@ -107,6 +107,13 @@ class AddActionButton extends AbstractAddButton {
 
   render() {
     const { type, link, hasAttemptedSubmit, hasDeletedButton } = this.state
+    const showSubmitError = !!link
+      && hasAttemptedSubmit
+      && !this.isValidUrl(link)
+    const showDeleteText = !!this.props.currentLink
+      && this.props.currentLink === link
+      && !hasDeletedButton
+
     return (
       <OnClickOutsideModal>
         <FlexContainer>
@@ -143,16 +150,10 @@ class AddActionButton extends AbstractAddButton {
               value={link || ''}
               onChange={this.handleChangeText}
             />
-            {!!link
-              && hasAttemptedSubmit
-              && !this.isValidUrl(link)
-              && (
+            {showSubmitError && (
                 <SubmitError>Please make sure your Url is valid</SubmitError>
             )}
-            {!!this.props.currentLink
-              && this.props.currentLink === link
-              && !hasDeletedButton
-              && (
+            {showDeleteText && (
                 <DeleteText onClick={this.handleDeleteButton}>Delete button</DeleteText>
             )}
           </ContentContainer>

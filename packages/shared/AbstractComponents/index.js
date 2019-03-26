@@ -1,5 +1,5 @@
-import StarRating from './StarRating'
+import AbstractStarRating from './AbstractStarRating'
 
 export {
-  StarRating,
+  AbstractStarRating,
 }

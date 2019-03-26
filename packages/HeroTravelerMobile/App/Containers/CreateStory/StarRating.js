@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 
-import { StarRating as AbstractStarRating } from '../../Shared/AbstractComponents'
+import { AbstractStarRating } from '../../Shared/AbstractComponents'
 import TabIcon from '../../Components/TabIcon'
 
 import styles from './StarRatingStyles'

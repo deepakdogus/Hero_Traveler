@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { StarRating as AbstractStarRating} from '../../Shared/AbstractComponents'
+import { AbstractStarRating } from '../../Shared/AbstractComponents'
 import Icon from '../Icon'
 
 const Container = styled.div`
@@ -17,7 +17,7 @@ const Star = styled(Icon)`
 `
 
 class StarRating extends AbstractStarRating {
-  render () {
+  render() {
     return (
       <Container>
         {[1, 2, 3, 4, 5].map(rating => (
@@ -26,17 +26,14 @@ class StarRating extends AbstractStarRating {
             onClick={this.handleStarClick(rating)}
             clickable={!!this.props.onChange}
           >
-            {rating <= this.props.valueSelected ? (
-              <Star
-                name="ratingStarActive"
-                clickable={!!this.props.onChange}
-              />
-            ) : (
-              <Star
-                name="ratingStarInactive"
-                clickable={!!this.props.onChange}
-              />
-            )}
+            <Star
+              name={
+                rating <= this.props.valueSelected
+                  ? 'ratingStarActive'
+                  : 'ratingStarInactive'
+              }
+              clickable={!!this.props.onChange}
+            />
           </ClickContainer>
         ))}
       </Container>

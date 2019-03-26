@@ -196,7 +196,6 @@ class EditStory extends Component {
 
   _updateDraft = (publish) => {
     const {
-      originalDraft,
       workingDraft,
       subPath,
       saveDraft,
@@ -207,14 +206,14 @@ class EditStory extends Component {
 
     const cleanedDraft = this.cleanDraft(workingDraft)
 
-    if (isLocalDraft(workingDraft.id)) {
+    if (isLocalDraft(cleanedDraft.id)) {
       saveDraft(cleanedDraft, !(publish === true))
     }
     else {
       if (publish && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
-        originalDraft.id,
+        cleanedDraft.id,
         cleanedDraft,
         null,
         isRepublishing,

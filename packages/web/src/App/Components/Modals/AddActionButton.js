@@ -101,8 +101,7 @@ class AddActionButton extends AbstractAddButton {
 
   handleConfirm = () => {
     const { type, link } = this.state
-    this.handleSubmit(type, link)
-    this.props.closeModal()
+    this.handleSubmit(type, link, this.props.closeModal)
   }
 
   render() {

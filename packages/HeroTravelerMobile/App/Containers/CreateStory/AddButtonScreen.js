@@ -28,11 +28,7 @@ export default class AddButtonScreen extends AbstractAddButton {
 
   onLeft = () => NavActions.pop()
 
-  onRight = () => {
-    const { type, link } = this.state
-    this.handleSubmit(type, link)
-    NavActions.pop()
-  }
+  onRight = () => this.handleSubmit(this.state.type, this.state.link, NavActions.pop)
 
   renderConfirmDeleteButton() {
     const title = 'Delete Button'

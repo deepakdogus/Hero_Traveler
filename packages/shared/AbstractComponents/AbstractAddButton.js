@@ -14,7 +14,7 @@ export default class AbstractAddButton extends Component {
     type: this.props.buttonType || 'info',
     link: this.props.currentLink || '',
     hasAttemptedSubmit: false,
-    hasDeletedButton: false,
+    hasDeletedButton: false, // user deleted the story's current button
   }
 
   setMoreInfoType = () => this.setState({ type: 'info' })
@@ -31,9 +31,20 @@ export default class AbstractAddButton extends Component {
     throw new Error('You must implement the method handleDeleteButton in your subclass')
   }
 
-  handleSubmit = (type, link ) => {
+  handleSubmit = (type, link, closeFn ) => {
     this.setState({ hasAttemptedSubmit: true })
-    if (this.isValid(link)) this.props.updateWorkingDraft({actionButton: { type, link }})
+
+    // user deleted a preexisting button
+    if (this.state.hasDeletedButton && link === '') {
+      this.props.updateWorkingDraft({actionButton: { type: '', link: '' }})
+      return closeFn()
+    }
+
+    // user created or edited a new/updated valid button
+    if (this.isValid(link)) {
+      this.props.updateWorkingDraft({actionButton: { type, link }})
+      closeFn()
+    }
   }
 
   isValidUrl = link => isValidUrl(link)

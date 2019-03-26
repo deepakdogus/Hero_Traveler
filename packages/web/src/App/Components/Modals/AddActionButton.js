@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { AddButton as AbstractAddButton } from '../../Shared/AbstractComponents'
+import { AbstractAddButton } from '../../Shared/AbstractComponents'
 import OnClickOutsideModal from './OnClickOutsideModal'
 import { Title } from './Shared'
 import RoundedButton from '../RoundedButton'
@@ -152,14 +152,18 @@ class AddActionButton extends AbstractAddButton {
               value={link || ''}
               onChange={this.handleChangeText}
             />
-            {!!link && hasAttemptedSubmit && !this.isValidUrl(link) && (
-              <SubmitError>Please make sure your Url is valid</SubmitError>
+            {!!link
+              && hasAttemptedSubmit
+              && !this.isValidUrl(link)
+              && (
+                <SubmitError>Please make sure your Url is valid</SubmitError>
             )}
             {!!this.props.currentLink
               && this.props.currentLink === link
-              && !hasDeletedButton && (
+              && !hasDeletedButton
+              && (
                 <DeleteText onClick={this.handleDeleteButton}>Delete button</DeleteText>
-              )}
+            )}
           </ContentContainer>
           <ConfirmButtonRow>
             <StyledRoundedButton
@@ -187,7 +191,7 @@ const mapState = ({ storyCreate }) => {
   const hasActionButton = storyCreate.workingDraft && storyCreate.workingDraft.actionButton
   return {
     currentLink: hasActionButton ? storyCreate.workingDraft.actionButton.link : '',
-    type: hasActionButton ? storyCreate.workingDraft.actionButton.type : '',
+    buttonType: hasActionButton ? storyCreate.workingDraft.actionButton.type : '',
   }
 }
 

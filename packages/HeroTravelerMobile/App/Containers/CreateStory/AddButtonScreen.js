@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { Actions as NavActions } from 'react-native-router-flux'
 
-import { AddButton as AbstractAddButton } from '../../Shared/AbstractComponents'
+import { AbstractAddButton } from '../../Shared/AbstractComponents'
 import NavBar from './NavBar'
 import Checkbox from '../../Components/Checkbox'
 import FormInput from '../../Components/FormInput'

@@ -1,5 +1,5 @@
-import AddButton from './AddButton'
+import AbstractAddButton from './AbstractAddButton'
 
 export {
-  AddButton,
+  AbstractAddButton,
 }

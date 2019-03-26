@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { View, Linking, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
+
 import { Metrics, Fonts, Colors } from '../Shared/Themes'
+
 import RoundedButton from './RoundedButton'
+
+import { getButtonText, handleClickActionButton } from '../Shared/Lib/buttonLinkHelpers'
 
 export default class StoryActionButton extends Component {
   static propTypes = {
@@ -10,31 +14,13 @@ export default class StoryActionButton extends Component {
     link: PropTypes.string,
   }
 
-  getText = () => {
-    switch (this.props.type) {
-      case 'booking':
-        return 'Book Now'
-      case 'signup':
-        return 'Sign Up'
-      case 'info':
-      default:
-        return 'More Info'
-    }
-  }
-
-  onPress = () => {
-    const { link } = this.props
-      if (link.substring(0, 7) !== 'http://' && link.substring(0, 8) !== 'https://') {
-        return Linking.openURL(`http://${link}`)
-      }
-      Linking.openURL(link)
-  }
+  openLink = link => Linking.openURL(link)
 
   render = () => (
     <View style={styles.actionButtonContainer}>
       <RoundedButton
-        onPress={this.onPress}
-        text={this.getText()}
+        onPress={handleClickActionButton(this.props.link, this.openLink)}
+        text={getButtonText(this.props.type)}
         textStyle={styles.text}
       />
     </View>

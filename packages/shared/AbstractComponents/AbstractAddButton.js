@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import isValidUrl from '../Lib/isValidUrl'
 
-export default class AddButtonScreen extends Component {
+export default class AbstractAddButton extends Component {
   static propTypes = {
     currentLink: PropTypes.string,
     buttonType: PropTypes.string,
@@ -15,7 +15,6 @@ export default class AddButtonScreen extends Component {
     link: this.props.currentLink || '',
     hasAttemptedSubmit: false,
     hasDeletedButton: false,
-    // activeModal: undefined,
   }
 
   setMoreInfoType = () => this.setState({ type: 'info' })

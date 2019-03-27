@@ -202,15 +202,16 @@ class EditStory extends Component {
     } = this.props
 
     // publish is sometimes an event so we need to expressly check if true
-    this.setState({ saveAction: publish === true ? 'publish' : 'update' })
+    const saveAsPublished = publish === true
+    this.setState({ saveAction: saveAsPublished ? 'publish' : 'update' })
 
     const cleanedDraft = this.cleanDraft(workingDraft)
 
     if (isLocalDraft(cleanedDraft.id)) {
-      saveDraft(cleanedDraft, !(publish === true))
+      saveDraft(cleanedDraft, !saveAsPublished)
     }
     else {
-      if (publish && cleanedDraft.draft) cleanedDraft.draft = false
+      if (saveAsPublished && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
         cleanedDraft.id,

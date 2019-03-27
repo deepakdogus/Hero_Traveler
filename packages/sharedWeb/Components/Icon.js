@@ -238,6 +238,10 @@ export default class Icon extends React.Component {
         return Images.iconCreateAddCover
       case 'navNotifications':
         return Images.iconNavNotifications
+      case 'iconHeaderNotifications':
+        return Images.iconHeaderNotifications
+      case 'iconHeaderProfile':
+        return Images.iconHeaderProfile
       case 'info':
         return Images.iconInfoDark
       case 'infoLarge':

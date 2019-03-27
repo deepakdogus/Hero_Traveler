@@ -56,7 +56,7 @@ export default class Avatar extends React.Component {
     if (!avatarUrl) {
       return (
         <StyledIcon
-          name={type === 'profile' ? 'defaultProfile' : 'user-circle-o'}
+          name={type === 'profile' ? 'defaultProfile' : 'iconHeaderProfile'}
           size={size}
           onClick={onClick}
           isProfileHeader={isProfileHeader || type === 'profile'}

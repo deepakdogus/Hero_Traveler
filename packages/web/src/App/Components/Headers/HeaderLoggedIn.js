@@ -272,7 +272,7 @@ class HeaderLoggedIn extends React.Component {
                   profileAvatar={profileAvatar}
                   onClick={this.openNotifications}
                 >
-                  <NotificationsIcon name='navNotifications' />
+                  <NotificationsIcon name='iconHeaderNotifications' />
                 </StyledRoundedNotificationButton>
               </NotificationButtonContainer>
                 <StyledRoundedAvatarButton

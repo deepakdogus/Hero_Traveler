@@ -44,7 +44,8 @@ const metrics = {
   },
   postCard: {
     listing: {
-      cardWidth: platformSpecificMetrics.screenWidth / 4 + 8
+      cardWidth: platformSpecificMetrics.screenWidth / 4 + 8,
+      cardMarginBottom: 30,
     }
   },
   feedCell: {

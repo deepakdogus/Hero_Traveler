@@ -22,8 +22,8 @@ export default class PostCardList extends Component {
 
   keyExtractor = item => item._id
 
-  renderItem = ({item, index}) => {
-    if (index === 0) {
+  renderItem = ({item}) => {
+    if (item.newCard) {
       return (
         <PostCardNew />
       )
@@ -39,7 +39,7 @@ export default class PostCardList extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={[{}, ...postcards]}
+          data={[...postcards, {newCard: true}]}
           keyExtractor={this.keyExtractor}
           horizontal={true}
           renderItem={this.renderItem}

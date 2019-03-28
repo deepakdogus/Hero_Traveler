@@ -46,7 +46,7 @@ export default StyleSheet.create({
     borderStyle: 'solid',
     borderColor: Colors.lightGrey,     
     borderRadius: 3,
-    backgroundColor: Colors.snow,
+    backgroundColor: Colors.whiteAlphaPt80,
     overflow: 'hidden',
   },
   innerContainer: {
@@ -89,8 +89,8 @@ export default StyleSheet.create({
   },
   caption: {
     position: 'absolute',
-    bottom: Metrics.baseMargin / 2,
-    left: Metrics.baseMargin / 2,
+    bottom: Metrics.postCard.listing.cardMarginBottom,
+    left: Metrics.baseMargin,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.medium,
     fontWeight: 'bold',

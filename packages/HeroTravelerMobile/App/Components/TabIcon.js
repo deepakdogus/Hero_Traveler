@@ -154,6 +154,8 @@ class TabIcon extends React.Component {
         return Images.iconStarRatingActive
       case 'ratingStarInactive':
         return Images.iconStarRatingInactive
+      case 'addButton':
+        return Images.iconAddButton
       case 'profile':
       default:
         return Images.iconNavProfile

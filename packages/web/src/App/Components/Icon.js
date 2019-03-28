@@ -250,6 +250,8 @@ export default class Icon extends React.Component {
         return Images.iconStarRatingActive
       case 'ratingStarInactive':
         return Images.iconStarRatingInactive
+      case 'addActionButton':
+        return Images.iconAddButton
       default:
         return Images.iconHeaderProfile
     }

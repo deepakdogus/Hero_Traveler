@@ -141,6 +141,14 @@ const StorySchema = new Schema(
     },
     rating: {
       type: Number
+    },
+    actionButton: {
+      type: {
+        type: String,
+      },
+      link: {
+        type: String,
+      },
     }
   },
   {

@@ -75,6 +75,7 @@ class CreateStoryDetailScreen extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     story: PropTypes.object,
+    user: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     saveDraft: PropTypes.func,
     accessToken: PropTypes.object,
@@ -265,6 +266,15 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  navToAddButton = () => {
+    const hasActionButton = this.hasActionButton()
+    NavActions.createStory_addButton({
+      updateWorkingDraft: this.props.updateWorkingDraft,
+      currentLink: hasActionButton ? this.props.workingDraft.actionButton.link : '',
+      buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
+    })
+  }
+
   renderErrors() {
     if (this.state.showError) {
       const err = this.state.error
@@ -309,8 +319,13 @@ class CreateStoryDetailScreen extends React.Component {
     ])
   }
 
-  render() {
+  hasActionButton = () => {
     const { workingDraft } = this.props
+    return workingDraft && workingDraft.actionButton && workingDraft.actionButton.link
+  }
+
+  render() {
+    const { workingDraft, user } = this.props
     const { modalVisible, validationError } = this.state
 
     return (
@@ -398,6 +413,14 @@ class CreateStoryDetailScreen extends React.Component {
             value={this.getHashtagsValue()}
             placeholder="Add hashtags"
           />
+          {user && user.role !== 'user' && (
+            <FormInput
+              onPress={this.navToAddButton}
+              iconName="addButton"
+              value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
+              placeholder="Add an action button"
+            />
+          )}
           <TouchableMultilineInput
             onDone={this._receiveTravelTips}
             title="TRAVEL TIPS"
@@ -420,8 +443,9 @@ class CreateStoryDetailScreen extends React.Component {
                 mode="date"
                 onDateChange={this._onDateChange}
               />
-              <RoundedButton text="Confirm"
-onPress={this.confirmDate} />
+              <RoundedButton
+                text="Confirm"
+                onPress={this.confirmDate} />
             </View>
           </View>
         )}
@@ -445,6 +469,7 @@ export default connect(
       story: { ...state.storyCreate.workingDraft },
       workingDraft: { ...state.storyCreate.workingDraft },
       storyCreateError: state.storyCreate.error,
+      user: state.entities.users.entities[state.session.userId],
     }
   },
   dispatch => ({

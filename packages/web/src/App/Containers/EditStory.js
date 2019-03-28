@@ -273,7 +273,10 @@ class EditStory extends Component {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    // undefined if user navs directly to editStory URI
+    if (this.getEditorState) {
+      cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    }
     if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
   }

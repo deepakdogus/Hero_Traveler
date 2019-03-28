@@ -39,6 +39,7 @@ import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
 import LocationScreen from '../Containers/CreateStory/LocationScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
+import AddButtonScreen from '../Containers/CreateStory/AddButtonScreen'
 
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
@@ -402,6 +403,11 @@ export default NavActions.create(
           key='createStory_location'
           panHandlers={null}
           component={LocationScreen}
+        />
+        <Scene
+          key='createStory_addButton'
+          panHandlers={null}
+          component={AddButtonScreen}
         />
       </Scene>
       <Scene

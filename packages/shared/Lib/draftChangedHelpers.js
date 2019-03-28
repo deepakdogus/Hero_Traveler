@@ -14,6 +14,7 @@ const fieldsToCheck = [
   'travelTips',
   'tripDate',
   'type',
+  'actionButton',
 ]
 
 const isEqual = (firstItem, secondItem) => {

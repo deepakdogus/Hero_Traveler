@@ -53,6 +53,7 @@ fastlane/Preview.html
 fastlane/screenshots
 
 App/Config/Env.js
+App/Config/Env/*
 
 App/shared
 

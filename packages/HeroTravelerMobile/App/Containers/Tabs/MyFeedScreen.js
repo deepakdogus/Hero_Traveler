@@ -215,7 +215,7 @@ class MyFeedScreen extends React.Component {
           entitiesById={isFollowingSelected ? storiesById : feedGuidesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
-          renderPostcards={this.renderPostCards()}
+          renderPostcards={isFollowingSelected ? this.renderPostCards : null}
           postcardsContentHeight={150}
           sectionContentHeight={40}
           onRefresh={this._onRefresh}

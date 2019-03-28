@@ -35,7 +35,7 @@ export default class FeedList extends React.Component {
     refreshing: PropTypes.bool,
     renderHeaderContent: PropTypes.object,
     renderSectionHeader: PropTypes.object,
-    renderPostcards: PropTypes.object,
+    renderPostcards: PropTypes.func,
     renderFeedItem: PropTypes.func,
     headerContentHeight: PropTypes.number,
     sectionContentHeight: PropTypes.number,
@@ -246,7 +246,7 @@ export default class FeedList extends React.Component {
               headerHeight={postcardsContentHeight}
               style={styles.postcardContainer}
             >
-              {renderPostcards}
+              {renderPostcards()}
             </NativeFeedHeader>
           )
           : null

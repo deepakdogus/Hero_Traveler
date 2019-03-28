@@ -280,7 +280,7 @@ class SearchPlacesPeople extends Component {
             <TouchableOpacity onPress={this.onPressPostCard}>
               <View style={styles.postcardIconWrapper}>
                 <TabIcon
-                  name="cameraDark"
+                  name="cameraPlus"
                   defaultScale
                   style={{
                     image: styles.postcardIcon,

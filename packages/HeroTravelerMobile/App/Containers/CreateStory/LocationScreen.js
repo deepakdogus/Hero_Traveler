@@ -27,6 +27,7 @@ class LocationScreen extends Component {
   static propTypes = {
     location: PropTypes.string, // only used for single location selection
     locations: PropTypes.arrayOf(PropTypes.object), // only used for multiple location selection
+    locationType: PropTypes.string,
     onSelectLocation: PropTypes.func.isRequired,
     isMultiSelect: PropTypes.bool,
   }
@@ -53,7 +54,7 @@ class LocationScreen extends Component {
     if (text.length <= 2) return
     this.setState({searching: true})
     RNGooglePlaces.getAutocompletePredictions(text, {
-      type: 'geocode',
+      type: this.props.locationType || 'geocode',
     })
     .then((predictions) => this.setState({searching: false, predictions}))
     .catch(() => this.setState({searching: false}))

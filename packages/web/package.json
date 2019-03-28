@@ -22,6 +22,7 @@
     "react-cookie": "^2.1.1",
     "react-day-picker": "^7.0.6",
     "react-dom": "^15.6.1",
+    "react-dropdown": "^1.6.4",
     "react-flexbox-grid": "^1.1.3",
     "react-google-maps": "next",
     "react-html5video": "^2.5.1",

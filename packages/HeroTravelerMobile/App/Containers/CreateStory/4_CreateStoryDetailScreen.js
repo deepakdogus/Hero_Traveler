@@ -21,6 +21,7 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+import RadioButton from '../../Components/RadioButton'
 import StarRating from '../CreateStory/StarRating'
 
 const api = API.create()
@@ -40,35 +41,6 @@ const dateLikeItemAsDateString = dateLikeItem => {
   const date = dateLikeItemAsDate(dateLikeItem)
   const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
-}
-
-const Radio = ({ text, onPress, selected }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.radio}>
-        <View
-          style={[
-            styles.radioBtnOuter,
-            selected ? styles.radioBtnActiveBorder : {},
-          ]}
-        >
-          <View
-            style={[
-              styles.radioBtnInner,
-              selected ? styles.radioBtnActiveBackground : {},
-            ]}
-          />
-        </View>
-        <Text style={styles.radioText}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
-
-Radio.propTypes = {
-  text: PropTypes.string,
-  onPress: PropTypes.func,
-  selected: PropTypes.bool,
 }
 
 class CreateStoryDetailScreen extends React.Component {
@@ -158,9 +130,7 @@ class CreateStoryDetailScreen extends React.Component {
     NavActions.pop()
   }
 
-  _updateType = type => {
-    this.props.updateWorkingDraft({ type })
-  }
+  updateType = (type) => this.props.updateWorkingDraft({type})
 
   _updateRating = rating => {
     this.props.updateWorkingDraft({ rating })
@@ -177,19 +147,19 @@ class CreateStoryDetailScreen extends React.Component {
   _getCostPlaceholderText = draft => {
     let placeholder
     switch (draft.type) {
-      case 'see':
-      case 'do':
-        placeholder = 'Cost'
-        break
-      case 'eat':
-        placeholder = 'Cost per person'
-        break
-      case 'stay':
-        placeholder = 'Cost per night'
-        break
-      default:
-        placeholder = 'Cost'
-        break
+    case 'see':
+    case 'do':
+      placeholder = 'Cost'
+      break
+    case 'eat':
+      placeholder = 'Cost per person'
+      break
+    case 'stay':
+      placeholder = 'Cost per night'
+      break
+    default:
+      placeholder = 'Cost'
+      break
     }
     // The currency is hardcoded for now, might want to change it later.
     let currency = draft.currency || 'USD'
@@ -344,53 +314,46 @@ class CreateStoryDetailScreen extends React.Component {
         />
         <ScrollView style={styles.root}>
           <Text style={styles.title}>{this.props.story.title} Details </Text>
-          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
+          <View style={styles.fieldWrapper}>
             <Text style={styles.fieldLabel}>Activity: </Text>
             <View style={styles.radioGroup}>
-              <Radio
+              <RadioButton
                 selected={workingDraft.type === 'see'}
-                onPress={() => this._updateType('see')}
-                text="SEE"
+                value="see"
+                onPress={this.updateType}
+                text='SEE'
               />
-              <Radio
-                style={{ marginLeft: Metrics.baseMargin }}
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
                 selected={workingDraft.type === 'do'}
-                onPress={() => this._updateType('do')}
-                text="DO"
+                value="do"
+                onPress={this.updateType}
+                text='DO'
               />
-              <Radio
+              <RadioButton
                 selected={workingDraft.type === 'eat'}
-                onPress={() => this._updateType('eat')}
-                text="EAT"
+                value="eat"
+                onPress={this.updateType}
+                text='EAT'
               />
-              <Radio
-                style={{ marginLeft: Metrics.baseMargin }}
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
                 selected={workingDraft.type === 'stay'}
-                onPress={() => this._updateType('stay')}
-                text="STAY"
+                value="stay"
+                onPress={this.updateType}
+                text='STAY'
               />
             </View>
           </View>
-          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
-            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
-              Rate this experience:{' '}
-            </Text>
-            <StarRating
-              onChange={this._updateRating}
-              valueSelected={workingDraft.rating}
-            />
-          </View>
           <FormInput
             onPress={this.navToLocation}
-            iconName="location"
-            value={
-              workingDraft.locationInfo ? workingDraft.locationInfo.name : ''
-            }
-            placeholder="Location"
+            iconName='location'
+            value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
+            placeholder='Location'
           />
           <FormInput
             onPress={this._setModalVisible}
-            iconName="date"
+            iconName='date'
             value={dateLikeItemAsDateString(workingDraft.tripDate)}
           />
           <FormInput

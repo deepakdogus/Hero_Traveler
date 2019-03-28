@@ -196,25 +196,25 @@ class EditStory extends Component {
 
   _updateDraft = (publish) => {
     const {
-      originalDraft,
       workingDraft,
       subPath,
       saveDraft,
     } = this.props
 
     // publish is sometimes an event so we need to expressly check if true
-    this.setState({ saveAction: publish === true ? 'publish' : 'update' })
+    const saveAsPublished = publish === true
+    this.setState({ saveAction: saveAsPublished ? 'publish' : 'update' })
 
     const cleanedDraft = this.cleanDraft(workingDraft)
 
-    if (isLocalDraft(workingDraft.id)) {
-      saveDraft(cleanedDraft, !(publish === true))
+    if (isLocalDraft(cleanedDraft.id)) {
+      saveDraft(cleanedDraft, !saveAsPublished)
     }
     else {
-      if (publish && cleanedDraft.draft) cleanedDraft.draft = false
+      if (saveAsPublished && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
-        originalDraft.id,
+        cleanedDraft.id,
         cleanedDraft,
         null,
         isRepublishing,
@@ -273,7 +273,10 @@ class EditStory extends Component {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    // undefined if user navs directly to editStory URI
+    if (this.getEditorState) {
+      cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    }
     if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
   }

@@ -24,10 +24,18 @@ export default StyleSheet.create({
     marginVertical: Metrics.baseMargin,
     flexDirection: 'row',
   },
+  paddedFieldContainer: {
+    paddingBottom: Metrics.doubleBaseMargin,
+  },
   fieldLabel: {
+    marginTop: 2,
     marginBottom: Metrics.baseMargin / 2,
     fontSize: 14,
     fontWeight: '500',
+  },
+  fieldLabelStar: {
+    marginTop: 5,
+    marginRight: 10,
   },
   fieldLabelLong: {
     flexGrow: 1,

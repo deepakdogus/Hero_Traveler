@@ -9,10 +9,10 @@ import {
   DatePickerIOS,
 } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
-import {Colors, Metrics} from '../../Shared/Themes'
+import { Metrics } from '../../Shared/Themes'
 import ShadowButton from '../../Components/ShadowButton'
 import RoundedButton from '../../Components/RoundedButton'
 import Tooltip from '../../Components/Tooltip'
@@ -22,6 +22,7 @@ import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 import RadioButton from '../../Components/RadioButton'
+import StarRating from '../CreateStory/StarRating'
 
 const api = API.create()
 
@@ -31,12 +32,12 @@ const api = API.create()
 
 ***/
 
-const dateLikeItemAsDate = (dateLikeItem) => {
+const dateLikeItemAsDate = dateLikeItem => {
   const timeStamp = Date.parse(dateLikeItem)
   return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
 }
 
-const dateLikeItemAsDateString = (dateLikeItem) => {
+const dateLikeItemAsDateString = dateLikeItem => {
   const date = dateLikeItemAsDate(dateLikeItem)
   const dateString = date.toDateString()
   return dateString.replace(/\s/, ', ')
@@ -46,6 +47,7 @@ class CreateStoryDetailScreen extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
     story: PropTypes.object,
+    user: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     saveDraft: PropTypes.func,
     accessToken: PropTypes.object,
@@ -73,7 +75,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.storyCreateError){
+    if (newProps.storyCreateError) {
       this.setState({
         showError: true,
         error: newProps.storyCreateError,
@@ -86,12 +88,12 @@ class CreateStoryDetailScreen extends React.Component {
     this.setState({ modalVisible: visible })
   }
 
-  onLocationChange = (location) => {
-    this.props.updateWorkingDraft({location})
+  onLocationChange = location => {
+    this.props.updateWorkingDraft({ location })
   }
 
-  _onDateChange = (tripDate) => {
-    this.props.updateWorkingDraft({tripDate})
+  _onDateChange = tripDate => {
+    this.props.updateWorkingDraft({ tripDate })
   }
 
   confirmDate = () => {
@@ -102,7 +104,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _onRight = () => {
-    const {workingDraft} = this.props
+    const { workingDraft } = this.props
     if (!workingDraft.locationInfo || !workingDraft.type) {
       this.setState({
         validationError: 'Please add an activity type and location to continue',
@@ -120,7 +122,7 @@ class CreateStoryDetailScreen extends React.Component {
       workingDraft.draft = false
       this.props.saveDraft(workingDraft)
     }
-    else this.saveDraft(workingDraft)
+ else this.saveDraft(workingDraft)
   }
 
   _onLeft = () => {
@@ -130,15 +132,19 @@ class CreateStoryDetailScreen extends React.Component {
 
   updateType = (type) => this.props.updateWorkingDraft({type})
 
-  _updateCostText = (value) => {
-    this.setState({cost:value})
+  _updateRating = rating => {
+    this.props.updateWorkingDraft({ rating })
+  }
+
+  _updateCostText = value => {
+    this.setState({ cost: value })
   }
 
   _updateCost = () => {
-    this.props.updateWorkingDraft({cost:this.state.cost})
+    this.props.updateWorkingDraft({ cost: this.state.cost })
   }
 
-  _getCostPlaceholderText = (draft) => {
+  _getCostPlaceholderText = draft => {
     let placeholder
     switch (draft.type) {
     case 'see':
@@ -162,38 +168,35 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   _closeError = () => {
-    this.setState({showError: false})
+    this.setState({ showError: false })
   }
 
   _dismissTooltip = () => {
-    this.setState({validationError:null})
+    this.setState({ validationError: null })
   }
 
-  saveDraft = (draft) => {
-    this.props.update(
-      draft.id,
-      draft,
-    )
+  saveDraft = draft => {
+    this.props.update(draft.id, draft)
   }
 
   next() {
     this.props.resetCreateStore()
-    NavActions.tabbar({type: 'reset'})
+    NavActions.tabbar({ type: 'reset' })
     NavActions.myFeed()
   }
 
-  _receiveCategories = (selectedCategories) => {
-    this.props.updateWorkingDraft({categories: selectedCategories})
+  _receiveCategories = selectedCategories => {
+    this.props.updateWorkingDraft({ categories: selectedCategories })
     NavActions.pop()
   }
 
-  _receiveHashtags = (selectedHashtags) => {
-    this.props.updateWorkingDraft({hashtags: selectedHashtags})
+  _receiveHashtags = selectedHashtags => {
+    this.props.updateWorkingDraft({ hashtags: selectedHashtags })
     NavActions.pop()
   }
 
-  _receiveTravelTips = (travelTips) => {
-    this.props.updateWorkingDraft({travelTips: travelTips})
+  _receiveTravelTips = travelTips => {
+    this.props.updateWorkingDraft({ travelTips: travelTips })
     NavActions.pop()
   }
 
@@ -218,7 +221,7 @@ class CreateStoryDetailScreen extends React.Component {
   }
 
   // if you change this... also make sure to change getLocationInfo's formatLocationInfo
-  receiveLocation = (locationInfo) => {
+  receiveLocation = locationInfo => {
     this.props.updateWorkingDraft({ locationInfo })
     NavActions.pop()
   }
@@ -233,14 +236,23 @@ class CreateStoryDetailScreen extends React.Component {
     })
   }
 
+  navToAddButton = () => {
+    const hasActionButton = this.hasActionButton()
+    NavActions.createStory_addButton({
+      updateWorkingDraft: this.props.updateWorkingDraft,
+      currentLink: hasActionButton ? this.props.workingDraft.actionButton.link : '',
+      buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
+    })
+  }
+
   renderErrors() {
     if (this.state.showError) {
       const err = this.state.error
       let errText
-      if ((__DEV__ && err && err.problem && err.status)) {
+      if (__DEV__ && err && err.problem && err.status) {
         errText = `${err.status}: ${err.problem}`
       }
-      else if (err.text) {
+ else if (err.text) {
         errText = err.text
       }
       return (
@@ -257,7 +269,7 @@ class CreateStoryDetailScreen extends React.Component {
   getHashtagsValue() {
     const { hashtags } = this.props.workingDraft
     if (hashtags.length === 0) return undefined
-    return _.map(hashtags, (hashtag) => {
+    return _.map(hashtags, hashtag => {
       return `#${hashtag.title}`
     }).join(', ')
   }
@@ -277,17 +289,22 @@ class CreateStoryDetailScreen extends React.Component {
     ])
   }
 
-  render () {
-    const {workingDraft} = this.props
-    const {modalVisible, validationError} = this.state
+  hasActionButton = () => {
+    const { workingDraft } = this.props
+    return workingDraft && workingDraft.actionButton && workingDraft.actionButton.link
+  }
+
+  render() {
+    const { workingDraft, user } = this.props
+    const { modalVisible, validationError } = this.state
 
     return (
       <View style={styles.wrapper}>
         {this.renderErrors()}
         <NavBar
-          title='STORY DETAILS'
-          leftIcon='arrowLeftRed'
-          leftTitle='Back'
+          title="STORY DETAILS"
+          leftIcon="arrowLeftRed"
+          leftTitle="Back"
           onLeft={this._onLeft}
           leftTextStyle={styles.navBarLeftText}
           onRight={this._onRight}
@@ -341,78 +358,89 @@ class CreateStoryDetailScreen extends React.Component {
           />
           <FormInput
             onChangeText={this._updateCostText}
-            iconName='cost'
+            iconName="cost"
             value={this.state.cost.toString()}
             placeholder={this._getCostPlaceholderText(workingDraft)}
-            keyboardType='numeric'
+            keyboardType="numeric"
             cost={this.state.cost}
           />
           <FormInput
             onPress={this.navToCategories}
-            iconName='tag'
+            iconName="tag"
             value={this.getCategoriesValue()}
-            placeholder='Add categories...'
+            placeholder="Add categories..."
           />
           <FormInput
             onPress={this.navToHashtags}
-            iconName='hashtag'
+            iconName="hashtag"
             value={this.getHashtagsValue()}
-            placeholder='Add hashtags'
+            placeholder="Add hashtags"
           />
+          {user && user.role !== 'user' && (
+            <FormInput
+              onPress={this.navToAddButton}
+              iconName="addButton"
+              value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
+              placeholder="Add an action button"
+            />
+          )}
           <TouchableMultilineInput
             onDone={this._receiveTravelTips}
-            title='TRAVEL TIPS'
-            label='Travel Tips: '
+            title="TRAVEL TIPS"
+            label="Travel Tips: "
             value={workingDraft.travelTips}
-            placeholder='What should your fellow travelers know?'
+            placeholder="What should your fellow travelers know?"
           />
         </ScrollView>
-        {modalVisible &&
-        <View
-          style={styles.dateWrapper}
-          shadowColor='black'
-          shadowOpacity={.9}
-          shadowRadius={10}
-          shadowOffset={{width: 0, height: 0}}>
+        {modalVisible && (
           <View
-            style={styles.dateView}>
-            <DatePickerIOS
-              date={dateLikeItemAsDate(workingDraft.tripDate)}
-              mode="date"
-              onDateChange={this._onDateChange}
-            />
-            <RoundedButton
-              text='Confirm'
-              onPress={this.confirmDate}
-            />
+            style={styles.dateWrapper}
+            shadowColor="black"
+            shadowOpacity={0.9}
+            shadowRadius={10}
+            shadowOffset={{ width: 0, height: 0 }}
+          >
+            <View style={styles.dateView}>
+              <DatePickerIOS
+                date={dateLikeItemAsDate(workingDraft.tripDate)}
+                mode="date"
+                onDateChange={this._onDateChange}
+              />
+              <RoundedButton
+                text="Confirm"
+                onPress={this.confirmDate} />
+            </View>
           </View>
-        </View> }
-        {validationError &&
+        )}
+        {validationError && (
           <Tooltip
             onPress={this._touchError}
             position={'right-nav-button'}
             text={validationError}
             onDismiss={this._dismissTooltip}
           />
-        }
+        )}
       </View>
     )
   }
 }
 
 export default connect(
-  (state) => {
+  state => {
     return {
-      accessToken: _.find(state.session.tokens, {type: 'access'}),
-      story: {...state.storyCreate.workingDraft},
-      workingDraft: {...state.storyCreate.workingDraft},
+      accessToken: _.find(state.session.tokens, { type: 'access' }),
+      story: { ...state.storyCreate.workingDraft },
+      workingDraft: { ...state.storyCreate.workingDraft },
       storyCreateError: state.storyCreate.error,
+      user: state.entities.users.entities[state.session.userId],
     }
   },
   dispatch => ({
-    updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    saveDraft: (story) => dispatch(StoryEditActions.saveLocalDraft(story)),
-    update: (id, attrs) => dispatch(StoryEditActions.updateDraft(id, attrs, true)),
+    updateWorkingDraft: update =>
+      dispatch(StoryCreateActions.updateWorkingDraft(update)),
+    saveDraft: story => dispatch(StoryEditActions.saveLocalDraft(story)),
+    update: (id, attrs) =>
+      dispatch(StoryEditActions.updateDraft(id, attrs, true)),
     resetCreateStore: () => dispatch(StoryEditActions.resetCreateStore()),
   }),
 )(CreateStoryDetailScreen)

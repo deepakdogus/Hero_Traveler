@@ -21,6 +21,7 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+import StarRating from '../CreateStory/StarRating'
 
 const api = API.create()
 
@@ -62,6 +63,12 @@ const Radio = ({ text, onPress, selected }) => {
       </View>
     </TouchableWithoutFeedback>
   )
+}
+
+Radio.propTypes = {
+  text: PropTypes.string,
+  onPress: PropTypes.func,
+  selected: PropTypes.bool,
 }
 
 class CreateStoryDetailScreen extends React.Component {
@@ -143,7 +150,7 @@ class CreateStoryDetailScreen extends React.Component {
       workingDraft.draft = false
       this.props.saveDraft(workingDraft)
     }
-    else this.saveDraft(workingDraft)
+ else this.saveDraft(workingDraft)
   }
 
   _onLeft = () => {
@@ -153,6 +160,10 @@ class CreateStoryDetailScreen extends React.Component {
 
   _updateType = type => {
     this.props.updateWorkingDraft({ type })
+  }
+
+  _updateRating = rating => {
+    this.props.updateWorkingDraft({ rating })
   }
 
   _updateCostText = value => {
@@ -271,7 +282,7 @@ class CreateStoryDetailScreen extends React.Component {
       if (__DEV__ && err && err.problem && err.status) {
         errText = `${err.status}: ${err.problem}`
       }
-      else if (err.text) {
+ else if (err.text) {
         errText = err.text
       }
       return (
@@ -333,7 +344,7 @@ class CreateStoryDetailScreen extends React.Component {
         />
         <ScrollView style={styles.root}>
           <Text style={styles.title}>{this.props.story.title} Details </Text>
-          <View style={styles.fieldWrapper}>
+          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
             <Text style={styles.fieldLabel}>Activity: </Text>
             <View style={styles.radioGroup}>
               <Radio
@@ -360,6 +371,15 @@ class CreateStoryDetailScreen extends React.Component {
               />
             </View>
           </View>
+          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
+            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
+              Rate this experience:{' '}
+            </Text>
+            <StarRating
+              onChange={this._updateRating}
+              valueSelected={workingDraft.rating}
+            />
+          </View>
           <FormInput
             onPress={this.navToLocation}
             iconName="location"
@@ -374,24 +394,24 @@ class CreateStoryDetailScreen extends React.Component {
             value={dateLikeItemAsDateString(workingDraft.tripDate)}
           />
           <FormInput
-            onPress={this.navToCategories}
-            iconName="tag"
-            value={this.getCategoriesValue()}
-            placeholder="Add categories"
-          />
-          <FormInput
-            onPress={this.navToHashtags}
-            iconName="hashtag"
-            value={this.getHashtagsValue()}
-            placeholder="Add hashtags"
-          />
-          <FormInput
             onChangeText={this._updateCostText}
             iconName="cost"
             value={this.state.cost.toString()}
             placeholder={this._getCostPlaceholderText(workingDraft)}
             keyboardType="numeric"
             cost={this.state.cost}
+          />
+          <FormInput
+            onPress={this.navToCategories}
+            iconName="tag"
+            value={this.getCategoriesValue()}
+            placeholder="Add categories..."
+          />
+          <FormInput
+            onPress={this.navToHashtags}
+            iconName="hashtag"
+            value={this.getHashtagsValue()}
+            placeholder="Add hashtags"
           />
           {user && user.role !== 'user' && (
             <FormInput

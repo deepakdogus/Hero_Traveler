@@ -46,6 +46,8 @@ const metrics = {
     listing: {
       cardWidth: platformSpecificMetrics.screenWidth / 4 + 8,
       cardMarginBottom: 30,
+      sliderWidth: platformSpecificMetrics.screenWidth,
+      sliderItemWidth: platformSpecificMetrics.screenWidth,
     }
   },
   feedCell: {

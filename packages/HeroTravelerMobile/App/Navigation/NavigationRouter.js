@@ -64,7 +64,8 @@ import SearchResultsScreen from '../Containers/SearchResultsScreen'
 import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
 // PostCard
-import PostCardCreate from '../Containers/CreatePostCard/CreatePostCardScreen'
+import PostCardCreate from '../Containers/PostCard/CreatePostCardScreen'
+import PostCardSlider from '../Containers/PostCard/PostCardSliderScreen'
 
 import { Images } from '../Shared/Themes'
 
@@ -410,6 +411,12 @@ export default NavActions.create(
       <Scene
         key='createQuickShare'
         component={PostCardCreate}
+        onLeft={NavActions.pop}
+        direction='horizontal'
+      />
+      <Scene
+        key='viewQuickShare'
+        component={PostCardSlider}
         onLeft={NavActions.pop}
         direction='horizontal'
       />

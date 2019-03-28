@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-// import { Actions as NavActions } from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
 import ImageWrapper from '../../Components/ImageWrapper'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import styles from '../Styles/PostCardStyles'
@@ -14,7 +14,7 @@ export default class PostCardThumbnail extends Component {
 
   navigateToPostcard = () => {
     // const { cardId } = this.props
-    // NavActions.
+    NavActions.viewQuickShare()
   }
 
   render() {

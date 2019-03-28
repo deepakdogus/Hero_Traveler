@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '../../Shared/Themes'
-import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import { trimVideo } from '../../Shared/Lib/mediaHelpers'
+import pathAsFileObject from '../../Shared/Lib/pathAsFileObject'
 import styles from '../Styles/PostCardStyles'
 
 export default class PostCardNew extends Component {

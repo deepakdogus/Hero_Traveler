@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, FlatList } from 'react-native'
-import PostCardThumbnail from './PostCardThumbnail'
+import { View } from 'react-native'
+import { Actions as NavActions } from 'react-native-router-flux'
+import Carousel from 'react-native-snap-carousel'
+import PostCardSliderItem from './PostCardSliderItem'
+import { Metrics } from '../../Shared/Themes'
 
 import styles from '../Styles/PostCardStyles'
 
 export default class PostCardSlider extends Component {
   static propTypes = {
     postcards: PropTypes.array,
-    getPostcards: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
-    const { postcards, getPostcards } = this.props
+    const { postcards } = this.props
 
-    if (postcards.length === 0 && getPostcards) {
-      getPostcards()
+    if (postcards.length === 0) {
+      NavActions.pop()
     }
   }
 
@@ -23,7 +25,7 @@ export default class PostCardSlider extends Component {
 
   renderItem = ({item}) => {
     return (
-      <PostCardThumbnail postcard={item} />
+      <PostCardSliderItem postcard={item} />
     )
   }
 
@@ -32,11 +34,11 @@ export default class PostCardSlider extends Component {
 
     return (
       <View style={styles.container}>
-        <FlatList
+        <Carousel
           data={[postcards]}
-          keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-          style={styles.listContainer}
+          sliderWidth={Metrics.postCard.listing.sliderWidth}
+          itemWidth={Metrics.postCard.listing.sliderItemWidth}
         />
       </View>
     )

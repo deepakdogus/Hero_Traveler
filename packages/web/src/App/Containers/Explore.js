@@ -11,7 +11,7 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 
 const CenteredText = styled.p`
   text-align: center;
-  color: ${props => props.theme.Colors.background}
+  color: ${props => props.theme.Colors.background};
 `
 
 const ExploreText = styled(CenteredText)`
@@ -74,7 +74,7 @@ function mapStateToProps(state, ownProps) {
   let {
     fetchStatus: categoriesFetchStatus,
     entities: categories,
-  } = state.entities.categories;
+  } = state.entities.categories
 
   return {
     categories,

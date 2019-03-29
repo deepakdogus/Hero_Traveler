@@ -359,7 +359,9 @@ class FeedItemPreview extends Component {
     } = this.props
 
     const isList = type === 'list'
-    const isGuideAuthor = !!guideId && sessionUserId === this.props.author.id
+    const isGuideAuthor = !!guideId
+      && this.props.author
+      && sessionUserId === this.props.author.id
 
     /*
      * in cases where story/guide is retrieved from algolia, author prop will be

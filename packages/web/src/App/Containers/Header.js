@@ -146,7 +146,7 @@ class Header extends React.Component {
     }
     if (!prevProps.signedUp && signedUp) {
       logCompletedRegistrationEvent()
-      reroute('/signup/topics')
+      reroute('/signup/info')
     }
     if (prevProps.pathname !== pathname) {
       window.scrollTo({

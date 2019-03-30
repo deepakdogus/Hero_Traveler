@@ -19,6 +19,18 @@ export default class PostCardThumbnail extends Component {
 
   render() {
     const { postcard } = this.props
+    let coverImageUrl
+
+    if (postcard.coverImage) {
+      coverImageUrl = getImageUrl(postcard.coverImage )
+    }
+    else if (postcard.coverVideo) {
+      const videoThumbnailOptions = {
+        video: true,
+        width: 'screen',
+      }
+      coverImageUrl = getImageUrl(postcard.coverVideo, 'optimized', videoThumbnailOptions)
+    }
     return (
       <View style={styles.contentContainer}>
         <TouchableOpacity
@@ -29,14 +41,17 @@ export default class PostCardThumbnail extends Component {
             background={true}
             cached={true}
             resizeMode='cover'
-            source={{uri: getImageUrl(postcard.coverImage)}}
+            source={{uri: coverImageUrl}}
             style={styles.coverPhoto}
           />
           <LinearGradient
             locations={[0, 0.3, 1]}
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.0)', 'rgba(0,0,0,0.4)']}
             style={styles.overlayContainer}>
-            <Text style={styles.caption}>
+            <Text
+              style={styles.caption}
+              multiline
+            >
               {postcard.title}
             </Text>
           </LinearGradient>

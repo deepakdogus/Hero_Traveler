@@ -13,6 +13,19 @@ export default StyleSheet.create({
     height: '100%',
     backgroundColor: Colors.backgroundDark,
   },
+  videoContainer: {
+    position: 'relative',
+    width: Metrics.screenWidth,
+    height: Metrics.screenHeight,
+  },
+  videoInnerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,.25)',
+  },
   imageOverlayContainer: {
     position: 'absolute',
     left: 0,
@@ -90,12 +103,12 @@ export default StyleSheet.create({
   caption: {
     position: 'absolute',
     bottom: Metrics.postCard.listing.cardMarginBottom,
-    left: Metrics.baseMargin,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.medium,
     fontWeight: 'bold',
     textAlign: 'left',
     color: Colors.white,
+    paddingHorizontal: Metrics.baseMargin,
   },
   newPostCaption: {
     fontFamily: Fonts.type.base,

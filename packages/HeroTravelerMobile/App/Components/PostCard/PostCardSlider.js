@@ -35,7 +35,7 @@ export default class PostCardSlider extends Component {
     return (
       <View style={styles.container}>
         <Carousel
-          data={[postcards]}
+          data={postcards}
           renderItem={this.renderItem}
           sliderWidth={Metrics.postCard.listing.sliderWidth}
           itemWidth={Metrics.postCard.listing.sliderItemWidth}

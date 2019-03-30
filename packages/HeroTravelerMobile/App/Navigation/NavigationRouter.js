@@ -417,7 +417,7 @@ export default NavActions.create(
       <Scene
         key='viewQuickShare'
         component={PostCardSlider}
-        onLeft={NavActions.pop}
+        hideNavBar={true}
         direction='horizontal'
       />
       <Scene

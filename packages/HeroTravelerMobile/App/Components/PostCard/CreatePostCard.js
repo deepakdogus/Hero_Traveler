@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, ImageBackground, TextInput } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
+import CreatePostCardBackground from './CreatePostCardBackground'
 import { Colors } from '../../Shared/Themes'
 import FormInput from '../FormInput'
 import NavBar from '../../Containers/CreateStory/NavBar'
@@ -90,9 +91,9 @@ export default class PostCardCreate extends Component {
     const { media, mediaType, fetchStatus } = this.props
     const { title, location } = this.state
     return (
-      <ImageBackground
-        source={{uri: media.coverImage.uri}}
-        style={styles.imageContainer}
+      <CreatePostCardBackground
+        media={media}
+        mediaType={mediaType}
       >
         <View style={styles.imageOverlayContainer}>
           <NavBar
@@ -139,7 +140,7 @@ export default class PostCardCreate extends Component {
             onPress={(!this.checkValidation() || fetchStatus.fetching) ? () => {} : this.onPublishClick}
           />
         </View>
-      </ImageBackground>
+      </CreatePostCardBackground>
     )
   }
 }

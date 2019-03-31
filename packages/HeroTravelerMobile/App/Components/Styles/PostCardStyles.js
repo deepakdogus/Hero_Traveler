@@ -47,8 +47,10 @@ export default StyleSheet.create({
   },
   sliderHeader: {
     display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: Metrics.baseMargin,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: Metrics.doubleBaseMargin * 2,
     paddingHorizontal: Metrics.baseMargin,
   },
   listContainer: {
@@ -193,5 +195,57 @@ export default StyleSheet.create({
   },
   disabledBtnTextStyle: {
     color: 'rgba(0,0,0,.3)',
+  },
+  closeBtn: {
+    width: 40,
+  },
+  sliderLocation: {
+    color: Colors.snow,
+    fontFamily: Fonts.type.base,
+    fontSize: Fonts.size.medium,
+    fontWeight: 'bold',
+  },
+  sliderTitle: {
+    marginHorizontal: Metrics.baseMargin,
+    width: '100%',
+    fontFamily: Fonts.type.base,
+    fontSize: Fonts.size.h4,
+    fontWeight: 'bold',
+    color: Colors.snow,
+  },
+  sliderBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    padding: Metrics.baseMargin,
+  },
+  sliderBottomAction: {
+    position: 'relative',
+    marginHorizontal: Metrics.baseMargin,
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sliderBottomMessage: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sliderMoreInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: Colors.snow,
+  },
+  sliderMoreInfoText: {
+    color: Colors.snow,
+    fontFamily: Fonts.type.base,
+    fontSize: Fonts.size.small,
+    fontWeight: 'bold',
+    marginRight: 10,
   },
 })

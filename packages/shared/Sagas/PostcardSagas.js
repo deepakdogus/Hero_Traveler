@@ -17,6 +17,7 @@ import pathAsFileObject from '../Lib/pathAsFileObject'
 import {
   isLocalMediaAsset,
 } from '../Lib/getVideoUrl'
+import Reactotron from 'reactotron-react-native'
 
 export const extractUploadData = (uploadData) => {
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
@@ -88,6 +89,8 @@ export function * createCover(api, postcard){
 
   if (_.get(cloudinaryCover, 'error'))
     return cloudinaryCover
+   
+  Reactotron.log(cloudinaryCover.data)
 
   if (isImageCover) {
     postcard.coverImage = cloudinaryCover.data

@@ -19,7 +19,9 @@ export default async function createPostcard(postcardData, assetFormater) {
   await addCover(postcardObject, assetFormater)
   postcardObject.publishedDate = new Date()
   newPostcard = await Postcard.create(postcardObject)
-  const populatedPostcard = await Postcard.findOne({ _id: newPostcard._id })
+  const populatedPostcard = await Postcard.findOne({
+    _id: newPostcard._id
+  }).populate('coverImage coverVideo')
   return {
     postcard: populatedPostcard
   }

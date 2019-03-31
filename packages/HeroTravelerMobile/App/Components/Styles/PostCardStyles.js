@@ -5,7 +5,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    marginTop: Metrics.baseMargin,
+    marginTop: 0,
   },
   imageContainer: {
     position: 'relative',
@@ -24,7 +24,6 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,.25)',
   },
   imageOverlayContainer: {
     position: 'absolute',
@@ -33,6 +32,19 @@ export default StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,.25)',
+  },
+  sliderOverlayContainer: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
+  sliderHeader: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: Metrics.baseMargin,
+    paddingHorizontal: Metrics.baseMargin,
   },
   listContainer: {
     paddingBottom: Metrics.baseMargin,

@@ -1,31 +1,35 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { View, ImageBackground, Text } from 'react-native'
+import { View, Text } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
+import Icon from 'react-native-vector-icons/Ionicons'
+import CreatePostCardBackground from './CreatePostCardBackground'
+import { Images, Colors } from '../../Shared/Themes'
 
 import styles from '../Styles/PostCardStyles'
 
-export default class PostCardSliderItem extends Component {
-  static props = {
-    postcard: PropTypes.object.isRequired,
-  }
+const handleClosePostCard = () => NavActions.pop()
 
-  constructor(props) {
-    super(props)
-  }
+const PostCardSliderItem = ({ postcard, postcard: { title } }) => (
+  <CreatePostCardBackground
+    media={postcard}
+    mediaType={postcard.coverVideo ? 'video' : 'photo'}
+  >
+    <View style={styles.sliderOverlayContainer}>
+      <View style={styles.sliderHeader}>
+        <Icon name='md-close-circle'
+          size={34}
+          color={Colors.snow}
+          onPress={handleClosePostCard}
+        />
+      </View>
+      <Text>{title}</Text>
+    </View>
+  </CreatePostCardBackground>
+)
 
-  render() {
-    const { postcard: { coverImage, title } } = this.props
-    return (
-      <ImageBackground
-        source={{uri: getImageUrl(coverImage)}}
-        style={styles.imageContainer}
-      >
-        <View style={styles.imageOverlayContainer}>
-          <Text>{title}</Text>
-        </View>
-      </ImageBackground>
-    )
-  }
+PostCardSliderItem.propTypes = {
+  postcard: PropTypes.object.isRequired,
 }
+
+export default PostCardSliderItem

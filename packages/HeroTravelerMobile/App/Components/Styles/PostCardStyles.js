@@ -7,6 +7,10 @@ export default StyleSheet.create({
     flexDirection: 'column',
     marginTop: 0,
   },
+  sliderContainer: {
+    marginTop: 0,
+    backgroundColor: Colors.backgroundDark,
+  },
   imageContainer: {
     position: 'relative',
     width: '100%',
@@ -14,6 +18,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.backgroundDark,
   },
   videoContainer: {
+    flex: 1,
     position: 'relative',
     width: Metrics.screenWidth,
     height: Metrics.screenHeight,

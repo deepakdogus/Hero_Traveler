@@ -89,8 +89,6 @@ export function * createCover(api, postcard){
 
   if (_.get(cloudinaryCover, 'error'))
     return cloudinaryCover
-   
-  Reactotron.log(cloudinaryCover.data)
 
   if (isImageCover) {
     postcard.coverImage = cloudinaryCover.data
@@ -116,22 +114,33 @@ function * createPostcardErrorHandling(postcard, response){
 
 export function * createPostcard(api, action) {
   const { postcard } = action
+  yield put(PostcardActions.initializeSyncProgress(2, 'Publishing Postcard'))
   const coverResponse = yield createCover(api, postcard)
   if (coverResponse.error) {
-    yield createPostcardErrorHandling(postcard, coverResponse.error)
+    yield [
+      put(PostcardActions.syncError()),
+      createPostcardErrorHandling(postcard, coverResponse.error),
+    ]
     return
   }
+
+  yield put(PostcardActions.incrementSyncProgress())
 
   const response = yield call(api.createPostcard, postcard)
   if (response.ok) {
     const { postcard } = response.data
     moveVideosFromPrecacheToCache(postcard._id)
     yield [
+      put(PostcardActions.incrementSyncProgress()),
+      put(PostcardActions.resetSync()),
       put(PostcardActions.createPostcardSuccess(postcard)),
     ]
   }
   else {
-    yield createPostcardErrorHandling(postcard, response)
+    yield [
+      put(PostcardActions.syncError()),
+      createPostcardErrorHandling(postcard, response),
+    ]
   }
 }
 

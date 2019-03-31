@@ -10,7 +10,10 @@ const CreatePostCardBackground = ({ media, mediaType, children }) => {
   if (mediaType === 'photo') {
     return (
       <ImageBackground
-        source={{uri: media.coverImage.uri}}
+        background={true}
+        cached={true}
+        resizeMode='cover'
+        source={{uri: getImageUrl(media.coverImage)}}
         style={styles.imageContainer}
       >
         {children}
@@ -18,12 +21,12 @@ const CreatePostCardBackground = ({ media, mediaType, children }) => {
     )
   }
   if (mediaType === 'video') {
-    const videoThumbnailOptions = {
+    const videoOptions = {
       video: true,
       width: 'screen',
     }
 
-    const videoImageUrl = getImageUrl(media.coverVideo, 'optimized', videoThumbnailOptions)
+    const videoImageUrl = getImageUrl(media.coverVideo, 'optimized', videoOptions)
     return (
       <View style={styles.videoContainer}>
         <VideoPlayer

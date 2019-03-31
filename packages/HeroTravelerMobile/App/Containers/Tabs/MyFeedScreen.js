@@ -40,7 +40,8 @@ class MyFeedScreen extends React.Component {
     attemptGetUserFeedGuides: PropTypes.func,
     userId: PropTypes.string,
     location: PropTypes.string,
-    sync: PropTypes.object,
+    storySync: PropTypes.object,
+    postcardSync: PropTypes.object,
     fetchStatus: PropTypes.object,
     storiesById: PropTypes.arrayOf(PropTypes.string),
     stories: PropTypes.object,
@@ -73,10 +74,10 @@ class MyFeedScreen extends React.Component {
   }
 
   isPendingUpdate() {
-    const {sync} = this.props
-    return sync.syncProgressSteps
-    && sync.syncProgressSteps !== sync.syncProgress
-    && !sync.error
+    const {storySync} = this.props
+    return storySync.syncProgressSteps
+    && storySync.syncProgressSteps !== storySync.syncProgress
+    && !storySync.error
   }
 
   isFailedLoad(nextProps){
@@ -89,7 +90,8 @@ class MyFeedScreen extends React.Component {
       this.props.storiesById !== nextProps.storiesById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
-      !_.isEqual(this.props.sync, nextProps.sync),
+      !_.isEqual(this.props.storySync, nextProps.storySync),
+      !_.isEqual(this.props.postcardSync, nextProps.postcardSync),
       !_.isEqual(this.props.pendingUpdates, nextProps.pendingUpdates),
       this.state.selectedTab !== nextState.selectedTab,
       this.state.hasSearchText !== nextState.hasSearchText,
@@ -190,7 +192,8 @@ class MyFeedScreen extends React.Component {
     let {
       storiesById,
       fetchStatus,
-      sync,
+      storySync,
+      postcardSync,
       feedGuidesById,
       stories,
       user,
@@ -222,6 +225,11 @@ class MyFeedScreen extends React.Component {
           refreshing={fetchStatus.fetching}
         />
       )
+    }
+
+    let sync = storySync
+    if (storySync.syncProgressSteps !== 0) {
+      sync = postcardSync
     }
 
     return (
@@ -261,7 +269,8 @@ const mapStateToProps = (state) => {
     feedGuidesById,
     error,
     location: state.routes.scene.name,
-    sync: state.storyCreate.sync,
+    storySync: state.storyCreate.sync,
+    postcardSync: state.entities.postcards.sync,
     pendingUpdates: state.pendingUpdates.pendingUpdates,
     updateOrder: state.pendingUpdates.updateOrder,
   }

@@ -35,10 +35,13 @@ export default class PostCardSlider extends Component {
     return (
       <View style={styles.container}>
         <Carousel
+          style={styles.videoContainer}
           data={postcards}
+          layoutCardOffset={0}
           renderItem={this.renderItem}
           sliderWidth={Metrics.postCard.listing.sliderWidth}
           itemWidth={Metrics.postCard.listing.sliderItemWidth}
+          inactiveSlideScale={1}
         />
       </View>
     )

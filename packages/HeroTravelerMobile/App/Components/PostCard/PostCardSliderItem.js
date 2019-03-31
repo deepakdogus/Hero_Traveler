@@ -17,7 +17,7 @@ const PostCardSliderItem = ({ postcard, postcard: { title } }) => (
   >
     <View style={styles.sliderOverlayContainer}>
       <View style={styles.sliderHeader}>
-        <Icon name='md-close-circle'
+        <Icon name='ios-close'
           size={34}
           color={Colors.snow}
           onPress={handleClosePostCard}

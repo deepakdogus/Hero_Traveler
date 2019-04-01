@@ -5,9 +5,14 @@ import Loadable from 'react-loadable'
 import Session from './Session'
 
 import AuthRoute from './AuthRoute'
-import Header from './Header'
 
 const Loading = () => null
+
+const Header = Loadable({
+  loader: () => import('./Header'),
+  loading: Loading,
+  delay: 300,
+})
 
 const Explore = Loadable({
   loader: () => import('./Explore'),

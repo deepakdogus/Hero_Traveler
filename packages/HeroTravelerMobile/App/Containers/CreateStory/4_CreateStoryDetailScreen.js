@@ -345,6 +345,15 @@ class CreateStoryDetailScreen extends React.Component {
               />
             </View>
           </View>
+          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
+            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
+              Rate this experience:{' '}
+            </Text>
+            <StarRating
+              onChange={this._updateRating}
+              valueSelected={workingDraft.rating}
+            />
+          </View>
           <FormInput
             onPress={this.navToLocation}
             iconName='location'

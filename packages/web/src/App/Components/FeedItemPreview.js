@@ -392,7 +392,7 @@ class FeedItemPreview extends Component {
       <MarginWrapper>
         <DirectionalWrapper>
           <ImageContainer
-            onClick={guideId ? this.noop : this.navToFeedItem}
+            onClick={this.navToFeedItem}
             src={imageUrl}
           >
             <StyledOverlay overlayColor='black' >

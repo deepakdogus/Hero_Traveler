@@ -296,6 +296,10 @@ class StoryCoverScreen extends Component {
     }
   }
 
+  nextScreen = () => {
+    NavActions.createStory_details()
+  }
+
   _onRight = () => {
     const {workingDraft, originalDraft} = this.props
     const hasVideoSelected = !!this.state.coverVideo
@@ -338,9 +342,6 @@ class StoryCoverScreen extends Component {
       })
   }
 
-  nextScreen() {
-    NavActions.createStory_details()
-  }
 
   cleanDraft(){
     const {workingDraft, originalDraft, draftIdToDBId} = this.props

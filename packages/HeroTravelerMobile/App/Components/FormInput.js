@@ -10,7 +10,6 @@ import TabIcon from './TabIcon'
 import { Colors, Metrics } from '../Shared/Themes'
 import detailsStyles from '../Containers/CreateStory/4_CreateStoryDetailScreenStyles'
 
-
 const commonIconStyle = {
   marginRight: Metrics.doubleBaseMargin,
   marginBottom: Metrics.baseMargin,
@@ -26,9 +25,11 @@ const iconSizes = {
   date: { width: 22, height: 22, },
   tag: { width: 22, height: 22, },
   hashtag: { width: 22, height: 24, marginTop: -2},
+  profile: {width: 42, height: 35, marginTop: -7, marginLeft: -8},
   cost: { width: 22, height: 24, marginTop: -3},
   info: { width: 22, height: 22},
   gear: { width: 22, height: 22},
+  'tip-tap': { width: 32, height: 32 },
 }
 
 let iconStyles = {};
@@ -40,7 +41,6 @@ for (let s in iconSizes) {
     image: Object.assign({}, commonIconStyle, iconSizes[s])
   }
 }
-
 
 class FormInput extends Component {
   static defaultProps = {
@@ -88,7 +88,12 @@ class FormInput extends Component {
     const {iconName} = this.props
     return (
       <View style={detailsStyles.fieldWrapper}>
-        <TabIcon name={iconName} style={iconStyles[iconName]}/>
+        {iconName &&
+          <TabIcon
+            name={iconName}
+            style={iconStyles[iconName]}
+          />
+        }
         {this.renderText()}
       </View>
     )

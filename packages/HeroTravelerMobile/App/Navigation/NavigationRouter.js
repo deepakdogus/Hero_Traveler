@@ -36,6 +36,7 @@ import StoryReadingScreen from '../Containers/StoryReadingScreen'
 import CommentsScreen from '../Containers/CommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
 import CreateSlideshowScreen from '../Containers/CreateStory/CreateSlideshow'
+import CreateSlideshowDetailsScreen from '../Containers/CreateStory/CreateSlideshowDetails'
 import CreateStoryDetailScreen from '../Containers/CreateStory/4_CreateStoryDetailScreen'
 import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
@@ -413,6 +414,11 @@ export default function NavigationRouter({ openAddStoryModal }) {
         hideNavBar
         direction="horizontal"
       />
+      <Scene
+          key='createStory_slideshow_details'
+          panHandlers={null}
+          component={CreateSlideshowDetailsScreen}
+        />
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}

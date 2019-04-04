@@ -68,7 +68,10 @@ export const INITIAL_STATE = Immutable({
 })
 
 /* ------------- Reducers ------------- */
-export const reset = () => INITIAL_STATE
+export const reset = () => {
+  console.log('reset is called')
+  return INITIAL_STATE
+}
 
 export const saveDraft = (state, { draft }) => state.merge({
   error: null,
@@ -99,6 +102,7 @@ export const failureUpdating = (state, {error}) => {
 }
 
 export const addLocalDraft = (state, {draft}) => {
+  console.log('addLocalDraft', draft)
   return state.merge({
     draft,
     workingDraft: draft,
@@ -108,6 +112,7 @@ export const addLocalDraft = (state, {draft}) => {
 
 // updateDraft called after save. Making sure to sync up workingDraft + draft
 export const updateDraftSuccess = (state, {draft}) => {
+  console.log('updateDraftSuccess', draft)
   return state.merge({
     draft,
     workingDraft: draft,
@@ -121,6 +126,7 @@ export const updateDraftSuccess = (state, {draft}) => {
 
 // updateWorkingDraft only updates local draft
 export const updateWorkingDraft = (state, {workingDraft}) => {
+  console.log('updateWorkingDraft', workingDraft)
   if(needToChangeCoverVideo(state, workingDraft)) {
     return changeCoverVideo(state, workingDraft.coverVideo)
   } else {

@@ -256,6 +256,7 @@ function * uploadAtomicAssets(draft){
 }
 
 function * saveDraftErrorHandling(draft, response){
+  console.log('saveDraftErrorHandling', draft, response)
   let err = new Error('Failed to publish story')
   // TODO: I tried {...response, ...err} but that seemed to strip the Error instance of it's
   //       methods, maybe Object.assign(err, response) is better?
@@ -310,6 +311,7 @@ function getSyncProgressSteps(story){
 }
 
 export function * saveLocalDraft (api, action) {
+  console.log('saveLocalDraft', action)
   const {draft, saveAsDraft = false} = action
   draft.draft = saveAsDraft
   yield [
@@ -326,18 +328,21 @@ export function * saveLocalDraft (api, action) {
   ]
 
   const coverResponse = yield createCover(api, draft)
+  console.log('coverResponse', coverResponse)
   if (coverResponse.error) {
     yield saveDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
+  console.log('atomicResponse', atomicResponse)
   if (atomicResponse && atomicResponse.error){
     yield saveDraftErrorHandling(draft, atomicResponse.error)
     return
   }
 
   const response = yield call(api.createStory, draft)
+  console.log('response', response)
   if (response.ok) {
     moveVideosFromPrecacheToCache(draft.id)
     const stories = {}
@@ -366,6 +371,7 @@ export function * discardDraft (api, action) {
 }
 
 export function * updateDraft (api, action) {
+  console.log('updateDraft', action)
   const {draftId, draft, updateStoryEntity} = action
   yield [
     put(PendingUpdatesActions.addPendingUpdate(
@@ -378,18 +384,21 @@ export function * updateDraft (api, action) {
   ]
 
   const coverResponse = yield createCover(api, draft)
+  console.log('coverResponse', coverResponse)
   if (coverResponse.error) {
     yield updateDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
+  console.log('atomicResponse', atomicResponse)
   if (atomicResponse.error){
     yield updateDraftErrorHandling(draft, atomicResponse.error)
     return
   }
 
   const response = yield call(api.updateDraft, draftId, draft)
+  console.log('response', response)
   if (response.ok) {
     const {entities, result} = response.data
     const story = entities.stories[result]

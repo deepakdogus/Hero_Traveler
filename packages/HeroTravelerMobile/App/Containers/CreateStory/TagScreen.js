@@ -29,6 +29,7 @@ import SelectedItem from '../../Components/SelectedItem'
 
 export const TAG_TYPE_CATEGORY = 'category'
 export const TAG_TYPE_HASHTAG = 'hashtag'
+export const TAG_TYPE_USER = 'user'
 
 class TagScreen extends Component {
   static propTypes = {
@@ -37,6 +38,7 @@ class TagScreen extends Component {
     onDone: PropTypes.func.isRequired,
     defaultCategories: PropTypes.object,
     defaultHashtags: PropTypes.object,
+    defaultUsers: PropTypes.object,
     loadDefaultCategories: PropTypes.func,
     loadDefaultHashtags: PropTypes.func,
     user: PropTypes.object,
@@ -56,6 +58,10 @@ class TagScreen extends Component {
         this.tagIndex = env.SEARCH_CATEGORIES_INDEX
         break
       case TAG_TYPE_HASHTAG:
+        this.props.loadDefaultHashtags()
+        this.tagIndex = env.SEARCH_HASHTAGS_INDEX
+        break
+      case TAG_TYPE_USER:
         this.props.loadDefaultHashtags()
         this.tagIndex = env.SEARCH_HASHTAGS_INDEX
         break
@@ -186,6 +192,9 @@ class TagScreen extends Component {
     else if (this.props.tagType === TAG_TYPE_HASHTAG) {
       return this.props.defaultHashtags
     }
+    else if (this.props.tagType === TAG_TYPE_USER) {
+      return this.props.defaultUsers
+    }
     else {
       throw new Error('Invalid tag type to get defaults: ', this.props.tagType)
     }
@@ -298,10 +307,14 @@ class TagScreen extends Component {
 
   _getTagTypeText = (plural) => {
     if (plural) {
-      return (this.props.tagType === TAG_TYPE_CATEGORY) ? 'categories' : 'hashtags'
+      const text = this.props.tagType === TAG_TYPE_CATEGORY ? 'categories'
+        : this.props.tagType === TAG_TYPE_HASHTAG ? 'users' : 'hashtags'
+      return text
     }
     else {
-      return (this.props.tagType === TAG_TYPE_CATEGORY) ? 'category' : 'hashtag'
+      const text = this.props.tagType === TAG_TYPE_CATEGORY ? 'category'
+        : this.props.tagType === TAG_TYPE_HASHTAG ? 'user' : 'hashtag'
+      return text
     }
   }
 
@@ -424,6 +437,7 @@ export default connect(
     user: state.entities.users.entities[state.session.userId],
     defaultCategories: state.entities.categories.entities,
     defaultHashtags: state.entities.hashtags.entities,
+    defaultUsers: state.entities.users.entities,
   }),
   dispatch => ({
     loadDefaultHashtags: () => dispatch(HashtagActions.loadHashtagsRequest()),

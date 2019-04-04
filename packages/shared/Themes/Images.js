@@ -82,6 +82,7 @@ const images = {
   iconGear: require('../Images/ht-icons/icon_profile-gear.png'),
   iconTrash: require('../Images/ht-icons/icon_profile-trash-story.png'),
   iconTrashBlack: require('../Images/ht-icons/icon_tip-trash.png'),
+  iconTipTap: require('../Images/ht-icons/icon_tip-tap-image.png'),
   iconLocation: require('../Images/ht-icons/icon_details-location.png'),
   iconLocationLarge: require('../Images/ht-icons/icon_details-location-large.png'),
   iconLike: require('../Images/ht-icons/icon_action-like.png'),

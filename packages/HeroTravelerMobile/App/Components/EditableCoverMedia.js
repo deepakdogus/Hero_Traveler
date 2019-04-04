@@ -77,6 +77,7 @@ class EditableCoverMedia extends Component {
   }
 
   _handleSelectCover = (path, isPhotoType, coverMetrics = {}) => {
+    console.log('_handleSelectCover', path, isPhotoType, coverMetrics)
     const file = pathAsFileObject(path)
     const update = { coverCaption: '' }
 

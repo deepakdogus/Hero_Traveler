@@ -2,25 +2,30 @@ import React , { Component, Fragment } from 'react'
 import {
   View,
   Text,
+  TouchableOpacity,
   Alert,
 } from 'react-native'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import Immutable from 'seamless-immutable'
 import { ImageCrop } from 'react-native-image-cropper'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import NavBar from './NavBar'
 import CameraRollPicker from '../../Components/CameraRollPicker/CameraRollPicker'
+import coverScreenStyles, {modalWrapperStyles} from './2_StoryCoverScreenStyles'
 
 import { getPendingDraftById } from '../../Shared/Lib/getPendingDrafts'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import UserActions from '../../Shared/Redux/Entities/Users'
+import Modal from '../../Components/Modal'
 
 import {
   isFieldSame,
   haveFieldsChanged,
   hasChangedSinceSave,
 } from '../../Shared/Lib/draftChangedHelpers'
+import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 import navbarStyles from './2_StoryCoverScreenStyles'
 import TabIcon from '../../Components/TabIcon'
 
@@ -31,37 +36,38 @@ import Metrics from '../../Themes/Metrics'
 class SlideshowCover extends Component{
   constructor(props) {
     super(props)
+
+    const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
+    const hasPendingUpdate = props.pendingUpdate && !isLocalDraft(props.storyId)
+
     this.state = {
-      selectedImages: [],
-      galleryImagePath: null,
+      galleryImagePath: slideshow[0],
+      activeModal: hasPendingUpdate ? 'existingUpdateWarning' : undefined,
     }
   }
 
   getSelectedImages = (image, current) => {
-    const { selectedImages } = this.state
-    if (selectedImages.length >= 8) return
+    const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
+    if (slideshow.length >= 8) return
     let galleryImagePath = current.uri
     console.log("====image path ===", galleryImagePath)
-    const existingIndex = selectedImages.indexOf(galleryImagePath)
+    const existingIndex = slideshow.indexOf(galleryImagePath)
     if (existingIndex >= 0) {
-      selectedImages.splice(existingIndex, 1)
-      galleryImagePath = _.last(selectedImages)
+      slideshow.splice(existingIndex, 1)
+      galleryImagePath = _.last(slideshow)
     }
     else {
-      selectedImages.push(current.uri)
+      slideshow.push(current.uri)
     }
     this.setState({
       galleryImagePath,
-      selectedImages,
     })
+    this.props.updateWorkingDraft({ slideshow })
   }
 
   isValid() {
-    const {coverImage, coverVideo, title} = this.props.workingDraft
-    return _.every([
-      !!coverImage || !!coverVideo,
-      !!_.trim(title),
-    ])
+    const {slideshow} = this.props.workingDraft
+    return !_.isEmpty(slideshow)
   }
 
   isSavedDraft = () => {
@@ -71,7 +77,7 @@ class SlideshowCover extends Component{
   }
 
   navBack = () => {
-    this.props.resetCreateStore()
+    // this.props.resetCreateStore()
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
@@ -81,49 +87,21 @@ class SlideshowCover extends Component{
     }
   }
 
-  _onTitle = () => {
-    const title = 'Save Progess'
-    const message = 'Do you want to save your progress?'
+  _onRight = () => {
     if (!this.isValid()) {
-      this.setState({validationError: 'Please add a cover and title to continue'})
+      this.setState({validationError: 'Please choose at least one photo'})
       return
     }
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid()) {
-            this.setState({validationError: 'Please add a cover and title to save'})
-          }
-          else {
-            this.saveStory()
-          }
-        },
-      }, {
-        text: 'Cancel',
-        onPress: () => null,
-      }],
-    )
-  }
-
-  _onRight = () => {
-    console.log('onRight is clicked')
+    this.softSaveDraft()
+      .then(() => {
+        this.nextScreen()
+      })
   }
 
   _onLeftYes = () => {
-    if (!this.isValid()) {
-      this.setState({
-        validationError: 'Please add a cover and title to continue',
-        activeModal: undefined,
-      })
-    }
-    else {
-      this.saveStory().then(() => {
-        this.navBack()
-      })
-    }
+    this.saveStory().then(() => {
+      this.navBack()
+    })
   }
 
   _onLeftNo = () => {
@@ -151,6 +129,11 @@ class SlideshowCover extends Component{
     }
   }
 
+  nextScreen() {
+    console.log('nextScreen is called')
+    NavActions.createStory_slideshow_details()
+  }
+
   cleanDraft(){
     const {workingDraft, originalDraft, draftIdToDBId} = this.props
     const draft = _.merge({}, workingDraft)
@@ -159,6 +142,26 @@ class SlideshowCover extends Component{
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
     if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
     return draft
+  }
+
+  // this does a create or update depending on whether it is a local draft
+  saveStory() {
+    const cleanedDraft = this.cleanDraft()
+
+    if (isLocalDraft(cleanedDraft.id)) {
+      console.log('calling this.props.saveDraft', cleanedDraft)
+      this.props.saveDraft(cleanedDraft, true)
+    }
+    else {
+      console.log('calling this.props.update', cleanedDraft)
+      this.props.update(cleanedDraft.id, cleanedDraft)
+    }
+    return Promise.resolve({})
+  }
+
+  softSaveDraft() {
+    const cleanedDraft = this.cleanDraft()
+    return Promise.resolve(this.props.updateWorkingDraft(cleanedDraft))
   }
 
   renderImageCropper = () => {
@@ -207,11 +210,39 @@ class SlideshowCover extends Component{
     )
   }
 
+  renderCancel = () => {
+    const isDraft = this.props.workingDraft.draft === true
+    const title = isDraft ? 'Save Draft' : 'Save Edits'
+    const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={modalWrapperStyles}
+      >
+        <Text style={coverScreenStyles.modalTitle}>{title}</Text>
+        <Text style={coverScreenStyles.modalMessage}>{message}</Text>
+        <View style={coverScreenStyles.modalBtnWrapper}>
+          <TouchableOpacity
+            style={[coverScreenStyles.modalBtn, coverScreenStyles.modalBtnLeft]}
+            onPress={this._onLeftYes}
+          >
+            <Text style={coverScreenStyles.modalBtnText}>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={coverScreenStyles.modalBtn}
+            onPress={this._onLeftNo}
+          >
+            <Text style={coverScreenStyles.modalBtnText}>No</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
   renderHeader = () => {
     return (
       <NavBar
         title='ALL PHOTOS'
-        onTitle={this._onTitle}
         onLeft={this._onLeft}
         leftTitle='Close'
         onRight={this._onRight}
@@ -225,15 +256,18 @@ class SlideshowCover extends Component{
   }
 
   renderIcon = (item) => {
-    const { selectedImages } = this.state
+    const workingDraft = Immutable.asMutable(this.props.workingDraft, { deep: true })
+    const { slideshow = [] } = workingDraft
     const uri = _.get(item, 'node.image.uri')
-    const number = selectedImages.indexOf(uri) + 1
+    const existingIndex = slideshow.indexOf(uri)
+    const number = existingIndex + 1
+    if (existingIndex < 0) return null
     return (
       <Fragment>
         <View style={styles.badge}>
           <Text style={styles.badgeText}>{number}</Text>
         </View>
-        {number === selectedImages.length
+        {number === slideshow.length
           && <View style={styles.overlay} />
         }
       </Fragment>
@@ -260,6 +294,7 @@ class SlideshowCover extends Component{
             callback={this.getSelectedImages}
           />
         </View>
+        {this.state.activeModal === 'cancel' && this.renderCancel()}
       </View>
     )
   }

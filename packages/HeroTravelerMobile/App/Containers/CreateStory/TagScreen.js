@@ -41,6 +41,7 @@ class TagScreen extends Component {
     defaultUsers: PropTypes.object,
     loadDefaultCategories: PropTypes.func,
     loadDefaultHashtags: PropTypes.func,
+    loadDefaultUsers: PropTypes.func,
     user: PropTypes.object,
     completeTooltip: PropTypes.func,
   }
@@ -62,8 +63,8 @@ class TagScreen extends Component {
         this.tagIndex = env.SEARCH_HASHTAGS_INDEX
         break
       case TAG_TYPE_USER:
-        this.props.loadDefaultHashtags()
-        this.tagIndex = env.SEARCH_HASHTAGS_INDEX
+        this.props.loadDefaultUsers()
+        this.tagIndex = env.SEARCH_USER_INDEX
         break
       default:
         throw new Error('No tag type supplied to the TagScreen')
@@ -308,12 +309,12 @@ class TagScreen extends Component {
   _getTagTypeText = (plural) => {
     if (plural) {
       const text = this.props.tagType === TAG_TYPE_CATEGORY ? 'categories'
-        : this.props.tagType === TAG_TYPE_HASHTAG ? 'users' : 'hashtags'
+        : this.props.tagType === TAG_TYPE_USER ? 'users' : 'hashtags'
       return text
     }
     else {
       const text = this.props.tagType === TAG_TYPE_CATEGORY ? 'category'
-        : this.props.tagType === TAG_TYPE_HASHTAG ? 'user' : 'hashtag'
+        : this.props.tagType === TAG_TYPE_USER ? 'user' : 'hashtag'
       return text
     }
   }
@@ -426,7 +427,6 @@ class TagScreen extends Component {
             onDismiss={this._completeTooltip}
           />
         )}
-
       </View>
     )
   }
@@ -440,6 +440,7 @@ export default connect(
     defaultUsers: state.entities.users.entities,
   }),
   dispatch => ({
+    loadDefaultUsers: () => dispatch(UserActions.loadUsersRequest()),
     loadDefaultHashtags: () => dispatch(HashtagActions.loadHashtagsRequest()),
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),

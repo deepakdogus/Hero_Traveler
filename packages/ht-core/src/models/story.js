@@ -122,6 +122,9 @@ const StorySchema = new Schema({
   coverCaption: {
     type: String,
   },
+  rating: {
+    type: Number,
+  },
   cost: {
     type: Number,
   },

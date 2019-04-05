@@ -6,7 +6,6 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  DatePickerIOS,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -15,7 +14,6 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
 import {Colors, Metrics} from '../../Shared/Themes'
 import ShadowButton from '../../Components/ShadowButton'
-import RoundedButton from '../../Components/RoundedButton'
 import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
 import styles from './4_CreateStoryDetailScreenStyles'
@@ -101,23 +99,13 @@ class CreateSlideshowDetails extends React.Component {
     this.props.updateWorkingDraft({location})
   }
 
-  _onDateChange = (tripDate) => {
-    this.props.updateWorkingDraft({tripDate})
-  }
-
   _onRight = () => {
     const {workingDraft} = this.props
-    if (!workingDraft.locationInfo || !workingDraft.type) {
+    if (!workingDraft.title || !workingDraft.locationInfo || !workingDraft.type) {
       this.setState({
-        validationError: 'Please add an activity type and location to continue',
+        validationError: 'Please add title, an activity type and location to continue',
       })
       return
-    }
-    // The numeric keyboard doesn't have a submit key and input may not
-    // have been blurred prior to save. In that case we have to update
-    // the working draft manually here.
-    if (workingDraft.cost !== this.state.cost) {
-      workingDraft.cost = this.state.cost
     }
     this.next()
     if (workingDraft.draft) {
@@ -141,29 +129,7 @@ class CreateSlideshowDetails extends React.Component {
 
   _updateDescription = (description) => {
     this.props.updateWorkingDraft({description})
-  }
-
-  _getCostPlaceholderText = (draft) => {
-    let placeholder
-    switch (draft.type) {
-      case 'see':
-      case 'do':
-        placeholder = 'Cost'
-        break
-      case 'eat':
-        placeholder = 'Cost per person'
-        break
-      case 'stay':
-        placeholder = 'Cost per night'
-        break
-      default:
-        placeholder = 'Cost'
-        break
-    }
-    // The currency is hardcoded for now, might want to change it later.
-    let currency = draft.currency || 'USD'
-    placeholder += ' (' + currency + ')'
-    return placeholder
+    NavActions.pop()
   }
 
   _closeError = () => {
@@ -194,6 +160,11 @@ class CreateSlideshowDetails extends React.Component {
 
   _receiveHashtags = (selectedHashtags) => {
     this.props.updateWorkingDraft({hashtags: selectedHashtags})
+    NavActions.pop()
+  }
+
+  _receiveUsers = (selectedUsers) => {
+    this.props.updateWorkingDraft({users: selectedUsers})
     NavActions.pop()
   }
 
@@ -228,9 +199,9 @@ class CreateSlideshowDetails extends React.Component {
 
   navToTagUsers = () => {
     NavActions.tagSelectorScreen({
-      onDone: this._receiveHashtags,
-      tags: this.props.workingDraft.users || this.state.users,
-      tagType: 'users',
+      onDone: this._receiveUsers,
+      users: this.props.workingDraft.users || this.state.users,
+      tagType: 'user',
     })
   }
 
@@ -295,15 +266,14 @@ class CreateSlideshowDetails extends React.Component {
     const { workingDraft } = this.props
     return _.every([
       !!workingDraft,
+      !!workingDraft.title,
       !!workingDraft.locationInfo,
       !!workingDraft.type,
     ])
   }
 
   onStarRatingPress(rating) {
-    this.setState({
-      starCount: rating,
-    })
+    this.props.updateWorkingDraft({ rating })
   }
 
   render () {
@@ -366,12 +336,12 @@ class CreateSlideshowDetails extends React.Component {
               </View>
             </View>
             <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Rate this experience: </Text>
+              <Text style={styles.fieldLabel}>Rate this experience:</Text>
               <StarRating
                 containerStyle={{
-                  marginTop: -10,
+                  marginTop: -5,
                   marginLeft: 25,
-                  marginBottom: 10
+                  marginBottom: 10,
                 }}
                 disabled={false}
                 emptyStar={'ios-star'}
@@ -379,9 +349,9 @@ class CreateSlideshowDetails extends React.Component {
                 halfStar={'ios-star-half'}
                 iconSet={'Ionicons'}
                 maxStars={5}
-                starSize={30}
-                rating={this.state.starCount}
-                selectedStar={(rating) => this.onStarRatingPress(rating)}
+                starSize={25}
+                rating={workingDraft.rating || 3}
+                selectedStar={this.onStarRatingPress}
                 fullStarColor={'red'}
               />
             </View>

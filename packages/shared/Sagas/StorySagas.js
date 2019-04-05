@@ -214,6 +214,7 @@ export function * createCover(api, draft, isGuide){
 }
 
 function * uploadAtomicAssets(draft){
+  console.log('uploadAtomicAssets', draft)
   if (!draft.draftjsContent) return
   draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {deep: true})
 

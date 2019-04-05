@@ -163,7 +163,7 @@ class TabIcon extends React.Component {
   }
 
   getTabStyle = name =>
-    'myFeed explore createStory activity profile'.indexOf(name) !== -1
+    'myFeed explore createStory activity profile tip-tap'.indexOf(name) !== -1
       ? { transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }] }
       : {}
 

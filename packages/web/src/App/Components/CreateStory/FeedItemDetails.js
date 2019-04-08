@@ -515,7 +515,7 @@ export default class FeedItemDetails extends React.Component {
           color="lighter-grey"
           opaque
         />
-        {!isGuide && (
+        {!isGuide && false && (
           <InputRowContainer>
             <BoldDetailLabel>Rate this experience:</BoldDetailLabel>
             <StarRating
@@ -524,10 +524,12 @@ export default class FeedItemDetails extends React.Component {
             />
           </InputRowContainer>
         )}
-        {!isGuide && <StyledDivider
-          color="lighter-grey"
-          opaque
-                     />}
+        {!isGuide && false && (
+          <StyledDivider
+            color="lighter-grey"
+            opaque
+          />
+        )}
         <InputRowContainer>
           <IconWrapper>
             <EnlargedIcon name="locationLarge" />

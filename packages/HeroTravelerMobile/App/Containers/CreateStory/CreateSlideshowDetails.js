@@ -272,7 +272,7 @@ class CreateSlideshowDetails extends React.Component {
     ])
   }
 
-  onStarRatingPress(rating) {
+  onStarRatingPress = (rating) => {
     this.props.updateWorkingDraft({ rating })
   }
 

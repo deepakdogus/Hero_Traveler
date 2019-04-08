@@ -125,6 +125,10 @@ const StorySchema = new Schema({
   rating: {
     type: Number,
   },
+  slideshow: {
+    type: Array,
+    default: []
+  },
   cost: {
     type: Number,
   },

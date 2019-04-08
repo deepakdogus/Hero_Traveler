@@ -20,6 +20,14 @@ export async function getUserDetails(userId) {
   return User.findOne({_id:userId})
 }
 
+export async function addSlideshow(draft, assetFormater){
+  console.log('addSlideshow', draft.slideshow);
+  draft.slideshow = draft.slideshow.map(image => assetFormater(
+    image,
+    { purpose: 'coverImage' }
+  ))
+}
+
 export async function addCover(draft, assetFormater){
   const {coverImage, coverVideo} = draft
   const isCoverImage = !!coverImage
@@ -68,9 +76,15 @@ export default async function createStory(storyData, assetFormater) {
   }
 
   if (isLocalStory) {
-    await addCover(storyObject, assetFormater)
+    if (storyObject.slideshow && !_.isEmpty(storyObject.slideshow)) {
+      await addSlideshow(storyObject, assetFormater)
+    } else {
+      await addCover(storyObject, assetFormater)
+    }
     storyData.id = undefined
+    console.log('storyObject', JSON.stringify(storyObject))
     newStory = await Story.create(storyObject)
+    console.log('newStory', JSON.stringify(newStory))
   }
   else newStory = await updateDraft(storyData.id, storyObject)
 

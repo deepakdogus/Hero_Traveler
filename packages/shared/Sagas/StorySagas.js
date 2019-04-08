@@ -139,6 +139,7 @@ export function * getCategoryStories (api, {categoryId, storyType}) {
 }
 
 export const extractUploadData = (uploadData) => {
+  console.log('extractUploadData', uploadData)
   if (typeof uploadData === 'string') uploadData = JSON.parse(uploadData)
   const baseObject = {
     url: `${uploadData.public_id}.${uploadData.format}`,
@@ -158,6 +159,7 @@ export const extractUploadData = (uploadData) => {
 
 // used exclusively by web to immediately upload cloudinary assets
 export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
+  console.log('uploadMedia', uri, mediaType, callback)
   const cloudinaryMedia = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
     mediaType,
@@ -188,6 +190,7 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
 }
 
 export function * createCover(api, draft, isGuide){
+  console.log('createCover', _.cloneDeep(draft))
   const videoFileUri =
     draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
     ? draft.coverVideo.uri
@@ -214,7 +217,7 @@ export function * createCover(api, draft, isGuide){
 }
 
 function * uploadAtomicAssets(draft){
-  console.log('uploadAtomicAssets', draft)
+  console.log('uploadAtomicAssets', _.cloneDeep(draft))
   if (!draft.draftjsContent) return
   draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {deep: true})
 
@@ -255,6 +258,47 @@ function * uploadAtomicAssets(draft){
   yield put(StoryCreateActions.incrementSyncProgress(atomicSteps))
   return promise
 }
+
+function * createSlideshow(draft){
+  console.log('createSlideshow', _.cloneDeep(draft))
+  if (!draft.slideshow || _.isEmpty(draft.slideshow)) return
+
+  const promise = yield Promise.all(draft.slideshow.map((item, index) => {
+    const {uri, type} = item
+    if (isLocalMediaAsset(uri)) {
+      return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type)
+      .then(response => {
+        console.log('cloudinary response', response)
+        if (response.error) return response
+        const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
+        if (responseData.resource_type === 'video' && uri && draft.id && responseData.public_id) {
+          moveVideoToPreCache(draft.id, uri, responseData.public_id)
+        }
+        return _.merge(item, responseData)
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+    }
+    else return undefined
+  }))
+
+  // part of what needs to get refactored during CloudinaryAPI refactor
+  let errorBlock
+  promise.some(block => {
+    if (block && block.error) {
+      errorBlock = block
+      return true
+    }
+    return false
+  })
+
+  if (errorBlock) return errorBlock
+  const atomicSteps = getAtomicSteps(draft)
+  yield put(StoryCreateActions.incrementSyncProgress(atomicSteps))
+  return promise
+}
+
 
 function * saveDraftErrorHandling(draft, response){
   console.log('saveDraftErrorHandling', draft, response)
@@ -312,7 +356,7 @@ function getSyncProgressSteps(story){
 }
 
 export function * saveLocalDraft (api, action) {
-  console.log('saveLocalDraft', action)
+  console.log('saveLocalDraft', _.cloneDeep(action))
   const {draft, saveAsDraft = false} = action
   draft.draft = saveAsDraft
   yield [
@@ -339,6 +383,13 @@ export function * saveLocalDraft (api, action) {
   console.log('atomicResponse', atomicResponse)
   if (atomicResponse && atomicResponse.error){
     yield saveDraftErrorHandling(draft, atomicResponse.error)
+    return
+  }
+
+  const slideshowResponse = yield createSlideshow(draft)
+  console.log('slideshowResponse', slideshowResponse)
+  if (slideshowResponse && slideshowResponse.error){
+    yield saveDraftErrorHandling(draft, slideshowResponse.error)
     return
   }
 

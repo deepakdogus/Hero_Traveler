@@ -126,7 +126,7 @@ export const updateDraftSuccess = (state, {draft}) => {
 
 // updateWorkingDraft only updates local draft
 export const updateWorkingDraft = (state, {workingDraft}) => {
-  console.log('updateWorkingDraft', workingDraft)
+  console.log('updateWorkingDraft', workingDraft, state.workingDraft)
   if(needToChangeCoverVideo(state, workingDraft)) {
     return changeCoverVideo(state, workingDraft.coverVideo)
   } else {

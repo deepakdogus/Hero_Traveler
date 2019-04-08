@@ -19,6 +19,7 @@ export function isLocalMediaAsset(asset) {
   return typeof asset === 'string'
   && (
     asset.substring(0,7) === 'file://'
+    || _.startsWith(asset, 'assets-library://')
     || asset.substring(0,6) === '/Users'
     || asset.startsWith('data:')
   )

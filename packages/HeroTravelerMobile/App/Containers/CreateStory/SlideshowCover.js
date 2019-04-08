@@ -41,7 +41,7 @@ class SlideshowCover extends Component{
     const hasPendingUpdate = props.pendingUpdate && !isLocalDraft(props.storyId)
 
     this.state = {
-      galleryImagePath: slideshow[0],
+      galleryImagePath: _.get(slideshow, '0.uri'),
       activeModal: hasPendingUpdate ? 'existingUpdateWarning' : undefined,
     }
   }
@@ -49,20 +49,38 @@ class SlideshowCover extends Component{
   getSelectedImages = (image, current) => {
     const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
     if (slideshow.length >= 8) return
-    let galleryImagePath = current.uri
-    console.log("====image path ===", galleryImagePath)
-    const existingIndex = slideshow.indexOf(galleryImagePath)
+    const file = {
+      name: current.filename,
+      original: {
+        meta: {
+          height: current.height,
+          width: current.width,
+        },
+      },
+      type: 'image',
+      uri: current.uri,
+    }
+    let galleryImagePath = file.uri
+    console.log("====image ===", image, file)
+    const existingIndex = _.findIndex(slideshow, { uri: galleryImagePath })
     if (existingIndex >= 0) {
       slideshow.splice(existingIndex, 1)
-      galleryImagePath = _.last(slideshow)
+      galleryImagePath = _.get(_.last(slideshow), 'uri')
     }
     else {
-      slideshow.push(current.uri)
+      slideshow.push(file)
     }
+
+    // this.capture()
     this.setState({
       galleryImagePath,
     })
     this.props.updateWorkingDraft({ slideshow })
+  }
+
+  capture = () => {
+    this.cropper.crop()
+    .then(base64 => console.log('capture', base64))
   }
 
   isValid() {
@@ -165,11 +183,12 @@ class SlideshowCover extends Component{
   }
 
   renderImageCropper = () => {
+    const { galleryImagePath } = this.state
+    console.log('galleryImagePath', galleryImagePath)
     return (
       <Fragment>
         <ImageCrop 
-          ref={'cropper'}
-          image={this.state.galleryImagePath}
+          image={galleryImagePath}
           cropHeight={300}
           cropWidth={Metrics.screenWidth}
           maxZoom={80}
@@ -259,7 +278,7 @@ class SlideshowCover extends Component{
     const workingDraft = Immutable.asMutable(this.props.workingDraft, { deep: true })
     const { slideshow = [] } = workingDraft
     const uri = _.get(item, 'node.image.uri')
-    const existingIndex = slideshow.indexOf(uri)
+    const existingIndex = _.findIndex(slideshow, { uri })
     const number = existingIndex + 1
     if (existingIndex < 0) return null
     return (

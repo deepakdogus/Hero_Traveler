@@ -3,13 +3,22 @@ import _ from 'lodash'
 
 import {Story} from '../models'
 import getDraft from './getDraft'
-import {parseAndInsertStoryCategories, parseAndInsertStoryHashtags, addCover} from '../story/createStory'
+import {
+  parseAndInsertStoryCategories,
+  parseAndInsertStoryHashtags,
+  addCover,
+  addSlideshow,
+} from '../story/createStory'
 
 // Merge + Save (instead of update) so we run the save
 // Mongoose hooks
 function hasNewCover(attrs){
   return (attrs.coverImage && !attrs.coverImage._id) ||
   (attrs.coverVideo && !attrs.coverVideo._id)
+}
+
+function hasNewSlideshow(attrs){
+  return attrs.slideshow && !_.isEmpty(_.filter(attrs.slideshow, s => _.has(s, 'uri')))
 }
 
 function shouldGetLocation(draft, attrs){
@@ -46,6 +55,7 @@ export default async function updateDraft(draftId, attrs, assetFormater){
   }
 
   if (hasNewCover(attrs)) await addCover(attrs, assetFormater)
+  if (hasNewSlideshow(attrs)) await addSlideshow(attrs, assetFormater)
 
   if (attrs.categories && _.size(attrs.categories)) {
     // @TODO: this should probably happen in middleware

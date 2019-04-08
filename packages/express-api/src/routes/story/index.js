@@ -1,6 +1,6 @@
 import express from 'express'
 import endpointWrapper from '../../utils/endpointWrapper'
-import {hasValidOauth} from '../../middleware'
+import {hasValidOauth, isStoryAuthor} from '../../middleware'
 
 // route functions
 import getStory from './getStory'
@@ -56,30 +56,42 @@ router.post('/draft/cover-video', endpointWrapper(uploadDraftCoverVideoWebhook))
 router.get('/draft', hasValidOauth, endpointWrapper(findDrafts))
 router.get('/draft/:id', hasValidOauth, endpointWrapper(getDraft))
 router.delete('/draft/:id', hasValidOauth, endpointWrapper(removeDraft))
-router.put('/draft/:id', hasValidOauth, endpointWrapper(updateDraft))
+router.put('/draft/:id',
+  hasValidOauth,
+  isStoryAuthor,
+  endpointWrapper(updateDraft),
+)
 
 router.put('/draft/:id/cover-image',
   hasValidOauth,
+  isStoryAuthor,
   endpointWrapper(uploadDraftCoverImage)
 )
 
 router.put('/draft/:id/cover-video',
   hasValidOauth,
+  isStoryAuthor,
   endpointWrapper(uploadDraftCoverVideo)
 )
 
 router.put('/draft/:id/video',
   hasValidOauth,
+  isStoryAuthor,
   endpointWrapper(uploadDraftVideo)
 )
 
 router.put('/draft/:id/image',
   hasValidOauth,
+  isStoryAuthor,
   endpointWrapper(uploadDraftImage)
 )
 router.post('/draft', hasValidOauth, endpointWrapper(createDraft))
 
-router.delete('/:id', hasValidOauth, endpointWrapper(deleteStory))
+router.delete('/:id',
+  hasValidOauth,
+  isStoryAuthor,
+  endpointWrapper(deleteStory),
+)
 
 router.get('/:id/comment', hasValidOauth, endpointWrapper(getComments))
 router.post('/:id/comment', hasValidOauth, endpointWrapper(createComment))

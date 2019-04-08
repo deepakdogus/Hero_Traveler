@@ -166,9 +166,19 @@ class CreateGuide extends SharedCreateGuide {
     else this.rerouteAway()
   }
 
+  checkAuthor() {
+    const { reroute, sessionUserId } = this.props
+
+    // you should not be able to edit a guide if you are not the author
+    if (_.get(this.state.guide, 'author') !== sessionUserId) {
+      return reroute('/feed')
+    }
+  }
   render() {
     const errorMessage = _.get(this, 'props.error.message')
     const actionVerb = this.isExistingGuide() ? 'Saving' : 'Creating'
+
+    this.checkAuthor()
 
     return (
       <Container>

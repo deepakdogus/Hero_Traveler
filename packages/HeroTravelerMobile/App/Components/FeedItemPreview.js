@@ -343,7 +343,7 @@ export default class FeedItemPreview extends Component {
             </Text>
           )}
         </TouchableOpacity>
-        {isReadingScreen && rating && (
+        {isReadingScreen && rating && false && (
           <View style={storyReadingScreenStyles.starRating}>
             <Text style={storyReadingScreenStyles.experience}>
               Overall Experience:

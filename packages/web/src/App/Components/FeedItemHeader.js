@@ -369,7 +369,7 @@ export default class FeedItemHeader extends React.Component {
             <LocationText>{displayLocationPreview(feedItem.locationInfo)}</LocationText>
             <Title mediaType={mediaType}>{feedItem.title}</Title>
             <Subtitle>{feedItem.description}</Subtitle>
-            {feedItem.rating && (
+            {feedItem.rating && false && (
               <OverallExperience>
                 <OverallExperienceText>Overall Experience:</OverallExperienceText>
                 <StarRating valueSelected={feedItem.rating} />

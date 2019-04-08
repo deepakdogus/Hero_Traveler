@@ -5,7 +5,6 @@ import {
   ScrollView,
   View,
   Text,
-  TouchableWithoutFeedback,
   DatePickerIOS,
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -22,7 +21,7 @@ import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
 import RadioButton from '../../Components/RadioButton'
-import StarRating from '../CreateStory/StarRating'
+// import StarRating from '../CreateStory/StarRating'
 
 const api = API.create()
 
@@ -345,15 +344,18 @@ class CreateStoryDetailScreen extends React.Component {
               />
             </View>
           </View>
-          <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
-            <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
-              Rate this experience:{' '}
-            </Text>
-            <StarRating
-              onChange={this._updateRating}
-              valueSelected={workingDraft.rating}
-            />
-          </View>
+          {
+          // disabled until further refined by Joe and Boon
+          // <View style={[styles.fieldWrapper, styles.paddedFieldContainer]}>
+          //   <Text style={[styles.fieldLabel, styles.fieldLabelStar]}>
+          //     Rate this experience:{' '}
+          //   </Text>
+          //   <StarRating
+          //     onChange={this._updateRating}
+          //     valueSelected={workingDraft.rating}
+          //   />
+          // </View>
+          }
           <FormInput
             onPress={this.navToLocation}
             iconName='location'

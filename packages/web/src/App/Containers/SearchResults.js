@@ -163,10 +163,12 @@ class SearchResults extends Component {
 
   search = (helper, hits) => {
     const { country, lat, lng } = this.props
-    helper.addDisjunctiveFacetRefinement(
-      'locationInfo.country',
-      `${country}`,
-    )
+    if (country !== 'undefined') {
+      helper.addDisjunctiveFacetRefinement(
+        'locationInfo.country',
+        `${country}`,
+      )
+    }
     helper
       .setQuery()
       .setQueryParameter(

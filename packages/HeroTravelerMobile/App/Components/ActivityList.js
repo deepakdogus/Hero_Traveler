@@ -5,16 +5,21 @@ import PropTypes from 'prop-types'
 export default class ActivityList extends React.Component {
   static propTypes = {
     activitiesById: PropTypes.arrayOf(
-      PropTypes.string
+      PropTypes.string,
     ),
     onPress: PropTypes.func,
+    renderRow: PropTypes.func,
+    style: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object,
+    ]),
   }
 
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows(this.props.activitiesById)
+      dataSource: ds.cloneWithRows(this.props.activitiesById),
     }
   }
 

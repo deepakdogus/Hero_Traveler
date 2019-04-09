@@ -233,6 +233,14 @@ StorySchema.statics = {
       )
       .populate('coverImage coverVideo author categories hashtags')
       .exec()
+  },
+
+  isAuthor(storyId, userId) {
+    return this.findOne({ _id: storyId })
+    .select('author')
+    .then(story => {
+      return String(story.author) === String(userId)
+    })
   }
 }
 

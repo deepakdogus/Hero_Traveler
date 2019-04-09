@@ -141,17 +141,23 @@ class EditStory extends Component {
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const {
       reroute,
       match,
       originalDraft,
       workingDraft,
+      userId,
     } = this.props
 
     const hasCompletedSave = this.props.syncProgress > 0
       && this.props.syncProgressSteps === this.props.syncProgress
       && prevProps.syncProgress !== this.props.syncProgress
+
+    // you should not be able to edit a story if you are not the author
+    if (_.get(workingDraft, 'author') !== userId) {
+      return reroute('/feed')
+    }
 
     if (originalDraft && originalDraft.id && match.isExact) {
       return reroute(`/editStory/${originalDraft.id}/cover`)
@@ -267,7 +273,7 @@ class EditStory extends Component {
       cleanedDraft.title = _.trim(cleanedDraft.title)
     }
     if (!isFieldSame('description', workingDraft, originalDraft)) {
-     cleanedDraft.description = _.trim(cleanedDraft.description)
+      cleanedDraft.description = _.trim(cleanedDraft.description)
     }
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)

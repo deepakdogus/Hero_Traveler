@@ -54,6 +54,13 @@ export default class Activity extends Component {
     if (!seen) markSeen(id)
   }
 
+  onPressWrapper = () => {
+    const { activity } = this.props
+    this._markSeen()
+    if (activity.kind === ActivityTypes.follow) this._navToUser()
+    else this._navToReadingScreen()
+  }
+
   _navToUser = () => {
     const { activity } = this.props
     NavActions.readOnlyProfile({ userId: getUserId(activity) })
@@ -82,7 +89,7 @@ export default class Activity extends Component {
 
     return (
       <View style={styles.root}>
-        <TouchableOpacity onPress={this._markSeen}>
+        <TouchableOpacity onPress={this.onPressWrapper}>
           <View style={styles.container}>
             <TouchableOpacity onPress={this._navToUser}>
               <Avatar avatarUrl={avatar ? getImageUrl(avatar, 'avatar') : null} />

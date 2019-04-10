@@ -97,15 +97,13 @@ class SearchResults extends Component {
     // title label
     let label = ''
     if (location.search && location.search.indexOf('?t=') !== -1) {
-      label = decodeURIComponent(
-        location.search.split('?')[1].substring(2),
-      )
+      label = decodeURIComponent(location.search.split('?')[1].substring(2))
     }
     else {
-      label = `Search Results - ${formatcoords(
-        Number(lat),
-        Number(lng),
-      ).format('DD X', {latLonSeparator: ', ', decimalPlaces: 2})}`
+      label = `Search Results - ${formatcoords(Number(lat), Number(lng)).format('DD X', {
+        latLonSeparator: ', ',
+        decimalPlaces: 2,
+      })}`
     }
     this.setState({
       label,
@@ -129,7 +127,7 @@ class SearchResults extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.wentBack) this.setState({seeAllType: '', seeAllLabel: ''})
+    if (nextProps.wentBack) this.setState({ seeAllType: '', seeAllLabel: '' })
   }
 
   componentWillUnmount() {
@@ -164,17 +162,11 @@ class SearchResults extends Component {
   search = (helper, hits) => {
     const { country, lat, lng } = this.props
     if (country !== 'undefined') {
-      helper.addDisjunctiveFacetRefinement(
-        'locationInfo.country',
-        `${country}`,
-      )
+      helper.addDisjunctiveFacetRefinement('locationInfo.country', `${country}`)
     }
     helper
       .setQuery()
-      .setQueryParameter(
-        'aroundLatLng',
-        `${lat}, ${lng}`,
-      )
+      .setQueryParameter('aroundLatLng', `${lat}, ${lng}`)
       .setQueryParameter('aroundPrecision', METER_PRECISION)
       .setQueryParameter('hitsPerPage', hits)
       .search()
@@ -183,25 +175,24 @@ class SearchResults extends Component {
   _onClickShowAll = (seeAllType, seeAllLabel) => {
     const { lat, lng, country, reroute } = this.props
     return () => {
-      this.setState({seeAllType, seeAllLabel})
-      reroute(`/results/${country}/${lat}/${lng}/${seeAllType}?t=${
-        encodeURIComponent(this.state.label)
-      }`)
+      this.setState({ seeAllType, seeAllLabel })
+      reroute(
+        `/results/${country}/${lat}/${lng}/${seeAllType}?t=${encodeURIComponent(
+          this.state.label,
+        )}`,
+      )
     }
   }
 
   _shouldDisplaySection = (items, type) => {
     const { seeAllType } = this.state
-    return (
-      !!items
-      && !!items.length
-      && (seeAllType === type
-      || seeAllType === '')
-    )
+    return !!items && !!items.length && (seeAllType === type || seeAllType === '')
   }
 
   _hasResults = () => {
-    const {lastSearchResults: { guides, stories } } = this.state
+    const {
+      lastSearchResults: { guides, stories },
+    } = this.state
     return !!guides.length || !!stories.length
   }
 
@@ -211,36 +202,31 @@ class SearchResults extends Component {
       <Container>
         <ContentWrapper>
           <ResultTitle>
-            {
-              seeAllType
-              ? `${label || 'Search Results'} - ${seeAllLabel}`
-              : label
-            }
+            {seeAllType ? `${label || 'Search Results'} - ${seeAllLabel}` : label}
           </ResultTitle>
           <StyledDivider color="light-grey" />
           {!this._hasResults() && (
-            <FeedItemMessage
-              message='Looks like there are no nearby results for this location.'
-            />
+            <FeedItemMessage message="Looks like there are no nearby results for this location." />
           )}
           {this._hasResults()
             && Object.keys(this.typeLabels).map(type => {
-            const feedItems = (type === 'guides' || type === 'stories')
-              ? lastSearchResults[type]
-              : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
-            if (!this._shouldDisplaySection(feedItems, type)) return null
+              const feedItems
+                = type === 'guides' || type === 'stories'
+                  ? lastSearchResults[type]
+                  : lastSearchResults.stories.filter(feedItem => feedItem.type === type)
+              if (!this._shouldDisplaySection(feedItems, type)) return null
 
-            return (
-              <FeedItemGrid
-                key={`${type}-search-grid`}
-                feedItems={feedItems}
-                isShowAll={this.state.seeAllType === type}
-                label={this.typeLabels[type].toUpperCase()}
-                showLabel={this.state.seeAllType !== type}
-                onClickShowAll={this._onClickShowAll(type, this.typeLabels[type])}
-              />
-            )
-          })}
+              return (
+                <FeedItemGrid
+                  key={`${type}-search-grid`}
+                  feedItems={feedItems}
+                  isShowAll={this.state.seeAllType === type}
+                  label={this.typeLabels[type].toUpperCase()}
+                  showLabel={this.state.seeAllType !== type}
+                  onClickShowAll={this._onClickShowAll(type, this.typeLabels[type])}
+                />
+              )
+            })}
         </ContentWrapper>
         <Footer />
       </Container>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getLatLng, geocodeByAddress } from 'react-places-autocomplete'
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
@@ -207,9 +207,14 @@ class SignupAdditionalInfo extends Component {
 
   handleHometownChange = address => this.setState({ address })
 
-  handleHometownSelect = async address => {
+  handleHometownSelect = async (address, placeId) => {
     this.setState({ address })
-    let locationInfo = await formatLocationWeb(address, geocodeByAddress, getLatLng)
+    let locationInfo = await formatLocationWeb(
+      address,
+      placeId,
+      geocodeByPlaceId,
+      getLatLng,
+    )
     this.setState({ locationInfo, location: locationInfo.name })
   }
 
@@ -266,7 +271,9 @@ class SignupAdditionalInfo extends Component {
             >
               <AutocompleteItem>
                 <StyledLocation>{suggestion.formattedSuggestion.mainText}</StyledLocation>
-                <StyledAddress>{suggestion.formattedSuggestion.secondaryText}</StyledAddress>
+                <StyledAddress>
+                  {suggestion.formattedSuggestion.secondaryText}
+                </StyledAddress>
               </AutocompleteItem>
               {idx !== suggestions.length - 1 && (
                 <StyledHorizontalDivider
@@ -282,11 +289,7 @@ class SignupAdditionalInfo extends Component {
   )
 
   render() {
-    const {
-      address,
-      gender,
-      genderSelfDescribed,
-    } = this.state
+    const { address, gender, genderSelfDescribed } = this.state
     const startRange = moment()
       .subtract(100, 'years')
       .format('YYYY-MM-DD')
@@ -311,7 +314,9 @@ class SignupAdditionalInfo extends Component {
             <DescriptionTitle>
               Tell us about yourself so we can better customize your experience.
             </DescriptionTitle>
-            <Subtitle>(This is optional info that is not visible to other users)</Subtitle>
+            <Subtitle>
+              (This is optional info that is not visible to other users)
+            </Subtitle>
             <AddInfoContainer>
               <Section>
                 <GoogleLocator
@@ -349,16 +354,24 @@ class SignupAdditionalInfo extends Component {
                         label={'Male'}
                         style={styles.radioButton}
                         labelStyle={styles.radioButtonLabel}
-                        checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
-                        uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
+                        checkedIcon={
+                          <RadioButtonChecked style={styles.radioButtonFilled} />
+                        }
+                        uncheckedIcon={
+                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
+                        }
                       />
                       <RadioButton
                         value={'female'}
                         label={'Female'}
                         style={styles.radioButton}
                         labelStyle={styles.radioButtonLabel}
-                        checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
-                        uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
+                        checkedIcon={
+                          <RadioButtonChecked style={styles.radioButtonFilled} />
+                        }
+                        uncheckedIcon={
+                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
+                        }
                       />
                       <RadioButton
                         value={'other'}
@@ -366,8 +379,12 @@ class SignupAdditionalInfo extends Component {
                         style={styles.radioButton}
                         inputStyle={{ backgroundColor: 'green' }}
                         labelStyle={styles.radioButtonLabel}
-                        checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
-                        uncheckedIcon={<RadioButtonUnchecked style={styles.radioButtonUnfilled} />}
+                        checkedIcon={
+                          <RadioButtonChecked style={styles.radioButtonFilled} />
+                        }
+                        uncheckedIcon={
+                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
+                        }
                       />
                     </RadioButtonGroup>
                     <Input

@@ -259,6 +259,7 @@ class SignupAdditionalInfo extends Component {
           const AutocompleteContainer = suggestion.active
             ? ActiveAutocompleteItemContainer
             : InactiveAutocompleteItemContainer
+          if (suggestion.types.includes('country')) return null
           return (
             <AutocompleteContainer
               key={suggestion.placeId}
@@ -316,7 +317,7 @@ class SignupAdditionalInfo extends Component {
               <Section>
                 <GoogleLocator
                   value={address}
-                  searchOptions={{ types: ['(cities)'] }}
+                  searchOptions={{ types: ['(regions)'] }}
                   onChange={this.handleHometownChange}
                   onSelect={this.handleHometownSelect}
                   renderChildren={this.renderHometownInput}

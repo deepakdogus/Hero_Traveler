@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { Actions as NavActions } from 'react-native-router-flux'
+
+import algoliasearchModule from 'algoliasearch/reactnative'
+import AlgoliaSearchHelper from 'algoliasearch-helper'
 
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
@@ -13,6 +16,7 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 import { Metrics } from '../../Shared/Themes'
 import styles from '../Styles/MyFeedScreenStyles'
+import env from '../../Config/Env'
 
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
@@ -21,14 +25,24 @@ import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
 import SearchPlacesPeople from '../SearchPlacesPeople'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+const imageHeight
+  = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
   following: 'following',
   guides: 'guides',
+  nearby: 'nearby',
   // featured: 'featured',
   // trending: 'trending',
 }
+
+const algoliasearch = algoliasearchModule(
+  env.SEARCH_APP_NAME,
+  env.SEARCH_API_KEY,
+)
+const STORY_INDEX = env.SEARCH_STORY_INDEX
+const MAX_STORY_RESULTS = 100
+const ONE_HUNDRED_MILES = 160934 // 100 miles
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -49,14 +63,16 @@ class MyFeedScreen extends React.Component {
     discardUpdate: PropTypes.func,
     resetFailCount: PropTypes.func,
     updateOrder: PropTypes.arrayOf(PropTypes.string),
-  };
+  }
 
   constructor(props) {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: tabTypes.following,
+      activeTab: tabTypes.following,
       hasSearchText: false,
+      searching: false,
+      searchResults: [],
     }
   }
 
@@ -69,18 +85,16 @@ class MyFeedScreen extends React.Component {
       NavActions.signupFlow()
     }
     SplashScreen.hide()
-  }
-
-  isPendingUpdate() {
-    const {sync} = this.props
-    return sync.syncProgressSteps
-    && sync.syncProgressSteps !== sync.syncProgress
-    && !sync.error
-  }
-
-  isFailedLoad(nextProps){
-    return nextProps.error
-    && this.props.fetchStatus.fetching && !nextProps.fetchStatus.fetching
+    this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.helper.on('result', res => {
+      this.setState({
+        searching: false,
+        searchResults: res.hits.map(story => story.id),
+      })
+    })
+    this.helper.on('search', () => {
+      this.setState({ searching: true })
+    })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -90,50 +104,78 @@ class MyFeedScreen extends React.Component {
       this.props.error !== nextProps.error,
       !_.isEqual(this.props.sync, nextProps.sync),
       !_.isEqual(this.props.pendingUpdates, nextProps.pendingUpdates),
-      this.state.selectedTab !== nextState.selectedTab,
+      this.state.activeTab !== nextState.activeTab,
       this.state.hasSearchText !== nextState.hasSearchText,
+      this.state.searchResults.length !== nextState.searchResults.length,
     ])
-
     return shouldUpdate
   }
 
-  _wrapElt(elt){
+  search() {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        this.helper
+          .setQuery('')
+          .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+          .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+          .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
+          .search()
+      },
+      error => console.error(error),
+    )
+  }
+
+  isPendingUpdate() {
+    const { sync } = this.props
     return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>
-        {elt}
-      </View>
+      sync.syncProgressSteps
+      && sync.syncProgressSteps !== sync.syncProgress
+      && !sync.error
+    )
+  }
+
+  isFailedLoad(nextProps) {
+    return (
+      nextProps.error
+      && this.props.fetchStatus.fetching
+      && !nextProps.fetchStatus.fetching
+    )
+  }
+
+  _wrapElt(elt) {
+    return (
+      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
     )
   }
 
   _showNoStories() {
     let text = ''
-    switch(this.state.selectedTab) {
-      case 'following':
-        text = `You aren't following any users yet.`
-        break
-      case 'guide':
-        text = `There are no guides to display.`
-        break
-      case 'featured':
-      case 'trending':
-        text = `There are no ${this.state.selectedTab} stories to show right now.`
-        break
-      default:
-        text = `There is no content available. Check back later.`
+    switch (this.state.activeTab) {
+    case 'following':
+      text = `You aren't following any users yet.`
+      break
+    case 'guide':
+      text = `There are no guides to display.`
+      break
+    case 'featured':
+    case 'trending':
+      text = `There are no ${this.state.activeTab} stories to show right now.`
+      break
+    default:
+      text = `There is no content available. Check back later.`
     }
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
-        <View style={styles.tabWrapper}>
-          {this.renderTabs()}
-        </View>
-        <NoStoriesMessage text={text}/>
+        <View style={styles.tabWrapper}>{this.renderTabs()}</View>
+        <NoStoriesMessage text={text} />
       </View>
     )
   }
 
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
+    if (this.state.activeTab === tabTypes.nearby) return this.search()
     this.props.attemptGetUserFeedStories(this.props.userId)
     this.props.attemptGetUserFeedGuides(this.props.userId)
   }
@@ -143,7 +185,9 @@ class MyFeedScreen extends React.Component {
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
-        isStory={this.state.selectedTab === tabTypes.following}
+        isStory={[tabTypes.following, tabTypes.nearby].includes(
+          this.state.activeTab,
+        )}
         feedItem={feedItem}
         height={imageHeight}
         userId={this.props.userId}
@@ -165,23 +209,26 @@ class MyFeedScreen extends React.Component {
     return undefined
   }
 
-  selectTab = (selectedTab) => {
-    this.setState({selectedTab})
+  selectTab = activeTab => {
+    const isNearbyTab = activeTab === tabTypes.nearby
+    this.setState({ activeTab, searching: isNearbyTab }, () => {
+      if (isNearbyTab) this.search()
+    })
   }
 
-  renderTabs(){
-    const {selectedTab} = this.state
+  renderTabs() {
+    const { activeTab } = this.state
     return (
       <TabBar
         tabs={tabTypes}
-        activeTab={selectedTab}
+        activeTab={activeTab}
         onClickTab={this.selectTab}
         tabStyle={styles.tabStyle}
       />
     )
   }
 
-  render () {
+  render() {
     let {
       storiesById,
       fetchStatus,
@@ -190,15 +237,24 @@ class MyFeedScreen extends React.Component {
       stories,
       user,
     } = this.props
-    const { selectedTab } = this.state
+    const { activeTab } = this.state
     let bottomContent
 
-    const isFollowingSelected = selectedTab === tabTypes.following
+    const isStoryTabSelected = [tabTypes.following, tabTypes.nearby].includes(
+      activeTab,
+    )
     const failure = this.getFirstPendingFailure()
 
+    let entitiesById = isStoryTabSelected ? storiesById : feedGuidesById
+    if (activeTab === tabTypes.nearby) {
+      entitiesById = entitiesById.filter(storyId =>
+        this.state.searchResults.includes(storyId),
+      )
+    }
+
     if (
-      (isFollowingSelected && (!storiesById || !storiesById.length))
-      || (!isFollowingSelected && (!feedGuidesById || !feedGuidesById.length))
+      (isStoryTabSelected && (!storiesById || !storiesById.length))
+      || (!isStoryTabSelected && (!feedGuidesById || !feedGuidesById.length))
     ) {
       let innerContent = this._showNoStories()
       bottomContent = this._wrapElt(innerContent)
@@ -206,8 +262,8 @@ class MyFeedScreen extends React.Component {
     else {
       bottomContent = (
         <ConnectedFeedList
-          isStory={isFollowingSelected}
-          entitiesById={isFollowingSelected ? storiesById : feedGuidesById}
+          isStory={isStoryTabSelected}
+          entitiesById={entitiesById}
           renderFeedItem={this.renderFeedItem}
           renderSectionHeader={this.renderTabs()}
           sectionContentHeight={40}
@@ -232,19 +288,15 @@ class MyFeedScreen extends React.Component {
           user={user}
           placeholder={`Search`}
         >
-          { bottomContent }
+          {bottomContent}
         </SearchPlacesPeople>
       </View>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  let {
-    userFeedById,
-    fetchStatus,
-    error,
-  } = state.entities.stories
+const mapStateToProps = state => {
+  let { userFeedById, fetchStatus, error } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
   return {
     userId: state.session.userId,
@@ -260,15 +312,23 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    attemptGetUserFeedStories: (userId) => dispatch(StoryActions.feedRequest(userId)),
-    attemptGetUserFeedGuides: (userId) => dispatch(GuideActions.guideFeedRequest(userId)),
-    discardUpdate: (storyId) => dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
-    resetFailCount: (storyId) => dispatch(PendingUpdatesActions.resetFailCount(storyId)),
-    saveLocalDraft: (story) => dispatch(StoryCreateActions.saveLocalDraft(story)),
-    updateDraft: (story) => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
+    attemptGetUserFeedStories: userId =>
+      dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedGuides: userId =>
+      dispatch(GuideActions.guideFeedRequest(userId)),
+    discardUpdate: storyId =>
+      dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
+    resetFailCount: storyId =>
+      dispatch(PendingUpdatesActions.resetFailCount(storyId)),
+    saveLocalDraft: story => dispatch(StoryCreateActions.saveLocalDraft(story)),
+    updateDraft: story =>
+      dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyFeedScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MyFeedScreen)

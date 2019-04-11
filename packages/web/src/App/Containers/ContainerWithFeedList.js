@@ -10,7 +10,7 @@ export const itemsPerQuery = 100
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
-const ONE_HUNDRED_MILES = 160934
+const ONE_HUNDRED_MILES = 160934 // 100 miles
 
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
@@ -55,7 +55,7 @@ export default class ContainerWithFeedList extends React.Component {
     this.helper
       .setQuery()
       .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-      .setQueryParameter('aroundPrecision', ONE_HUNDRED_MILES)
+      .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
       .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
       .search()
   }

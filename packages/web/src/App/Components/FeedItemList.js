@@ -30,6 +30,7 @@ export default class FeedItemList extends React.Component {
     activeTab: PropTypes.string,
     feedItemCount: PropTypes.number,
     getTabInfo: PropTypes.func,
+    fetching: PropTypes.bool,
   }
 
   state = {
@@ -59,43 +60,34 @@ export default class FeedItemList extends React.Component {
       if (!feedItem) return rows
 
       if (index !== 0) {
-        rows.push((
-          <StyledDivider
-            key={`hr-${feedItem.id}`}
-            color={'lighter-grey'}
-          />
-        ))
+        rows.push(<StyledDivider
+          key={`hr-${feedItem.id}`}
+          color={'lighter-grey'}
+                  />)
       }
 
-      rows.push((
+      rows.push(
         <FeedItemPreview
           key={feedItem.id}
           guideId={guideId}
           feedItem={feedItem}
           isStory={this.isStory(feedItem)}
-          type='list'
-        />
-      ))
+          type="list"
+        />,
+      )
       return rows
     }, [])
 
     return rows
   }
 
-  loadFeedItems = (page) => {
-    const {
-      feedItemCount,
-      activeTab,
-      getTabInfo,
-      feedItems,
-    } = this.props
-    this.setState({page})
-    const isBeforeLastPage = (
-      (page * itemsPerPage) % itemsPerQuery)
-      >= (itemsPerQuery - itemsPerPage
-    )
+  loadFeedItems = page => {
+    const { feedItemCount, activeTab, getTabInfo, feedItems } = this.props
+    this.setState({ page })
+    const isBeforeLastPage
+      = (page * itemsPerPage) % itemsPerQuery >= itemsPerQuery - itemsPerPage
     if (isBeforeLastPage && activeTab === 'STORIES') {
-      const pageToQuery = ((page * itemsPerPage + itemsPerPage) / itemsPerQuery) + 1
+      const pageToQuery = (page * itemsPerPage + itemsPerPage) / itemsPerQuery + 1
       getTabInfo(pageToQuery)
     }
     if (
@@ -107,12 +99,21 @@ export default class FeedItemList extends React.Component {
   }
 
   render() {
-    const {
-      feedItems,
-      activeTab,
-    } = this.props
+    const { feedItems, activeTab, fetching } = this.props
+    const noFeedItems = !feedItems || !feedItems.length
 
-    if (!feedItems || !feedItems.length) {
+    if (fetching) return <FeedItemMessage message={'Fetching your feed...'} />
+
+    if (!fetching && activeTab === 'NEARBY' && noFeedItems)
+      return (
+        <FeedItemMessage
+          message={
+            `We couldn't determine your location or there are no stories near you.`
+          }
+        />
+      )
+
+    if (noFeedItems) {
       const noItemsMessage = `Looks like there are no ${
         activeTab ? activeTab.toLowerCase() : 'stories'
       } yet.`

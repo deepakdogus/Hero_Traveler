@@ -37,7 +37,7 @@ const imageHeight
 // removing story subtypes for now, to add back replace all instances of
 // `restrictedTabTypes` with `tabTypes`
 const restrictedTabTypes = {
-  stories: null,
+  stories: 'stories',
   guides: 'guides',
 }
 
@@ -63,7 +63,7 @@ class CategoryFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: null,
+      selectedTab: 'stories',
     }
   }
 
@@ -190,7 +190,7 @@ class CategoryFeedScreen extends React.Component {
     if (fetchStatus.fetching && !refreshing) {
       bottomContent = this.renderNoStories(<Loader />)
     }
- else if (
+    else if (
       (selectedTab !== restrictedTabTypes.guides
         && _.size(storiesById) === 0)
       || (selectedTab === restrictedTabTypes.guides
@@ -204,7 +204,7 @@ class CategoryFeedScreen extends React.Component {
         />,
       )
     }
- else {
+    else {
       bottomContent = (
         <ConnectedFeedList
           isStory={selectedTab !== restrictedTabTypes.guides}

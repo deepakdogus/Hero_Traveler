@@ -32,6 +32,7 @@ const tabTypes = {
   following: 'following',
   guides: 'guides',
   nearby: 'nearby',
+  fromUs: 'from us',
   // featured: 'featured',
   // trending: 'trending',
 }
@@ -50,6 +51,7 @@ class MyFeedScreen extends React.Component {
     error: PropTypes.object,
     feedGuidesById: PropTypes.arrayOf(PropTypes.string),
     attemptGetUserFeedStories: PropTypes.func,
+    attemptGetBadgeUserStories: PropTypes.func,
     attemptGetNearbyFeedStories: PropTypes.func,
     attemptGetUserFeedGuides: PropTypes.func,
     userId: PropTypes.string,
@@ -93,6 +95,12 @@ class MyFeedScreen extends React.Component {
     })
   }
 
+  componentWillUnmount () {
+    // reset to data needed for first/default tab to avoid flash when user returns to feed
+    this.props.attemptGetUserFeedStories()
+    this.props.attemptGetUserFeedGuides()
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = _.some([
       this.props.storiesById !== nextProps.storiesById,
@@ -119,8 +127,7 @@ class MyFeedScreen extends React.Component {
         },
         error => console.error(error),
       )
-    },
-    )
+    })
   }
 
   isPendingUpdate() {
@@ -139,6 +146,11 @@ class MyFeedScreen extends React.Component {
       && !nextProps.fetchStatus.fetching
     )
   }
+
+  isStoryTabSelected = () =>
+    [tabTypes.following, tabTypes.nearby, tabTypes.fromUs].includes(
+      this.state.activeTab,
+    )
 
   _wrapElt(elt) {
     return (
@@ -173,7 +185,10 @@ class MyFeedScreen extends React.Component {
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
     this.setState({ refreshing: true })
-    if (this.state.activeTab === tabTypes.nearby) return this.searchNearbyStories()
+    if (this.state.activeTab === tabTypes.nearby)
+      return this.searchNearbyStories()
+    if (this.state.activeTab === tabTypes.fromUs)
+      return this.props.attemptGetBadgeUserStories()
     this.props.attemptGetUserFeedStories(this.props.userId)
     this.props.attemptGetUserFeedGuides(this.props.userId)
   }
@@ -183,9 +198,7 @@ class MyFeedScreen extends React.Component {
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
-        isStory={[tabTypes.following, tabTypes.nearby].includes(
-          this.state.activeTab,
-        )}
+        isStory={this.isStoryTabSelected()}
         feedItem={feedItem}
         height={imageHeight}
         userId={this.props.userId}
@@ -211,6 +224,8 @@ class MyFeedScreen extends React.Component {
     const isNearbyTab = activeTab === tabTypes.nearby
     this.setState({ activeTab, searching: isNearbyTab }, () => {
       if (isNearbyTab) return this.searchNearbyStories()
+      if (activeTab === tabTypes.fromUs)
+        return this.props.attemptGetBadgeUserStories(this.props.userId)
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
     })
@@ -237,12 +252,9 @@ class MyFeedScreen extends React.Component {
       stories,
       user,
     } = this.props
-    const { activeTab } = this.state
     let bottomContent
 
-    const isStoryTabSelected = [tabTypes.following, tabTypes.nearby].includes(
-      activeTab,
-    )
+    const isStoryTabSelected = this.isStoryTabSelected()
     const failure = this.getFirstPendingFailure()
 
     let entitiesById = isStoryTabSelected ? storiesById : feedGuidesById
@@ -313,6 +325,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(StoryActions.feedRequest(userId)),
     attemptGetNearbyFeedStories: (userId, nearbyStoryIds) =>
       dispatch(StoryActions.nearbyFeedRequest(userId, nearbyStoryIds)),
+    attemptGetBadgeUserStories: userId =>
+      dispatch(StoryActions.badgeUserFeedRequest(userId)),
     attemptGetUserFeedGuides: userId =>
       dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: storyId =>

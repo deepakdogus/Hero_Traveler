@@ -277,6 +277,20 @@ export const styles = StyleSheet.create({
   toolbarPadding: {
     height: Metrics.tabBarHeight,
   },
+  textBlock: {
+    marginLeft: 30,
+    marginRight: 30,
+    flexDirection: 'row',
+  },
+  overallExperienceText: {
+    fontSize: 16,
+    fontWeight: '600',
+    flex: 1,
+  },
+  starsContainer: {
+    width: 200,
+    flex: 1,
+  },
 })
 
 export const rendererStyles = StyleSheet.flatten({

@@ -125,10 +125,10 @@ const StorySchema = new Schema({
   rating: {
     type: Number,
   },
-  slideshow: {
-    type: Array,
-    default: []
-  },
+  slideshow: [{
+    type: Schema.ObjectId,
+    ref: UploadRef,
+  }],
   cost: {
     type: Number,
   },
@@ -163,6 +163,7 @@ StorySchema.statics = {
       })
       .populate('categories')
       .populate('hashtags')
+      .populate('slideshow')
       .populate('coverImage coverVideo')
   },
 
@@ -177,6 +178,7 @@ StorySchema.statics = {
       .populate('categories')
       .populate('hashtags')
       .populate('coverImage coverVideo')
+      .populate('slideshow')
       .sort({publishedDate: -1})
   },
 

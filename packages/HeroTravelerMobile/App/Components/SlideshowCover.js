@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  Text,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Swiper from 'react-native-swiper'
 import ImageWrapper from './ImageWrapper'
 import VideoPlayer, {PlayButton} from './VideoPlayer'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -15,10 +18,9 @@ import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
 import TabIcon from './TabIcon'
 
-export default class FeedItemCover extends Component {
+export default class SlideshowCover extends Component {
   static propTypes = {
-    coverType: PropTypes.oneOf(['image', 'video']).isRequired,
-    cover: PropTypes.object,
+    slideshow: PropTypes.array,
     onPress: PropTypes.func,
     style: PropTypes.number,
     children: PropTypes.object,
@@ -47,19 +49,20 @@ export default class FeedItemCover extends Component {
     this.state = {
       isPlaying: startVideoImmediately,
       isMuted: props.isFeed,
+      currentIndex: 1,
     }
   }
 
   hasVideo() {
-    return this.props.coverType === 'video' && !!this.props.cover
+    return _.get(this.props, 'slideshow.0.purpose') !== 'coverImage' && !!this.props.slideshow
   }
 
   hasImage() {
-    return this.props.coverType === 'image' && !!this.props.cover
+    return _.get(this.props, 'slideshow.0.purpose') === 'coverImage' && !!this.props.slideshow
   }
 
   _getWidthHeight(isOverride = false){
-    const {isFeed, cover} = this.props
+    const {isFeed, slideshow} = this.props
     if (isFeed && !isOverride) {
       if (this.hasImage()) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
@@ -71,7 +74,7 @@ export default class FeedItemCover extends Component {
     else {
       let height = Math.min(
         Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(slideshow[0])),
       )
       height = Math.max(282, height)
       return {
@@ -130,9 +133,9 @@ export default class FeedItemCover extends Component {
       : 6,
   })
 
-  renderImage() {
+  renderImage(cover) {
     let imageUrl = getImageUrl(
-      this.props.cover,
+      cover,
       'optimized',
       this._getWidthHeight(true),
     )
@@ -161,6 +164,12 @@ export default class FeedItemCover extends Component {
   _changeMute = (val) => this.setState({isMuted: val})
 
   _makeRef = (i) => this.player = i
+
+  _handleIndexChanged = (index) => {
+    this.setState({
+      currentIndex: index + 1,
+    })
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.autoPlayVideo && !this.props.autoPlayVideo && !this.state.isPlaying) {
@@ -206,16 +215,16 @@ export default class FeedItemCover extends Component {
   component and a second through the conditional renders we have below. This should be
   refactored
   */
-  renderVideo() {
+  renderVideo(cover) {
     const videoThumbnailOptions = {
       video: true,
       width: 'screen',
     }
 
-    const videoImageUrl = getImageUrl(this.props.cover, 'optimized', videoThumbnailOptions)
+    const videoImageUrl = getImageUrl(cover, 'optimized', videoThumbnailOptions)
 
-    let videoPath = getVideoUrl(this.props.cover)
-    let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
+    let videoPath = getVideoUrl(cover)
+    let nonStreamingVideoPath = getVideoUrl(cover, false)
 
     // If videoPath is a file url, then we do not need preview image or stream url
     if (this.props.isFeed && videoPath.startsWith('file://')) {
@@ -274,15 +283,15 @@ export default class FeedItemCover extends Component {
     )
   }
 
-  render() {
+  renderItem(s) {
     let coverType
-    if (this.hasImage()) coverType = 'image'
-    else if (this.hasVideo()) coverType = 'video'
+    if (s.purpose === 'coverImage') coverType = 'image'
+    else coverType = 'video'
 
     return (
       <View style={[styles.root, this.props.style]}>
-        {this.hasVideo() && coverType === 'video' && this.renderVideo()}
-        {coverType === 'image' && this.renderImage()}
+        {this.hasVideo() && coverType === 'video' && this.renderVideo(s)}
+        {coverType === 'image' && this.renderImage(s)}
         {!coverType && (
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.noCover}>
@@ -294,6 +303,34 @@ export default class FeedItemCover extends Component {
             </View>
           </TouchableWithoutFeedback>
         )}
+      </View>
+    )
+  }
+
+  render() {
+    const { slideshow } = this.props
+    const { currentIndex } = this.state
+    return (
+      <View style={styles.root}>
+        <Swiper
+          loop={false}
+          showsButtons={false}
+          dotColor="#cccccc"
+          activeDotColor="#ed1e2e"
+          paginationStyle={paginationStyle}
+          onIndexChanged={this._handleIndexChanged}
+          style={{
+            marginBottom: 20,
+            height: 350,
+            backgroundColor: 'white',
+            position: 'relative',
+          }}
+        >
+          {slideshow.map(s => this.renderItem(s))}
+        </Swiper>
+        <View style={styles.topPagination}>
+          <Text style={styles.paginationText}>{currentIndex} / {slideshow.length}</Text>
+        </View>
       </View>
     )
   }
@@ -314,10 +351,16 @@ const embeddedImageStyle = {
   right: 0,
 }
 
+const paginationStyle = {
+  bottom: -23,
+}
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.feedDividerGrey,
+    marginBottom: 40,
+    position: 'relative',
+    backgroundColor: 'white',
   },
   videoWrapper: {
     flex: 1,
@@ -378,5 +421,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     right: 5,
+  },
+  topPagination: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    padding: 5,
+    width: 50,
+    height: 30,
+  },
+  paginationText: {
+    color: 'white',
+    textAlign: 'center',
   },
 })

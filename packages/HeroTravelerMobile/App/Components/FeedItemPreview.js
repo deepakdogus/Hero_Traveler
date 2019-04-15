@@ -21,6 +21,7 @@ import LikesComponent from './LikeComponent'
 import TrashCan from './TrashCan'
 import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
+import SlideshowCover from './SlideshowCover'
 import TabIcon from './TabIcon'
 import GuideMap from './GuideMap'
 import {
@@ -70,12 +71,14 @@ export default class FeedItemPreview extends Component {
     isBookmarked: PropTypes.bool,
     selectedStories: PropTypes.array,
     location: PropTypes.string,
+    hideDescription: PropTypes.bool,
   }
 
   static defaultProps = {
     showLike: true,
     isReadingScreen: false,
     isFeed: true,
+    hideDescription: false,
   }
 
   navToStoryEdit = () => {
@@ -165,11 +168,13 @@ export default class FeedItemPreview extends Component {
       isStory,
       isFeed,
       isReadingScreen,
+      hideDescription,
       feedItem: { description },
     } = this.props
     return !!description
       && !(!isStory && isFeed)
       && isReadingScreen
+      && !hideDescription
   }
 
   shouldRenderBookmarks = () => (
@@ -296,7 +301,6 @@ export default class FeedItemPreview extends Component {
   renderBottomSection() {
     const {counts, description, coverCaption, draft, type} = this.props.feedItem
     const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
-
     if (this.isGuideReadingScreen()) return null
 
     return (
@@ -409,6 +413,8 @@ export default class FeedItemPreview extends Component {
     const playButtonSize = height > 250 ? 'large' : 'small'
     const cover = feedItem.coverImage || feedItem.coverVideo
     const isReadingScreen = location === 'story' || location === 'guide'
+    const coverType = feedItem.coverImage ? 'image' : 'video'
+    const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
 
     return (
       <View style={[
@@ -416,13 +422,30 @@ export default class FeedItemPreview extends Component {
         !isReadingScreen && styles.cardView,
       ]}>
         {isReadingScreen && this.renderUserSection()}
-        {isShowCover && (
+        {
+          isSlideshow && (
+          <SlideshowCover
+            areInRenderLocation={this.props.areInRenderLocation}
+            autoPlayVideo={this.props.autoPlayVideo}
+            allowVideoPlay={this.props.allowVideoPlay}
+            slideshow={feedItem.slideshow}
+            onPress={this._onPress}
+            showPlayButton={showPlayButton}
+            playButtonSize={playButtonSize}
+            isFeed={this.props.isFeed}
+            shouldEnableAutoplay={this.shouldEnableAutoplay()}
+            title={this.props.feedItem.title}
+            isReadingScreen={isReadingScreen}
+            isGuide={!isStory}
+          />
+        )}
+        {!isSlideshow && isShowCover && (
           <FeedItemCover
             areInRenderLocation={this.props.areInRenderLocation}
             autoPlayVideo={this.props.autoPlayVideo}
             allowVideoPlay={this.props.allowVideoPlay}
             cover={cover}
-            coverType={feedItem.coverImage ? 'image' : 'video'}
+            coverType={coverType}
             onPress={this._onPress}
             showPlayButton={showPlayButton}
             playButtonSize={playButtonSize}

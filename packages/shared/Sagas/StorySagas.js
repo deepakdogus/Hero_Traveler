@@ -393,6 +393,7 @@ export function * saveLocalDraft (api, action) {
     return
   }
 
+  console.log('calling createStory', _.cloneDeep(draft))
   const response = yield call(api.createStory, draft)
   console.log('response', response)
   if (response.ok) {

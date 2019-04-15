@@ -35,10 +35,12 @@ class ReadingScreenOverlap extends React.Component {
     animatedViews: PropTypes.arrayOf(PropTypes.func),
     selectedTab: PropTypes.string,
     isStory: PropTypes.bool,
+    hideDescription: PropTypes.bool,
   }
 
   static defaultProps = {
     animatedViews: [],
+    hideDescription: false,
   }
 
   constructor(props) {
@@ -58,7 +60,7 @@ class ReadingScreenOverlap extends React.Component {
       author, user, isLiked, isBookmarked, renderBody, animatedViews,
       onPressLike, onPressBookmark, onPressComment, onPressShare,
       fetching, getTargetEntity, targetEntity, flagTargetEntity,
-      selectedTab, isStory,
+      selectedTab, isStory, hideDescription,
     } = this.props
     const { scrollY } = this.state
     if (!targetEntity || !author) {
@@ -97,6 +99,7 @@ class ReadingScreenOverlap extends React.Component {
           <ConnectedFeedItemPreview
             isFeed={false}
             isStory={isStory}
+            hideDescription={hideDescription}
             onPressLike={this._toggleLike}
             showLike={false}
             key={targetEntity.id}

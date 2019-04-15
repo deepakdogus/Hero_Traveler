@@ -3,131 +3,23 @@ import PropTypes from 'prop-types'
 import {Text, View, Animated, TouchableOpacity, Image} from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
-import MapView from 'react-native-maps'
-import RNDraftJSRender from 'react-native-draftjs-render'
-import {compose, withHandlers} from 'recompose'
+import StarRating from 'react-native-star-rating'
 import _ from 'lodash'
 
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import {isStoryLiked, isStoryBookmarked} from '../Shared/Redux/Entities/Users'
-import {Metrics, Images} from '../Shared/Themes'
-import ImageWrapper from '../Components/ImageWrapper'
+import {Images} from '../Shared/Themes'
 import {styles, rendererStyles, translations} from './Styles/StoryReadingScreenStyles'
-import VideoPlayer from '../Components/VideoPlayer'
 import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
-import Immutable from 'seamless-immutable'
-import {getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
-import getImageUrl from '../Shared/Lib/getImageUrl'
-import getRelativeHeight from '../Shared/Lib/getRelativeHeight'
+import RoundedButton from '../Components/RoundedButton'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 import UserActions from '../Shared/Redux/Entities/Users'
 import {
   createShareDialog,
 } from '../Lib/sharingMobile'
 
-const enhanceStoryVideo = compose(
-  withHandlers(() => {
-    let _ref
-    return {
-      registerRef: () => ref => {
-        _ref = ref
-      },
-      togglePlay: () => () => {
-        _ref.toggle()
-      },
-    }
-  }),
-)
-
-const StoryVideo = enhanceStoryVideo((props) => {
-  const height = props.height || Metrics.screenWidth * 9 / 16
-  return (
-    <View
-      style={[styles.videoWrapper, {height}]}
-    >
-      <VideoPlayer
-        ref={props.registerRef}
-        path={props.path}
-        originalPath={props.downloadPath}
-        imgUrl={props.thumbnailPath}
-        style={styles.video}
-        allowVideoPlay={true}
-        autoPlayVideo={false}
-        showMuteButton={false}
-        showPlayButton={false}
-        videoFillSpace={true}
-        resizeMode='cover'
-      />
-    </View>
-  )
-})
-
-const atomicHandler = (item: Object): any => {
-  if (_.get(item, 'data.type')) {
-    // if pendingDraft getRelativeHeight returns NaN so adding failsafe
-    const width = Metrics.screenWidth
-    const height = Math.min(
-      getRelativeHeight(width, item.data),
-      Metrics.maxContentHeight,
-    ) || Metrics.maxContentHeight
-
-    /* eslint-disable no-case-declarations */
-    switch (item.data.type) {
-      case 'image':
-        return (
-          <View
-            key={item.key}
-            style={styles.mediaViewWrapper}
-          >
-            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
-            <ImageWrapper
-                style={{width, height}}
-                cached={true}
-                fullWidth={true}
-                source={{uri: `${getImageUrl(item.data.url, 'optimized', {
-                  width,
-                  height,
-                })}`}}
-              />
-            </View>
-            {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
-          </View>
-        )
-      case 'video':
-        const url = getVideoUrlFromString(item.data.url, true)
-        const downloadUrl = getVideoUrlFromString(item.data.url, false)
-        const thumbnailUrl = getImageUrl(item.data.url, 'optimized', {
-          video: true,
-          width: 'screen',
-        })
-
-        return (
-          <View
-            key={item.key}
-            style={styles.mediaViewWrapper}
-          >
-            <View style={[styles.mediaPlaceholder, {minHeight: height}]}>
-            <StoryVideo
-              path={url}
-              downloadPath={downloadUrl}
-              thumbnailPath={thumbnailUrl}
-              height={height}
-            />
-            </View>
-            {!!item.text && <Text style={styles.caption}>{item.text}</Text>}
-          </View>
-        )
-      default:
-        return null
-    }
-    /* eslint-enable no-case-declarations */
-  }
-
-  return null
-}
-
-class StoryReadingScreen extends React.Component {
+class SlideshowReadingScreen extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     author: PropTypes.object,
@@ -209,6 +101,10 @@ class StoryReadingScreen extends React.Component {
     NavActions.pop()
   }
 
+  _onButtonPress = () => {
+    console.log('button was pressed')
+  }
+
   hasLocationInfo() {
     const {locationInfo} = this.props.story
     return (
@@ -230,36 +126,39 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
-  stripLinks = (draftjsContent) => {
-    const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
-    const entityMap = renderContent ? renderContent.entityMap : null
-    if (renderContent && entityMap) {
-      Object.keys(renderContent.blocks).forEach(key => {
-        const block = renderContent.blocks[key]
-        if (block.entityRanges) {
-          block.entityRanges = block.entityRanges.filter(
-            entityRange => !entityMap[entityRange.key] === 'LINK',
-          )
-        }
-      })
-    }
-    return renderContent
-  }
-
   renderBody = () => {
     const {story} = this.props
-    const draftjsContent = story.draftjsContent ? this.stripLinks(story.draftjsContent) : undefined
     return (
       <Fragment>
-        <View style={styles.divider}/>
-        <View style={styles.content}>
-          {!!story.draftjsContent && (
-            <RNDraftJSRender
-              contentState={draftjsContent}
-              customStyles={rendererStyles}
-              atomicHandler={atomicHandler}
+        <View style={styles.textBlock}>
+          <Text style={styles.overallExperienceText}>Overall Experience:</Text>
+          <View style={styles.starsContainer}>
+            <StarRating
+              containerStyle={{
+                marginTop: -5,
+                marginLeft: 25,
+                marginBottom: 10,
+                flex: 1,
+              }}
+              disabled
+              emptyStar={'ios-star'}
+              fullStar={'ios-star'}
+              halfStar={'ios-star-half'}
+              iconSet={'Ionicons'}
+              maxStars={5}
+              starSize={25}
+              rating={story.rating}
+              fullStarColor={'red'}
             />
-          )}
+          </View>
+        </View>
+        <View style={styles.divider}/>
+        <View style={styles.textBlock}>
+          <Text style={styles.description}>
+            {story.description}
+          </Text>
+        </View>
+        <View style={styles.content}>
           {!!this.props.story.hashtags && (
             this.renderHashtags()
           )}
@@ -268,24 +167,11 @@ class StoryReadingScreen extends React.Component {
               <Text style={styles.videoDescriptionText}>{story.videoDescription}</Text>
             </View>
           )}
-          {this.hasLocationInfo() && (
-            <View style={styles.locationWrapper}>
-              <MapView
-                style={styles.locationMap}
-                initialRegion={{
-                  latitude: story.locationInfo.latitude,
-                  longitude: story.locationInfo.longitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-              >
-                <MapView.Marker coordinate={{
-                  latitude: story.locationInfo.latitude,
-                  longitude: story.locationInfo.longitude,
-                }} />
-              </MapView>
-            </View>
-          )}
+          <RoundedButton
+            onPress={this._onButtonPress}
+            text="More Info"
+          />
+          <View style={styles.divider}/>
           <ReadingDetails targetEntity={story} />
         </View>
       </Fragment>
@@ -363,6 +249,7 @@ class StoryReadingScreen extends React.Component {
         isBookmarked={isBookmarked}
         isLiked={isLiked}
         isStory
+        hideDescription
         onPressLike={this._toggleLike}
         onPressBookmark={this._onPressBookmark}
         onPressComment={this._onPressComment}
@@ -411,4 +298,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StoryReadingScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SlideshowReadingScreen)

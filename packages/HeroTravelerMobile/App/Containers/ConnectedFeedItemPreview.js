@@ -140,7 +140,15 @@ const mapDispatchToProps = (dispatch, props) => {
   const { userId, feedItem } = props
   const feedItemId = feedItem && feedItem.id
   return {
-    onPressStory: title => NavActions.story({ storyId: feedItemId, title }),
+    onPressStory: (title) => {
+      const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
+      if (isSlideshow) {
+        NavActions.slideshow({ storyId: feedItemId, title })
+      }
+      else {
+        NavActions.story({ storyId: feedItemId, title })
+      }
+    },
     onPressGuide: title => NavActions.guide({ guideId: feedItemId, title }),
     deleteGuide: () =>
       dispatch(GuideActions.deleteGuideRequest(feedItemId, userId)),

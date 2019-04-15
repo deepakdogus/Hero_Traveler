@@ -12,7 +12,7 @@ import {Actions as NavActions} from 'react-native-router-flux'
 import StarRating from 'react-native-star-rating'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import StoryEditActions from '../../Shared/Redux/StoryCreateRedux'
-import {Colors, Metrics} from '../../Shared/Themes'
+import {Metrics} from '../../Shared/Themes'
 import ShadowButton from '../../Components/ShadowButton'
 import Tooltip from '../../Components/Tooltip'
 import NavBar from './NavBar'
@@ -279,7 +279,6 @@ class CreateSlideshowDetails extends React.Component {
   render () {
     const {workingDraft} = this.props
     const {validationError} = this.state
-    console.log('workingDraft', workingDraft)
     return (
       <View style={styles.wrapper}>
           {this.renderErrors()}

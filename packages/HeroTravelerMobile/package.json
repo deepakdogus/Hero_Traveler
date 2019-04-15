@@ -79,6 +79,7 @@
     "react-native-splash-screen": "3.0.0",
     "react-native-star-rating": "^1.1.0",
     "react-native-swipeout": "^2.3.3",
+    "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^4.0.0",
     "react-native-version-number": "^0.1.2",
     "react-native-video-processing": "^1.13.0",

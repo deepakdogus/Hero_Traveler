@@ -6,7 +6,7 @@ export default StyleSheet.create({
   contentContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: Colors.feedDividerGrey,
+    backgroundColor: 'white',
   },
   cardView: {
     width: `${Metrics.feedMargin}%`,
@@ -150,5 +150,8 @@ export default StyleSheet.create({
   },
   badgeView: {
     marginRight: 5,
+  },
+  slideshowCover: {
+    paddingTop: 30,
   },
 })

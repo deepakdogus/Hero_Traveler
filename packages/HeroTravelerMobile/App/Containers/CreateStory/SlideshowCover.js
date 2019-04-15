@@ -61,7 +61,6 @@ class SlideshowCover extends Component{
       uri: current.uri,
     }
     let galleryImagePath = file.uri
-    console.log("====image ===", image, file)
     const existingIndex = _.findIndex(slideshow, { uri: galleryImagePath })
     if (existingIndex >= 0) {
       slideshow.splice(existingIndex, 1)
@@ -148,7 +147,6 @@ class SlideshowCover extends Component{
   }
 
   nextScreen() {
-    console.log('nextScreen is called')
     NavActions.createStory_slideshow_details()
   }
 
@@ -167,11 +165,9 @@ class SlideshowCover extends Component{
     const cleanedDraft = this.cleanDraft()
 
     if (isLocalDraft(cleanedDraft.id)) {
-      console.log('calling this.props.saveDraft', cleanedDraft)
       this.props.saveDraft(cleanedDraft, true)
     }
     else {
-      console.log('calling this.props.update', cleanedDraft)
       this.props.update(cleanedDraft.id, cleanedDraft)
     }
     return Promise.resolve({})
@@ -184,7 +180,6 @@ class SlideshowCover extends Component{
 
   renderImageCropper = () => {
     const { galleryImagePath } = this.state
-    console.log('galleryImagePath', galleryImagePath)
     return (
       <Fragment>
         <ImageCrop 

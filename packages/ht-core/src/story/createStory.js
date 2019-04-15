@@ -21,11 +21,7 @@ export async function getUserDetails(userId) {
 }
 
 export async function addSlideshow(draft, assetFormater){
-  console.log('addSlideshow', draft.slideshow);
-  draft.slideshow = draft.slideshow.map(image => assetFormater(
-    image,
-    { purpose: 'coverImage' }
-  ))
+  return await Promise.all(draft.slideshow.map(image => createCover(image, assetFormater, 'coverImage')))
 }
 
 export async function addCover(draft, assetFormater){
@@ -77,14 +73,13 @@ export default async function createStory(storyData, assetFormater) {
 
   if (isLocalStory) {
     if (storyObject.slideshow && !_.isEmpty(storyObject.slideshow)) {
-      await addSlideshow(storyObject, assetFormater)
+      const slideshow = await addSlideshow(storyObject, assetFormater)
+      storyObject.slideshow = slideshow
     } else {
       await addCover(storyObject, assetFormater)
     }
     storyData.id = undefined
-    console.log('storyObject', JSON.stringify(storyObject))
     newStory = await Story.create(storyObject)
-    console.log('newStory', JSON.stringify(newStory))
   }
   else newStory = await updateDraft(storyData.id, storyObject)
 

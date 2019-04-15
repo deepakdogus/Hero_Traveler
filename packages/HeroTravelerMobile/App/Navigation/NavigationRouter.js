@@ -33,6 +33,7 @@ import ChangeEmailScreen from '../Containers/ChangeEmailScreen'
 
 // Story reading & creating
 import StoryReadingScreen from '../Containers/StoryReadingScreen'
+import SlideshowReadingScreen from '../Containers/SlideshowReadingScreen'
 import CommentsScreen from '../Containers/CommentsScreen'
 import StoryCreateScreen from '../Containers/CreateStory/1_CreateStoryScreen'
 import CreateSlideshowScreen from '../Containers/CreateStory/CreateSlideshow'
@@ -292,6 +293,14 @@ export default function NavigationRouter({ openAddStoryModal }) {
       <Scene
         key='story'
         component={StoryReadingScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        titleStyle={Styles.storyTitle}
+      />
+      <Scene
+        key='slideshow'
+        component={SlideshowReadingScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}

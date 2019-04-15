@@ -26,7 +26,6 @@ this directly uploads the file to Cloudinary
 To modify the presets go to the relevant Cloudinary account
 */
 async function uploadMediaFile(fileData, type){
-  console.log('cloudinary uploadMediaFile', fileData, type)
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
   let dataUri
@@ -38,8 +37,6 @@ async function uploadMediaFile(fileData, type){
     dataUri = await VideoManager.fixFilePath(fileData.uri)
     if (isLocalMediaAsset(dataUri)) dataUri = decodeURIComponent(dataUri.substr(7))
   }
-  console.log('fileData', fileData)
-  console.log('dataUri', dataUri)
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,

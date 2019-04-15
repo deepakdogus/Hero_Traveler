@@ -157,6 +157,13 @@ export default class FeedList extends React.Component {
         }
       }
 
+      if (entity && entity.slideshow && !_.isEmpty(entity.slideshow)) {
+        return {
+          headerImage: getImageUrl(_.get(entity, 'slideshow.0'), 'optimized', imageOptions),
+          height: Metrics.feedCell.imageCellHeight + totalPadding,
+        }
+      }
+
       return {
         headerImage: null,
         height: 0,

@@ -201,6 +201,20 @@ const create = () => {
     })
   }
 
+  const getNearbyFeed = (userId, nearbyStoryIds) => {
+    return api
+      .get(`story/user/${userId}/feed/nearby`, {
+        nearbyStoryIds: JSON.stringify(nearbyStoryIds)
+      })
+      .then(response => {
+        if (!response.ok) return response
+        return {
+          count: response.data.count,
+          ...safeNormalize(response, [Story], 'data.feed')
+        }
+      })
+  }
+
   const getUserFeedOld = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, {
       params
@@ -496,6 +510,7 @@ const create = () => {
     connectFacebook,
     getUserFeed,
     getUserFeedOld,
+    getNearbyFeed,
     createStory,
     getCategories,
     getHashtags,

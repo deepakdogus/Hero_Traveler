@@ -21,7 +21,7 @@ import SessionActions, { SessionTypes } from '../Redux/SessionRedux'
 import { StoryCreateTypes } from '../Redux/StoryCreateRedux'
 import { MediaUploadTypes } from '../Redux/MediaUploadRedux'
 // Entities
-import StoryActions, { StoryTypes } from '../Redux/Entities/Stories'
+import { StoryTypes } from '../Redux/Entities/Stories'
 import { CategoryTypes } from '../Redux/Entities/Categories'
 import { HashtagTypes } from '../Redux/Entities/Hashtags'
 import { UserTypes } from '../Redux/Entities/Users'
@@ -75,6 +75,7 @@ import {
 import {
   getStory,
   getUserFeed,
+  getNearbyUserFeed,
   getLikesAndBookmarks,
   saveLocalDraft,
   discardDraft,
@@ -134,13 +135,13 @@ const heroAPI = HeroAPI.create()
 //   return promise;
 // }
 
-function * pollRefreshTokens() {
+function *pollRefreshTokens() {
   yield call(delay, 60 * 60 * 1000) // 1h delay
   yield put(SessionActions.refreshSession())
 }
 
-function * watchRefreshTokens() {
-  while(true) { // eslint-disable-line no-constant-condition
+function *watchRefreshTokens() {
+  while (true) { // eslint-disable-line no-constant-condition
     yield take([
       SessionTypes.INITIALIZE_SESSION,
       SessionTypes.REFRESH_SESSION_SUCCESS,
@@ -152,7 +153,7 @@ function * watchRefreshTokens() {
   }
 }
 
-export default function * root () {
+export default function *root () {
   yield [
     fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
@@ -185,6 +186,7 @@ export default function * root () {
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
+    takeLatest(StoryTypes.NEARBY_FEED_REQUEST, getNearbyUserFeed, heroAPI),
     takeLatest(StoryTypes.LIKES_AND_BOOKMARKS_REQUEST, getLikesAndBookmarks, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),

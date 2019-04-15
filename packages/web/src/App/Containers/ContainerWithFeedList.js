@@ -45,19 +45,25 @@ export default class ContainerWithFeedList extends React.Component {
         searching: false,
         searchResults: res.hits.map(story => story.id),
       })
-    })
-    this.helper.on('search', () => {
-      this.setState({ searching: true })
+      const nearbyStoryIds = res.hits.map(story => story.id)
+      this.props.getNearbyStories(this.props.sessionUserId, nearbyStoryIds)
     })
   }
 
-  searchNearbyStories({ latitude, longitude }) {
-    this.helper
-      .setQuery()
-      .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-      .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
-      .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
-      .search()
+  searchNearbyStories() {
+    this.setState({ searching: true }, () => {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          this.helper
+            .setQuery()
+            .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+            .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+            .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
+            .search()
+        },
+        error => console.error(error),
+      )
+    })
   }
 
   onClickTab = event => {
@@ -80,10 +86,7 @@ export default class ContainerWithFeedList extends React.Component {
     case 'GUIDES':
       return this.props.getGuides(this.props.sessionUserId)
     case 'NEARBY':
-      return navigator.geolocation.getCurrentPosition(
-          ({ coords }) => this.searchNearbyStories(coords),
-          error => console.error(error),
-        )
+      return this.searchNearbyStories()
     case 'STORIES':
     case 'ALL':
     case 'SEE':
@@ -91,14 +94,10 @@ export default class ContainerWithFeedList extends React.Component {
     case 'EAT':
     case 'STAY':
     default:
-      return this.props.getStories(
-        this.props.sessionUserId,
-        this.state.activeTab,
-        {
-          perPage: itemsPerQuery,
-          page,
-        },
-      )
+      return this.props.getStories(this.props.sessionUserId, {
+        perPage: itemsPerQuery,
+        page,
+      })
     }
   }
 
@@ -137,12 +136,8 @@ export default class ContainerWithFeedList extends React.Component {
         fetchStatus: guidesFetchStatus,
         selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides'),
       }
-    case 'NEARBY':
-      return {
-        fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(this.state.searchResults),
-      }
     case 'STORIES':
+    case 'NEARBY':
     case 'ALL':
     case 'SEE':
     case 'DO':

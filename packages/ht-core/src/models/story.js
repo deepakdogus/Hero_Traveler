@@ -144,11 +144,11 @@ const StorySchema = new Schema(
     },
     actionButton: {
       type: {
-        type: String,
+        type: String
       },
       link: {
-        type: String,
-      },
+        type: String
+      }
     }
   },
   {
@@ -204,16 +204,20 @@ StorySchema.statics = {
 
     return Promise.props({
       count: this.count(query).exec(),
-      feed: this.list({
-        draft: false,
-        flagged: false,
-        $or: [
-          { author: userId },
-          { author: { $in: followingIds } },
-          { categories: { $in: followingIds } },
-          { featured: true }
-        ]
-      })
+      feed: this.list(query)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec()
+    })
+  },
+
+  getStoriesById(ids, page = 1, perPage = 100) {
+    const query = {
+      _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) }
+    }
+    return Promise.props({
+      count: this.count(query).exec(),
+      feed: this.list(query)
         .skip((page - 1) * perPage)
         .limit(perPage)
         .exec()
@@ -237,10 +241,10 @@ StorySchema.statics = {
 
   isAuthor(storyId, userId) {
     return this.findOne({ _id: storyId })
-    .select('author')
-    .then(story => {
-      return String(story.author) === String(userId)
-    })
+      .select('author')
+      .then(story => {
+        return String(story.author) === String(userId)
+      })
   }
 }
 

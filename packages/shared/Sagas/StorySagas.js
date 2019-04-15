@@ -84,6 +84,20 @@ export function * getUserFeed (api, action) {
   }
 }
 
+export function * getNearbyUserFeed (api, { userId, nearbyStoryIds }) {
+  const response = yield call(api.getNearbyFeed, userId, nearbyStoryIds)
+  if (response.ok) {
+    const { entities, result } = response.data
+    yield [
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.feedSuccess(result, response.count)),
+    ]
+  }
+  else {
+    yield put(StoryActions.feedFailure(new Error('Failed to get feed')))
+  }
+}
+
 export function * getLikesAndBookmarks (api, {userId}){
   yield getInitalData(api, userId)
 }

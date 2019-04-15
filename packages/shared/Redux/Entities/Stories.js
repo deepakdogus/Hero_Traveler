@@ -9,6 +9,7 @@ import isLocalDraft from '../../Lib/isLocalDraft'
 const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
   feedRequest: ['userId', 'params'],
+  nearbyFeedRequest: ['userId', 'nearbyStoryIds'],
   feedSuccess: ['userFeedById', 'count', 'params'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
@@ -75,12 +76,15 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 // request the temperature for a city
-export const feedRequest = (state, { userId, params }) => {
-  return state.setIn(
-    ['fetchStatus', 'fetching'],
-    true
-  );
+export const feedRequest = state => {
+  return state.setIn(['fetchStatus', 'fetching'], true)
 }
+
+export const nearbyFeedRequest = state => {
+  return state.setIn(['fetchStatus', 'fetching'], true)
+}
+
+
 // successful temperature lookup
 export const feedSuccess = (state, {userFeedById, count, params}) => {
   let userFeedUpdate = userFeedById
@@ -217,7 +221,7 @@ export const addUserStory = (state, {stories = {}, draftId}) => {
   const story = stories[Object.keys(stories)[0]]
 
   let userStoriesMeta = state.storiesByUserAndId[story.author]
-  if (!userStoriesMeta) userStoriesMeta = { "byId": []}
+  if (!userStoriesMeta) userStoriesMeta = { byId: []}
   let userStoriesById = userStoriesMeta.byId
   // adding to list of user's stories
   if (story && userStoriesById.indexOf(story.id) === -1) {
@@ -374,6 +378,7 @@ export const genericFailure = (state, {error}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FEED_REQUEST]: feedRequest,
+  [Types.NEARBY_FEED_REQUEST]: nearbyFeedRequest,
   [Types.FEED_SUCCESS]: feedSuccess,
   [Types.FEED_FAILURE]: failure,
   [Types.FROM_USER_REQUEST]: userRequest,

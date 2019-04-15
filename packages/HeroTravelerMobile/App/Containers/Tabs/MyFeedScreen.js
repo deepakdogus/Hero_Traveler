@@ -50,6 +50,7 @@ class MyFeedScreen extends React.Component {
     error: PropTypes.object,
     feedGuidesById: PropTypes.arrayOf(PropTypes.string),
     attemptGetUserFeedStories: PropTypes.func,
+    attemptGetNearbyFeedStories: PropTypes.func,
     attemptGetUserFeedGuides: PropTypes.func,
     userId: PropTypes.string,
     location: PropTypes.string,
@@ -72,7 +73,6 @@ class MyFeedScreen extends React.Component {
       activeTab: tabTypes.following,
       hasSearchText: false,
       searching: false,
-      searchResults: [],
     }
   }
 
@@ -87,13 +87,9 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
-      this.setState({
-        searching: false,
-        searchResults: res.hits.map(story => story.id),
-      })
-    })
-    this.helper.on('search', () => {
-      this.setState({ searching: true })
+      this.setState({ searching: false })
+      const nearbyStoryIds = res.hits.map(story => story.id)
+      this.props.attemptGetNearbyFeedStories(this.props.userId, nearbyStoryIds)
     })
   }
 
@@ -106,22 +102,24 @@ class MyFeedScreen extends React.Component {
       !_.isEqual(this.props.pendingUpdates, nextProps.pendingUpdates),
       this.state.activeTab !== nextState.activeTab,
       this.state.hasSearchText !== nextState.hasSearchText,
-      this.state.searchResults.length !== nextState.searchResults.length,
     ])
     return shouldUpdate
   }
 
-  search() {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => {
-        this.helper
-          .setQuery('')
-          .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-          .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
-          .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
-          .search()
-      },
-      error => console.error(error),
+  searchNearbyStories() {
+    this.setState({ searching: true }, () => {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          this.helper
+            .setQuery('')
+            .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+            .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+            .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
+            .search()
+        },
+        error => console.error(error),
+      )
+    },
     )
   }
 
@@ -175,7 +173,7 @@ class MyFeedScreen extends React.Component {
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
     this.setState({ refreshing: true })
-    if (this.state.activeTab === tabTypes.nearby) return this.search()
+    if (this.state.activeTab === tabTypes.nearby) return this.searchNearbyStories()
     this.props.attemptGetUserFeedStories(this.props.userId)
     this.props.attemptGetUserFeedGuides(this.props.userId)
   }
@@ -212,7 +210,9 @@ class MyFeedScreen extends React.Component {
   selectTab = activeTab => {
     const isNearbyTab = activeTab === tabTypes.nearby
     this.setState({ activeTab, searching: isNearbyTab }, () => {
-      if (isNearbyTab) this.search()
+      if (isNearbyTab) return this.searchNearbyStories()
+      this.props.attemptGetUserFeedStories(this.props.userId)
+      this.props.attemptGetUserFeedGuides(this.props.userId)
     })
   }
 
@@ -246,11 +246,6 @@ class MyFeedScreen extends React.Component {
     const failure = this.getFirstPendingFailure()
 
     let entitiesById = isStoryTabSelected ? storiesById : feedGuidesById
-    if (activeTab === tabTypes.nearby) {
-      entitiesById = entitiesById.filter(storyId =>
-        this.state.searchResults.includes(storyId),
-      )
-    }
 
     if (
       (isStoryTabSelected && (!storiesById || !storiesById.length))
@@ -316,6 +311,8 @@ const mapDispatchToProps = dispatch => {
   return {
     attemptGetUserFeedStories: userId =>
       dispatch(StoryActions.feedRequest(userId)),
+    attemptGetNearbyFeedStories: (userId, nearbyStoryIds) =>
+      dispatch(StoryActions.nearbyFeedRequest(userId, nearbyStoryIds)),
     attemptGetUserFeedGuides: userId =>
       dispatch(GuideActions.guideFeedRequest(userId)),
     discardUpdate: storyId =>

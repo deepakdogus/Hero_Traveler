@@ -61,13 +61,9 @@ class Feed extends ContainerWithFeedList {
   }
 
   componentDidMount() {
-    //get user feed on signUp and reset signUp redux
-    console.log({signedUp: this.props.signedUp})
-    if (this.props.signedUp) {
-      const { pagination } = this.state
-      this.props.getStories(this.props.sessionUserId, pagination)
-      this.props.signupReset()
-    }
+    const { pagination } = this.state
+    this.props.getStories(this.props.sessionUserId, pagination)
+    this.props.signupReset()
     this.setupSearchHelper()
   }
 

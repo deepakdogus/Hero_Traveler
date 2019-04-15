@@ -10,6 +10,7 @@ import createStoryOld from './createStoryOld'
 import getUserFeed from './getUserFeed'
 import getUserFeedOld from './getUserFeedOld'
 import getNearbyFeed from './getNearbyFeed'
+import getBadgeUserFeed from './getBadgeUserFeed'
 import getUserLikes from './getUserLikes'
 import getUserLikesOld from './getUserLikesOld'
 import getCategoryStories from './getCategoryStories'
@@ -45,6 +46,7 @@ router.get('/user/:userId', getUserStories)
 router.get('/user/:userId/feed/v2', hasValidOauth, endpointWrapper(getUserFeed))
 router.get('/user/:userId/feed', hasValidOauth, endpointWrapper(getUserFeedOld))
 router.get('/user/:userId/feed/nearby', hasValidOauth, endpointWrapper(getNearbyFeed))
+router.get('/user/:userId/feed/badgeUsers', hasValidOauth, endpointWrapper(getBadgeUserFeed))
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories))

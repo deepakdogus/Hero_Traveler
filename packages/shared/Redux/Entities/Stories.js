@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   storyRequest: ['storyId'],
   feedRequest: ['userId', 'params'],
   nearbyFeedRequest: ['userId', 'nearbyStoryIds'],
+  badgeUserFeedRequest: ['userId'],
   feedSuccess: ['userFeedById', 'count', 'params'],
   feedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
@@ -75,17 +76,10 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-// request the temperature for a city
 export const feedRequest = state => {
   return state.setIn(['fetchStatus', 'fetching'], true)
 }
 
-export const nearbyFeedRequest = state => {
-  return state.setIn(['fetchStatus', 'fetching'], true)
-}
-
-
-// successful temperature lookup
 export const feedSuccess = (state, {userFeedById, count, params}) => {
   let userFeedUpdate = userFeedById
   if (_.get(params, 'page', 1) > 1) {
@@ -378,7 +372,8 @@ export const genericFailure = (state, {error}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FEED_REQUEST]: feedRequest,
-  [Types.NEARBY_FEED_REQUEST]: nearbyFeedRequest,
+  [Types.NEARBY_FEED_REQUEST]: feedRequest,
+  [Types.BADGE_USER_FEED_REQUEST]: feedRequest,
   [Types.FEED_SUCCESS]: feedSuccess,
   [Types.FEED_FAILURE]: failure,
   [Types.FROM_USER_REQUEST]: userRequest,

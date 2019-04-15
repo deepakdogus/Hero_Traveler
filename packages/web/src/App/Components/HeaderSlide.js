@@ -175,6 +175,8 @@ export default class HeaderSlide extends React.Component {
     const {story, author, isPreview} = this.props
     const mediaType = this.getMediaType()
 
+    if (!story || !author) return null
+
     return (
       <HeaderImageWrapper
         backgroundImage={this.getCoverImage()}
@@ -182,12 +184,13 @@ export default class HeaderSlide extends React.Component {
         type='story'
       >
         <Centered>
-          <Title mediaType={mediaType} isPreview={isPreview}>{story.title}</Title>
+          <Title mediaType={mediaType}
+isPreview={isPreview}>{story.title}</Title>
           <StyledHorizontalDivider />
           <Subtitle>{story.description}</Subtitle>
-          {isPreview &&
-           <NavLink
-               to={`/story/${story.id}`}
+          {isPreview
+           && <NavLink
+             to={`/story/${story.id}`}
            >
             <StyledRoundedButton
               padding='even'
@@ -199,8 +202,9 @@ export default class HeaderSlide extends React.Component {
             />
            </NavLink>
           }
-          {!isPreview && mediaType === 'video' &&
-            <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
+          {!isPreview && mediaType === 'video'
+            && <Video src={getVideoUrl(story.coverVideo, false)}
+type='cover'/>
           }
         </Centered>
         <BottomContainer>
@@ -225,8 +229,8 @@ export default class HeaderSlide extends React.Component {
               </StoryInfoRow>
             </VerticalCenter>
           </Row>
-          {!isPreview &&
-            <Row center='xs'>
+          {!isPreview
+            && <Row center='xs'>
               <DownArrow name='arrowRight'/>
             </Row>
           }

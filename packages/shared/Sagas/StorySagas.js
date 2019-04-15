@@ -67,7 +67,6 @@ export function * getUserFeed (api, action) {
   const { userId, params } = action
 
   // See if we need to load likes and bookmark info
-
   yield getInitalData(api, userId)
 
   const response = yield call(api.getUserFeed, userId, params)
@@ -89,6 +88,22 @@ export function * getNearbyUserFeed (api, { userId, nearbyStoryIds }) {
   if (response.ok) {
     const { entities, result } = response.data
     yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.feedSuccess(result, response.count)),
+    ]
+  }
+  else {
+    yield put(StoryActions.feedFailure(new Error('Failed to get feed')))
+  }
+}
+
+export function * getBadgeUserFeed (api, { userId }) {
+  const response = yield call(api.getBadgeUserFeed, userId)
+  if (response.ok) {
+    const { entities, result } = response.data
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
       put(StoryActions.receiveStories(entities.stories)),
       put(StoryActions.feedSuccess(result, response.count)),
     ]

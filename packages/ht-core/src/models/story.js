@@ -202,19 +202,22 @@ StorySchema.statics = {
       ]
     }
 
-    return Promise.props({
-      count: this.count(query).exec(),
-      feed: this.list(query)
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .exec()
-    })
+    return this.getFeed(query, page, perPage)
   },
 
-  getStoriesById(ids, page = 1, perPage = 100) {
+  getStoriesById(ids) {
     const query = {
       _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) }
     }
+    return this.getFeed(query)
+  },
+
+  getStoriesByAuthorIds(ids) {
+    const query = { author: { $in: ids} }
+    return this.getFeed(query)
+  },
+
+  getFeed(query, page = 1, perPage = 100) {
     return Promise.props({
       count: this.count(query).exec(),
       feed: this.list(query)

@@ -215,6 +215,17 @@ const create = () => {
       })
   }
 
+  const getBadgeUserFeed = userId => {
+    return api.get(`story/user/${userId}/feed/badgeUsers`)
+    .then(response => {
+      if (!response.ok) return response
+      return {
+        count: response.data.count,
+        ...safeNormalize(response, [Story], 'data.feed'),
+      }
+    })
+  }
+
   const getUserFeedOld = (userId, params) => {
     return api.get(`story/user/${userId}/feed`, {
       params
@@ -511,6 +522,7 @@ const create = () => {
     getUserFeed,
     getUserFeedOld,
     getNearbyFeed,
+    getBadgeUserFeed,
     createStory,
     getCategories,
     getHashtags,

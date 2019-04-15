@@ -21,6 +21,7 @@ export default class ContainerWithFeedList extends React.Component {
     getGuides: PropTypes.func,
     getStories: PropTypes.func,
     getNearbyStories: PropTypes.func,
+    getBadgeUserStories: PropTypes.func,
     draftsById: PropTypes.objectOf(PropTypes.object),
     userBookmarksById: PropTypes.objectOf(PropTypes.object),
     guidesById: PropTypes.objectOf(PropTypes.object),
@@ -84,6 +85,8 @@ export default class ContainerWithFeedList extends React.Component {
       return this.props.getGuides(this.props.sessionUserId)
     case 'NEARBY':
       return this.searchNearbyStories()
+    case 'FROM US':
+      return this.props.getBadgeUserStories(this.props.sessionUserId)
     case 'STORIES':
     case 'ALL':
     case 'SEE':

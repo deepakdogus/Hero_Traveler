@@ -227,7 +227,13 @@ UserSchema.statics = {
       emailConfirmationToken: uuid(),
       notificationTypes: defaultNotificationTypes,
     })
-  }
+  },
+  getBadgeUsers() {
+    return this.find({
+      role: { $ne: 'user'}
+    })
+    .lean()
+  },
 }
 
 UserSchema.methods = {

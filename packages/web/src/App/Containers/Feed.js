@@ -51,7 +51,7 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
-const tabBarTabs = ['STORIES', 'GUIDES', 'NEARBY']
+const tabBarTabs = ['STORIES', 'GUIDES', 'NEARBY', 'FROM US']
 
 class Feed extends ContainerWithFeedList {
   static propTypes = {
@@ -131,6 +131,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(StoryActions.feedRequest(sessionUserId, params)),
     getNearbyStories: (sessionUserId, nearbyStoryIds) =>
       dispatch(StoryActions.nearbyFeedRequest(sessionUserId, nearbyStoryIds)),
+    getBadgeUserStories: sessionUserId =>
+      dispatch(StoryActions.badgeUserFeedRequest(sessionUserId)),
     getGuides: sessionUserId => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
     signupReset: () => dispatch(SignUpActions.signupReset()),
   }

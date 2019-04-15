@@ -60,10 +60,12 @@ export default class FeedItemList extends React.Component {
       if (!feedItem) return rows
 
       if (index !== 0) {
-        rows.push(<StyledDivider
-          key={`hr-${feedItem.id}`}
-          color={'lighter-grey'}
-                  />)
+        rows.push(
+          <StyledDivider
+            key={`hr-${feedItem.id}`}
+            color={'lighter-grey'}
+          />,
+        )
       }
 
       rows.push(
@@ -107,9 +109,7 @@ export default class FeedItemList extends React.Component {
     if (!fetching && activeTab === 'NEARBY' && noFeedItems)
       return (
         <FeedItemMessage
-          message={
-            `We couldn't determine your location or there are no stories near you.`
-          }
+          message={`We couldn't determine your location or there are no stories near you.`}
         />
       )
 

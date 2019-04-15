@@ -12,6 +12,9 @@ import TextButton from '../Components/TextButton'
 import { Images, Colors } from '../Shared/Themes'
 import Loader from '../Components/Loader'
 import styles from './Styles/LaunchScreenStyles'
+import env from '../Config/Env'
+
+// console.log("env is", env)
 
 class LaunchScreen extends React.Component {
   static propTypes = {

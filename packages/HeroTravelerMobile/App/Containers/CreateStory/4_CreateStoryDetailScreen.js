@@ -298,7 +298,7 @@ class CreateStoryDetailScreen extends React.Component {
     const { modalVisible, validationError } = this.state
 
     return (
-      <View style={styles.wrapper}>
+      <View style={styles.wrapper} behavior="padding" enabled>
         {this.renderErrors()}
         <NavBar
           title="STORY DETAILS"

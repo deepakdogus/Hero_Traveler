@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
+import { View, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import { AbstractAddButton } from '../../Shared/AbstractComponents'
@@ -80,7 +80,7 @@ export default class AddButtonScreen extends AbstractAddButton {
           rightTextStyle={styles.navBarRightTextStyle}
           style={styles.navBarStyle}
         />
-        <View style={styles.content}>
+        <KeyboardAvoidingView behavior="position" enabled style={styles.content}>
           <View style={styles.labelRow}>
             <Text style={styles.label}>Choose a button:</Text>
           </View>
@@ -138,7 +138,7 @@ export default class AddButtonScreen extends AbstractAddButton {
               <Text style={styles.deleteText}>Delete button</Text>
             </TouchableOpacity>
           )}
-        </View>
+        </KeyboardAvoidingView>
         {activeModal === 'confirmDeleteButton' && this.renderConfirmDeleteButton()}
       </View>
     )

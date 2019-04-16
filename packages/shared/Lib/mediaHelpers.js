@@ -2,7 +2,7 @@ import {
   NativeModules,
 } from 'react-native'
 import { ProcessingManager } from 'react-native-video-processing'
-const VideoManager = NativeModules.VideoManager
+// const VideoManager = NativeModules.VideoManager
 
 const MediaTypes = {
   video: 'video',
@@ -21,7 +21,8 @@ async function trimVideo(videoFile, callback, storyId, _this){
     if (duration > 60) {
       newSource = await ProcessingManager.trim(newSource, { startTime: 0, endTime: 60 })
     }
-    newSource = await VideoManager.moveVideo(newSource, storyId)
+    // newSource = await VideoManager.moveVideo(newSource, storyId)
+    // callback(newSource)
     callback(newSource)
   } catch(e) {
       console.log(`Issue trimming video ${e}`)

@@ -29,7 +29,10 @@ export default class TabBar extends Component {
     tabs: PropTypes.object.isRequired,
     activeTab: PropTypes.string, // removing required since it can also be null
     onClickTab: PropTypes.func.isRequired,
-    tabStyle: PropTypes.number, // StyleSheet.create returns numbers
+    tabStyle: PropTypes.oneOfType([
+      PropTypes.number, // StyleSheet.create returns numbers
+      PropTypes.object,
+    ]),
     largeTabBar: PropTypes.bool,
   }
 

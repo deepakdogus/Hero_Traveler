@@ -84,20 +84,26 @@ const styles = StyleSheet.create({
   },
 })
 
+const styleType = PropTypes.oneOfType([
+  PropTypes.number,
+  PropTypes.array,
+  PropTypes.object,
+])
+
 export default class NavBar extends Component {
   static propTypes = {
-    style: PropTypes.oneOfType([PropTypes.number, PropTypes.array]),
+    style: styleType,
     leftTitle: PropTypes.string,
     leftIcon: PropTypes.string,
-    leftTextStyle: PropTypes.number,
-    leftIconStyle: PropTypes.number,
+    leftTextStyle: styleType,
+    leftIconStyle: styleType,
     onLeft: PropTypes.func,
     title: PropTypes.string,
-    titleStyle: PropTypes.number,
+    titleStyle: styleType,
     onTitle: PropTypes.func,
     rightTitle: PropTypes.string,
     rightIcon: PropTypes.string,
-    rightTextStyle: PropTypes.number,
+    rightTextStyle: styleType,
     onRight: PropTypes.func,
     isRightValid: PropTypes.bool,
   }
@@ -119,6 +125,7 @@ export default class NavBar extends Component {
       onRight,
       isRightValid = true,
     } = this.props
+
     return (
       <View style={[styles.root, style]}>
         {(leftTitle || leftIcon) && (

@@ -58,7 +58,9 @@ class MyFeedScreen extends React.Component {
     location: PropTypes.string,
     sync: PropTypes.object,
     fetchStatus: PropTypes.object,
-    storiesById: PropTypes.arrayOf(PropTypes.string),
+    userFeedById: PropTypes.arrayOf(PropTypes.string),
+    nearbyFeedById: PropTypes.arrayOf(PropTypes.string),
+    badgeUserFeedById: PropTypes.arrayOf(PropTypes.string),
     stories: PropTypes.object,
     pendingUpdates: PropTypes.object,
     updateDraft: PropTypes.func,
@@ -91,11 +93,12 @@ class MyFeedScreen extends React.Component {
     this.helper.on('result', res => {
       this.setState({ searching: false })
       const nearbyStoryIds = res.hits.map(story => story.id)
+      console.log({nearbyStoryIds})
       this.props.attemptGetNearbyFeedStories(this.props.userId, nearbyStoryIds)
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // reset to data needed for first/default tab to avoid flash when user returns to feed
     this.props.attemptGetUserFeedStories()
     this.props.attemptGetUserFeedGuides()
@@ -103,7 +106,9 @@ class MyFeedScreen extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate = _.some([
-      this.props.storiesById !== nextProps.storiesById,
+      this.props.userFeedById !== nextProps.userFeedById,
+      this.props.nearbyFeedById !== nextProps.nearbyFeedById,
+      this.props.badgeUserFeedById !== nextProps.badgeUserFeedById,
       this.props.fetchStatus !== nextProps.fetchStatus,
       this.props.error !== nextProps.error,
       !_.isEqual(this.props.sync, nextProps.sync),
@@ -161,15 +166,18 @@ class MyFeedScreen extends React.Component {
   _showNoStories() {
     let text = ''
     switch (this.state.activeTab) {
-    case 'following':
+    case tabTypes.following:
       text = `You aren't following any users yet.`
       break
-    case 'guide':
+    case tabTypes.guides:
       text = `There are no guides to display.`
       break
-    case 'featured':
-    case 'trending':
+    case tabTypes.featured:
+    case tabTypes.trending:
       text = `There are no ${this.state.activeTab} stories to show right now.`
+      break
+    case tabTypes.nearby:
+      text = `There are no stories within a hundred miles of you or we couldn't determine your location.`
       break
     default:
       text = `There is no content available. Check back later.`
@@ -220,6 +228,18 @@ class MyFeedScreen extends React.Component {
     return undefined
   }
 
+  getStoryFeedByType() {
+    switch (this.state.activeTab) {
+    case tabTypes.nearby:
+      return this.props.nearbyFeedById
+    case tabTypes.fromUs:
+      return this.props.badgeUserFeedById
+    case tabTypes.following:
+    default:
+      return this.props.userFeedById
+    }
+  }
+
   selectTab = activeTab => {
     const isNearbyTab = activeTab === tabTypes.nearby
     this.setState({ activeTab, searching: isNearbyTab }, () => {
@@ -245,7 +265,7 @@ class MyFeedScreen extends React.Component {
 
   render() {
     let {
-      storiesById,
+      userFeedById,
       fetchStatus,
       sync,
       feedGuidesById,
@@ -257,10 +277,10 @@ class MyFeedScreen extends React.Component {
     const isStoryTabSelected = this.isStoryTabSelected()
     const failure = this.getFirstPendingFailure()
 
-    let entitiesById = isStoryTabSelected ? storiesById : feedGuidesById
+    const entitiesById = isStoryTabSelected ? this.getStoryFeedByType() : feedGuidesById
 
     if (
-      (isStoryTabSelected && (!storiesById || !storiesById.length))
+      (isStoryTabSelected && (!userFeedById || !userFeedById.length))
       || (!isStoryTabSelected && (!feedGuidesById || !feedGuidesById.length))
     ) {
       let innerContent = this._showNoStories()
@@ -303,13 +323,21 @@ class MyFeedScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-  let { userFeedById, fetchStatus, error } = state.entities.stories
+  let {
+    userFeedById,
+    nearbyFeedById,
+    badgeUserFeedById,
+    fetchStatus,
+    error,
+  } = state.entities.stories
   const feedGuidesById = state.entities.guides.feedGuidesById || []
   return {
     userId: state.session.userId,
     user: state.entities.users.entities[state.session.userId],
     fetchStatus,
-    storiesById: userFeedById,
+    userFeedById,
+    nearbyFeedById,
+    badgeUserFeedById,
     feedGuidesById,
     error,
     location: state.routes.scene.name,

@@ -136,6 +136,7 @@ export default class ProfileUserInfo extends Component {
 
   renderSecondRow(){
     const { user } = this.props
+    console.log(user, 'logged on userinfo')
     return (
       <View style={[styles.profileWrapper, styles.secondRow]}>
         {hasBadge(user.role) && (

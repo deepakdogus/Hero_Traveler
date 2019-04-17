@@ -63,13 +63,41 @@ class Feed extends ContainerWithFeedList {
   componentDidMount() {
     const { pagination } = this.state
     this.props.getStories(this.props.sessionUserId, pagination)
-    this.props.signupReset()
     this.setupSearchHelper()
+
+    // first attempt may take 20-40 seconds, so grab loc as soon as possible
+    this.getGeolocation()
+
+    // holdover from past implemention, ensure safe removal of logic before deleting
+    if (this.props.signedUp) this.props.signupReset()
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.latitude !== this.state.latitude
+      && prevState.longitude !== this.state.longitude
+      && this.state.latitude
+      && this.state.longitude
+    ) {
+      this.searchNearbyStories()
+    }
+  }
+
+  getFeedByType() {
+    switch (this.state.activeTab) {
+    case 'NEARBY':
+      return this.props.nearbyFeedById
+    case 'FROM US':
+      return this.props.badgeUserFeedById
+    case 'STORIES':
+    default:
+      return this.props.userFeedById
+    }
   }
 
   render() {
-    const { users, stories, storiesById, storiesCount } = this.props
-    const feedStories = storiesById.map(id => {
+    const { users, stories, storiesCount } = this.props
+    const feedStories = this.getFeedByType().map(id => {
       return stories[id]
     })
 
@@ -105,13 +133,21 @@ class Feed extends ContainerWithFeedList {
 }
 
 function mapStateToProps(state) {
-  let { userFeedById, entities: stories, userStoryFeedCount } = state.entities.stories
+  let {
+    userFeedById,
+    badgeUserFeedById,
+    nearbyFeedById,
+    entities: stories,
+    userStoryFeedCount,
+  } = state.entities.stories
   const guides = state.entities.guides.entities
   const guidesById = state.entities.guides.feedGuidesById || []
 
   return {
     sessionUserId: state.session.userId,
-    storiesById: userFeedById,
+    userFeedById,
+    nearbyFeedById,
+    badgeUserFeedById,
     guidesById,
     stories,
     guides,

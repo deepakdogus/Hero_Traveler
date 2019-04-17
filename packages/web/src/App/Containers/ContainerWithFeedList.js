@@ -5,12 +5,15 @@ import algoliaSearchHelper from 'algoliasearch-helper'
 
 import env from '../Config/Env'
 
+import { getDistanceFromLatLonInKm } from '../Lib/locationHelpers'
+
 export const itemsPerQuery = 100
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
 const ONE_HUNDRED_MILES = 160934 // 100 miles
+const ONE_TENTH_MILE_IN_KM = 0.160934
 
 export default class ContainerWithFeedList extends React.Component {
   static propTypes = {
@@ -25,7 +28,9 @@ export default class ContainerWithFeedList extends React.Component {
     draftsById: PropTypes.objectOf(PropTypes.object),
     userBookmarksById: PropTypes.objectOf(PropTypes.object),
     guidesById: PropTypes.objectOf(PropTypes.object),
-    storiesById: PropTypes.objectOf(PropTypes.object),
+    userFeedById: PropTypes.objectOf(PropTypes.object),
+    nearbyFeedById: PropTypes.objectOf(PropTypes.object),
+    badgeUserFeedById: PropTypes.objectOf(PropTypes.object),
     guides: PropTypes.object,
     stories: PropTypes.object,
     userStoriesFetchStatus: PropTypes.object,
@@ -37,30 +42,45 @@ export default class ContainerWithFeedList extends React.Component {
   state = {
     activeTab: 'STORIES',
     searchResults: [],
+    gettingLocation: true,
+    latitude: null,
+    longitude: null,
   }
 
   setupSearchHelper() {
     this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
-      this.setState({ searching: false })
       const nearbyStoryIds = res.hits.map(story => story.id)
       this.props.getNearbyStories(this.props.sessionUserId, nearbyStoryIds)
     })
   }
 
   searchNearbyStories() {
-    this.setState({ searching: true }, () => {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => {
-          this.helper
-            .setQuery()
-            .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-            .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
-            .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
-            .search()
-        },
-        error => console.error(error),
-      )
+    const { latitude, longitude } = this.state
+    if ((latitude, longitude)) {
+      this.helper
+        .setQuery()
+        .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+        .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+        .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
+        .search()
+    }
+  }
+
+  getGeolocation() {
+    navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+      if (
+        !this.state.latitude
+        || !this.state.longitude
+        || getDistanceFromLatLonInKm(
+          latitude,
+          longitude,
+          this.state.latitude,
+          this.state.longitude,
+        ) > ONE_TENTH_MILE_IN_KM
+      ) {
+        this.setState({ latitude, longitude })
+      }
     })
   }
 
@@ -84,7 +104,7 @@ export default class ContainerWithFeedList extends React.Component {
     case 'GUIDES':
       return this.props.getGuides(this.props.sessionUserId)
     case 'NEARBY':
-      return this.searchNearbyStories()
+      return this.getGeolocation()
     case 'FROM US':
       return this.props.getBadgeUserStories(this.props.sessionUserId)
     case 'STORIES':
@@ -110,7 +130,9 @@ export default class ContainerWithFeedList extends React.Component {
   getSelectedFeedItems = () => {
     const {
       userStoriesFetchStatus,
-      storiesById,
+      userFeedById,
+      nearbyFeedById,
+      badgeUserFeedById,
       draftsFetchStatus,
       draftsById,
       userBookmarksFetchStatus,
@@ -136,8 +158,17 @@ export default class ContainerWithFeedList extends React.Component {
         fetchStatus: guidesFetchStatus,
         selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides'),
       }
-    case 'STORIES':
     case 'NEARBY':
+      return {
+        fetchStatus: userStoriesFetchStatus,
+        selectedFeedItems: this.getFeedItemsByIds(nearbyFeedById),
+      }
+    case 'FROM US':
+      return {
+        fetchStatus: userStoriesFetchStatus,
+        selectedFeedItems: this.getFeedItemsByIds(badgeUserFeedById),
+      }
+    case 'STORIES':
     case 'ALL':
     case 'SEE':
     case 'DO':
@@ -146,7 +177,7 @@ export default class ContainerWithFeedList extends React.Component {
     default:
       return {
         fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(storiesById),
+        selectedFeedItems: this.getFeedItemsByIds(userFeedById),
       }
     }
   }

@@ -12,7 +12,11 @@ const { Types, Creators } = createActions({
   nearbyFeedRequest: ['userId', 'nearbyStoryIds'],
   badgeUserFeedRequest: ['userId'],
   feedSuccess: ['userFeedById', 'count', 'params'],
+  nearbyFeedSuccess: ['nearbyFeedById', 'count', 'params'],
+  badgeUserFeedSuccess: ['badgeUserFeedById', 'count', 'params'],
   feedFailure: ['error'],
+  nearbyFeedFailure: ['error'],
+  badgeUserFeedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
   fromUserRequest: ['userId'],
   fromUserSuccess: ['userId', 'userStoriesById'],
@@ -60,7 +64,11 @@ const initialFetchStatus = () => ({
 export const INITIAL_STATE = Immutable({
   entities: {},
   userFeedById: [],
+  nearbyFeedById: [],
+  badgeUserFeedById: [],
   userStoryFeedCount: 9999999999,
+  nearbyFeedCount: 9999999999,
+  badgeUserFeedCount: 9999999999,
   storiesByUserAndId: {},
   storiesByCategoryAndId: {},
   fetchStatus: initialFetchStatus(),
@@ -98,6 +106,54 @@ export const feedSuccess = (state, {userFeedById, count, params}) => {
     },
     userFeedById: userFeedUpdate,
     userStoryFeedCount: count,
+    error: null
+  }, {
+    deep: true
+  })
+}
+
+export const nearbyFeedSuccess = (state, {nearbyFeedById, count, params}) => {
+  let nearbyFeedUpdate = nearbyFeedById
+  if (_.get(params, 'page', 1) > 1) {
+    nearbyFeedUpdate = [...state.nearbyFeedById]
+    nearbyFeedById.forEach(id => {
+      if (nearbyFeedUpdate.indexOf(id) === -1) {
+        nearbyFeedUpdate.push(id)
+      }
+    })
+  }
+
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+      loaded: true,
+    },
+    nearbyFeedById: nearbyFeedUpdate,
+    nearbyFeedCount: count,
+    error: null
+  }, {
+    deep: true
+  })
+}
+
+export const badgeUserFeedSuccess = (state, {badgeUserFeedById, count, params}) => {
+  let badgeUserFeedUpdate = badgeUserFeedById
+  if (_.get(params, 'page', 1) > 1) {
+    badgeUserFeedUpdate = [...state.badgeUserFeedById]
+    badgeUserFeedById.forEach(id => {
+      if (badgeUserFeedUpdate.indexOf(id) === -1) {
+        badgeUserFeedUpdate.push(id)
+      }
+    })
+  }
+
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+      loaded: true,
+    },
+    badgeUserFeedById: badgeUserFeedUpdate,
+    badgeUserFeedCount: count,
     error: null
   }, {
     deep: true
@@ -375,6 +431,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.NEARBY_FEED_REQUEST]: feedRequest,
   [Types.BADGE_USER_FEED_REQUEST]: feedRequest,
   [Types.FEED_SUCCESS]: feedSuccess,
+  [Types.NEARBY_FEED_SUCCESS]: nearbyFeedSuccess,
+  [Types.BADGE_USER_FEED_SUCCESS]: badgeUserFeedSuccess,
+  [Types.FEED_FAILURE]: failure,
+  [Types.FEED_FAILURE]: failure,
   [Types.FEED_FAILURE]: failure,
   [Types.FROM_USER_REQUEST]: userRequest,
   [Types.FROM_USER_SUCCESS]: userSuccess,

@@ -187,7 +187,7 @@ class ProfileView extends React.Component {
         <ProfileTabsAndStories
           editable={editable}
           isStory={selectedTab !== TabTypes.guides}
-          renderProfileInfo={this.renderProfileInfo}
+          xx={this.renderProfileInfo}
           feedItemsById={this.getFeedItemsById()}
           fetchStatus={this.getFetchStatus()}
           tabTypes={editable ? TabTypes : ViewOnlyTabTypes}

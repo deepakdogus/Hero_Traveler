@@ -97,6 +97,7 @@ export default class ProfileTabsAndStories extends Component {
 
   _renderProfileInfo = () => {
     const {renderProfileInfo, error} = this.props
+    console.log('line 100 ProfileTabsAndStories', renderProfileInfo)
     let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.')
     return (
       <View style={styles.topAreaWrapper}>

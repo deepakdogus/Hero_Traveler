@@ -43,15 +43,20 @@ import uploadDraftVideo from './draft/upload_story_video'
 const router = express.Router()
 
 router.get('/user/:userId', getUserStories)
+// deprecated - included for backwards compatability
 router.get('/user/:userId/feed/v2', hasValidOauth, endpointWrapper(getUserFeed))
+// deprecated - included for backwards compatability
 router.get('/user/:userId/feed', hasValidOauth, endpointWrapper(getUserFeedOld))
-router.get('/user/:userId/feed/nearby', hasValidOauth, endpointWrapper(getNearbyFeed))
-router.get('/user/:userId/feed/badgeUsers', hasValidOauth, endpointWrapper(getBadgeUserFeed))
 router.get('/user/:userId/like/v2', hasValidOauth, endpointWrapper(getUserLikes))
 router.get('/user/:userId/like', hasValidOauth, endpointWrapper(getUserLikesOld))
 router.get('/category/:categoryId', endpointWrapper(getCategoryStories))
 router.get('/user/:userId/bookmark', hasValidOauth, endpointWrapper(getBookmarks))
 router.get('/user/:userId/deleted', hasValidOauth, endpointWrapper(findDeletedStories))
+
+// feed routes return a subset of stories based on criteria
+router.get('/feed/userfeed/:userId', hasValidOauth, endpointWrapper(getUserFeed))
+router.get('/feed/nearby', hasValidOauth, endpointWrapper(getNearbyFeed))
+router.get('/feed/badgeUsers', hasValidOauth, endpointWrapper(getBadgeUserFeed))
 
 // webhook for uploading a video
 router.post('/draft/cover-video', endpointWrapper(uploadDraftCoverVideoWebhook))

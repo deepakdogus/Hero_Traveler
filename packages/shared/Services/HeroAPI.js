@@ -191,7 +191,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/user/${userId}/feed/v2`, params)
+    return api.get(`story/feed/userfeed/${userId}`, params)
     .then(response => {
       if (!response.ok) return response
       return {
@@ -203,7 +203,7 @@ const create = () => {
 
   const getNearbyFeed = (userId, nearbyStoryIds) => {
     return api
-      .get(`story/user/${userId}/feed/nearby`, {
+      .get(`story/feed/nearby`, {
         nearbyStoryIds: JSON.stringify(nearbyStoryIds)
       })
       .then(response => {
@@ -216,7 +216,7 @@ const create = () => {
   }
 
   const getBadgeUserFeed = userId => {
-    return api.get(`story/user/${userId}/feed/badgeUsers`)
+    return api.get(`story/feed/badgeUsers`)
     .then(response => {
       if (!response.ok) return response
       return {
@@ -224,13 +224,6 @@ const create = () => {
         ...safeNormalize(response, [Story], 'data.feed'),
       }
     })
-  }
-
-  const getUserFeedOld = (userId, params) => {
-    return api.get(`story/user/${userId}/feed`, {
-      params
-    })
-    .then(response => safeNormalize(response, [Story]))
   }
 
   const getUserStories = (userId, params) => {
@@ -520,7 +513,6 @@ const create = () => {
     signupFacebook,
     connectFacebook,
     getUserFeed,
-    getUserFeedOld,
     getNearbyFeed,
     getBadgeUserFeed,
     createStory,

@@ -1,0 +1,6 @@
+framework module Pods_HeroTravelerMobile {
+  umbrella header "Pods-HeroTravelerMobile-umbrella.h"
+
+  export *
+  module * { export * }
+}

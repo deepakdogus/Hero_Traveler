@@ -13,6 +13,8 @@
 #import "RCTPushNotificationManager.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <react-native-branch/RNBranch.h>
+@import GooglePlaces;
+@import GoogleMaps;
 
 @implementation AppDelegate
 
@@ -53,7 +55,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
+  [GMSPlacesClient provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
+  [GMSServices provideAPIKey:@"AIzaSyCwX6XPRPYobXzotl-P7k3iiA2mNedMz1g"];
   // Uncomment this line to use the test key instead of the live one.
   // [RNBranch useTestInstance]
   [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this

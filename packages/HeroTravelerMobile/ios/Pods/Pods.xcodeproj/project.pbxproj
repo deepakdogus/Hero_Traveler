@@ -1,0 +1,1195 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		6971C648DDB28667F4C22B65A43ACD65 /* GooglePlacePicker */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B4C19445312324B2FC829685DE007C84 /* Build configuration list for PBXAggregateTarget "GooglePlacePicker" */;
+			buildPhases = (
+			);
+			dependencies = (
+				C33B0DAEEBDCDD75F9AF79C9332DEC43 /* PBXTargetDependency */,
+				B5BD3C53A125FD91ACDBEBEDB9843C99 /* PBXTargetDependency */,
+			);
+			name = GooglePlacePicker;
+		};
+		BCE3DE68053C99B18AAD56BE1F98BD73 /* GoogleMaps */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 46921981F609C5BA3CB72EC4EA41299D /* Build configuration list for PBXAggregateTarget "GoogleMaps" */;
+			buildPhases = (
+			);
+			dependencies = (
+			);
+			name = GoogleMaps;
+		};
+		FDCCEC87018B71AF93462A4997EAB6BD /* GooglePlaces */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 480B55FE3ACCAC83A30949D59053CFBD /* Build configuration list for PBXAggregateTarget "GooglePlaces" */;
+			buildPhases = (
+			);
+			dependencies = (
+				BB314D9FD28F9EE0C76AA2ABD22FC78D /* PBXTargetDependency */,
+			);
+			name = GooglePlaces;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		4B1EA700197B9DAAF0219E57BB8F6B78 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
+		7A70570F563591E872AB11F2861EEF47 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
+		7D06BCF7ED429EFB4368A7B82F1F456E /* Pods-HeroTravelerMobile-tvOSTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5128DB1F22BD837C5632F166C30EFD60 /* Pods-HeroTravelerMobile-tvOSTests-dummy.m */; };
+		A146DF33E310BE032DAA2DF8199E2A9C /* Pods-HeroTravelerMobileTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A939D9AC51D5FEB0B2383081C69BB26 /* Pods-HeroTravelerMobileTests-dummy.m */; };
+		CC1684F3083B1DC74D1697E160FF5253 /* Pods-HeroTravelerMobile-tvOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EC7CDBD19BC5B1459B357DA35FD6BFC2 /* Pods-HeroTravelerMobile-tvOS-dummy.m */; };
+		DE2ADAF40ACA11565B1C0452058E22BF /* Pods-HeroTravelerMobile-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FD0255AC33364CF71461B55D44E21144 /* Pods-HeroTravelerMobile-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EA36764E3C8A883F1D34484EE21F837C /* Pods-HeroTravelerMobileTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 98E87ACDD22801998BF509E587340FA6 /* Pods-HeroTravelerMobileTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC759CD17626468A177B59D85AE90D47 /* Pods-HeroTravelerMobile-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C747AE64D183D0D9639ECC4E02A4D4 /* Pods-HeroTravelerMobile-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D7ED32BC0E5FF5EC5035AD6D206CE64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE3DE68053C99B18AAD56BE1F98BD73;
+			remoteInfo = GoogleMaps;
+		};
+		35E69D0E4CDC23656657C72CBC0D50F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FDCCEC87018B71AF93462A4997EAB6BD;
+			remoteInfo = GooglePlaces;
+		};
+		44915583C8AAB453CB2B8C11E6512027 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE3DE68053C99B18AAD56BE1F98BD73;
+			remoteInfo = GoogleMaps;
+		};
+		6BF6F63AB9F0F69543C0D3AC61146446 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6971C648DDB28667F4C22B65A43ACD65;
+			remoteInfo = GooglePlacePicker;
+		};
+		7488780CAE8987782B82784775C3EEAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7A0E5D39C04198BAC64D3515BF29BE1;
+			remoteInfo = "Pods-HeroTravelerMobile-tvOS";
+		};
+		972D542B94FB8809A35310342B345CB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FDCCEC87018B71AF93462A4997EAB6BD;
+			remoteInfo = GooglePlaces;
+		};
+		C9899CC8EABE98DEB8DF25E972436191 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34E43648FECFF791E58D1780FDAA5EEA;
+			remoteInfo = "Pods-HeroTravelerMobile";
+		};
+		DB32E74C91B4C711DC0B0CE5A18D8A86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE3DE68053C99B18AAD56BE1F98BD73;
+			remoteInfo = GoogleMaps;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0E34E16BA6F8F59CF7F3EBFE2CC58891 /* GoogleMapsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsCore.framework; path = Maps/Frameworks/GoogleMapsCore.framework; sourceTree = "<group>"; };
+		1462F71F39775FF7CF070526879FB809 /* Pods-HeroTravelerMobile-tvOSTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobile-tvOSTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		16A8D6AFA11E078523CF54E9B12D9C40 /* Pods-HeroTravelerMobileTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobileTests-Info.plist"; sourceTree = "<group>"; };
+		1A939D9AC51D5FEB0B2383081C69BB26 /* Pods-HeroTravelerMobileTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HeroTravelerMobileTests-dummy.m"; sourceTree = "<group>"; };
+		1C1469E906199F7323D5E7B940839D0C /* Pods-HeroTravelerMobile-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		209AF3E31A88BF878BABCC7378CBB5B7 /* Pods-HeroTravelerMobile-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobile-Info.plist"; sourceTree = "<group>"; };
+		2D4D13A70222D6D1A6901369FD15F11E /* GooglePlaces.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GooglePlaces.xcconfig; sourceTree = "<group>"; };
+		37B3309A3C2CB4FE03971A621185A2C0 /* Pods-HeroTravelerMobile-tvOSTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HeroTravelerMobile-tvOSTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		47596D9F942EFAC1D0353BAA4F356F2E /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlaces.framework; path = Frameworks/GooglePlaces.framework; sourceTree = "<group>"; };
+		4E05E5D64237B1810A11B228FFC953AC /* Pods-HeroTravelerMobileTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobileTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		5128DB1F22BD837C5632F166C30EFD60 /* Pods-HeroTravelerMobile-tvOSTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HeroTravelerMobile-tvOSTests-dummy.m"; sourceTree = "<group>"; };
+		53ED20C856292823D18E068F7619868A /* GooglePlacePicker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GooglePlacePicker.xcconfig; sourceTree = "<group>"; };
+		5920B2F1AEA6178ADA23DBF6E255DEED /* Pods-HeroTravelerMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		5B7BB147E31C93526B05215FF74EB789 /* Pods-HeroTravelerMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6E1FA5FE5A0AEAF3D31E761443E85D54 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GooglePlacePicker.bundle; path = Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle; sourceTree = "<group>"; };
+		7467D7991866B18688DB1F44E6314257 /* Pods-HeroTravelerMobile.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HeroTravelerMobile.modulemap"; sourceTree = "<group>"; };
+		77E1BE1D272D1FC30E9936DB30B8B092 /* Pods-HeroTravelerMobile-tvOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobile-tvOS-acknowledgements.plist"; sourceTree = "<group>"; };
+		7A616F0250298338C42B1C17C9B3B62E /* Pods-HeroTravelerMobileTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HeroTravelerMobileTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		82F5FCAB99BC8ED5F4DDAAC3B760CB4F /* libPods-HeroTravelerMobile-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-HeroTravelerMobile-tvOS.a"; path = "libPods-HeroTravelerMobile-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94F37384DA1C643BB2C0981EC6C2243B /* GoogleMaps.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GoogleMaps.xcconfig; sourceTree = "<group>"; };
+		983F26513E4FC9B21CC6B6DF172675AA /* libPods-HeroTravelerMobile-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-HeroTravelerMobile-tvOSTests.a"; path = "libPods-HeroTravelerMobile-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98E87ACDD22801998BF509E587340FA6 /* Pods-HeroTravelerMobileTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-HeroTravelerMobileTests-umbrella.h"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9ED9763BFD036EED031F3DC039E1EB33 /* Pods-HeroTravelerMobile-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A53868ABA0D822AD6DC95C1E93AF5079 /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlacePicker.framework; path = Frameworks/GooglePlacePicker.framework; sourceTree = "<group>"; };
+		BE7DD81DCA91AB564D91F157D5AA29F9 /* GoogleMapsBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsBase.framework; path = Base/Frameworks/GoogleMapsBase.framework; sourceTree = "<group>"; };
+		C13469BCB6D9B439E350B242B900714D /* Pods-HeroTravelerMobile-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		C3C747AE64D183D0D9639ECC4E02A4D4 /* Pods-HeroTravelerMobile-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HeroTravelerMobile-dummy.m"; sourceTree = "<group>"; };
+		C54B7D560FF318CAC16B6871ED5FA48F /* Pods-HeroTravelerMobile-tvOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HeroTravelerMobile-tvOS-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C7410A8C7D309A62D568B0BF7D03619E /* GooglePlaces.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle; sourceTree = "<group>"; };
+		CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		CC26D0150485FB74C78981AF89D5B7DA /* Pods-HeroTravelerMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile.release.xcconfig"; sourceTree = "<group>"; };
+		CCD25A4F20048D58901FE2DA6403FD87 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Maps/Frameworks/GoogleMaps.framework; sourceTree = "<group>"; };
+		CDBF8CBFB06E531B371C87D020608233 /* Pods_HeroTravelerMobileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_HeroTravelerMobileTests.framework; path = "Pods-HeroTravelerMobileTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5CCDD85933C1A05C826AFD22920462E /* GoogleMaps.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		E2257D92230D3C744C83206CEEA67D0D /* Pods-HeroTravelerMobileTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HeroTravelerMobileTests.modulemap"; sourceTree = "<group>"; };
+		E3D1D8735F06A81EAF99EB488A4FE6E8 /* Pods-HeroTravelerMobile-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HeroTravelerMobile-resources.sh"; sourceTree = "<group>"; };
+		E5020458957F7E73EB692917AFE80BDC /* Pods_HeroTravelerMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_HeroTravelerMobile.framework; path = "Pods-HeroTravelerMobile.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9EBFC00F01CC5B79CBB7A197DEF4B8B /* Pods-HeroTravelerMobile-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HeroTravelerMobile-acknowledgements.plist"; sourceTree = "<group>"; };
+		EC7CDBD19BC5B1459B357DA35FD6BFC2 /* Pods-HeroTravelerMobile-tvOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HeroTravelerMobile-tvOS-dummy.m"; sourceTree = "<group>"; };
+		F10C3ED0964EED13E252C8558AB8DA43 /* Pods-HeroTravelerMobile-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HeroTravelerMobile-acknowledgements.markdown"; sourceTree = "<group>"; };
+		F1D952206C3BC455199EFA344ED53147 /* Pods-HeroTravelerMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobileTests.release.xcconfig"; sourceTree = "<group>"; };
+		F39DA5394CD4D261CD95645CF6C6A1AE /* Pods-HeroTravelerMobile-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HeroTravelerMobile-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FD0255AC33364CF71461B55D44E21144 /* Pods-HeroTravelerMobile-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-HeroTravelerMobile-umbrella.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1B4537CA9896E8EF0409C2D46DB8C8B2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		252652AAAF30D26EC32A465B2D7A229E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A70570F563591E872AB11F2861EEF47 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3C6791A40697FE1A20CE94F4FED21A89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78590F5A60178B9B5B6183F4643F94F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B1EA700197B9DAAF0219E57BB8F6B78 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A85F5159206111461796B036049B482 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				7C92029810B1DAE4183FD6B54242C82A /* Frameworks */,
+				52943D08C15C7A6A9B2A060381391629 /* Resources */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
+		247FD3A18FE38935BB92B3E180C7D596 /* GooglePlaces */ = {
+			isa = PBXGroup;
+			children = (
+				E12708CB198CEC0C91A0F027BF8685AA /* Frameworks */,
+				B9BD2979414BD38C8C1F78FB30D7CF5E /* Resources */,
+				EB6F085D3C401EF0A360F191C97EAB9E /* Support Files */,
+			);
+			name = GooglePlaces;
+			path = GooglePlaces;
+			sourceTree = "<group>";
+		};
+		3B8EE2D3D7AF12FF89D3D6DD1B5EFD3B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6E1FA5FE5A0AEAF3D31E761443E85D54 /* GooglePlacePicker.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		41C9524FD973899D2101A3CD8D6E7C1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A53868ABA0D822AD6DC95C1E93AF5079 /* GooglePlacePicker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		52943D08C15C7A6A9B2A060381391629 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D5CCDD85933C1A05C826AFD22920462E /* GoogleMaps.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		56FD8A0BBE5F89EB63B5E9E01D89F6AF /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				89196EB8DD16B693F04ECCF16146E720 /* Frameworks */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		60D0D89FD15CABF286DAFDE5999B939B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				53ED20C856292823D18E068F7619868A /* GooglePlacePicker.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GooglePlacePicker";
+			sourceTree = "<group>";
+		};
+		72D89E1B5905F68DB9C94A66FA6724F8 /* GoogleMaps */ = {
+			isa = PBXGroup;
+			children = (
+				56FD8A0BBE5F89EB63B5E9E01D89F6AF /* Base */,
+				1A85F5159206111461796B036049B482 /* Maps */,
+				8A599711BCB7418C988D3FEB3067EB50 /* Support Files */,
+			);
+			name = GoogleMaps;
+			path = GoogleMaps;
+			sourceTree = "<group>";
+		};
+		7C92029810B1DAE4183FD6B54242C82A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCD25A4F20048D58901FE2DA6403FD87 /* GoogleMaps.framework */,
+				0E34E16BA6F8F59CF7F3EBFE2CC58891 /* GoogleMapsCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8842A05F0B7F0CF73EDD4E2F86C36854 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				72D89E1B5905F68DB9C94A66FA6724F8 /* GoogleMaps */,
+				BAD2E2D340A901735D8175782BEE6401 /* GooglePlacePicker */,
+				247FD3A18FE38935BB92B3E180C7D596 /* GooglePlaces */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		88AA9E770D6EC873362D2EFB5A1C1BEC /* Pods-HeroTravelerMobile-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				C54B7D560FF318CAC16B6871ED5FA48F /* Pods-HeroTravelerMobile-tvOS-acknowledgements.markdown */,
+				77E1BE1D272D1FC30E9936DB30B8B092 /* Pods-HeroTravelerMobile-tvOS-acknowledgements.plist */,
+				EC7CDBD19BC5B1459B357DA35FD6BFC2 /* Pods-HeroTravelerMobile-tvOS-dummy.m */,
+				F39DA5394CD4D261CD95645CF6C6A1AE /* Pods-HeroTravelerMobile-tvOS.debug.xcconfig */,
+				C13469BCB6D9B439E350B242B900714D /* Pods-HeroTravelerMobile-tvOS.release.xcconfig */,
+			);
+			name = "Pods-HeroTravelerMobile-tvOS";
+			path = "Target Support Files/Pods-HeroTravelerMobile-tvOS";
+			sourceTree = "<group>";
+		};
+		89196EB8DD16B693F04ECCF16146E720 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BE7DD81DCA91AB564D91F157D5AA29F9 /* GoogleMapsBase.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8A599711BCB7418C988D3FEB3067EB50 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				94F37384DA1C643BB2C0981EC6C2243B /* GoogleMaps.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GoogleMaps";
+			sourceTree = "<group>";
+		};
+		9B055D0CFEA43187E72B03DED11F5662 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		A84AC409C26C4023EBCDD63A9B4A6475 /* Pods-HeroTravelerMobile */ = {
+			isa = PBXGroup;
+			children = (
+				7467D7991866B18688DB1F44E6314257 /* Pods-HeroTravelerMobile.modulemap */,
+				F10C3ED0964EED13E252C8558AB8DA43 /* Pods-HeroTravelerMobile-acknowledgements.markdown */,
+				E9EBFC00F01CC5B79CBB7A197DEF4B8B /* Pods-HeroTravelerMobile-acknowledgements.plist */,
+				C3C747AE64D183D0D9639ECC4E02A4D4 /* Pods-HeroTravelerMobile-dummy.m */,
+				209AF3E31A88BF878BABCC7378CBB5B7 /* Pods-HeroTravelerMobile-Info.plist */,
+				E3D1D8735F06A81EAF99EB488A4FE6E8 /* Pods-HeroTravelerMobile-resources.sh */,
+				FD0255AC33364CF71461B55D44E21144 /* Pods-HeroTravelerMobile-umbrella.h */,
+				5920B2F1AEA6178ADA23DBF6E255DEED /* Pods-HeroTravelerMobile.debug.xcconfig */,
+				CC26D0150485FB74C78981AF89D5B7DA /* Pods-HeroTravelerMobile.release.xcconfig */,
+			);
+			name = "Pods-HeroTravelerMobile";
+			path = "Target Support Files/Pods-HeroTravelerMobile";
+			sourceTree = "<group>";
+		};
+		B9BD2979414BD38C8C1F78FB30D7CF5E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C7410A8C7D309A62D568B0BF7D03619E /* GooglePlaces.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		BAD2E2D340A901735D8175782BEE6401 /* GooglePlacePicker */ = {
+			isa = PBXGroup;
+			children = (
+				41C9524FD973899D2101A3CD8D6E7C1C /* Frameworks */,
+				3B8EE2D3D7AF12FF89D3D6DD1B5EFD3B /* Resources */,
+				60D0D89FD15CABF286DAFDE5999B939B /* Support Files */,
+			);
+			name = GooglePlacePicker;
+			path = GooglePlacePicker;
+			sourceTree = "<group>";
+		};
+		C5C530D7C0BAD47F9956D6D91D71A9CF /* Pods-HeroTravelerMobile-tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				37B3309A3C2CB4FE03971A621185A2C0 /* Pods-HeroTravelerMobile-tvOSTests-acknowledgements.markdown */,
+				1462F71F39775FF7CF070526879FB809 /* Pods-HeroTravelerMobile-tvOSTests-acknowledgements.plist */,
+				5128DB1F22BD837C5632F166C30EFD60 /* Pods-HeroTravelerMobile-tvOSTests-dummy.m */,
+				9ED9763BFD036EED031F3DC039E1EB33 /* Pods-HeroTravelerMobile-tvOSTests.debug.xcconfig */,
+				1C1469E906199F7323D5E7B940839D0C /* Pods-HeroTravelerMobile-tvOSTests.release.xcconfig */,
+			);
+			name = "Pods-HeroTravelerMobile-tvOSTests";
+			path = "Target Support Files/Pods-HeroTravelerMobile-tvOSTests";
+			sourceTree = "<group>";
+		};
+		CEFE2A30AACAD94DA8B1E7079D4932F9 /* Pods-HeroTravelerMobileTests */ = {
+			isa = PBXGroup;
+			children = (
+				E2257D92230D3C744C83206CEEA67D0D /* Pods-HeroTravelerMobileTests.modulemap */,
+				7A616F0250298338C42B1C17C9B3B62E /* Pods-HeroTravelerMobileTests-acknowledgements.markdown */,
+				4E05E5D64237B1810A11B228FFC953AC /* Pods-HeroTravelerMobileTests-acknowledgements.plist */,
+				1A939D9AC51D5FEB0B2383081C69BB26 /* Pods-HeroTravelerMobileTests-dummy.m */,
+				16A8D6AFA11E078523CF54E9B12D9C40 /* Pods-HeroTravelerMobileTests-Info.plist */,
+				98E87ACDD22801998BF509E587340FA6 /* Pods-HeroTravelerMobileTests-umbrella.h */,
+				5B7BB147E31C93526B05215FF74EB789 /* Pods-HeroTravelerMobileTests.debug.xcconfig */,
+				F1D952206C3BC455199EFA344ED53147 /* Pods-HeroTravelerMobileTests.release.xcconfig */,
+			);
+			name = "Pods-HeroTravelerMobileTests";
+			path = "Target Support Files/Pods-HeroTravelerMobileTests";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				8842A05F0B7F0CF73EDD4E2F86C36854 /* Pods */,
+				DFAB029E2608C6F8FCC0864246F2AC86 /* Products */,
+				E3D66ED0A743DAF2C67F62EAA970CEF5 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B055D0CFEA43187E72B03DED11F5662 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DFAB029E2608C6F8FCC0864246F2AC86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				82F5FCAB99BC8ED5F4DDAAC3B760CB4F /* libPods-HeroTravelerMobile-tvOS.a */,
+				983F26513E4FC9B21CC6B6DF172675AA /* libPods-HeroTravelerMobile-tvOSTests.a */,
+				E5020458957F7E73EB692917AFE80BDC /* Pods_HeroTravelerMobile.framework */,
+				CDBF8CBFB06E531B371C87D020608233 /* Pods_HeroTravelerMobileTests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E12708CB198CEC0C91A0F027BF8685AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				47596D9F942EFAC1D0353BAA4F356F2E /* GooglePlaces.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3D66ED0A743DAF2C67F62EAA970CEF5 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A84AC409C26C4023EBCDD63A9B4A6475 /* Pods-HeroTravelerMobile */,
+				88AA9E770D6EC873362D2EFB5A1C1BEC /* Pods-HeroTravelerMobile-tvOS */,
+				C5C530D7C0BAD47F9956D6D91D71A9CF /* Pods-HeroTravelerMobile-tvOSTests */,
+				CEFE2A30AACAD94DA8B1E7079D4932F9 /* Pods-HeroTravelerMobileTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		EB6F085D3C401EF0A360F191C97EAB9E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				2D4D13A70222D6D1A6901369FD15F11E /* GooglePlaces.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GooglePlaces";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6D193B69C1B6E500A8020FBE0F2B4FC6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93890DAF73F4A2DA4360F87F851DB059 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98D9C229556AF1A672332D7E8A071899 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA36764E3C8A883F1D34484EE21F837C /* Pods-HeroTravelerMobileTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B91693B3B92326010B09736CEBB78BB4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE2ADAF40ACA11565B1C0452058E22BF /* Pods-HeroTravelerMobile-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		3331378C1B107B4AABF1A3C2E15CC091 /* Pods-HeroTravelerMobileTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E15E1C4A0882BE6E52DE96AC8EB59B7 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobileTests" */;
+			buildPhases = (
+				98D9C229556AF1A672332D7E8A071899 /* Headers */,
+				525EF104D3BE73E3D821F0141E7A774F /* Sources */,
+				78590F5A60178B9B5B6183F4643F94F0 /* Frameworks */,
+				3256C7B8AEDD9E1863C58854ADD6AF50 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE74F397D89E9ABDBA8536EA45909D9D /* PBXTargetDependency */,
+			);
+			name = "Pods-HeroTravelerMobileTests";
+			productName = "Pods-HeroTravelerMobileTests";
+			productReference = CDBF8CBFB06E531B371C87D020608233 /* Pods_HeroTravelerMobileTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		34E43648FECFF791E58D1780FDAA5EEA /* Pods-HeroTravelerMobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA1BA3C58A275E8C56BEC5E8FDFCE808 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile" */;
+			buildPhases = (
+				B91693B3B92326010B09736CEBB78BB4 /* Headers */,
+				29B569CCF66C0DA3456A5B62FCE2B85A /* Sources */,
+				252652AAAF30D26EC32A465B2D7A229E /* Frameworks */,
+				1CEB3F420C24EC883C0BAD503DD78C21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BDF88D4096684774E1882B85D5683093 /* PBXTargetDependency */,
+				08F2EDEF717D349BFC2BA25F66EE1F1F /* PBXTargetDependency */,
+				91DEA9563DF38BCF95159ACC79D6DA58 /* PBXTargetDependency */,
+			);
+			name = "Pods-HeroTravelerMobile";
+			productName = "Pods-HeroTravelerMobile";
+			productReference = E5020458957F7E73EB692917AFE80BDC /* Pods_HeroTravelerMobile.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		6C181A4D9BFEC4150750250B3E5FCF52 /* Pods-HeroTravelerMobile-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBDC85667BB5E7532F6A18C2F2CE5FD5 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile-tvOSTests" */;
+			buildPhases = (
+				6D193B69C1B6E500A8020FBE0F2B4FC6 /* Headers */,
+				3FC6F1E6593BB49EA60642B0511CB984 /* Sources */,
+				1B4537CA9896E8EF0409C2D46DB8C8B2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC71DB81027F26C2A930FDD2B4E26A91 /* PBXTargetDependency */,
+			);
+			name = "Pods-HeroTravelerMobile-tvOSTests";
+			productName = "Pods-HeroTravelerMobile-tvOSTests";
+			productReference = 983F26513E4FC9B21CC6B6DF172675AA /* libPods-HeroTravelerMobile-tvOSTests.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A7A0E5D39C04198BAC64D3515BF29BE1 /* Pods-HeroTravelerMobile-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64ECB527CD837D51D1EE186ACECE6DA0 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile-tvOS" */;
+			buildPhases = (
+				93890DAF73F4A2DA4360F87F851DB059 /* Headers */,
+				1FA819B08E01076B4CED597A671BA5A4 /* Sources */,
+				3C6791A40697FE1A20CE94F4FED21A89 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-HeroTravelerMobile-tvOS";
+			productName = "Pods-HeroTravelerMobile-tvOS";
+			productReference = 82F5FCAB99BC8ED5F4DDAAC3B760CB4F /* libPods-HeroTravelerMobile-tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = DFAB029E2608C6F8FCC0864246F2AC86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BCE3DE68053C99B18AAD56BE1F98BD73 /* GoogleMaps */,
+				6971C648DDB28667F4C22B65A43ACD65 /* GooglePlacePicker */,
+				FDCCEC87018B71AF93462A4997EAB6BD /* GooglePlaces */,
+				34E43648FECFF791E58D1780FDAA5EEA /* Pods-HeroTravelerMobile */,
+				A7A0E5D39C04198BAC64D3515BF29BE1 /* Pods-HeroTravelerMobile-tvOS */,
+				6C181A4D9BFEC4150750250B3E5FCF52 /* Pods-HeroTravelerMobile-tvOSTests */,
+				3331378C1B107B4AABF1A3C2E15CC091 /* Pods-HeroTravelerMobileTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1CEB3F420C24EC883C0BAD503DD78C21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3256C7B8AEDD9E1863C58854ADD6AF50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1FA819B08E01076B4CED597A671BA5A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC1684F3083B1DC74D1697E160FF5253 /* Pods-HeroTravelerMobile-tvOS-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29B569CCF66C0DA3456A5B62FCE2B85A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC759CD17626468A177B59D85AE90D47 /* Pods-HeroTravelerMobile-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FC6F1E6593BB49EA60642B0511CB984 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D06BCF7ED429EFB4368A7B82F1F456E /* Pods-HeroTravelerMobile-tvOSTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		525EF104D3BE73E3D821F0141E7A774F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A146DF33E310BE032DAA2DF8199E2A9C /* Pods-HeroTravelerMobileTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		08F2EDEF717D349BFC2BA25F66EE1F1F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GooglePlacePicker;
+			target = 6971C648DDB28667F4C22B65A43ACD65 /* GooglePlacePicker */;
+			targetProxy = 6BF6F63AB9F0F69543C0D3AC61146446 /* PBXContainerItemProxy */;
+		};
+		91DEA9563DF38BCF95159ACC79D6DA58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GooglePlaces;
+			target = FDCCEC87018B71AF93462A4997EAB6BD /* GooglePlaces */;
+			targetProxy = 972D542B94FB8809A35310342B345CB6 /* PBXContainerItemProxy */;
+		};
+		B5BD3C53A125FD91ACDBEBEDB9843C99 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GooglePlaces;
+			target = FDCCEC87018B71AF93462A4997EAB6BD /* GooglePlaces */;
+			targetProxy = 35E69D0E4CDC23656657C72CBC0D50F5 /* PBXContainerItemProxy */;
+		};
+		BB314D9FD28F9EE0C76AA2ABD22FC78D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GoogleMaps;
+			target = BCE3DE68053C99B18AAD56BE1F98BD73 /* GoogleMaps */;
+			targetProxy = 44915583C8AAB453CB2B8C11E6512027 /* PBXContainerItemProxy */;
+		};
+		BDF88D4096684774E1882B85D5683093 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GoogleMaps;
+			target = BCE3DE68053C99B18AAD56BE1F98BD73 /* GoogleMaps */;
+			targetProxy = 1D7ED32BC0E5FF5EC5035AD6D206CE64 /* PBXContainerItemProxy */;
+		};
+		C33B0DAEEBDCDD75F9AF79C9332DEC43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GoogleMaps;
+			target = BCE3DE68053C99B18AAD56BE1F98BD73 /* GoogleMaps */;
+			targetProxy = DB32E74C91B4C711DC0B0CE5A18D8A86 /* PBXContainerItemProxy */;
+		};
+		DE74F397D89E9ABDBA8536EA45909D9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-HeroTravelerMobile";
+			target = 34E43648FECFF791E58D1780FDAA5EEA /* Pods-HeroTravelerMobile */;
+			targetProxy = C9899CC8EABE98DEB8DF25E972436191 /* PBXContainerItemProxy */;
+		};
+		FC71DB81027F26C2A930FDD2B4E26A91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-HeroTravelerMobile-tvOS";
+			target = A7A0E5D39C04198BAC64D3515BF29BE1 /* Pods-HeroTravelerMobile-tvOS */;
+			targetProxy = 7488780CAE8987782B82784775C3EEAC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02D864FC50D13FE05AAA3097021D7A99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D4D13A70222D6D1A6901369FD15F11E /* GooglePlaces.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		067F85DE91BD425D765B9E5EF8BE2897 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B7BB147E31C93526B05215FF74EB789 /* Pods-HeroTravelerMobileTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		07488D4657FB0A78086563621D425F8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		08D485C6533B2F591343D251B15829B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9ED9763BFD036EED031F3DC039E1EB33 /* Pods-HeroTravelerMobile-tvOSTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2B3B19D3283AEE50666EE890C0133FFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C1469E906199F7323D5E7B940839D0C /* Pods-HeroTravelerMobile-tvOSTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		509E70047CC5983EED06874A9C688BED /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C13469BCB6D9B439E350B242B900714D /* Pods-HeroTravelerMobile-tvOS.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		69233AD82DEF1FC69543AD116B2DA48B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5920B2F1AEA6178ADA23DBF6E255DEED /* Pods-HeroTravelerMobile.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6F1C07C1B602964D8C325E1F202C57B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94F37384DA1C643BB2C0981EC6C2243B /* GoogleMaps.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9F6257DFD39B325B7300B7DC8C146D50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53ED20C856292823D18E068F7619868A /* GooglePlacePicker.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9F8631DD3EE2C3D874754E791BD3C7EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94F37384DA1C643BB2C0981EC6C2243B /* GoogleMaps.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1962E6FF39BBAC201A2E5DDF99557DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		BDB83436ED4847AAA936F71D42EE7C83 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1D952206C3BC455199EFA344ED53147 /* Pods-HeroTravelerMobileTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HeroTravelerMobileTests/Pods-HeroTravelerMobileTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C3697C09E9F7CF98BD7B631EA28D5E8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D4D13A70222D6D1A6901369FD15F11E /* GooglePlaces.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C80F3B49BE16011A13E33BB1C718A039 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F39DA5394CD4D261CD95645CF6C6A1AE /* Pods-HeroTravelerMobile-tvOS.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB592444EE1E7C06E4BA3C61635DF33D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53ED20C856292823D18E068F7619868A /* GooglePlacePicker.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF8BA453ABF7B7D74E95688014258739 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC26D0150485FB74C78981AF89D5B7DA /* Pods-HeroTravelerMobile.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		46921981F609C5BA3CB72EC4EA41299D /* Build configuration list for PBXAggregateTarget "GoogleMaps" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F8631DD3EE2C3D874754E791BD3C7EF /* Debug */,
+				6F1C07C1B602964D8C325E1F202C57B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		480B55FE3ACCAC83A30949D59053CFBD /* Build configuration list for PBXAggregateTarget "GooglePlaces" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3697C09E9F7CF98BD7B631EA28D5E8C /* Debug */,
+				02D864FC50D13FE05AAA3097021D7A99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07488D4657FB0A78086563621D425F8A /* Debug */,
+				A1962E6FF39BBAC201A2E5DDF99557DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64ECB527CD837D51D1EE186ACECE6DA0 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C80F3B49BE16011A13E33BB1C718A039 /* Debug */,
+				509E70047CC5983EED06874A9C688BED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9E15E1C4A0882BE6E52DE96AC8EB59B7 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobileTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				067F85DE91BD425D765B9E5EF8BE2897 /* Debug */,
+				BDB83436ED4847AAA936F71D42EE7C83 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4C19445312324B2FC829685DE007C84 /* Build configuration list for PBXAggregateTarget "GooglePlacePicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F6257DFD39B325B7300B7DC8C146D50 /* Debug */,
+				CB592444EE1E7C06E4BA3C61635DF33D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBDC85667BB5E7532F6A18C2F2CE5FD5 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08D485C6533B2F591343D251B15829B9 /* Debug */,
+				2B3B19D3283AEE50666EE890C0133FFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA1BA3C58A275E8C56BEC5E8FDFCE808 /* Build configuration list for PBXNativeTarget "Pods-HeroTravelerMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69233AD82DEF1FC69543AD116B2DA48B /* Debug */,
+				CF8BA453ABF7B7D74E95688014258739 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

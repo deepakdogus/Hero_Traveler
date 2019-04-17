@@ -197,7 +197,6 @@ export default class FeedItemPreview extends Component {
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
-          
             <View>
               <TouchableOpacity onPress={this._touchUser}>
                 <Avatar

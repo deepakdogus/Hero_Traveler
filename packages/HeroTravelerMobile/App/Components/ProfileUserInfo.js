@@ -136,7 +136,6 @@ export default class ProfileUserInfo extends Component {
 
   renderSecondRow(){
     const { user } = this.props
-    console.log(user, 'logged on userinfo')
     return (
       <View style={[styles.profileWrapper, styles.secondRow]}>
         {hasBadge(user.role) && (
@@ -152,7 +151,7 @@ export default class ProfileUserInfo extends Component {
         )}
         <View style={[styles.secondRowSection, styles.readBioSection]}>
           <TouchableOpacity onPress={this._navToViewBio} >
-              <Text style={styles.readBioText}>Read bio</Text>
+            <Text style={styles.readBioText}>Read bio</Text>
           </TouchableOpacity>
         </View>
       </View>

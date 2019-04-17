@@ -150,5 +150,8 @@ export default StyleSheet.create({
   },
   badgeView: {
     marginRight: 5,
+    position: 'absolute',
+    bottom: '20%',
+    left: '50%',
   },
 })

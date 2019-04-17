@@ -132,7 +132,7 @@ const images = {
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
   iconContributorBadge: require('../Images/ht-icons/contributor-badge.png'),
   iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
-  iconFellowBadge: require('../Images/ht-icons/fellow-badge.png'),
+  iconFellowBadge: require('../Images/ht-icons/fellow.png'),
   iconLocalBadge: require('../Images/ht-icons/local-hero-badge.png'),
   iconErrorExclamation: require('../Images/ht-icons/error.png'),
   iconInfoDark: require('../Images/ht-icons/icon_info_dark.png'),

@@ -61,10 +61,10 @@ export default class FeedItemList extends React.Component {
 
       if (index !== 0) {
         rows.push(
-          <StyledDivider
-            key={`hr-${feedItem.id}`}
-            color={'lighter-grey'}
-          />,
+        <StyledDivider
+          key={`hr-${feedItem.id}`}
+          color={'lighter-grey'}
+        />,
         )
       }
 
@@ -103,6 +103,15 @@ export default class FeedItemList extends React.Component {
   render() {
     const { feedItems, activeTab, fetching } = this.props
     const noFeedItems = !feedItems || !feedItems.length
+
+    if (fetching && activeTab === 'NEARBY' && noFeedItems) {
+      return (
+        <FeedItemMessage
+          message={'Determining your location...'}
+          smallMessage={'(this can take up to 1 minute the first time)'}
+        />
+      )
+    }
 
     if (fetching) return <FeedItemMessage message={'Fetching your feed...'} />
 

@@ -57,7 +57,7 @@ class Feed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.objectOf(PropTypes.object),
     signedUp: PropTypes.bool,
-    storiesCount: PropTypes.number,
+    userStoryFeedCount: PropTypes.number,
   }
 
   componentDidMount() {
@@ -72,7 +72,7 @@ class Feed extends ContainerWithFeedList {
     if (this.props.signedUp) this.props.signupReset()
   }
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate(_s, prevState) {
     if (
       prevState.latitude !== this.state.latitude
       && prevState.longitude !== this.state.longitude
@@ -95,14 +95,26 @@ class Feed extends ContainerWithFeedList {
     }
   }
 
+  getCountByType() {
+    switch (this.state.activeTab) {
+    case 'NEARBY':
+      return this.props.nearbyFeedCount
+    case 'FROM US':
+      return this.props.badgeUserFeedCount
+    case 'STORIES':
+    default:
+      return this.props.userStoryFeedCount
+    }
+  }
+
   render() {
-    const { users, stories, storiesCount } = this.props
+    const { users, stories } = this.props
     const feedStories = this.getFeedByType().map(id => {
       return stories[id]
     })
 
     const { selectedFeedItems, fetchStatus } = this.getSelectedFeedItems()
-    const isStory = this.state.activeTab === 'STORIES'
+    const isStory = this.state.activeTab !== 'GUIDES'
 
     return (
       <Wrapper>
@@ -122,8 +134,8 @@ class Feed extends ContainerWithFeedList {
             getTabInfo={this.getTabInfo}
             activeTab={this.state.activeTab}
             feedItems={selectedFeedItems}
-            feedItemCount={isStory ? storiesCount : selectedFeedItems.length}
-            fetching={fetchStatus.fetching || this.state.searching}
+            feedItemCount={isStory ? this.getCountByType() : selectedFeedItems.length}
+            fetching={fetchStatus.fetching}
           />
           <Footer />
         </ContentWrapper>
@@ -134,11 +146,13 @@ class Feed extends ContainerWithFeedList {
 
 function mapStateToProps(state) {
   let {
+    entities: stories,
     userFeedById,
     badgeUserFeedById,
     nearbyFeedById,
-    entities: stories,
     userStoryFeedCount,
+    badgeUserFeedCount,
+    nearbyFeedCount,
   } = state.entities.stories
   const guides = state.entities.guides.entities
   const guidesById = state.entities.guides.feedGuidesById || []
@@ -152,7 +166,9 @@ function mapStateToProps(state) {
     stories,
     guides,
     users: state.entities.users.entities,
-    storiesCount: userStoryFeedCount,
+    userStoryFeedCount,
+    badgeUserFeedCount,
+    nearbyFeedCount,
     signedUp: state.signup.signedUp,
     userStoriesFetchStatus: state.entities.stories.fetchStatus,
     draftsFetchStatus: state.storyCreate.fetchStatus,

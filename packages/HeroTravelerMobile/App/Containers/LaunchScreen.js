@@ -13,8 +13,6 @@ import { Images, Colors } from '../Shared/Themes'
 import Loader from '../Components/Loader'
 import styles from './Styles/LaunchScreenStyles'
 
-// console.log("env is", env)
-
 class LaunchScreen extends React.Component {
   static propTypes = {
     fetching: PropTypes.bool,

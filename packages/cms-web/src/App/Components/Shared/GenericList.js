@@ -56,7 +56,9 @@ class GenericList extends React.Component {
   _handleSearch = (e) => this._onSearchChange(e.target.value)
 
   _onSearchChange = debounce((text) => {
-    this.props.runSearch(text)
+    this.props.getItems({
+      search: text,
+    })
   }, 300)
 
   _showAll = () => {
@@ -310,7 +312,6 @@ GenericList.propTypes = {
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getItems: PropTypes.func.isRequired,
-  runSearch: PropTypes.func.isRequired,
   restoreItems: PropTypes.func.isRequired,
   filterField: PropTypes.string,
   filterPlaceholder: PropTypes.string,

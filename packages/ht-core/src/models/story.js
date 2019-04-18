@@ -261,6 +261,8 @@ StorySchema.statics = {
   }
 }
 
+StorySchema.index({title: 'text'})
+
 StorySchema.plugin(slug, {truncate: 120})
 StorySchema.plugin(softDelete, {overrideMethods: true})
 

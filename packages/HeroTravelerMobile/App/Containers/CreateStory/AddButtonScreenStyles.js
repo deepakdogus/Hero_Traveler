@@ -11,7 +11,7 @@ export default StyleSheet.create({
     ...ApplicationStyles.screen.containerWithNavbar,
   },
   navBarStyle: {
-    height: Metrics.navBarHeight + 20,
+    height: '11%',
     paddingTop: isIPhoneX() ? 20 : 0,
     borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,

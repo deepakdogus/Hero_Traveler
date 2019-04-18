@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native'
+import { View, TouchableOpacity, Text, KeyboardAvoidingView, Keyboard} from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import { AbstractAddButton } from '../../Shared/AbstractComponents'
@@ -29,6 +29,8 @@ export default class AddButtonScreen extends AbstractAddButton {
   onLeft = () => NavActions.pop()
 
   onRight = () => this.handleSubmit(this.state.type, this.state.link, NavActions.pop)
+
+  keyboardDismiss = () => Keyboard.dismiss()
 
   renderConfirmDeleteButton() {
     const title = 'Delete Button'
@@ -81,64 +83,64 @@ export default class AddButtonScreen extends AbstractAddButton {
           style={styles.navBarStyle}
         />
         <KeyboardAvoidingView behavior="position" enabled style={styles.content}>
-          <View style={styles.labelRow}>
+          <TouchableOpacity onPress={this.keyboardDismiss}>
             <Text style={styles.label}>Choose a button:</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonRow}>
-              <Text style={styles.buttonText}>More info button</Text>
-              <Checkbox
-                checked={type === 'info'}
-                onPress={this.setMoreInfoType}
-              />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonRow}>
+                <Text style={styles.buttonText}>More info button</Text>
+                <Checkbox
+                  checked={type === 'info'}
+                  onPress={this.setMoreInfoType}
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonRow}>
-              <Text style={styles.buttonText}>Book now button</Text>
-              <Checkbox
-                checked={type === 'booking'}
-                onPress={this.setBookNowType}
-              />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonRow}>
+                <Text style={styles.buttonText}>Book now button</Text>
+                <Checkbox
+                  checked={type === 'booking'}
+                  onPress={this.setBookNowType}
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonRow}>
-              <Text style={styles.buttonText}>Sign up button</Text>
-              <Checkbox
-                checked={type === 'signup'}
-                onPress={this.setSignupType}
-              />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonRow}>
+                <Text style={styles.buttonText}>Sign up button</Text>
+                <Checkbox
+                  checked={type === 'signup'}
+                  onPress={this.setSignupType}
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.labelRow}>
-            <Text style={styles.label}>Add a Url to your button:</Text>
-          </View>
-          <FormInput
-            autoCapitalize="none"
-            onChangeText={this.handleChangeText}
-            onSubmitEditing={this.onRight}
-            placeholder="Enter Url"
-            keyboardType="url"
-            returnKeyType="done"
-            value={link}
-          />
-          {showSubmitError && (
-            <View style={styles.errorRow}>
-              <Text style={styles.errorText}>
-                Please make sure your Url is valid
-              </Text>
+            <View style={styles.labelRow}>
+              <Text style={styles.label}>Add a Url to your button:</Text>
             </View>
-          )}
-          {showDeleteButton && (
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={this.handleDeleteButton}
-            >
-              <Text style={styles.deleteText}>Delete button</Text>
-            </TouchableOpacity>
-          )}
+            <FormInput
+              autoCapitalize="none"
+              onChangeText={this.handleChangeText}
+              onSubmitEditing={this.keyboardDismiss}
+              placeholder="Enter Url"
+              keyboardType="url"
+              returnKeyType="done"
+              value={link}
+            />
+            {showSubmitError && (
+              <View style={styles.errorRow}>
+                <Text style={styles.errorText}>
+                  Please make sure your Url is valid
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
         </KeyboardAvoidingView>
+        {showDeleteButton && (
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={this.handleDeleteButton}
+          >
+            <Text style={styles.deleteText}>Delete button</Text>
+          </TouchableOpacity>
+        )}
         {activeModal === 'confirmDeleteButton' && this.renderConfirmDeleteButton()}
       </View>
     )

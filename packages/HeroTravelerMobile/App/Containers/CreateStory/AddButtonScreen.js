@@ -57,8 +57,6 @@ export default class AddButtonScreen extends AbstractAddButton {
     )
   }
 
-  renderButtonForm(){}
-
   render() {
     const {
       link,

@@ -9,9 +9,6 @@ import FormControls from '../Shared/FormControls'
 const FormItem = Form.Item
 
 class EditCategoryForm extends React.Component {
-  state = {
-  }
-
   handleSubmit = (e) => {
     e.preventDefault()
     const { form, onSubmit } = this.props

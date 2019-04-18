@@ -5,15 +5,22 @@ import { Icon, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
+import algoliasearchModule from 'algoliasearch'
+import algoliaSearchHelper from 'algoliasearch-helper'
+
 import CategoriesActions from '../../Shared/Redux/Entities/Categories'
 import Images from '../../Themes/Images'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
+import env from '../../Config/Env'
 
 import GenericList from '../../Components/Shared/GenericList'
 
 import {
   SquareImg,
 } from '../../Components/Shared/StyledListComponents'
+
+const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
+const CATEGORY_INDEX = env.SEARCH_CATEGORIES_INDEX
 
 const columns = [{
   title: 'Title',
@@ -61,10 +68,11 @@ const columns = [{
 },
 {
   title: 'Image',
-  render: (item) =>
-    (<SquareImg
+  render: (item) => (
+    <SquareImg
       src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder}
-    />),
+    />
+  ),
 },
 {
   title: 'Edit',
@@ -87,6 +95,53 @@ class CategoriesList extends React.Component {
         featured: value === 'all' ? undefined : true,
       },
     })
+  }
+
+  componentDidMount = () => {
+    this.categoryHelper = algoliaSearchHelper(algoliasearch, CATEGORY_INDEX, {
+      disjunctiveFacets: ['title'],
+    })
+    this.setupSearchListeners(this.categoryHelper, 'categories')
+  }
+
+  componentWillUnmount() {
+    this.removeSearchListeners(this.categoryHelper)
+
+    // avoids not showing new results/showing deleted stories
+    this.categoryHelper.clearCache()
+  }
+
+  removeSearchListeners = helper => {
+    helper.removeAllListeners('result')
+    helper.removeAllListeners('search')
+  }
+
+  setupSearchListeners = (helper, type) => {
+    helper.on('result', res => {
+      console.log('res', res)
+      this.setState({
+        searching: false,
+        searchResults: res.hits,
+      })
+    })
+    helper.on('search', () => {
+      this.setState({ searching: true })
+    })
+  }
+
+  search = (helper, value) => {
+    // helper.addDisjunctiveFacetRefinement(
+    //   'title',
+    //   `${value}`,
+    // )
+    helper
+      .setQuery()
+      .setQueryParameter('hitsPerPage', 10)
+      .search()
+  }
+
+  runSearch = (value) => {
+    this.search(this.categoryHelper, value)
   }
 
   render() {
@@ -118,6 +173,7 @@ class CategoriesList extends React.Component {
         params={params}
         total={total}
         getItems={getCategories}
+        runSearch={this.runSearch}
         restoreItems={restoreCategories}
         isRestoring={isRestoring}
         filterField="featured"

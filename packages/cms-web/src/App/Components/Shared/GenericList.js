@@ -10,7 +10,7 @@ import {
   TopRow,
   Header,
   SearchContainer,
-  LeftSpaceDiv,
+  LeftSpaceWrapper,
   LeftSpaceSpan,
   MiddleRow,
   FilterRow,
@@ -56,9 +56,7 @@ class GenericList extends React.Component {
   _handleSearch = (e) => this._onSearchChange(e.target.value)
 
   _onSearchChange = debounce((text) => {
-    this.props.getItems({
-      search: text,
-    })
+    this.props.runSearch(text)
   }, 300)
 
   _showAll = () => {
@@ -214,62 +212,64 @@ class GenericList extends React.Component {
           <Tab active={this.state.activeTab === 'active'} onClick={this._showActive}>
             Active {this.state.activeTab === 'active' && <span>({total})</span>}
           </Tab>
-          <LeftSpaceDiv> | 
-          </LeftSpaceDiv>
+          <LeftSpaceWrapper> | 
+          </LeftSpaceWrapper>
           {showFlagged
             && <Fragment>
-              <LeftSpaceDiv>
+              <LeftSpaceWrapper>
                 <Tab
                   active={this.state.activeTab === 'flagged'}
                   onClick={this._showFlagged}
                 >
                   Flagged {this.state.activeTab === 'flagged' && <span>({total})</span>}
                 </Tab>
-              </LeftSpaceDiv>
-              <LeftSpaceDiv> | 
-              </LeftSpaceDiv>
+              </LeftSpaceWrapper>
+              <LeftSpaceWrapper> | 
+              </LeftSpaceWrapper>
             </Fragment>
           }
-          <LeftSpaceDiv>
+          <LeftSpaceWrapper>
             <Tab active={this.state.activeTab === 'deleted'} onClick={this._showDeleted}>
               Deleted {this.state.activeTab === 'deleted' && <span>({total})</span>}
             </Tab>
-          </LeftSpaceDiv>
-          <LeftSpaceDiv> | 
-          </LeftSpaceDiv>
-          <LeftSpaceDiv>
+          </LeftSpaceWrapper>
+          <LeftSpaceWrapper> | 
+          </LeftSpaceWrapper>
+          <LeftSpaceWrapper>
             <Tab active={this.state.activeTab === 'all'} onClick={this._showAll}>
               All {this.state.activeTab === 'all' && <span>({total})</span>}
             </Tab>
-          </LeftSpaceDiv>
+          </LeftSpaceWrapper>
         </MiddleRow>
 
-        {filterField && <FilterRow>
-          <b>Filter by:</b>
-          <LeftSpaceDiv>
-            <Select
-              placeholder={filterPlaceholder}
-              value={this.state.selectedFilter}
-              style={{
-                width: 120,
-              }}
-              onChange={this._handleSelectChange}
-            >
-              {filterOptions.map(o =>
-                (<Option key={o} value={o}>{capitalize(o)}</Option>),
-              )}
-            </Select>
+        {filterField && (
+          <FilterRow>
+            <b>Filter by:</b>
+            <LeftSpaceWrapper>
+              <Select
+                placeholder={filterPlaceholder}
+                value={this.state.selectedFilter}
+                style={{
+                  width: 120,
+                }}
+                onChange={this._handleSelectChange}
+              >
+                {filterOptions.map(o =>
+                  (<Option key={o} value={o}>{capitalize(o)}</Option>),
+                )}
+              </Select>
 
-          </LeftSpaceDiv>
-          <LeftSpaceDiv>
-            <Button onClick={this._applyTypeFilter}>Filter</Button>
-          </LeftSpaceDiv>
-          {additionalControls.map((c, i) =>
-            (<LeftSpaceDiv key={`${i}`}>{c}</LeftSpaceDiv>))
-          }
-        </FilterRow>}
-        {this.state.activeTab === 'deleted'
-          && <ActionRow>
+            </LeftSpaceWrapper>
+            <LeftSpaceWrapper>
+              <Button onClick={this._applyTypeFilter}>Filter</Button>
+            </LeftSpaceWrapper>
+            {additionalControls.map((c, i) =>
+              (<LeftSpaceWrapper key={`${i}`}>{c}</LeftSpaceWrapper>))
+            }
+          </FilterRow>
+        )}
+        {this.state.activeTab === 'deleted' && (
+          <ActionRow>
             <Button
               type="primary"
               onClick={this._applyAction}
@@ -282,7 +282,7 @@ class GenericList extends React.Component {
               {hasSelected ? `${selectedRowKeys.length} selected items` : ''}
             </LeftSpaceSpan>
           </ActionRow>
-        }
+        )}
         <Table
           rowSelection={
             restoreItems && this.state.activeTab === 'deleted'
@@ -310,6 +310,7 @@ GenericList.propTypes = {
   params: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   getItems: PropTypes.func.isRequired,
+  runSearch: PropTypes.func.isRequired,
   restoreItems: PropTypes.func.isRequired,
   filterField: PropTypes.string,
   filterPlaceholder: PropTypes.string,

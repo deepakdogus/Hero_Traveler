@@ -133,15 +133,14 @@ class Login extends Component {
               onChange={this.setPassword}
               type='password'
             />
-            {loginReduxFetching
-              && <LoginFetchingText>Signing In ...</LoginFetchingText>
+            {loginReduxFetching && <LoginFetchingText>Signing In ...</LoginFetchingText>
             }
-            {(loginReduxError && !loginReduxFetching)
-              && <LoginErrorText>{loginReduxError}</LoginErrorText>
-            }
-            {this.state.localError
-              && <LoginErrorText>{this.state.localError}</LoginErrorText>
-            }
+            {(loginReduxError && !loginReduxFetching) && (
+              <LoginErrorText>{loginReduxError}</LoginErrorText>
+            )}
+            {this.state.localError && (
+              <LoginErrorText>{this.state.localError}</LoginErrorText>
+            )}
             <RoundedButton
               width='100%'
               margin='none'

@@ -1,4 +1,5 @@
 const preparePicData = (fileData) => {
+  console.log('fileData', fileData)
   const format = fileData.format === 'jpg' || 'jpeg' ? 'jpeg' : fileData.format
   const preFn = fileData.public_id.substring(fileData.public_id.lastIndexOf('/') + 1)
   const filename = `${preFn}.${fileData.format}`

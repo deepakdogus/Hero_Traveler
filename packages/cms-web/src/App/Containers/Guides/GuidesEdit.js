@@ -27,8 +27,6 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditGuide extends React.Component {
-  state = {}
-
   componentDidMount(){
     const { record, getGuide, getStories, id } = this.props
     
@@ -45,10 +43,13 @@ class EditGuide extends React.Component {
 
   handleDelete = () => {
     const { deleteGuide, history, id } = this.props
+    const cb = () => {
+      history.goBack()
+    }
     deleteGuide({
       id,
-      history,
       message,
+      cb,
     })
   }
 

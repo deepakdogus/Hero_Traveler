@@ -440,7 +440,7 @@ export const adminGetStoryFailure = (state, { error }) => {
 export const adminGetStorySuccess = (state, { res }) => {
   let list = [...state.getIn(['adminStories', 'byId'])]
   let total = state.getIn(['adminStories', 'total'])
-  const { record } = res
+  const { record = {} } = res
   const recordIndex = _.findIndex(list, { id: record.id })
   if (recordIndex >= 0) {
     list[recordIndex] = record

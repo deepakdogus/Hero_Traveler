@@ -36,7 +36,7 @@ const create = () => {
     if (fileObject.uri) {
       data.append('file', fileObject.uri)
     }
- else {
+    else {
       fileObject.uri = fileObject.url
       data.append('file', fileObject.uri)
     }

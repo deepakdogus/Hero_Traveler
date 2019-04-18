@@ -46,6 +46,10 @@ export const INITIAL_STATE = Immutable({
     isUpdating: false,
     isRestoring: false,
     params: {
+      sort: {
+        fieldName: 'title',
+        order: 1,
+      },
       page: 1,
       limit: 5
     }
@@ -164,7 +168,7 @@ export const adminGetCategoryFailure = (state, { error }) => {
 export const adminGetCategorySuccess = (state, { res }) => {
   let list = [...state.getIn(['adminCategories', 'byId'])]
   let total = state.getIn(['adminCategories', 'total'])
-  const { record } = res
+  const { record = {} } = res
   const recordIndex = _.findIndex(list, { id: record.id })
   if (recordIndex >= 0) {
     list[recordIndex] = record

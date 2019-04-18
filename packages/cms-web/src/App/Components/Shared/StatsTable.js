@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -11,7 +11,7 @@ import {
 
 const StatsTable = ({ title, columns}) => {
   return (
-    <div>
+    <Fragment>
         <SmallTitle>
           {title}
         </SmallTitle>
@@ -30,7 +30,7 @@ const StatsTable = ({ title, columns}) => {
             ))}
           </tbody>
         </TableStyled>
-      </div>
+      </Fragment>
   )
 }
 

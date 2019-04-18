@@ -15,6 +15,6 @@ export default async function updateUser(req) {
       category[key] = attrs[key]
     }
 
-    return category.save();
+    return category.save()
   });
 }

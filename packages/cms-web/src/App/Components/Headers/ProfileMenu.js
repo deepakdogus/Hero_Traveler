@@ -11,9 +11,9 @@ const Sidebar = styled.div`
   box-shadow: ${props => `0px 2px 6px 0px ${props.theme.Colors.backgroundTintLow}`};
   border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
   padding: 20px 0px 20px 40px;
+  min-width: 150px;
   animation-name: fadeIn;
   animation-duration: .2s;
-
   overflow: hidden;
 `
 
@@ -65,13 +65,13 @@ class ProfileMenu extends React.Component{
 
     return(
       <Sidebar>
-        {globalModalParams.isHamburger
-          && <ExtraLinks>
+        {globalModalParams.isHamburger && (
+          <ExtraLinks>
             <SidebarDemiLink onClick={this.openUsers}>
               Users
             </SidebarDemiLink>
           </ExtraLinks>
-        }
+        )}
         <SidebarDemiLink onClick={this.attemptLogout}>
           Log Out
         </SidebarDemiLink>

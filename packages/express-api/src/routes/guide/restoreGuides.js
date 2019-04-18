@@ -5,7 +5,7 @@ const restoreGuide = async(id) => {
 }
 
 export default function restoreGuides(req, res) {
-  const ids = req.body.ids
-  const restoreTasks = ids.map(i => restoreGuide(i))
+  const { ids } = req.body
+  const restoreTasks = ids.map(id => restoreGuide(id))
   return Promise.all(restoreTasks)
 }

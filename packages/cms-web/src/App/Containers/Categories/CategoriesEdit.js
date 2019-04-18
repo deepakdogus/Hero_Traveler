@@ -25,8 +25,6 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditCategory extends React.Component {
-  state = {}
-
   componentDidMount(){
     //get user EditCategory on signUp and reset signUp redux
     const { record, getCategory, id } = this.props
@@ -43,10 +41,13 @@ class EditCategory extends React.Component {
 
   handleDelete = () => {
     const { deleteCategory, history, id } = this.props
+    const cb = () => {
+      history.goBack()
+    }
     deleteCategory({
       id,
-      history,
       message,
+      cb,
     })
   }
 
@@ -155,7 +156,7 @@ EditCategory.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
-  const list = [...get(state, 'admin.entities.categories.adminCategories.byId', [])]
+  const list = [...get(state, 'entities.categories.adminCategories.byId', [])]
   const record = find(list, { id }) || {}
   return {
     record,

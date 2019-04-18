@@ -17,7 +17,7 @@ export const SearchContainer = styled.div`
   display: flex;
 `
 
-export const LeftSpaceDiv = styled.div`
+export const LeftSpaceWrapper = styled.div`
   margin-left: 20px;
 `
 

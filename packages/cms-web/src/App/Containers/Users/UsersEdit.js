@@ -54,10 +54,13 @@ class EditUser extends React.Component {
 
   handleDelete = () => {
     const { deleteUser, history, id } = this.props
+    const cb = () => {
+      history.goBack()
+    }
     deleteUser({
       id,
-      history,
       message,
+      cb,
     })
   }
 

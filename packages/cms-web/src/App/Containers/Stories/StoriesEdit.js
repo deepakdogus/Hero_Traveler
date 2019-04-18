@@ -24,8 +24,6 @@ import {
 } from '../../Components/Shared/StyledEditComponents'
 
 class EditStory extends React.Component {
-  state = {}
-
   componentDidMount(){
     //get user EditStory on signUp and reset signUp redux
     const { record, getStory, id } = this.props
@@ -42,10 +40,13 @@ class EditStory extends React.Component {
 
   handleDelete = () => {
     const { deleteStory, history, id } = this.props
+    const cb = () => {
+      history.goBack()
+    }
     deleteStory({
       id,
       message,
-      history,
+      cb,
     })
   }
 
@@ -169,7 +170,6 @@ function mapStateToProps(state, ownProps) {
   const id = get(ownProps, 'match.params.id')
   const list = [...get(state, ['entities', 'stories', 'adminStories', 'byId'], [])]
   const record = find(list, { id }) || {}
-  console.log('state', state)
   return {
     record,
     isLoading: get(state, 'entities.stories.adminStories.fetchStatus.fetching'),

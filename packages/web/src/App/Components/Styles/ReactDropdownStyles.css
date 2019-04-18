@@ -1,0 +1,67 @@
+.select-datepicker {
+  /* background-color: burlywood; */
+  display: flex;
+}
+
+.select-month,
+.select-date,
+.select-year {
+  position: relative;
+  padding: 10px 0;
+  margin-right: 30px;
+  width: 120px;
+  font-family: 'Source Sans Pro';
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  color: #757575;
+  border-bottom: 1px solid #bdbdbd;
+  cursor: pointer;
+}
+
+.Dropdown-control {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Dropdown-arrow-wrapper {
+  position: relative;
+}
+
+.Dropdown-arrow {
+  border-color: #1a1c21 transparent transparent;
+  border-style: solid;
+  border-width: 8px 5px 0;
+  content: ' ';
+  display: block;
+  height: 0;
+  margin-top: -ceil(2.5);
+  position: absolute;
+  right: 0;
+  top: 8px;
+  width: 0;
+}
+
+.Dropdown-menu {
+  padding: 10px 0;
+  background-color: #fff;
+  box-shadow: 0px 2px 6px 0px rgba(26, 28, 33, 0.3);
+  border: 1px solid #dedede;
+  box-sizing: border-box;
+  margin-top: -1px;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  top: 110%;
+  width: 100%;
+  z-index: 1000;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-animation-duration: .2s;
+  animation-duration: .2s;
+}
+
+.Dropdown-option {
+  padding: 8px 15px;
+}

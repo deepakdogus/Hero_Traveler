@@ -20,6 +20,7 @@ import Icon from '../Shared/Web/Components/Icon'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
+import { getButtonText, handleClickActionButton} from '../Shared/Lib/buttonLinkHelpers'
 
 const Container = styled.div`
   margin: 0 7%;
@@ -69,6 +70,13 @@ const StyledIcon = styled(Icon)`
   height: 20px;
   align-self: center;
   cursor: pointer;
+`
+
+const ActionButtonContainer = styled.div`
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `
 
 const AddToGuideButton = ({ onClickAddToGuide }) => (
@@ -204,6 +212,19 @@ class Story extends Component {
           />
           <StoryContentRenderer story={story} />
           {this.renderHashtags()}
+          {story.actionButton
+            && !!story.actionButton.link
+            && !!story.actionButton.type && (
+              <ActionButtonContainer>
+                <RoundedButton
+                  onClick={handleClickActionButton(story.actionButton.link, window.open)}
+                  text={getButtonText(story.actionButton)}
+                  margin="none"
+                  width="300px"
+                  height="45px"
+                />
+              </ActionButtonContainer>
+            )}
           {this.hasLatLng() && (
             <MapContainer>
               <GoogleMap stories={ [story] } />

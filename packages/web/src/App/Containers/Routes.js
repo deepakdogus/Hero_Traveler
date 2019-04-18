@@ -5,9 +5,14 @@ import Loadable from 'react-loadable'
 import Session from './Session'
 
 import AuthRoute from './AuthRoute'
-import Header from './Header'
 
 const Loading = () => null
+
+const Header = Loadable({
+  loader: () => import('./Header'),
+  loading: Loading,
+  delay: 300,
+})
 
 const Explore = Loadable({
   loader: () => import('./Explore'),
@@ -29,6 +34,12 @@ const Feed = Loadable({
 
 const SignupSocial = Loadable({
   loader: () => import('./Signup/SignupSocial'),
+  loading: Loading,
+  delay: 300,
+})
+
+const SignupAdditionalInfo = Loadable({
+  loader: () => import('./Signup/SignupAdditionalInfo'),
   loading: Loading,
   delay: 300,
 })
@@ -120,6 +131,10 @@ class AppRoot extends Component {
         <AuthRoute
           path="/signup/topics"
           component={SignupTopics}
+        />
+        <AuthRoute
+          path="/signup/info"
+          component={SignupAdditionalInfo}
         />
         <AuthRoute
           path="/profile/editTopics"

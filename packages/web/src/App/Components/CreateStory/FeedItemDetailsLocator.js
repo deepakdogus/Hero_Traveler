@@ -6,13 +6,13 @@ import GoogleLocator from '../GoogleLocator'
 import HorizontalDivider from '../HorizontalDivider'
 
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
-import {getLatLng, geocodeByAddress} from 'react-places-autocomplete'
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
 import './Styles/GoogleLocatorStyles.css'
 
 const Container = styled.div`
   display: inline-block;
   margin-left: 25px;
-  width: ${props => props.isGuide ? '' : '80%' };
+  width: ${props => (props.isGuide ? '' : '80%')};
 `
 
 const InputContainer = styled.div`
@@ -29,11 +29,11 @@ const StyledInput = styled.input`
   border: none;
   font-weight: 400;
   font-size: 18px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: #1a1c21;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   margin: 10px 0px;
-  `
+`
 
 const DropdownContainer = styled.div`
   position: absolute;
@@ -41,7 +41,7 @@ const DropdownContainer = styled.div`
   left: 0px;
   background-color: white;
   border: none;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   width: 320px;
   z-index: 100;
   margin: 10px 0px;
@@ -65,7 +65,7 @@ const StyledLocation = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: ${props => props.theme.Colors.background};
   margin: 0px;
 `
@@ -74,7 +74,7 @@ const StyledAddress = styled.p`
   font-family: ${props => props.theme.Fonts.type.base};
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: ${props => props.theme.Colors.grey};
   margin: 0px;
 `
@@ -92,9 +92,14 @@ export default class FeedItemDetailsPlacesAutocomplete extends Component {
     isGuide: PropTypes.bool,
   }
 
-  handleSelect = async address => {
-    let locationInfo = await formatLocationWeb(address, geocodeByAddress, getLatLng)
-    this.props.onChange({locationInfo: locationInfo})
+  handleSelect = async (description, placeId) => {
+    let locationInfo = await formatLocationWeb(
+      description,
+      placeId,
+      geocodeByPlaceId,
+      getLatLng,
+    )
+    this.props.onChange({ locationInfo })
   }
 
   handleChange = address => this.props.onChange({ location: address })
@@ -117,16 +122,14 @@ export default class FeedItemDetailsPlacesAutocomplete extends Component {
               {...getSuggestionItemProps(suggestion)}
             >
               <AutocompleteItem>
-                <StyledLocation>
-                  { suggestion.formattedSuggestion.mainText }
-                </StyledLocation>
+                <StyledLocation>{suggestion.formattedSuggestion.mainText}</StyledLocation>
                 <StyledAddress>
-                  { suggestion.formattedSuggestion.secondaryText }
+                  {suggestion.formattedSuggestion.secondaryText}
                 </StyledAddress>
               </AutocompleteItem>
               {idx !== suggestions.length - 1 && (
                 <StyledHorizontalDivider
-                  color='lighter-grey'
+                  color="lighter-grey"
                   opaque
                 />
               )}
@@ -144,6 +147,7 @@ export default class FeedItemDetailsPlacesAutocomplete extends Component {
         onChange={this.handleChange}
         onSelect={this.handleSelect}
         renderChildren={this.renderChildren}
+        searchOptions={{ types: ['geocode'] }}
       />
     </Container>
   )

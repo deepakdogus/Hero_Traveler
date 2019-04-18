@@ -138,13 +138,13 @@ class MyFeedScreen extends React.Component {
     this.props.attemptGetUserFeedGuides(this.props.userId)
   }
 
-  renderFeedItem = (feedItem, index) => {
+  renderFeedItem = ({item, index}) => {
     return (
       <ConnectedFeedItemPreview
         index={index}
         isFeed={true}
         isStory={this.state.selectedTab === tabTypes.following}
-        feedItem={feedItem}
+        feedItem={item}
         height={imageHeight}
         userId={this.props.userId}
         autoPlayVideo

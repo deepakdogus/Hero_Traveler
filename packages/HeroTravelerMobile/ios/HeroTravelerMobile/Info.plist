@@ -58,8 +58,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Unused but App Store requires it</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) to capture media for stories</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>$(PRODUCT_NAME) to access location for stories</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) to record audio for stories</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) to access media for stories</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) to access media for stories</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

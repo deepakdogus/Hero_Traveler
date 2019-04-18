@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {
     RefreshControl,
     requireNativeComponent,
+    FlatList,
 } from 'react-native'
 import reactMixin from 'react-mixin'
 import ScrollResponder from '../../node_modules/react-native/Libraries/Components/ScrollResponder'
@@ -29,7 +30,16 @@ and so we do not need to add the property to (almost) every FeedList call we mak
 */
 
 export default class FeedList extends React.Component {
+  _keyExtractor = (item, index) => item.id
+
   render () {
+    return (
+      <FlatList
+        data={this.props.targetEntities}
+        renderItem={this.props.renderFeedItem}
+        keyExtractor={this._keyExtractor}
+      />
+    )
     return null
   }
 }

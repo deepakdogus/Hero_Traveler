@@ -4,7 +4,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import env from '../Config/Env'
 import {isLocalMediaAsset, getVideoUrlFromString} from '../Shared/Lib/getVideoUrl'
 
-const VideoManager = NativeModules.VideoManager
+// const VideoManager = NativeModules.VideoManager
 
 function getCloudinaryUploadUrl(resourceType){
   return `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
@@ -12,11 +12,11 @@ function getCloudinaryUploadUrl(resourceType){
 
 export function moveVideoToPreCache(draftStoryId, videoFileUri, cloudinaryPath) {
   const streamUrl = getVideoUrlFromString(cloudinaryPath, true)
-  VideoManager.moveVideoToPreCache(draftStoryId, videoFileUri, streamUrl)
+  // VideoManager.moveVideoToPreCache(draftStoryId, videoFileUri, streamUrl)
 }
 
 export function moveVideosFromPrecacheToCache(draftStoryId) {
-  VideoManager.moveVideosFromPrecacheToCache(draftStoryId)
+  // VideoManager.moveVideosFromPrecacheToCache(draftStoryId)
 }
 
 /*
@@ -27,7 +27,8 @@ To modify the presets go to the relevant Cloudinary account
 async function uploadMediaFile(fileData, type){
   const uploadURL = getCloudinaryUploadUrl(type)
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
-  let dataUri = await VideoManager.fixFilePath(fileData.uri)
+  let dataUri = fileData.uri
+  // let dataUri = await VideoManager.fixFilePath(fileData.uri)
   if (isLocalMediaAsset(dataUri)) dataUri = decodeURIComponent(dataUri.substr(7))
 
   return RNFetchBlob.fetch(

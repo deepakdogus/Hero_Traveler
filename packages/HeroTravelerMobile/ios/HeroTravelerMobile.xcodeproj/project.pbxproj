@@ -83,7 +83,6 @@
 		CBFDF79A1F01B6BADFAE5446 /* Pods_HeroTravelerMobileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D54CA4F51CEE8064C996720 /* Pods_HeroTravelerMobileTests.framework */; };
 		CFED0746179C4ADE8A4387A5 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 675408BBF88F41DFA01A7323 /* SourceSansPro-Bold.ttf */; };
 		D3A56D9EC25648919BE0D53B /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D65EF8D16CC5476D8A2B200A /* Montserrat-Medium.ttf */; };
-		D6516DFE6927476F93B813D8 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC54BED386441F8A48603F8 /* libRNCamera.a */; };
 		D674C2A375DB446F92261604 /* libreact-native-branch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDD0046416F1452DAE2FB172 /* libreact-native-branch.a */; };
 		DC8E22485D21491D82211A05 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADDA1CCCF6DB465BAE03E5D1 /* MaterialIcons.ttf */; };
 		E7BFBC7ADB51454FAE0D2422 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DF9EAC64AB44982B4E360EC /* Zocial.ttf */; };
@@ -118,6 +117,7 @@
 		EF6241252242DDA6009AABA6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241222242DDA6009AABA6 /* FBSDKCoreKit.framework */; };
 		EF6241262242DDA6009AABA6 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241232242DDA6009AABA6 /* FBSDKShareKit.framework */; };
 		EF6241272242DDA6009AABA6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6241242242DDA6009AABA6 /* FBSDKLoginKit.framework */; };
+		EF6882492267D59200C04A1F /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB2E8602248086100D63B84 /* libRNCamera.a */; };
 		EFB2E808224804D900D63B84 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB2E807224804AE00D63B84 /* libKeyboardTrackingView.a */; };
 		EFDB2101223AD7C300B182BA /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDB20FE223AD79D00B182BA /* libRCTPushNotification.a */; };
 		FAA49B31C8334B6399438D8D /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB34E3B375E4B448AA0FA57 /* libRNCAsyncStorage.a */; };
@@ -740,6 +740,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF6882492267D59200C04A1F /* libRNCamera.a in Frameworks */,
 				EF58028C2264E19F007935B7 /* GPUImage.framework in Frameworks */,
 				EF58028B2264E197007935B7 /* MobileCoreServices.framework in Frameworks */,
 				EF5802892264E188007935B7 /* QuartzCore.framework in Frameworks */,
@@ -779,7 +780,6 @@
 				4DA79D1539F34EB5BE3EE3AB /* libRNCNetInfo.a in Frameworks */,
 				49281DEEA5B347F1BA2BBECD /* libRNVersionNumber.a in Frameworks */,
 				C4682A84635D45488FFA4D2C /* libRNImagePicker.a in Frameworks */,
-				D6516DFE6927476F93B813D8 /* libRNCamera.a in Frameworks */,
 				82345CEC079549ACB22A6BC3 /* libRNGooglePlaces.a in Frameworks */,
 				52123B6C9F2AE563EAE942E5 /* Pods_HeroTravelerMobile.framework in Frameworks */,
 			);
@@ -2809,7 +2809,10 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(HOME)/Documents/FacebookSDK",
+					"$(SRCROOT)/Pods/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2866,7 +2869,10 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(HOME)/Documents/FacebookSDK",
+					"$(SRCROOT)/Pods/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

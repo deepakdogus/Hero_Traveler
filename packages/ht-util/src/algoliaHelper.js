@@ -40,9 +40,10 @@ function mapForTitleAndId(array) {
 // users
 function formatUserSearchObject(user) {
   let suffixes = []
-  while(user.username > 1) {
-    let suffix = user.username.substr(1)
-    suffixes.push(suffix)
+  let usernameperm = user.username;
+  while (usernameperm.length > 1) {
+    usernameperm = usernameperm.substr(1)
+    suffixes.push(usernameperm)
   }
   return {
     username: user.username,

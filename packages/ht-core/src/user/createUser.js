@@ -87,7 +87,7 @@ export async function createUserFacebook(facebookUserData, device: ?object) {
 }
 
 // @TODO validate user
-export default function createUser(userData, device: ? object) {
+export default function createUser(userData, device: ?object) {
   return User.createFromEmailData(
     userData.name,
     userData.email,

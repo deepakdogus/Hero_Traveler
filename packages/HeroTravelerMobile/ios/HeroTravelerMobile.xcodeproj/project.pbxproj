@@ -90,6 +90,45 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		ED69CE489B404E5BB073AF25 /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF522AAD920A4A7A910B5406 /* SourceSansPro-SemiBold.ttf */; };
 		EECB737249DC4C549832F22F /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3D4E0094A34C91A8FC4D35 /* libRNVectorIcons-tvOS.a */; };
+		EF04D3C3226E0DC8002B8729 /* RNDJDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3BC226E0DC8002B8729 /* RNDJDraftJSEditor.m */; };
+		EF04D3C4226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3BE226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.m */; };
+		EF04D3C5226E0DC8002B8729 /* RNDJShadowDraftJSEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3C0226E0DC8002B8729 /* RNDJShadowDraftJSEditor.m */; };
+		EF04D3C6226E0DC8002B8729 /* RNDJAutocorrectView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3C1226E0DC8002B8729 /* RNDJAutocorrectView.m */; };
+		EF04D3C7226E0DC8002B8729 /* RNDJDraftJSEditorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3C2226E0DC8002B8729 /* RNDJDraftJSEditorManager.m */; };
+		EF04D3D7226E0E06002B8729 /* RNDJSelectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3C9226E0E05002B8729 /* RNDJSelectionModel.m */; };
+		EF04D3D8226E0E06002B8729 /* RNDJInlineStyleRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3CA226E0E05002B8729 /* RNDJInlineStyleRangeModel.m */; };
+		EF04D3D9226E0E06002B8729 /* RNDJEntityRangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3CC226E0E05002B8729 /* RNDJEntityRangeModel.m */; };
+		EF04D3DA226E0E06002B8729 /* RNDJAutocompleteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3CE226E0E05002B8729 /* RNDJAutocompleteModel.m */; };
+		EF04D3DB226E0E06002B8729 /* RNDJEntityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3CF226E0E05002B8729 /* RNDJEntityModel.m */; };
+		EF04D3DC226E0E06002B8729 /* RNDJBlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3D0226E0E06002B8729 /* RNDJBlockModel.m */; };
+		EF04D3DD226E0E06002B8729 /* RNDJContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3D1226E0E06002B8729 /* RNDJContentModel.m */; };
+		EF04D3E1226E0E27002B8729 /* RNDJBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3E0226E0E27002B8729 /* RNDJBaseModel.m */; };
+		EF04D3E8226E0E5C002B8729 /* RNDJStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3E5226E0E5C002B8729 /* RNDJStyle.m */; };
+		EF04D3E9226E0E5C002B8729 /* RNDJDraftJsIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = EF04D3E7226E0E5C002B8729 /* RNDJDraftJsIndex.m */; };
+		EF0984AC226E0EE5000CE771 /* RHNativeFeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF098490226E0EE4000CE771 /* RHNativeFeedManager.m */; };
+		EF0984AD226E0EE5000CE771 /* RHShadowNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EF098494226E0EE4000CE771 /* RHShadowNativeFeedHeader.m */; };
+		EF0984AE226E0EE5000CE771 /* RHNativeFeedHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF098495226E0EE4000CE771 /* RHNativeFeedHeaderManager.m */; };
+		EF0984AF226E0EE5000CE771 /* RHNativeFeedItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF098496226E0EE4000CE771 /* RHNativeFeedItemManager.m */; };
+		EF0984B0226E0EE5000CE771 /* RHNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09849A226E0EE4000CE771 /* RHNativeFeed.m */; };
+		EF0984B1226E0EE5000CE771 /* RHShadowNativeFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09849C226E0EE4000CE771 /* RHShadowNativeFeed.m */; };
+		EF0984B2226E0EE5000CE771 /* RHNativeFeedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09849E226E0EE4000CE771 /* RHNativeFeedHeader.m */; };
+		EF0984B3226E0EE5000CE771 /* RHNativeFeedBackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09849F226E0EE4000CE771 /* RHNativeFeedBackingView.m */; };
+		EF0984B4226E0EE5000CE771 /* RHCustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984A0226E0EE4000CE771 /* RHCustomScrollView.m */; };
+		EF0984B5226E0EE5000CE771 /* RHScrollEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984A1226E0EE4000CE771 /* RHScrollEvent.m */; };
+		EF0984B6226E0EE5000CE771 /* RHShadowNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984A6226E0EE5000CE771 /* RHShadowNativeFeedItem.m */; };
+		EF0984B7226E0EE5000CE771 /* RHNativeFeedPrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984A7226E0EE5000CE771 /* RHNativeFeedPrefetcher.m */; };
+		EF0984B8226E0EE5000CE771 /* RHStoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984AA226E0EE5000CE771 /* RHStoryInfo.m */; };
+		EF0984B9226E0EE5000CE771 /* RHNativeFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0984AB226E0EE5000CE771 /* RHNativeFeedItem.m */; };
+		EF242698226E0D0D00A18EAA /* RCTVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242683226E0D0C00A18EAA /* RCTVideo.m */; };
+		EF242699226E0D0D00A18EAA /* DownloadSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242684226E0D0C00A18EAA /* DownloadSessionManager.m */; };
+		EF24269A226E0D0D00A18EAA /* RCTVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242685226E0D0C00A18EAA /* RCTVideoManager.m */; };
+		EF24269B226E0D0D00A18EAA /* VideoCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242688226E0D0C00A18EAA /* VideoCacheItem.m */; };
+		EF24269C226E0D0D00A18EAA /* UIView+FindUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF24268A226E0D0C00A18EAA /* UIView+FindUIViewController.m */; };
+		EF24269D226E0D0D00A18EAA /* RCTVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF24268B226E0D0D00A18EAA /* RCTVideoPlayerViewController.m */; };
+		EF24269E226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = EF24268E226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.m */; };
+		EF24269F226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242692226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m */; };
+		EF2426A0226E0D0D00A18EAA /* RCTVideoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242696226E0D0D00A18EAA /* RCTVideoCache.m */; };
+		EF2426A1226E0D0D00A18EAA /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */; };
 		EF5802532264E076007935B7 /* RNVideoProcessingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF58024E2264E075007935B7 /* RNVideoProcessingManager.swift */; };
 		EF5802542264E076007935B7 /* VideoProcessingGPUFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5802502264E075007935B7 /* VideoProcessingGPUFilters.swift */; };
 		EF5802552264E076007935B7 /* RNVideoProcessingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5802512264E076007935B7 /* RNVideoProcessingBridge.m */; };
@@ -678,6 +717,86 @@
 		EA4DD8EBE2974FD3BA8EEE8E /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		EF04D3B9226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTShadowView+DraftJSDirty.h"; sourceTree = "<group>"; };
+		EF04D3BA226E0DC8002B8729 /* RNDJDraftJSEditorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJDraftJSEditorManager.h; sourceTree = "<group>"; };
+		EF04D3BB226E0DC8002B8729 /* RNDJShadowDraftJSEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJShadowDraftJSEditor.h; sourceTree = "<group>"; };
+		EF04D3BC226E0DC8002B8729 /* RNDJDraftJSEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJDraftJSEditor.m; sourceTree = "<group>"; };
+		EF04D3BD226E0DC8002B8729 /* RNDJAutocorrectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJAutocorrectView.h; sourceTree = "<group>"; };
+		EF04D3BE226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTShadowView+DraftJSDirty.m"; sourceTree = "<group>"; };
+		EF04D3BF226E0DC8002B8729 /* RNDJDraftJSEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJDraftJSEditor.h; sourceTree = "<group>"; };
+		EF04D3C0226E0DC8002B8729 /* RNDJShadowDraftJSEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJShadowDraftJSEditor.m; sourceTree = "<group>"; };
+		EF04D3C1226E0DC8002B8729 /* RNDJAutocorrectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocorrectView.m; sourceTree = "<group>"; };
+		EF04D3C2226E0DC8002B8729 /* RNDJDraftJSEditorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJDraftJSEditorManager.m; sourceTree = "<group>"; };
+		EF04D3C9226E0E05002B8729 /* RNDJSelectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJSelectionModel.m; sourceTree = "<group>"; };
+		EF04D3CA226E0E05002B8729 /* RNDJInlineStyleRangeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJInlineStyleRangeModel.m; sourceTree = "<group>"; };
+		EF04D3CB226E0E05002B8729 /* RNDJEntityRangeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJEntityRangeModel.h; sourceTree = "<group>"; };
+		EF04D3CC226E0E05002B8729 /* RNDJEntityRangeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityRangeModel.m; sourceTree = "<group>"; };
+		EF04D3CD226E0E05002B8729 /* RNDJAutocompleteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJAutocompleteModel.h; sourceTree = "<group>"; };
+		EF04D3CE226E0E05002B8729 /* RNDJAutocompleteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJAutocompleteModel.m; sourceTree = "<group>"; };
+		EF04D3CF226E0E05002B8729 /* RNDJEntityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJEntityModel.m; sourceTree = "<group>"; };
+		EF04D3D0226E0E06002B8729 /* RNDJBlockModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJBlockModel.m; sourceTree = "<group>"; };
+		EF04D3D1226E0E06002B8729 /* RNDJContentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJContentModel.m; sourceTree = "<group>"; };
+		EF04D3D2226E0E06002B8729 /* RNDJBlockModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJBlockModel.h; sourceTree = "<group>"; };
+		EF04D3D3226E0E06002B8729 /* RNDJContentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJContentModel.h; sourceTree = "<group>"; };
+		EF04D3D4226E0E06002B8729 /* RNDJInlineStyleRangeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJInlineStyleRangeModel.h; sourceTree = "<group>"; };
+		EF04D3D5226E0E06002B8729 /* RNDJEntityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJEntityModel.h; sourceTree = "<group>"; };
+		EF04D3D6226E0E06002B8729 /* RNDJSelectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJSelectionModel.h; sourceTree = "<group>"; };
+		EF04D3DF226E0E27002B8729 /* RNDJBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJBaseModel.h; sourceTree = "<group>"; };
+		EF04D3E0226E0E27002B8729 /* RNDJBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJBaseModel.m; sourceTree = "<group>"; };
+		EF04D3E3226E0E5B002B8729 /* RNDJUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJUtil.h; sourceTree = "<group>"; };
+		EF04D3E4226E0E5B002B8729 /* RNDJStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJStyle.h; sourceTree = "<group>"; };
+		EF04D3E5226E0E5C002B8729 /* RNDJStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJStyle.m; sourceTree = "<group>"; };
+		EF04D3E6226E0E5C002B8729 /* RNDJDraftJsIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDJDraftJsIndex.h; sourceTree = "<group>"; };
+		EF04D3E7226E0E5C002B8729 /* RNDJDraftJsIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDJDraftJsIndex.m; sourceTree = "<group>"; };
+		EF098490226E0EE4000CE771 /* RHNativeFeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedManager.m; sourceTree = "<group>"; };
+		EF098491226E0EE4000CE771 /* RHCustomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHCustomScrollView.h; sourceTree = "<group>"; };
+		EF098492226E0EE4000CE771 /* RHNativeFeedBackingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedBackingView.h; sourceTree = "<group>"; };
+		EF098493226E0EE4000CE771 /* RHNativeFeedHeaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeaderManager.h; sourceTree = "<group>"; };
+		EF098494226E0EE4000CE771 /* RHShadowNativeFeedHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedHeader.m; sourceTree = "<group>"; };
+		EF098495226E0EE4000CE771 /* RHNativeFeedHeaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedHeaderManager.m; sourceTree = "<group>"; };
+		EF098496226E0EE4000CE771 /* RHNativeFeedItemManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedItemManager.m; sourceTree = "<group>"; };
+		EF098497226E0EE4000CE771 /* RHShadowNativeFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeed.h; sourceTree = "<group>"; };
+		EF098498226E0EE4000CE771 /* RHNativeFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeed.h; sourceTree = "<group>"; };
+		EF098499226E0EE4000CE771 /* RHShadowNativeFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedItem.h; sourceTree = "<group>"; };
+		EF09849A226E0EE4000CE771 /* RHNativeFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeed.m; sourceTree = "<group>"; };
+		EF09849B226E0EE4000CE771 /* RHNativeFeedHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedHeader.h; sourceTree = "<group>"; };
+		EF09849C226E0EE4000CE771 /* RHShadowNativeFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeed.m; sourceTree = "<group>"; };
+		EF09849D226E0EE4000CE771 /* RHStoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHStoryInfo.h; sourceTree = "<group>"; };
+		EF09849E226E0EE4000CE771 /* RHNativeFeedHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedHeader.m; sourceTree = "<group>"; };
+		EF09849F226E0EE4000CE771 /* RHNativeFeedBackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedBackingView.m; sourceTree = "<group>"; };
+		EF0984A0226E0EE4000CE771 /* RHCustomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHCustomScrollView.m; sourceTree = "<group>"; };
+		EF0984A1226E0EE4000CE771 /* RHScrollEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHScrollEvent.m; sourceTree = "<group>"; };
+		EF0984A2226E0EE4000CE771 /* RHScrollEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHScrollEvent.h; sourceTree = "<group>"; };
+		EF0984A3226E0EE5000CE771 /* RHNativeFeedPrefetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedPrefetcher.h; sourceTree = "<group>"; };
+		EF0984A4226E0EE5000CE771 /* RHNativeFeedItemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedItemManager.h; sourceTree = "<group>"; };
+		EF0984A5226E0EE5000CE771 /* RHShadowNativeFeedHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHShadowNativeFeedHeader.h; sourceTree = "<group>"; };
+		EF0984A6226E0EE5000CE771 /* RHShadowNativeFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHShadowNativeFeedItem.m; sourceTree = "<group>"; };
+		EF0984A7226E0EE5000CE771 /* RHNativeFeedPrefetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedPrefetcher.m; sourceTree = "<group>"; };
+		EF0984A8226E0EE5000CE771 /* RHNativeFeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedManager.h; sourceTree = "<group>"; };
+		EF0984A9226E0EE5000CE771 /* RHNativeFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHNativeFeedItem.h; sourceTree = "<group>"; };
+		EF0984AA226E0EE5000CE771 /* RHStoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHStoryInfo.m; sourceTree = "<group>"; };
+		EF0984AB226E0EE5000CE771 /* RHNativeFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHNativeFeedItem.m; sourceTree = "<group>"; };
+		EF242683226E0D0C00A18EAA /* RCTVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideo.m; sourceTree = "<group>"; };
+		EF242684226E0D0C00A18EAA /* DownloadSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadSessionManager.m; sourceTree = "<group>"; };
+		EF242685226E0D0C00A18EAA /* RCTVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoManager.m; sourceTree = "<group>"; };
+		EF242686226E0D0C00A18EAA /* RCTVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideoManager.h; sourceTree = "<group>"; };
+		EF242687226E0D0C00A18EAA /* RCTVideoCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideoCache.h; sourceTree = "<group>"; };
+		EF242688226E0D0C00A18EAA /* VideoCacheItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCacheItem.m; sourceTree = "<group>"; };
+		EF242689226E0D0C00A18EAA /* UIView+FindUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FindUIViewController.h"; sourceTree = "<group>"; };
+		EF24268A226E0D0C00A18EAA /* UIView+FindUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindUIViewController.m"; sourceTree = "<group>"; };
+		EF24268B226E0D0D00A18EAA /* RCTVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoPlayerViewController.m; sourceTree = "<group>"; };
+		EF24268C226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DetectHierarchyChanges.h"; sourceTree = "<group>"; };
+		EF24268D226E0D0D00A18EAA /* RCTVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideo.h; sourceTree = "<group>"; };
+		EF24268E226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DetectHierarchyChanges.m"; sourceTree = "<group>"; };
+		EF24268F226E0D0D00A18EAA /* VideoCacheItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCacheItem.h; sourceTree = "<group>"; };
+		EF242690226E0D0D00A18EAA /* RCTVideoPlayerViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideoPlayerViewControllerDelegate.h; sourceTree = "<group>"; };
+		EF242691226E0D0D00A18EAA /* RCTVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTVideoPlayerViewController.h; sourceTree = "<group>"; };
+		EF242692226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WatchFullscreenChanges.m"; sourceTree = "<group>"; };
+		EF242693226E0D0D00A18EAA /* DownloadSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadSessionManager.h; sourceTree = "<group>"; };
+		EF242694226E0D0D00A18EAA /* VideoDownloadItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloadItem.h; sourceTree = "<group>"; };
+		EF242695226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WatchFullscreenChanges.h"; sourceTree = "<group>"; };
+		EF242696226E0D0D00A18EAA /* RCTVideoCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoCache.m; sourceTree = "<group>"; };
+		EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadItem.m; sourceTree = "<group>"; };
 		EF58024D2264E075007935B7 /* RNVideoProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNVideoProcessing.h; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing.h"; sourceTree = "<group>"; };
 		EF58024E2264E075007935B7 /* RNVideoProcessingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVideoProcessingManager.swift; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessingManager.swift"; sourceTree = "<group>"; };
 		EF58024F2264E075007935B7 /* RNVideoProcessing-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNVideoProcessing-Bridging-Header.h"; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1041,6 +1160,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				EF098453226E0ECB000CE771 /* NativeFeed */,
+				EF04D37C226E0D98002B8729 /* DraftJS */,
+				EF242646226E0CDC00A18EAA /* Video */,
 				EF5802762264E12F007935B7 /* GPUImage.xcodeproj */,
 				EF58024C2264E049007935B7 /* RNVideoProcessing */,
 				13B07FAE1A68108700A75B9A /* HeroTravelerMobile */,
@@ -1112,6 +1234,131 @@
 				5DF9EAC64AB44982B4E360EC /* Zocial.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		EF04D37C226E0D98002B8729 /* DraftJS */ = {
+			isa = PBXGroup;
+			children = (
+				EF04D3E2226E0E41002B8729 /* Utils */,
+				EF04D3C8226E0DD8002B8729 /* Models */,
+				EF04D3B9226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.h */,
+				EF04D3BE226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.m */,
+				EF04D3BD226E0DC8002B8729 /* RNDJAutocorrectView.h */,
+				EF04D3C1226E0DC8002B8729 /* RNDJAutocorrectView.m */,
+				EF04D3BF226E0DC8002B8729 /* RNDJDraftJSEditor.h */,
+				EF04D3BC226E0DC8002B8729 /* RNDJDraftJSEditor.m */,
+				EF04D3BA226E0DC8002B8729 /* RNDJDraftJSEditorManager.h */,
+				EF04D3C2226E0DC8002B8729 /* RNDJDraftJSEditorManager.m */,
+				EF04D3BB226E0DC8002B8729 /* RNDJShadowDraftJSEditor.h */,
+				EF04D3C0226E0DC8002B8729 /* RNDJShadowDraftJSEditor.m */,
+			);
+			path = DraftJS;
+			sourceTree = "<group>";
+		};
+		EF04D3C8226E0DD8002B8729 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EF04D3DE226E0E11002B8729 /* Base */,
+				EF04D3CD226E0E05002B8729 /* RNDJAutocompleteModel.h */,
+				EF04D3CE226E0E05002B8729 /* RNDJAutocompleteModel.m */,
+				EF04D3D2226E0E06002B8729 /* RNDJBlockModel.h */,
+				EF04D3D0226E0E06002B8729 /* RNDJBlockModel.m */,
+				EF04D3D3226E0E06002B8729 /* RNDJContentModel.h */,
+				EF04D3D1226E0E06002B8729 /* RNDJContentModel.m */,
+				EF04D3D5226E0E06002B8729 /* RNDJEntityModel.h */,
+				EF04D3CF226E0E05002B8729 /* RNDJEntityModel.m */,
+				EF04D3CB226E0E05002B8729 /* RNDJEntityRangeModel.h */,
+				EF04D3CC226E0E05002B8729 /* RNDJEntityRangeModel.m */,
+				EF04D3D4226E0E06002B8729 /* RNDJInlineStyleRangeModel.h */,
+				EF04D3CA226E0E05002B8729 /* RNDJInlineStyleRangeModel.m */,
+				EF04D3D6226E0E06002B8729 /* RNDJSelectionModel.h */,
+				EF04D3C9226E0E05002B8729 /* RNDJSelectionModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EF04D3DE226E0E11002B8729 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				EF04D3DF226E0E27002B8729 /* RNDJBaseModel.h */,
+				EF04D3E0226E0E27002B8729 /* RNDJBaseModel.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		EF04D3E2226E0E41002B8729 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				EF04D3E6226E0E5C002B8729 /* RNDJDraftJsIndex.h */,
+				EF04D3E7226E0E5C002B8729 /* RNDJDraftJsIndex.m */,
+				EF04D3E4226E0E5B002B8729 /* RNDJStyle.h */,
+				EF04D3E5226E0E5C002B8729 /* RNDJStyle.m */,
+				EF04D3E3226E0E5B002B8729 /* RNDJUtil.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		EF098453226E0ECB000CE771 /* NativeFeed */ = {
+			isa = PBXGroup;
+			children = (
+				EF098491226E0EE4000CE771 /* RHCustomScrollView.h */,
+				EF0984A0226E0EE4000CE771 /* RHCustomScrollView.m */,
+				EF098498226E0EE4000CE771 /* RHNativeFeed.h */,
+				EF09849A226E0EE4000CE771 /* RHNativeFeed.m */,
+				EF098492226E0EE4000CE771 /* RHNativeFeedBackingView.h */,
+				EF09849F226E0EE4000CE771 /* RHNativeFeedBackingView.m */,
+				EF09849B226E0EE4000CE771 /* RHNativeFeedHeader.h */,
+				EF09849E226E0EE4000CE771 /* RHNativeFeedHeader.m */,
+				EF098493226E0EE4000CE771 /* RHNativeFeedHeaderManager.h */,
+				EF098495226E0EE4000CE771 /* RHNativeFeedHeaderManager.m */,
+				EF0984A9226E0EE5000CE771 /* RHNativeFeedItem.h */,
+				EF0984AB226E0EE5000CE771 /* RHNativeFeedItem.m */,
+				EF0984A4226E0EE5000CE771 /* RHNativeFeedItemManager.h */,
+				EF098496226E0EE4000CE771 /* RHNativeFeedItemManager.m */,
+				EF0984A8226E0EE5000CE771 /* RHNativeFeedManager.h */,
+				EF098490226E0EE4000CE771 /* RHNativeFeedManager.m */,
+				EF0984A3226E0EE5000CE771 /* RHNativeFeedPrefetcher.h */,
+				EF0984A7226E0EE5000CE771 /* RHNativeFeedPrefetcher.m */,
+				EF0984A2226E0EE4000CE771 /* RHScrollEvent.h */,
+				EF0984A1226E0EE4000CE771 /* RHScrollEvent.m */,
+				EF098497226E0EE4000CE771 /* RHShadowNativeFeed.h */,
+				EF09849C226E0EE4000CE771 /* RHShadowNativeFeed.m */,
+				EF0984A5226E0EE5000CE771 /* RHShadowNativeFeedHeader.h */,
+				EF098494226E0EE4000CE771 /* RHShadowNativeFeedHeader.m */,
+				EF098499226E0EE4000CE771 /* RHShadowNativeFeedItem.h */,
+				EF0984A6226E0EE5000CE771 /* RHShadowNativeFeedItem.m */,
+				EF09849D226E0EE4000CE771 /* RHStoryInfo.h */,
+				EF0984AA226E0EE5000CE771 /* RHStoryInfo.m */,
+			);
+			path = NativeFeed;
+			sourceTree = "<group>";
+		};
+		EF242646226E0CDC00A18EAA /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				EF242693226E0D0D00A18EAA /* DownloadSessionManager.h */,
+				EF242684226E0D0C00A18EAA /* DownloadSessionManager.m */,
+				EF24268D226E0D0D00A18EAA /* RCTVideo.h */,
+				EF242683226E0D0C00A18EAA /* RCTVideo.m */,
+				EF242687226E0D0C00A18EAA /* RCTVideoCache.h */,
+				EF242696226E0D0D00A18EAA /* RCTVideoCache.m */,
+				EF242686226E0D0C00A18EAA /* RCTVideoManager.h */,
+				EF242685226E0D0C00A18EAA /* RCTVideoManager.m */,
+				EF242691226E0D0D00A18EAA /* RCTVideoPlayerViewController.h */,
+				EF24268B226E0D0D00A18EAA /* RCTVideoPlayerViewController.m */,
+				EF242690226E0D0D00A18EAA /* RCTVideoPlayerViewControllerDelegate.h */,
+				EF24268C226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.h */,
+				EF24268E226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.m */,
+				EF242689226E0D0C00A18EAA /* UIView+FindUIViewController.h */,
+				EF24268A226E0D0C00A18EAA /* UIView+FindUIViewController.m */,
+				EF242695226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.h */,
+				EF242692226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m */,
+				EF24268F226E0D0D00A18EAA /* VideoCacheItem.h */,
+				EF242688226E0D0C00A18EAA /* VideoCacheItem.m */,
+				EF242694226E0D0D00A18EAA /* VideoDownloadItem.h */,
+				EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		EF2A7065223AF31A003CA54C /* Recovered References */ = {
@@ -2240,20 +2487,59 @@
 			files = (
 				EF5802562264E076007935B7 /* RNVideoPlayer.swift in Sources */,
 				EF5802752264E0BF007935B7 /* ICGRulerView.m in Sources */,
+				EF04D3D9226E0E06002B8729 /* RNDJEntityRangeModel.m in Sources */,
+				EF0984B1226E0EE5000CE771 /* RHShadowNativeFeed.m in Sources */,
+				EF2426A1226E0D0D00A18EAA /* VideoDownloadItem.m in Sources */,
+				EF0984AF226E0EE5000CE771 /* RHNativeFeedItemManager.m in Sources */,
+				EF04D3E1226E0E27002B8729 /* RNDJBaseModel.m in Sources */,
 				EF5802732264E0BF007935B7 /* ICGThumbView.m in Sources */,
+				EF0984B5226E0EE5000CE771 /* RHScrollEvent.m in Sources */,
 				EF5802692264E0B0007935B7 /* RNTrimmerView.swift in Sources */,
+				EF04D3E9226E0E5C002B8729 /* RNDJDraftJsIndex.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				EF04D3DA226E0E06002B8729 /* RNDJAutocompleteModel.m in Sources */,
+				EF04D3DB226E0E06002B8729 /* RNDJEntityModel.m in Sources */,
 				EF58026A2264E0B0007935B7 /* RNTrimmerViewBridge.m in Sources */,
+				EF242698226E0D0D00A18EAA /* RCTVideo.m in Sources */,
 				EF5802602264E08B007935B7 /* RNVideoTrimmer.swift in Sources */,
+				EF0984B6226E0EE5000CE771 /* RHShadowNativeFeedItem.m in Sources */,
+				EF04D3E8226E0E5C002B8729 /* RNDJStyle.m in Sources */,
+				EF0984B9226E0EE5000CE771 /* RHNativeFeedItem.m in Sources */,
+				EF0984B8226E0EE5000CE771 /* RHStoryInfo.m in Sources */,
+				EF24269E226E0D0D00A18EAA /* UIView+DetectHierarchyChanges.m in Sources */,
+				EF0984B7226E0EE5000CE771 /* RHNativeFeedPrefetcher.m in Sources */,
+				EF2426A0226E0D0D00A18EAA /* RCTVideoCache.m in Sources */,
 				EF5802532264E076007935B7 /* RNVideoProcessingManager.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				EF5802742264E0BF007935B7 /* ICGVideoTrimmerView.m in Sources */,
+				EF04D3C4226E0DC8002B8729 /* RCTShadowView+DraftJSDirty.m in Sources */,
+				EF0984B3226E0EE5000CE771 /* RHNativeFeedBackingView.m in Sources */,
+				EF24269A226E0D0D00A18EAA /* RCTVideoManager.m in Sources */,
+				EF04D3DD226E0E06002B8729 /* RNDJContentModel.m in Sources */,
+				EF04D3C6226E0DC8002B8729 /* RNDJAutocorrectView.m in Sources */,
+				EF0984AC226E0EE5000CE771 /* RHNativeFeedManager.m in Sources */,
 				EF5802682264E0B0007935B7 /* RNTrimmerViewManager.swift in Sources */,
+				EF24269D226E0D0D00A18EAA /* RCTVideoPlayerViewController.m in Sources */,
+				EF0984B4226E0EE5000CE771 /* RHCustomScrollView.m in Sources */,
+				EF0984B2226E0EE5000CE771 /* RHNativeFeedHeader.m in Sources */,
+				EF04D3C3226E0DC8002B8729 /* RNDJDraftJSEditor.m in Sources */,
+				EF04D3D7226E0E06002B8729 /* RNDJSelectionModel.m in Sources */,
+				EF24269B226E0D0D00A18EAA /* VideoCacheItem.m in Sources */,
 				EF5802552264E076007935B7 /* RNVideoProcessingBridge.m in Sources */,
+				EF24269C226E0D0D00A18EAA /* UIView+FindUIViewController.m in Sources */,
+				EF04D3D8226E0E06002B8729 /* RNDJInlineStyleRangeModel.m in Sources */,
 				EF58025E2264E08B007935B7 /* SDAVAssetExportSession.m in Sources */,
+				EF04D3C7226E0DC8002B8729 /* RNDJDraftJSEditorManager.m in Sources */,
+				EF04D3DC226E0E06002B8729 /* RNDJBlockModel.m in Sources */,
+				EF04D3C5226E0DC8002B8729 /* RNDJShadowDraftJSEditor.m in Sources */,
 				EF5802542264E076007935B7 /* VideoProcessingGPUFilters.swift in Sources */,
 				EF58025F2264E08B007935B7 /* AVUtilities.swift in Sources */,
+				EF0984AE226E0EE5000CE771 /* RHNativeFeedHeaderManager.m in Sources */,
+				EF242699226E0D0D00A18EAA /* DownloadSessionManager.m in Sources */,
+				EF0984B0226E0EE5000CE771 /* RHNativeFeed.m in Sources */,
 				EF5802612264E08B007935B7 /* RNVideoTrimmerBridge.m in Sources */,
+				EF0984AD226E0EE5000CE771 /* RHShadowNativeFeedHeader.m in Sources */,
+				EF24269F226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2460,6 +2746,7 @@
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2507,6 +2794,7 @@
 				);
 				INFOPLIST_FILE = HeroTravelerMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

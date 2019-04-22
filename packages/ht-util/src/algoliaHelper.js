@@ -10,6 +10,7 @@ userIndex.setSettings({
   searchableAttributes: [
     'username',
     'profile.fullName',
+    'username_suffixes'
   ]
 })
 
@@ -38,8 +39,14 @@ function mapForTitleAndId(array) {
 
 // users
 function formatUserSearchObject(user) {
+  let suffixes = []
+  while(user.username > 1) {
+    let suffix = user.username.substr(1)
+    suffixes.push(suffix)
+  }
   return {
     username: user.username,
+    username_suffixes: suffixes,
     profile: {
       fullName: user.profile.fullName,
       avatar: user.profile.avatar,

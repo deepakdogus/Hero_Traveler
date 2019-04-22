@@ -5,4 +5,5 @@ export default function indexUsers(){
   return User.find({})
   .populate('profile.avatar')
   .then(users => algoliaHelper.addUsersToIndex(users))
+  .then(users => console.log(users => console.log(users, 'loggin users')))
 }

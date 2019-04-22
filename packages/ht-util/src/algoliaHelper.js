@@ -40,13 +40,14 @@ function mapForTitleAndId(array) {
 // users
 function formatUserSearchObject(user) {
   let suffixes = []
-  let usernameperm = user.username;
-  while (usernameperm.length > 1) {
-    usernameperm = usernameperm.substr(1)
-    suffixes.push(usernameperm)
+  let username = user.username;
+
+  for(let i = 1; i < username.length; i++){
+    suffixes.push(username.slice(i))
   }
+
   return {
-    username: user.username,
+    username: user.profile.username,
     username_suffixes: suffixes,
     profile: {
       fullName: user.profile.fullName,

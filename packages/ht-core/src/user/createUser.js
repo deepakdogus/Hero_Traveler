@@ -12,7 +12,7 @@ const {
   ACCOUNT_TYPE_TWITTER
 } = User
 
-export async function createUserFacebook(facebookUserData, device: ? object) {
+export async function createUserFacebook(facebookUserData, device: ?object) {
   const {
     fbid,
     email,
@@ -88,16 +88,9 @@ export async function createUserFacebook(facebookUserData, device: ? object) {
 
 // @TODO validate user
 export default function createUser(userData, device: ? object) {
-  let suffixes = []
-  while(userData.username > 1) {
-    let suffix = userData.username.substr(1)
-    suffixes.push(suffix)
-  }
-
   return User.createFromEmailData(
     userData.name,
     userData.email,
-    suffixes,
     userData.username,
     userData.password,
     !!device

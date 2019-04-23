@@ -79,15 +79,15 @@ export function* getUserFeed(api, action) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.feedSuccess(result, response.count, params))
+      put(StoryActions.userFeedSuccess(result, response.count, params))
     ]
   } else {
-    yield put(StoryActions.feedFailure(new Error('Failed to get user feed')))
+    yield put(StoryActions.userFeedFailure(new Error('Failed to get user feed')))
   }
 }
 
-export function* getNearbyUserFeed(api, { userId, nearbyStoryIds }) {
-  const response = yield call(api.getNearbyFeed, userId, nearbyStoryIds)
+export function* getNearbyUserFeed(api, { nearbyStoryIds }) {
+  const response = yield call(api.getNearbyFeed, nearbyStoryIds)
   if (response.ok) {
     const { entities, result } = response.data
     yield [
@@ -102,8 +102,8 @@ export function* getNearbyUserFeed(api, { userId, nearbyStoryIds }) {
   }
 }
 
-export function* getBadgeUserFeed(api, { userId }) {
-  const response = yield call(api.getBadgeUserFeed, userId)
+export function* getBadgeUserFeed(api) {
+  const response = yield call(api.getBadgeUserFeed)
   if (response.ok) {
     const { entities, result } = response.data
     yield [

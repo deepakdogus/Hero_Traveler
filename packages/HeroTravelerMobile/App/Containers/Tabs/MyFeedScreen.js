@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View } from 'react-native'
+import { View, Linking, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -33,8 +33,6 @@ const tabTypes = {
   guides: 'guides',
   nearby: 'nearby',
   fromUs: 'from us',
-  // featured: 'featured',
-  // trending: 'trending',
 }
 
 const algoliasearch = algoliasearchModule(
@@ -43,7 +41,7 @@ const algoliasearch = algoliasearchModule(
 )
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
-const ONE_HUNDRED_MILES = 160934 // 100 miles
+const ONE_HUNDRED_MILES = 160934 // 100 miles in meters
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -66,6 +64,7 @@ class MyFeedScreen extends React.Component {
     updateDraft: PropTypes.func,
     saveLocalDraft: PropTypes.func,
     discardUpdate: PropTypes.func,
+    discardNearbyFeedStories: PropTypes.func,
     resetFailCount: PropTypes.func,
     updateOrder: PropTypes.arrayOf(PropTypes.string),
   }
@@ -76,7 +75,7 @@ class MyFeedScreen extends React.Component {
       refreshing: false,
       activeTab: tabTypes.following,
       hasSearchText: false,
-      searching: false,
+      permissionStatus: undefined,
     }
   }
 
@@ -84,17 +83,18 @@ class MyFeedScreen extends React.Component {
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
+      this.props.attemptGetBadgeUserStories()
     }
     if (this.props.user.usernameIsTemporary === true) {
       NavActions.signupFlow()
     }
     SplashScreen.hide()
+
+    // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
-      this.setState({ searching: false })
       const nearbyStoryIds = res.hits.map(story => story.id)
-      console.log({nearbyStoryIds})
-      this.props.attemptGetNearbyFeedStories(this.props.userId, nearbyStoryIds)
+      this.props.attemptGetNearbyFeedStories(nearbyStoryIds)
     })
   }
 
@@ -120,19 +120,25 @@ class MyFeedScreen extends React.Component {
   }
 
   searchNearbyStories() {
-    this.setState({ searching: true }, () => {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => {
-          this.helper
-            .setQuery('')
-            .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-            .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
-            .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
-            .search()
-        },
-        error => console.error(error),
-      )
-    })
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        this.helper
+          .setQuery('')
+          .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+          .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+          .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
+          .search()
+        this.setState({ permissionStatus: 'GRANTED' })
+      },
+      error => {
+        console.error(error)
+        // if user has changed location settings to 'DENIED' in the middle of a session,
+        // clear all cached nearby stories
+        if (error.code && error.code === 1)
+          this.props.discardNearbyFeedStories()
+        this.setState({ permissionStatus: 'DENIED' })
+      },
+    )
   }
 
   isPendingUpdate() {
@@ -157,6 +163,8 @@ class MyFeedScreen extends React.Component {
       this.state.activeTab,
     )
 
+  openSettings = () => Linking.openURL('app-settings:')
+
   _wrapElt(elt) {
     return (
       <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
@@ -164,8 +172,12 @@ class MyFeedScreen extends React.Component {
   }
 
   _showNoStories() {
+    const { permissionStatus, activeTab } = this.state
+    const needsLocationPermission
+      = activeTab === tabTypes.nearby && permissionStatus === 'DENIED'
+
     let text = ''
-    switch (this.state.activeTab) {
+    switch (activeTab) {
     case tabTypes.following:
       text = `You aren't following any users yet.`
       break
@@ -182,10 +194,18 @@ class MyFeedScreen extends React.Component {
     default:
       text = `There is no content available. Check back later.`
     }
+
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <View style={styles.tabWrapper}>{this.renderTabs()}</View>
-        <NoStoriesMessage text={text} />
+        {!needsLocationPermission && <NoStoriesMessage text={text} />}
+        {needsLocationPermission && (
+          <TouchableOpacity onPress={this.openSettings}>
+            <NoStoriesMessage
+              text={`Location Services must be enabled to view nearby stories. Click here to go to the Settings App.`}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     )
   }
@@ -193,12 +213,7 @@ class MyFeedScreen extends React.Component {
   _onRefresh = () => {
     if (this.isPendingUpdate()) return
     this.setState({ refreshing: true })
-    if (this.state.activeTab === tabTypes.nearby)
-      return this.searchNearbyStories()
-    if (this.state.activeTab === tabTypes.fromUs)
-      return this.props.attemptGetBadgeUserStories()
-    this.props.attemptGetUserFeedStories(this.props.userId)
-    this.props.attemptGetUserFeedGuides(this.props.userId)
+    this.getEntitiesByType()
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -228,8 +243,15 @@ class MyFeedScreen extends React.Component {
     return undefined
   }
 
-  getStoryFeedByType() {
+  getLocationPermission = () => {
+    if (!this.state.permissionStatus)
+      navigator.geolocation.requestAuthorization()
+  }
+
+  getEntitiesById() {
     switch (this.state.activeTab) {
+    case tabTypes.guides:
+      return this.props.feedGuidesById
     case tabTypes.nearby:
       return this.props.nearbyFeedById
     case tabTypes.fromUs:
@@ -240,15 +262,24 @@ class MyFeedScreen extends React.Component {
     }
   }
 
+  getEntitiesByType = () => {
+    const { activeTab } = this.state
+    switch (activeTab) {
+    case tabTypes.nearby:
+      return this.searchNearbyStories()
+    case tabTypes.fromUs:
+      return this.props.attemptGetBadgeUserStories()
+    case tabTypes.guides:
+      return this.props.attemptGetUserFeedGuides(this.props.userId)
+    case tabTypes.following:
+    default:
+      return this.props.attemptGetUserFeedStories(this.props.userId)
+    }
+  }
+
   selectTab = activeTab => {
-    const isNearbyTab = activeTab === tabTypes.nearby
-    this.setState({ activeTab, searching: isNearbyTab }, () => {
-      if (isNearbyTab) return this.searchNearbyStories()
-      if (activeTab === tabTypes.fromUs)
-        return this.props.attemptGetBadgeUserStories(this.props.userId)
-      this.props.attemptGetUserFeedStories(this.props.userId)
-      this.props.attemptGetUserFeedGuides(this.props.userId)
-    })
+    if (activeTab === tabTypes.nearby) this.getLocationPermission()
+    this.setState({ activeTab }, () => this.getEntitiesByType())
   }
 
   renderTabs() {
@@ -264,40 +295,26 @@ class MyFeedScreen extends React.Component {
   }
 
   render() {
-    let {
-      userFeedById,
-      fetchStatus,
-      sync,
-      feedGuidesById,
-      stories,
-      user,
-    } = this.props
-    let bottomContent
-
-    const isStoryTabSelected = this.isStoryTabSelected()
+    let { fetchStatus, sync, stories, user } = this.props
     const failure = this.getFirstPendingFailure()
+    const isStoryTabSelected = this.isStoryTabSelected()
+    const entitiesById = this.getEntitiesById()
 
-    const entitiesById = isStoryTabSelected ? this.getStoryFeedByType() : feedGuidesById
-
-    if (
-      (isStoryTabSelected && (!userFeedById || !userFeedById.length))
-      || (!isStoryTabSelected && (!feedGuidesById || !feedGuidesById.length))
-    ) {
+    let bottomContent
+    bottomContent = (
+      <ConnectedFeedList
+        isStory={isStoryTabSelected}
+        entitiesById={entitiesById}
+        renderFeedItem={this.renderFeedItem}
+        renderSectionHeader={this.renderTabs()}
+        sectionContentHeight={40}
+        onRefresh={this._onRefresh}
+        refreshing={fetchStatus.fetching}
+      />
+    )
+    if (!entitiesById || !entitiesById.length) {
       let innerContent = this._showNoStories()
       bottomContent = this._wrapElt(innerContent)
-    }
-    else {
-      bottomContent = (
-        <ConnectedFeedList
-          isStory={isStoryTabSelected}
-          entitiesById={entitiesById}
-          renderFeedItem={this.renderFeedItem}
-          renderSectionHeader={this.renderTabs()}
-          sectionContentHeight={40}
-          onRefresh={this._onRefresh}
-          refreshing={fetchStatus.fetching}
-        />
-      )
     }
 
     return (
@@ -351,12 +368,14 @@ const mapDispatchToProps = dispatch => {
   return {
     attemptGetUserFeedStories: userId =>
       dispatch(StoryActions.feedRequest(userId)),
-    attemptGetNearbyFeedStories: (userId, nearbyStoryIds) =>
-      dispatch(StoryActions.nearbyFeedRequest(userId, nearbyStoryIds)),
-    attemptGetBadgeUserStories: userId =>
-      dispatch(StoryActions.badgeUserFeedRequest(userId)),
+    attemptGetNearbyFeedStories: nearbyStoryIds =>
+      dispatch(StoryActions.nearbyFeedRequest(nearbyStoryIds)),
+    attemptGetBadgeUserStories: () =>
+      dispatch(StoryActions.badgeUserFeedRequest()),
     attemptGetUserFeedGuides: userId =>
       dispatch(GuideActions.guideFeedRequest(userId)),
+    discardNearbyFeedStories: () =>
+      dispatch(StoryActions.nearbyFeedSuccess([], 0, {})),
     discardUpdate: storyId =>
       dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
     resetFailCount: storyId =>

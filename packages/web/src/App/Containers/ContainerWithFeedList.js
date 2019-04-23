@@ -51,7 +51,7 @@ export default class ContainerWithFeedList extends React.Component {
     this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
       const nearbyStoryIds = res.hits.map(story => story.id)
-      this.props.getNearbyStories(this.props.sessionUserId, nearbyStoryIds)
+      this.props.getNearbyStories(nearbyStoryIds)
     })
   }
 

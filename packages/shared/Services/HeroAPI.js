@@ -201,7 +201,7 @@ const create = () => {
     })
   }
 
-  const getNearbyFeed = (userId, nearbyStoryIds) => {
+  const getNearbyFeed = (nearbyStoryIds) => {
     return api
       .get(`story/feed/nearby`, {
         nearbyStoryIds: JSON.stringify(nearbyStoryIds)
@@ -215,7 +215,7 @@ const create = () => {
       })
   }
 
-  const getBadgeUserFeed = userId => {
+  const getBadgeUserFeed = () => {
     return api.get(`story/feed/badgeUsers`)
     .then(response => {
       if (!response.ok) return response

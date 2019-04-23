@@ -57,7 +57,9 @@ class Feed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.objectOf(PropTypes.object),
     signedUp: PropTypes.bool,
-    userStoryFeedCount: PropTypes.number,
+    userFeedCount: PropTypes.number,
+    badgeUserFeedCount: PropTypes.number,
+    nearbyFeedCount: PropTypes.number,
   }
 
   componentDidMount() {
@@ -103,7 +105,7 @@ class Feed extends ContainerWithFeedList {
       return this.props.badgeUserFeedCount
     case 'STORIES':
     default:
-      return this.props.userStoryFeedCount
+      return this.props.userFeedCount
     }
   }
 
@@ -150,7 +152,7 @@ function mapStateToProps(state) {
     userFeedById,
     badgeUserFeedById,
     nearbyFeedById,
-    userStoryFeedCount,
+    userFeedCount,
     badgeUserFeedCount,
     nearbyFeedCount,
   } = state.entities.stories
@@ -166,7 +168,7 @@ function mapStateToProps(state) {
     stories,
     guides,
     users: state.entities.users.entities,
-    userStoryFeedCount,
+    userFeedCount,
     badgeUserFeedCount,
     nearbyFeedCount,
     signedUp: state.signup.signedUp,
@@ -181,10 +183,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getStories: (sessionUserId, params) =>
       dispatch(StoryActions.feedRequest(sessionUserId, params)),
-    getNearbyStories: (sessionUserId, nearbyStoryIds) =>
-      dispatch(StoryActions.nearbyFeedRequest(sessionUserId, nearbyStoryIds)),
-    getBadgeUserStories: sessionUserId =>
-      dispatch(StoryActions.badgeUserFeedRequest(sessionUserId)),
+    getNearbyStories: nearbyStoryIds =>
+      dispatch(StoryActions.nearbyFeedRequest(nearbyStoryIds)),
+    getBadgeUserStories: () => dispatch(StoryActions.badgeUserFeedRequest()),
     getGuides: sessionUserId => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
     signupReset: () => dispatch(SignUpActions.signupReset()),
   }

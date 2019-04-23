@@ -21,6 +21,8 @@ import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
 import SearchPlacesPeople from '../SearchPlacesPeople'
 
+import { getAppstoreAppVersion } from "react-native-appstore-version-checker"
+
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
@@ -69,6 +71,14 @@ class MyFeedScreen extends React.Component {
       NavActions.signupFlow()
     }
     SplashScreen.hide()
+
+    getAppstoreAppVersion('1288145566') //put any apps id here
+      .then(appVersion => {
+        console.log('Hero Traveler version on line 77 MyFeedScreen', appVersion)
+      })
+      .catch(err => {
+        console.log('error occurred', err)
+      })
   }
 
   isPendingUpdate() {

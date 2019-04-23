@@ -6,7 +6,7 @@ export function displayLocationPreview(locationInfo = {}) {
       if (state) locationArray.push(state)
       else if (locality) locationArray.push(locality)
     }
-    else if (country) locationArray.push(country)
+    else if (country && country !== name) { locationArray.push(country) }
     return locationArray.join(', ')
 }
 
@@ -18,7 +18,7 @@ export function displayLocationDetails(locationInfo = {}) {
   if (country === 'United States') {
     if (state && state !== locality) locationArray.push(state)
   }
-  else if (country) locationArray.push(country)
+  else if (country && country !== name) { locationArray.push(country) }
   return locationArray.join(', ')
 }
 

@@ -41,6 +41,7 @@ ActivitySchema.statics = {
       user: userId
     })
     .sort({createdAt: -1})
+    .limit(100)
     .populate({
       path: 'fromUser',
       populate: { path: 'profile.avatar' }

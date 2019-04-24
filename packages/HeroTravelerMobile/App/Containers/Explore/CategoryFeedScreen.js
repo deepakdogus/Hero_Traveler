@@ -68,8 +68,7 @@ class CategoryFeedScreen extends React.Component {
   }
 
   loadStories() {
-    let storyType = this.state.selectedTab
-    this.props.loadCategoryStories(this.props.categoryId, storyType)
+    this.props.loadCategoryStories(this.props.categoryId)
   }
 
   loadGuides() {

@@ -138,6 +138,7 @@ class MyFeedScreen extends React.Component {
           this.props.discardNearbyFeedStories()
         this.setState({ permissionStatus: 'DENIED' })
       },
+      {enableHighAccuracy: true},
     )
   }
 

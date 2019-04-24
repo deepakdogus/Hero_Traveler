@@ -31,6 +31,7 @@ export default class ContainerWithFeedList extends React.Component {
     userFeedById: PropTypes.objectOf(PropTypes.object),
     nearbyFeedById: PropTypes.objectOf(PropTypes.object),
     badgeUserFeedById: PropTypes.objectOf(PropTypes.object),
+    storiesById: PropTypes.objectOf(PropTypes.object),
     guides: PropTypes.object,
     stories: PropTypes.object,
     userStoriesFetchStatus: PropTypes.object,
@@ -117,7 +118,8 @@ export default class ContainerWithFeedList extends React.Component {
       return this.props.getStories(this.props.sessionUserId, {
         perPage: itemsPerQuery,
         page,
-      })
+      },
+      this.state.activeTab)
     }
   }
 
@@ -126,7 +128,7 @@ export default class ContainerWithFeedList extends React.Component {
   getSelectedFeedItems = () => {
     const {
       userStoriesFetchStatus,
-      userFeedById,
+      userFeedById, // overloaded -- feed and profile
       nearbyFeedById,
       badgeUserFeedById,
       draftsFetchStatus,
@@ -135,6 +137,7 @@ export default class ContainerWithFeedList extends React.Component {
       userBookmarksById,
       guidesFetchStatus,
       guidesById,
+      storiesById, // for category screen
     } = this.props
 
     // will use fetchStatus to show loading/error
@@ -165,6 +168,10 @@ export default class ContainerWithFeedList extends React.Component {
         selectedFeedItems: this.getFeedItemsByIds(badgeUserFeedById),
       }
     case 'STORIES':
+      return {
+        fetchStatus: userStoriesFetchStatus,
+        selectedFeedItems: this.getFeedItemsByIds(userFeedById),
+      }
     case 'ALL':
     case 'SEE':
     case 'DO':
@@ -173,7 +180,7 @@ export default class ContainerWithFeedList extends React.Component {
     default:
       return {
         fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(userFeedById),
+        selectedFeedItems: this.getFeedItemsByIds(storiesById),
       }
     }
   }

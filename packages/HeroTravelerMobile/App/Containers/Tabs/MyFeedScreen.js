@@ -203,7 +203,7 @@ class MyFeedScreen extends React.Component {
       'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
       [
         {text: 'Update Now', 
-          onPress: () => { //ask matthew if this anymous function is ok
+          onPress: () => {
             if(Platform.OS === 'ios'){
               Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
             }
@@ -250,7 +250,6 @@ class MyFeedScreen extends React.Component {
         />
       )
     }
-    console.log('do i need to update?', needToUpdateApp)
     return (
       <View style={styles.statusBarAvoider}>
         {needToUpdateApp === true ? this.updateAppNotice() : null}

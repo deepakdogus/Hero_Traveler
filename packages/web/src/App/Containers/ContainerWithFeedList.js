@@ -121,11 +121,7 @@ export default class ContainerWithFeedList extends React.Component {
     }
   }
 
-  getFeedItemsByIds(idList, type = 'stories') {
-    return idList.map(id => {
-      return this.props[type][id]
-    })
-  }
+  getFeedItemsByIds = (idList, type = 'stories') => idList.map(id => this.props[type][id])
 
   getSelectedFeedItems = () => {
     const {

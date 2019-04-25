@@ -17,7 +17,7 @@ After registration, we will close any future registrations, as our private npm w
 This project has only been tested on v7.7.2):
 
 ```bash
-nvm use 7.7.2
+n 7.7.2
 npm i -g react-native-cli
 npm set registry https://npm.abeck.io/
 npm login

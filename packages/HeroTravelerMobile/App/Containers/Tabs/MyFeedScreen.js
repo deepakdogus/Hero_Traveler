@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View } from 'react-native'
+import { View, Linking, Alert, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -20,6 +20,9 @@ import NoStoriesMessage from '../../Components/NoStoriesMessage'
 import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
 import SearchPlacesPeople from '../SearchPlacesPeople'
+
+import { getAppstoreAppVersion } from 'react-native-appstore-version-checker'
+import VersionNumber from 'react-native-version-number'
 
 const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
@@ -57,6 +60,7 @@ class MyFeedScreen extends React.Component {
       refreshing: false,
       selectedTab: tabTypes.following,
       hasSearchText: false,
+      needToUpdateApp: false,
     }
   }
 
@@ -69,6 +73,18 @@ class MyFeedScreen extends React.Component {
       NavActions.signupFlow()
     }
     SplashScreen.hide()
+
+    if (!__DEV__) {
+      getAppstoreAppVersion('1288145566') //put any apps id here	
+        .then(versionOnAppStore => {	
+          const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
+          const currentVersion = VersionNumber.appVersion.split('.')
+          if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
+        })
+        .catch(err => {	
+          console.log('error occurred', err)	
+        })
+    }
   }
 
   isPendingUpdate() {
@@ -108,18 +124,18 @@ class MyFeedScreen extends React.Component {
   _showNoStories() {
     let text = ''
     switch(this.state.selectedTab) {
-      case 'following':
-        text = `You aren't following any users yet.`
-        break
-      case 'guide':
-        text = `There are no guides to display.`
-        break
-      case 'featured':
-      case 'trending':
-        text = `There are no ${this.state.selectedTab} stories to show right now.`
-        break
-      default:
-        text = `There is no content available. Check back later.`
+    case 'following':
+      text = `You aren't following any users yet.`
+      break
+    case 'guide':
+      text = `There are no guides to display.`
+      break
+    case 'featured':
+    case 'trending':
+      text = `There are no ${this.state.selectedTab} stories to show right now.`
+      break
+    default:
+      text = `There is no content available. Check back later.`
     }
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
@@ -181,6 +197,22 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  updateAppNotice(){
+    const APP_STORE_LINK = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
+    Alert.alert(
+      'Update Available',
+      'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
+      [
+        {text: 'Update Now', 
+          onPress: () => {
+            if(Platform.OS === 'ios'){
+              Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
+            }
+          }},
+      ],
+    )
+  }
+
   render () {
     let {
       storiesById,
@@ -190,7 +222,7 @@ class MyFeedScreen extends React.Component {
       stories,
       user,
     } = this.props
-    const { selectedTab } = this.state
+    const { selectedTab, needToUpdateApp} = this.state
     let bottomContent
 
     const isFollowingSelected = selectedTab === tabTypes.following
@@ -216,9 +248,9 @@ class MyFeedScreen extends React.Component {
         />
       )
     }
-
     return (
       <View style={styles.statusBarAvoider}>
+        {needToUpdateApp ? this.updateAppNotice() : null}
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}

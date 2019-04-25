@@ -38,7 +38,6 @@ function mapForTitleAndId(array) {
 
 // users
 function formatUserSearchObject(user) {
-
   return {
     username: user.username,
     profile: {

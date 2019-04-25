@@ -269,6 +269,14 @@ export const styles = StyleSheet.create({
     color: Colors.grey,
     marginBottom: 15,
   },
+  experience: {
+    marginRight: 10,
+    fontFamily: Fonts.type.sourceSansPro,
+    fontWeight: '600',
+    fontSize: 14,
+    letterSpacing: 0.7,
+    color: Colors.background,
+  },
   guideDescription: {
     marginHorizontal: Metrics.section,
     marginTop: 25,
@@ -290,6 +298,10 @@ export const styles = StyleSheet.create({
   starsContainer: {
     width: 200,
     flex: 1,
+  },
+  starRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 

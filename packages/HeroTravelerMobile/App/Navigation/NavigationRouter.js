@@ -43,6 +43,7 @@ import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
 import LocationScreen from '../Containers/CreateStory/LocationScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
+import AddButtonScreen from '../Containers/CreateStory/AddButtonScreen'
 
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
@@ -53,6 +54,7 @@ import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
 import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
+import SignupAdditionalInfo from '../Containers/Signup/SignupAdditionalInfo'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
@@ -146,6 +148,7 @@ const navToExplore = () => {
 }
 
 const navToSignupTopics = () => NavActions.signupFlow_topics()
+const navtoSignupAdditionalInfo = () => NavActions.signupFlow_additionalInfo()
 const navToSignupChangeEmail = () => NavActions.signupFlow_changeEmail()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
@@ -186,7 +189,7 @@ export default function NavigationRouter({ openAddStoryModal }) {
           key='signupFlow_changeUsername'
           hideNavBar={true}
           component={SignupChangeUsername}
-          onRight={navToSignupChangeEmail}
+          onRight={navtoSignupAdditionalInfo}
           renderRightButton={socialRightBtn}
         />
         <Scene
@@ -194,6 +197,13 @@ export default function NavigationRouter({ openAddStoryModal }) {
           hideNavBar={true}
           component={SignupChangeEmail}
           onRight={navToSignupTopics}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          key='signupFlow_additionalInfo'
+          hideNavBar={true}
+          component={SignupAdditionalInfo}
+          onRight={navToSignupChangeEmail}
           renderRightButton={socialRightBtn}
         />
         <Scene
@@ -414,6 +424,11 @@ export default function NavigationRouter({ openAddStoryModal }) {
           component={CreateSlideshowScreen}
           panHandlers={null}
           direction="horizontal"
+        />
+        <Scene
+          key='createStory_addButton'
+          panHandlers={null}
+          component={AddButtonScreen}
         />
       </Scene>
       <Scene

@@ -41,12 +41,14 @@ class SignupChangeUsername extends React.Component {
     this.state = {
       newUsername: '',
       error: null,
+      submitted: false,
     }
   }
 
   conditionalNavForward = () => {
     if (!this.props.user.usernameIsTemporary) {
-      NavActions.signupFlow_changeEmail()
+      NavActions.signupFlow_changeEmail({type: 'reset'})
+      this.setState({submitted: true})
     }
   }
 

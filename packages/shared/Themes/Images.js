@@ -157,6 +157,8 @@ const images = {
   iconHeaderNotifications: require('../Images/ht-icons/icon_header-notifications.png'),
   iconMenuCreateStory: require('../Images/ht-icons/menu-create-story.png'),
   iconMenuCreateSlideshow: require('../Images/ht-icons/menu-create-slideshow.png'),
+  iconStarRatingActive: require('../Images/ht-icons/icon_rating-star-active.png'),
+  iconStarRatingInactive: require('../Images/ht-icons/icon_rating-star-inactive.png'),
 }
 
 export default images

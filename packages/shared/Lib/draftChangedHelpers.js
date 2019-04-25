@@ -15,6 +15,7 @@ const fieldsToCheck = [
   'tripDate',
   'type',
   'slideshow',
+  'actionButton',
 ]
 
 const isEqual = (firstItem, secondItem) => {

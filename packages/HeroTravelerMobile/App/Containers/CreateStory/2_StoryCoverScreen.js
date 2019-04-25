@@ -251,30 +251,11 @@ class StoryCoverScreen extends Component {
   }
 
   _onTitle = () => {
-    const title = 'Save Progess'
-    const message = 'Do you want to save your progress?'
     if (!this.isValid()) {
       this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid()) {
-            this.setState({validationError: 'Please add a cover and title to save'})
-          }
-          else {
-            this.saveStory()
-          }
-        },
-      }, {
-        text: 'Cancel',
-        onPress: () => null,
-      }],
-    )
+    this.saveStory()
   }
 
   isValid() {

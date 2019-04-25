@@ -271,6 +271,7 @@ function * createSlideshow(draft){
         console.log('cloudinary response', response)
         if (response.error) return response
         const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
+        console.log('responseData', responseData)
         if (responseData.resource_type === 'video' && uri && draft.id && responseData.public_id) {
           moveVideoToPreCache(draft.id, uri, responseData.public_id)
         }

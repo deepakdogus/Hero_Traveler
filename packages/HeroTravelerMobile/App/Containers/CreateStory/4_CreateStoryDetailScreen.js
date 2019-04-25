@@ -121,7 +121,7 @@ class CreateStoryDetailScreen extends React.Component {
       workingDraft.draft = false
       this.props.saveDraft(workingDraft)
     }
- else this.saveDraft(workingDraft)
+    else this.saveDraft(workingDraft)
   }
 
   _onLeft = () => {
@@ -251,7 +251,7 @@ class CreateStoryDetailScreen extends React.Component {
       if (__DEV__ && err && err.problem && err.status) {
         errText = `${err.status}: ${err.problem}`
       }
- else if (err.text) {
+      else if (err.text) {
         errText = err.text
       }
       return (

@@ -146,6 +146,8 @@ class CameraRollPicker extends Component {
     var uri = item.node.image.uri
     var isSelected = (this._arrayObjectIndexOf(selected, 'uri', uri) >= 0) ? true : false
 
+    console.log('_renderImage item', item)
+
     return (
       <ImageItem
         key={uri}
@@ -192,7 +194,7 @@ class CameraRollPicker extends Component {
     var {maximum, imagesPerRow, callback, selectSingleItem} = this.props
 
     var selected = this.state.selected,
-        index = this._arrayObjectIndexOf(selected, 'uri', image.uri)
+      index = this._arrayObjectIndexOf(selected, 'uri', image.uri)
 
     if (index >= 0) {
       selected.splice(index, 1)
@@ -217,8 +219,7 @@ class CameraRollPicker extends Component {
   }
 
   _nEveryRow(data, n) {
-    var result = [],
-        temp = []
+    var result = [], temp = []
 
     for (var i = 0; i < data.length; ++i) {
       if (i > 0 && i % n === 0) {
@@ -240,8 +241,8 @@ class CameraRollPicker extends Component {
 
   _arrayObjectIndexOf(array, property, value) {
     return array.map((o) => {
- return o[property] 
-}).indexOf(value)
+      return o[property] 
+    }).indexOf(value)
   }
 }
 

@@ -5,7 +5,6 @@ import {
   ScrollView,
   View,
   Text,
-  TouchableWithoutFeedback,
 } from 'react-native'
 import { connect } from 'react-redux'
 import {Actions as NavActions} from 'react-native-router-flux'
@@ -20,6 +19,7 @@ import styles from './4_CreateStoryDetailScreenStyles'
 import API from '../../Shared/Services/HeroAPI'
 import FormInput from '../../Components/FormInput'
 import TouchableMultilineInput from '../../Components/TouchableMultilineInput'
+import RadioButton from '../../Components/RadioButton'
 
 const api = API.create()
 
@@ -29,30 +29,6 @@ const api = API.create()
 
 ***/
 
-const dateLikeItemAsDate = (dateLikeItem) => {
-  const timeStamp = Date.parse(dateLikeItem)
-  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
-}
-
-const dateLikeItemAsDateString = (dateLikeItem) => {
-  const date = dateLikeItemAsDate(dateLikeItem)
-  const dateString = date.toDateString()
-  return dateString.replace(/\s/, ', ')
-}
-
-const Radio = ({text, onPress, selected}) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.radio}>
-        <View style={[styles.radioBtnOuter, selected ? styles.radioBtnActiveBorder : {}]}>
-          <View style={[styles.radioBtnInner, selected ? styles.radioBtnActiveBackground : {}]}/>
-        </View>
-        <Text style={styles.radioText}>{text}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-}
-
 class CreateSlideshowDetails extends React.Component {
   static propTypes = {
     workingDraft: PropTypes.object,
@@ -61,6 +37,7 @@ class CreateSlideshowDetails extends React.Component {
     saveDraft: PropTypes.func,
     accessToken: PropTypes.object,
     update: PropTypes.func,
+    user: PropTypes.object,
     resetCreateStore: PropTypes.func,
   }
 
@@ -119,9 +96,7 @@ class CreateSlideshowDetails extends React.Component {
     NavActions.pop()
   }
 
-  _updateType = (type) => {
-    this.props.updateWorkingDraft({type})
-  }
+  updateType = (type) => this.props.updateWorkingDraft({type})
 
   _updateTitle = (title) => {
     this.props.updateWorkingDraft({title})
@@ -276,115 +251,135 @@ class CreateSlideshowDetails extends React.Component {
     this.props.updateWorkingDraft({ rating })
   }
 
+  navToAddButton = () => {
+    const hasActionButton = this.hasActionButton()
+    NavActions.createStory_addButton({
+      updateWorkingDraft: this.props.updateWorkingDraft,
+      currentLink: hasActionButton ? this.props.workingDraft.actionButton.link : '',
+      buttonType: hasActionButton ? this.props.workingDraft.actionButton.type : '',
+    })
+  }
+
+  hasActionButton = () => {
+    const { workingDraft } = this.props
+    return workingDraft && workingDraft.actionButton && workingDraft.actionButton.link
+  }
+
   render () {
-    const {workingDraft} = this.props
+    const {workingDraft, user} = this.props
     const {validationError} = this.state
     return (
       <View style={styles.wrapper}>
-          {this.renderErrors()}
-          <NavBar
-            title='SLIDESHOW DETAILS'
-            leftIcon='arrowLeftRed'
-            leftTitle='Back'
-            onLeft={this._onLeft}
-            leftTextStyle={styles.navBarLeftText}
-            onRight={this._onRight}
-            rightTitle={this.isDraft() ? 'Publish' : 'Save'}
-            rightTextStyle={styles.redText}
-            isRightValid={this.isValid()}
+        {this.renderErrors()}
+        <NavBar
+          title='SLIDESHOW DETAILS'
+          leftIcon='arrowLeftRed'
+          leftTitle='Back'
+          onLeft={this._onLeft}
+          leftTextStyle={styles.navBarLeftText}
+          onRight={this._onRight}
+          rightTitle={this.isDraft() ? 'Publish' : 'Save'}
+          rightTextStyle={styles.redText}
+          isRightValid={this.isValid()}
+        />
+        <ScrollView style={styles.root}>
+          <Text style={styles.fieldLabel}>Title: </Text>
+          <FormInput
+            onChangeText={this._updateTitle}
+            value={workingDraft.title}
+            placeholder='Add a title'
           />
-          <ScrollView style={styles.root}>
-            <Text style={styles.fieldLabel}>Title: </Text>
-            <FormInput
-              onChangeText={this._updateTitle}
-              value={workingDraft.title}
-              placeholder='Add a title'
-            />
-            <TouchableMultilineInput
-              onDone={this._updateDescription}
-              title='Description'
-              label='Add a description'
-              value={workingDraft.description}
-              placeholder='Write a description'
-            />
-            <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Activity: </Text>
-              <View style={styles.radioGroup}>
-                <Radio
-                  selected={workingDraft.type === 'see'}
-                  onPress={() => this._updateType('see')}
-                  text='SEE'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'do'}
-                  onPress={() => this._updateType('do')}
-                  text='DO'
-                />
-                <Radio
-                  selected={workingDraft.type === 'eat'}
-                  onPress={() => this._updateType('eat')}
-                  text='EAT'
-                />
-                <Radio
-                  style={{marginLeft: Metrics.baseMargin}}
-                  selected={workingDraft.type === 'stay'}
-                  onPress={() => this._updateType('stay')}
-                  text='STAY'
-                />
-              </View>
-            </View>
-            <View style={styles.fieldWrapper}>
-              <Text style={styles.fieldLabel}>Rate this experience:</Text>
-              <StarRating
-                containerStyle={{
-                  marginTop: -5,
-                  marginLeft: 25,
-                  marginBottom: 10,
-                }}
-                disabled={false}
-                emptyStar={'ios-star'}
-                fullStar={'ios-star'}
-                halfStar={'ios-star-half'}
-                iconSet={'Ionicons'}
-                maxStars={5}
-                starSize={25}
-                rating={workingDraft.rating || 3}
-                selectedStar={this.onStarRatingPress}
-                fullStarColor={'red'}
+          <TouchableMultilineInput
+            onDone={this._updateDescription}
+            title='Description'
+            label='Add a description'
+            value={workingDraft.description}
+            placeholder='Write a description'
+          />
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.fieldLabel}>Activity: </Text>
+            <View style={styles.radioGroup}>
+              <RadioButton
+                selected={workingDraft.type === 'see'}
+                value="see"
+                onPress={this.updateType}
+                text='SEE'
+              />
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
+                selected={workingDraft.type === 'do'}
+                value="do"
+                onPress={this.updateType}
+                text='DO'
+              />
+              <RadioButton
+                selected={workingDraft.type === 'eat'}
+                value="eat"
+                onPress={this.updateType}
+                text='EAT'
+              />
+              <RadioButton
+                style={{marginLeft: Metrics.baseMargin}}
+                selected={workingDraft.type === 'stay'}
+                value="stay"
+                onPress={this.updateType}
+                text='STAY'
               />
             </View>
-            <FormInput
-              onPress={this.navToLocation}
-              iconName='location'
-              value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
-              placeholder='Location'
+          </View>
+          <View style={styles.fieldWrapper}>
+            <Text style={styles.fieldLabel}>Rate this experience:</Text>
+            <StarRating
+              containerStyle={{
+                marginTop: -5,
+                marginLeft: 25,
+                marginBottom: 10,
+              }}
+              disabled={false}
+              emptyStar={'ios-star'}
+              fullStar={'ios-star'}
+              halfStar={'ios-star-half'}
+              iconSet={'Ionicons'}
+              maxStars={5}
+              starSize={25}
+              rating={workingDraft.rating || 3}
+              selectedStar={this.onStarRatingPress}
+              fullStarColor={'red'}
             />
+          </View>
+          <FormInput
+            onPress={this.navToLocation}
+            iconName='location'
+            value={workingDraft.locationInfo ? workingDraft.locationInfo.name : ''}
+            placeholder='Location'
+          />
+          <FormInput
+            onPress={this.navToCategories}
+            iconName='tag'
+            value={this.getCategoriesValue()}
+            placeholder='Add categories...'
+          />
+          <FormInput
+            onPress={this.navToHashtags}
+            iconName='hashtag'
+            value={this.getHashtagsValue()}
+            placeholder='Add hashtags'
+          />
+          <FormInput
+            onPress={this.navToTagUsers}
+            iconName='profile'
+            value={this.getUsersValue()}
+            placeholder='Tag users'
+          />
+          {user && user.role !== 'user' && (
             <FormInput
-              onPress={this.navToCategories}
-              iconName='tag'
-              value={this.getCategoriesValue()}
-              placeholder='Add categories...'
+              onPress={this.navToAddButton}
+              iconName="addButton"
+              value={this.hasActionButton() ? workingDraft.actionButton.link : ''}
+              placeholder="Add an action button"
             />
-            <FormInput
-              onPress={this.navToHashtags}
-              iconName='hashtag'
-              value={this.getHashtagsValue()}
-              placeholder='Add hashtags'
-            />
-            <FormInput
-              onPress={this.navToTagUsers}
-              iconName='profile'
-              value={this.getUsersValue()}
-              placeholder='Tag users'
-            />
-            <FormInput
-              onChangeText={this._updateButton}
-              iconName='tip-tap'
-              value={workingDraft.button ? workingDraft.button : ''}
-              placeholder='Add a button'
-            />
-          </ScrollView>
+          )}
+        </ScrollView>
         {validationError
           && <Tooltip
             onPress={this._touchError}
@@ -405,6 +400,7 @@ export default connect(
       story: {...state.storyCreate.workingDraft},
       workingDraft: {...state.storyCreate.workingDraft},
       storyCreateError: state.storyCreate.error,
+      user: state.entities.users.entities[state.session.userId],
     }
   },
   dispatch => ({

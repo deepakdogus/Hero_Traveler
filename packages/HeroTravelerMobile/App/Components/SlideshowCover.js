@@ -97,14 +97,14 @@ export default class SlideshowCover extends Component {
           ...imageStyle,
           ...this._getWidthHeight(),
         }}>
-        { imageThumbnailUrl && (
-          <ImageWrapper
-            cached={true}
-            resizeMode='cover'
-            source={{uri: imageThumbnailUrl}}
-            style={this.getEmbeddedImageStyle()}
-          />
-         )}
+          { imageThumbnailUrl && (
+            <ImageWrapper
+              cached={true}
+              resizeMode='cover'
+              source={{uri: imageThumbnailUrl}}
+              style={this.getEmbeddedImageStyle()}
+            />
+          )}
           <ImageWrapper
             cached={true}
             resizeMode='cover'
@@ -242,7 +242,7 @@ export default class SlideshowCover extends Component {
               ref={this._makeRef}
               allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
               shouldEnableAutoplay={this.props.shouldEnableAutoplay}
-              autoPlayVideo={false}
+              autoPlayVideo={true}
               showPlayButton={false}
               onIsPlayingChange={this._setIsPlaying}
               onMuteChange={this._changeMute}
@@ -257,10 +257,6 @@ export default class SlideshowCover extends Component {
       )
     }
 
-    if (this.props.isFeed) {
-      return this.renderImageWithUrl(true, videoImageUrl)
-    }
-
     return (
       <View style={this._getWidthHeight()}>
         <VideoPlayer
@@ -271,25 +267,25 @@ export default class SlideshowCover extends Component {
           ref={this._makeRef}
           allowVideoPlay={this.props.allowVideoPlay && this.props.autoPlayVideo}
           shouldEnableAutoplay={this.props.shouldEnableAutoplay}
-          autoPlayVideo={this.props.autoPlayVideo}
+          autoPlayVideo
           showPlayButton={false}
           onIsPlayingChange={this._setIsPlaying}
           onMuteChange={this._changeMute}
           isMuted={this.props.isFeed}
-          showControls={true}
+          showControls={false}
           resizeMode='cover'
         />
       </View>
     )
   }
 
-  renderItem(s) {
+  renderItem(s, i) {
     let coverType
     if (s.purpose === 'coverImage') coverType = 'image'
     else coverType = 'video'
 
     return (
-      <View style={[styles.root, this.props.style]}>
+      <View key={`${i}`} style={[styles.root, this.props.style]}>
         {this.hasVideo() && coverType === 'video' && this.renderVideo(s)}
         {coverType === 'image' && this.renderImage(s)}
         {!coverType && (

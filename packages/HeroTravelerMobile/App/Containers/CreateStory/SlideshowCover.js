@@ -49,15 +49,17 @@ class SlideshowCover extends Component{
   getSelectedImages = (image, current) => {
     const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
     if (slideshow.length >= 8) return
+    console.log('selected image', image)
     const file = {
       name: current.filename,
       original: {
         meta: {
           height: current.height,
           width: current.width,
+          playableDuration: current.playableDuration,
         },
       },
-      type: 'image',
+      type: current.playableDuration ? 'video' : 'image',
       uri: current.uri,
     }
     let galleryImagePath = file.uri
@@ -79,7 +81,7 @@ class SlideshowCover extends Component{
 
   capture = () => {
     this.cropper.crop()
-    .then(base64 => console.log('capture', base64))
+      .then(base64 => console.log('capture', base64))
   }
 
   isValid() {
@@ -202,23 +204,25 @@ class SlideshowCover extends Component{
       <View style={styles.imagePreview}>
         {
           this.state.galleryImagePath
-          ? this.renderImageCropper()
-          : <View style={[styles.addPhotoView]}>
-          <View
-            style={styles.addPhotoButton}
-          >
-            <TabIcon
-              name='cameraDark'
-              style={{
-                view: coverImageStyles.cameraIcon,
-                image: coverImageStyles.cameraIconImage,
-              }}
-            />
-            <Text style={[coverImageStyles.baseTextColor, coverImageStyles.coverPhotoText]}>
-              CHOOSE COVER PHOTO OR VIDEO
-            </Text>
-          </View>
-        </View>
+            ? this.renderImageCropper()
+            : (
+              <View style={[styles.addPhotoView]}>
+                <View
+                  style={styles.addPhotoButton}
+                >
+                  <TabIcon
+                    name='cameraDark'
+                    style={{
+                      view: coverImageStyles.cameraIcon,
+                      image: coverImageStyles.cameraIconImage,
+                    }}
+                  />
+                  <Text style={[coverImageStyles.baseTextColor, coverImageStyles.coverPhotoText]}>
+                    CHOOSE COVER PHOTO OR VIDEO
+                  </Text>
+                </View>
+              </View>
+            )
         }
       </View>
     )

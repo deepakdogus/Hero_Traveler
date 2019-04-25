@@ -4,9 +4,12 @@ import {
   StyleSheet,
   Dimensions,
   View,
+  Text,
   TouchableOpacity,
 } from 'react-native'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+import moment from 'moment'
 
 class ImageItem extends Component {
   constructor(props) {
@@ -33,6 +36,7 @@ class ImageItem extends Component {
     var { item, selected, selectedMarker, imageMargin } = this.props
 
     var image = item.node.image
+    const isVideo = item.node.type === 'ALAssetTypeVideo'
 
     return (
       <TouchableOpacity
@@ -42,6 +46,11 @@ class ImageItem extends Component {
           source={{ uri: image.uri }}
           style={{ height: this._imageSize, width: this._imageSize }} />
         {(selected) ? selectedMarker(item) : this.renderDefaultMarker()}
+        {isVideo && (
+          <Text style={styles.duration}>
+            {moment.utc(_.get(item, 'node.image.playableDuration', 0) * 1000).format('mm:ss')}
+          </Text>
+        )}
       </TouchableOpacity>
     )
   }
@@ -69,6 +78,12 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 3,
     opacity: 0.7,
+  },
+  duration: {
+    position: 'absolute',
+    color: 'white',
+    bottom: 5,
+    right: 5,
   },
 })
 

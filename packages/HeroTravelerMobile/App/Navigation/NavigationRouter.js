@@ -439,10 +439,10 @@ export default function NavigationRouter({ openAddStoryModal }) {
         direction="horizontal"
       />
       <Scene
-          key='createStory_slideshow_details'
-          panHandlers={null}
-          component={CreateSlideshowDetailsScreen}
-        />
+        key='createStory_slideshow_details'
+        panHandlers={null}
+        component={CreateSlideshowDetailsScreen}
+      />
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}

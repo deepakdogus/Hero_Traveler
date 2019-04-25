@@ -21,7 +21,11 @@ export async function getUserDetails(userId) {
 }
 
 export async function addSlideshow(draft, assetFormater){
-  return await Promise.all(draft.slideshow.map(image => createCover(image, assetFormater, 'coverImage')))
+  return await Promise.all(draft.slideshow.map(image => {
+    console.log('addSlideshow image', image);
+    const type = image.resource_type === 'image' ? 'coverImage' : 'coverVideo'
+    return createCover(image, assetFormater, type)
+  }))
 }
 
 export async function addCover(draft, assetFormater){

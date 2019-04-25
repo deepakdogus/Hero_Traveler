@@ -37,6 +37,8 @@ async function uploadMediaFile(fileData, type){
     dataUri = await VideoManager.fixFilePath(fileData.uri)
     if (isLocalMediaAsset(dataUri)) dataUri = decodeURIComponent(dataUri.substr(7))
   }
+  console.log('uploadMediaFile', fileData)
+  console.log('dataUri', dataUri)
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,

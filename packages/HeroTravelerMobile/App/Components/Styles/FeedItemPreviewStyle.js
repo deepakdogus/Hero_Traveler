@@ -145,13 +145,13 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   badgeImage: {
-    width: 12,
-    height: 12,
+    width: 18,
+    height: 18,
   },
   badgeView: {
     marginRight: 5,
     position: 'absolute',
-    bottom: '20%',
-    left: '50%',
+    bottom: '1%',
+    left: '45%',
   },
 })

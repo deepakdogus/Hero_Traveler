@@ -74,15 +74,17 @@ class MyFeedScreen extends React.Component {
     }
     SplashScreen.hide()
 
-    getAppstoreAppVersion('1288145566') //put any apps id here	
-      .then(versionOnAppStore => {	
-        const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
-        const currentVersion = VersionNumber.appVersion.split('.')
-        if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
-      })
-      .catch(err => {	
-        console.log('error occurred', err)	
-      })
+    if (!__DEV__) {
+      getAppstoreAppVersion('1288145566') //put any apps id here	
+        .then(versionOnAppStore => {	
+          const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
+          const currentVersion = VersionNumber.appVersion.split('.')
+          if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
+        })
+        .catch(err => {	
+          console.log('error occurred', err)	
+        })
+    }
   }
 
   isPendingUpdate() {
@@ -197,7 +199,6 @@ class MyFeedScreen extends React.Component {
 
   updateAppNotice(){
     const APP_STORE_LINK = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
-    // const PLAY_STORE_LINK = 'market://details?id=myandroidappid'
     Alert.alert(
       'Update Available',
       'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
@@ -207,9 +208,6 @@ class MyFeedScreen extends React.Component {
             if(Platform.OS === 'ios'){
               Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
             }
-            // else {
-            //   Linking.openURL(PLAY_STORE_LINK).catch(err => console.error('An error occurred', err))
-            // }
           }},
       ],
     )
@@ -252,7 +250,7 @@ class MyFeedScreen extends React.Component {
     }
     return (
       <View style={styles.statusBarAvoider}>
-        {needToUpdateApp === true ? this.updateAppNotice() : null}
+        {needToUpdateApp ? this.updateAppNotice() : null}
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}

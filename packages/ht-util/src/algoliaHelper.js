@@ -10,7 +10,6 @@ userIndex.setSettings({
   searchableAttributes: [
     'username',
     'profile.fullName',
-    'username_suffixes'
   ]
 })
 

@@ -151,7 +151,7 @@ export default class ProfileUserInfo extends Component {
         )}
         <View style={[styles.secondRowSection, styles.readBioSection]}>
           <TouchableOpacity onPress={this._navToViewBio} >
-            <Text style={styles.readBioText}>Read bio</Text>
+            <Text style={styles.readBioText}>Read Bio</Text>
           </TouchableOpacity>
         </View>
       </View>

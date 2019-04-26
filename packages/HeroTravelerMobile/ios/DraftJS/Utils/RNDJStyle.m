@@ -11,8 +11,9 @@
 
 #define GET(val, Type) [[dictionary objectForKey:NSStringize(val)] isKindOfClass:[Type class]] ? [dictionary objectForKey:NSStringize(val)] : nil
 
-#define GET_SV(val) _ ## val = shadowView.val;
-#define GET_SV_FLOAT(val) _ ## val = isnan(shadowView.val) ? nil : @(shadowView.val);
+#define GET_SV_NAME(name, val) _ ## name = textAttributes.val;
+#define GET_SV(val) _ ## val = textAttributes.val;
+#define GET_SV_FLOAT(val) _ ## val = isnan(textAttributes.val) ? nil : @(textAttributes.val);
 
 #define COPY(val) _ ## val = style.val;
 #define COPY_IF_NOT_SET(val) if (style.val) {retStyle.val = style.val;}
@@ -154,18 +155,18 @@
   _wasTextAlignSet = YES;
 }
 
-- (instancetype) initWithShadowView:(RNDJShadowDraftJSEditor *)shadowView {
+- (instancetype) initWithTextAttributes:(RCTTextAttributes *)textAttributes {
   if (self = [super init]) {
     GET_SV(fontFamily)
     GET_SV(fontWeight)
     GET_SV(fontStyle)
     GET_SV(fontVariant)
-    GET_SV(color)
+    GET_SV_NAME(color, foregroundColor)
     GET_SV(textDecorationColor)
     GET_SV(textShadowColor)
     GET_SV(backgroundColor)
 
-    GET_SV(textAlign)
+    GET_SV_NAME(textAlign, alignment)
     _wasTextAlignSet = YES;
     GET_SV(textDecorationStyle)
     _wasTextDecorationStyleSet = YES;
@@ -178,12 +179,12 @@
     GET_SV_FLOAT(lineHeight)
     GET_SV_FLOAT(textShadowRadius)
     
-    if (!isnan(shadowView.textShadowOffset.width) && !isnan(shadowView.textShadowOffset.height)) {
-      _textShadowOffsetWidth = @(shadowView.textShadowOffset.width);
-      _textShadowOffsetHeight = @(shadowView.textShadowOffset.height);
+    if (!isnan(textAttributes.textShadowOffset.width) && !isnan(textAttributes.textShadowOffset.height)) {
+      _textShadowOffsetWidth = @(textAttributes.textShadowOffset.width);
+      _textShadowOffsetHeight = @(textAttributes.textShadowOffset.height);
     }
     
-    _allowFontScaling = @(shadowView.allowFontScaling);
+    _allowFontScaling = @(textAttributes.allowFontScaling);
   }
   
   return self;

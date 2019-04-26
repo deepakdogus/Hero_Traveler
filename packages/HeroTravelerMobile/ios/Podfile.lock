@@ -1,4 +1,19 @@
 PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - FBSDKCoreKit (4.33.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.33.0):
+    - FBSDKCoreKit
+  - FBSDKPlacesKit (4.33.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.33.0):
+    - FBSDKCoreKit (~> 4.33.0)
+  - FLAnimatedImage (1.0.12)
   - GoogleMaps (2.5.0):
     - GoogleMaps/Maps (= 2.5.0)
   - GoogleMaps/Base (2.5.0)
@@ -9,23 +24,63 @@ PODS:
     - GooglePlaces (= 2.5.0)
   - GooglePlaces (2.5.0):
     - GoogleMaps/Base (= 2.5.0)
+  - iOS-MagnifyingGlass (0.0.2)
+  - IQKeyboardManager (6.0.2)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
 
 DEPENDENCIES:
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKPlacesKit
+  - FBSDKShareKit
+  - FLAnimatedImage
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
+  - iOS-MagnifyingGlass (~> 0.0.2)
+  - IQKeyboardManager
+  - SDWebImage (from `https://github.com/rehashstudio/SDWebImage.git`, commit `705cab1b7fbafb661d4476e05cf6a98e31ab7793`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Bolts
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKPlacesKit
+    - FBSDKShareKit
+    - FLAnimatedImage
     - GoogleMaps
     - GooglePlacePicker
     - GooglePlaces
+    - iOS-MagnifyingGlass
+    - IQKeyboardManager
+
+EXTERNAL SOURCES:
+  SDWebImage:
+    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :git: https://github.com/rehashstudio/SDWebImage.git
+
+CHECKOUT OPTIONS:
+  SDWebImage:
+    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :git: https://github.com/rehashstudio/SDWebImage.git
 
 SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FBSDKCoreKit: 572b047a7e029bc44542bcf8a59414e7ff2b543e
+  FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
+  FBSDKPlacesKit: 6480c499b458b919840733c39c93fd3fc58e47d7
+  FBSDKShareKit: b7b5002833a4104fbecad75e8e4e082e91c7a08a
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
   GooglePlacePicker: 1573e644ab54564d95c2643edc0f29091609e966
   GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
+  iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
+  IQKeyboardManager: c49d59e358aeeffaa0280aa305093c2b194d2607
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
 
-PODFILE CHECKSUM: 97f8afdc95ec7bf96210b05a9734f5740a22d0a5
+PODFILE CHECKSUM: 5e6a46b848c8d3e73d5dae28088831ce7c5c6484
 
 COCOAPODS: 1.6.1

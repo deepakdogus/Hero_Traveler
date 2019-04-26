@@ -7,7 +7,8 @@
 //
 
 #import <React/RCTViewManager.h>
+#import <RCTText/RCTBaseTextViewManager.h>
 
-@interface RNDJDraftJSEditorManager : RCTViewManager
+@interface RNDJDraftJSEditorManager : RCTBaseTextViewManager
 
 @end

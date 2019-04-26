@@ -16,9 +16,9 @@
 #import "RNDJShadowDraftJSEditor.h"
 #import "RNDJDraftJsIndex.h"
 
-#import <IQKeyboardManager/IQKeyboardManager.h>
+#import "IQKeyboardManager.h"
 
-#import <iOS-MagnifyingGlass/ACMagnifyingGlass.h>
+#import "ACMagnifyingGlass.h"
 
 CGFloat selectNibSize = 8.f;
 NSString* terminalPunctionationString = @".?!";
@@ -804,7 +804,7 @@ typedef enum AutoPeriodState {
   endDragView.frame = CGRectMake(0, 0, 0, 0);
 
   NSRange characterRange = [layoutManager characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
-  [layoutManager.textStorage enumerateAttribute:RCTIsHighlightedAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
+  [layoutManager.textStorage enumerateAttribute:RNDJDraftJsIsHighlightedAttributeName inRange:characterRange options:0 usingBlock:^(NSNumber *value, NSRange range, BOOL *_) {
     if (!value.boolValue) {
       return;
     }
@@ -1069,7 +1069,7 @@ typedef enum AutoPeriodState {
   // If the point is not before (fraction == 0.0) the first character and not
   // after (fraction == 1.0) the last character, then the attribute is valid.
   if (_textStorage.length > 0 && (fraction > 0 || characterIndex > 0) && (fraction < 1 || characterIndex < _textStorage.length - 1)) {
-    reactTag = [_textStorage attribute:RCTReactTagAttributeName atIndex:characterIndex effectiveRange:NULL];
+    reactTag = [_textStorage attribute:RNDJDraftJsReactTagAttributeName atIndex:characterIndex effectiveRange:NULL];
   }
   return reactTag;
 }

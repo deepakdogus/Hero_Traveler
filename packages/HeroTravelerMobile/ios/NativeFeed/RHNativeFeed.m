@@ -2,13 +2,22 @@
 #import <React/RCTAssert.h>
 #import <React/RCTRefreshControl.h>
 #import <React/UIView+React.h>
-#import <React/UIView+Private.h>
+//#import <React/UIView+Private.h>
 #import "RHNativeFeedHeader.h"
 #import "RHNativeFeedItem.h"
 #import "RHCustomScrollView.h"
 #import "RHScrollEvent.h"
 #import "RHNativeFeedBackingView.h"
 #import "RCTVideo.h"
+
+@interface UIView (Private)
+
+// remove clipped subviews implementation
+- (void)react_remountAllSubviews;
+- (void)react_updateClippedSubviewsWithClipRect:(CGRect)clipRect relativeToView:(UIView *)clipView;
+- (UIView *)react_findClipView;
+
+@end
 
 @interface RHDisposable : NSObject
 

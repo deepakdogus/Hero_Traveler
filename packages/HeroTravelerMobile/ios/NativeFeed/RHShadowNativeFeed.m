@@ -4,118 +4,139 @@
 #import "RHShadowNativeFeedHeader.h"
 #import "RHShadowNativeFeedItem.h"
 
+#import <React/RCTUIManager.h>
+#import <React/RCTUIManagerUtils.h>
+
 @implementation RHShadowNativeFeed
 {
+  __weak RCTBridge *_bridge;
   NSArray* _storyInfos;
 }
 
-- (void)applyLayoutToChildren:(YGNodeRef)node
-            viewsWithNewFrame:(NSMutableSet<RCTShadowView *> *)viewsWithNewFrame
-             absolutePosition:(CGPoint)absolutePosition
+- (instancetype)initWithBridge:(RCTBridge *)bridge
 {
+  if (self = [super init]) {
+    _bridge = bridge;
+  }
+  
+  return self;
+}
+
+- (void)layoutSubviewsWithContext:(RCTLayoutContext)layoutContext
+{
+  RCTLayoutMetrics layoutMetrics = self.layoutMetrics;
+  
+  if (layoutMetrics.displayType == RCTDisplayTypeNone) {
+    return;
+  }
+  
   float fullWidth = YGNodeStyleGetWidth(self.yogaNode).value;
   if (YGFloatIsUndefined(fullWidth)) {
     fullWidth = [UIScreen mainScreen].bounds.size.width;
   }
 
-  CGFloat totalHeaderHeight = 0.f;
-  for (RCTShadowView* shadowView in [self reactSubviews])
+  // CGFloat totalHeaderHeight = 0.f;
+  for (RCTShadowView* childShadowView in [self reactSubviews])
   {
-    if (![shadowView isKindOfClass:[RHShadowNativeFeedHeader class]])
+    if (![childShadowView isKindOfClass:[RHShadowNativeFeedHeader class]])
     {
       continue;
     }
     
-    RHShadowNativeFeedHeader* header = (RHShadowNativeFeedHeader*) shadowView;
+    RHShadowNativeFeedHeader* header = (RHShadowNativeFeedHeader*) childShadowView;
     
-    CGRect childFrame = {{
-      0.f,
-      RCTRoundPixelValue(totalHeaderHeight)
-    }, {
-      RCTRoundPixelValue(fullWidth),
-      RCTRoundPixelValue(header.headerHeight)
-    }};
+    YGNodeRef childYogaNode = childShadowView.yogaNode;
     
-    [shadowView collectUpdatedFrames:viewsWithNewFrame
-                           withFrame:childFrame
-                              hidden:false
-                    absolutePosition:absolutePosition];
+    RCTAssert(!YGNodeIsDirty(childYogaNode), @"Attempt to get layout metrics from dirtied Yoga node.");
 
-    totalHeaderHeight += header.headerHeight;
+    RCTLayoutMetrics childLayoutMetrics = RCTLayoutMetricsFromYogaNode(childYogaNode);
+    
+    // layoutContext.absolutePosition.x += childLayoutMetrics.frame.origin.x;
+    layoutContext.absolutePosition.y += childLayoutMetrics.frame.origin.y;
+    
+    [childShadowView layoutWithMetrics:childLayoutMetrics
+                         layoutContext:layoutContext];
+    
+    // Recursive call.
+    [childShadowView layoutSubviewsWithContext:layoutContext];
   }
   
-  totalHeaderHeight += _leadingCellSpace;
-  
-  for (RHShadowNativeFeedItem* shadowView in [self reactSubviews])
+  CGFloat baseY = layoutContext.absolutePosition.y;
+
+  for (RHShadowNativeFeedItem* childShadowView in [self reactSubviews])
   {
-    if (![shadowView isKindOfClass:[RHShadowNativeFeedItem class]])
+    if (![childShadowView isKindOfClass:[RHShadowNativeFeedItem class]])
     {
       continue;
     }
+    
+    YGNodeRef childYogaNode = childShadowView.yogaNode;
+    
+    RCTAssert(!YGNodeIsDirty(childYogaNode), @"Attempt to get layout metrics from dirtied Yoga node.");
+    
+    RCTLayoutMetrics childLayoutMetrics = RCTLayoutMetricsFromYogaNode(childYogaNode);
 
-    YGNodeRef childNode = shadowView.yogaNode;
-    float x = YGNodeLayoutGetLeft(childNode);
-    float width = YGNodeStyleGetWidth(childNode).value;
-    float height = YGNodeStyleGetHeight(childNode).value;
+    float x = childLayoutMetrics.frame.origin.x;
+    float width = childLayoutMetrics.frame.size.width;
+    float height = childLayoutMetrics.frame.size.height;
     
     if (YGFloatIsUndefined(x)) {
       x = 0;
     }
     
-    if (YGFloatIsUndefined(width)) {
+    if (YGFloatIsUndefined(width) || width <= 0) {
       width = fullWidth;
     }
     
-    if (YGFloatIsUndefined(height)) {
+    if (YGFloatIsUndefined(height) || height <= 0) {
       height = 100;
     }
     
-    CGFloat yPos = totalHeaderHeight;
-
-    for (int i = 0; i < shadowView.cellNum; i++)
+    CGFloat yPos = baseY;
+    
+    for (int i = 0; i < childShadowView.cellNum; i++)
     {
       if (i >= _storyInfos.count)
       {
         break;
       }
-
+      
       yPos += ((RHStoryInfo*)_storyInfos[i]).height + _cellSeparatorHeight;
     }
     
-    height = shadowView.cellNum < _storyInfos.count ? (((RHStoryInfo*)_storyInfos[shadowView.cellNum]).height) : height;
+    height = childShadowView.cellNum < _storyInfos.count ? (((RHStoryInfo*)_storyInfos[childShadowView.cellNum]).height) : height;
     
-    CGRect childFrame = {{
-      x,
-      RCTRoundPixelValue(yPos)
-    }, {
-      RCTRoundPixelValue(width),
-      RCTRoundPixelValue(height)
-    }};
+    layoutContext.absolutePosition.x += childLayoutMetrics.frame.origin.x;
+    layoutContext.absolutePosition.y += yPos;
     
-    [shadowView collectUpdatedFrames:viewsWithNewFrame
-                           withFrame:childFrame
-                              hidden:false
-                    absolutePosition:absolutePosition];
+    [childShadowView layoutWithMetrics:childLayoutMetrics
+                         layoutContext:layoutContext];
+    
+    // Recursive call.
+    [childShadowView layoutSubviewsWithContext:layoutContext];
   }
 }
 
-
-- (NSDictionary<NSString *, id> *)processUpdatedProperties:(NSMutableSet<RCTApplierBlock> *)applierBlocks
-                                          parentProperties:(NSDictionary<NSString *, id> *)parentProperties
+- (void)uiManagerWillPerformMounting
 {
-  parentProperties = [super processUpdatedProperties:applierBlocks
-                                    parentProperties:parentProperties];
+  if (YGNodeIsDirty(self.yogaNode)) {
+    return;
+  }
   
-  [applierBlocks addObject:^(NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-    RHNativeFeed *view = (RHNativeFeed *)viewRegistry[self.reactTag];
+  NSNumber *tag = self.reactTag;
+  
+  [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+    RHNativeFeed* view = (RHNativeFeed*)viewRegistry[tag];
+    if (!view) {
+      return;
+    }
+    
     view.storyInfos = self.storyInfos;
     view.cellSeparatorHeight = self.cellSeparatorHeight;
     view.leadingCellSpace = self.leadingCellSpace;
     view.trailingCellSpace = self.trailingCellSpace;
     [view recalculateBackingView];
   }];
-  
-  return parentProperties;
 }
 
 - (NSArray*) storyInfos

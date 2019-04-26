@@ -45,7 +45,7 @@
 
 - (instancetype) initWithStyle:(RNDJStyle *)style;
 - (instancetype) initWithDictionary:(NSDictionary *)dictionary;
-- (instancetype) initWithShadowView:(RNDJShadowDraftJSEditor *)shadowView;
+- (instancetype) initWithTextAttributes:(RCTTextAttributes *)textAttributes;
 
 - (RNDJStyle *) applyStyle:(RNDJStyle *)otherStyle;
 

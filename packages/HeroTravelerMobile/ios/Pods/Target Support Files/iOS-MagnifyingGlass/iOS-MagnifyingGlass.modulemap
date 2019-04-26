@@ -1,0 +1,6 @@
+framework module iOS_MagnifyingGlass {
+  umbrella header "iOS-MagnifyingGlass-umbrella.h"
+
+  export *
+  module * { export * }
+}

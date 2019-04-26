@@ -1,10 +1,9 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '9.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'HeroTravelerMobile' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for HeroTravelerMobile
@@ -12,22 +11,29 @@ target 'HeroTravelerMobile' do
   pod 'GoogleMaps'
   pod 'GooglePlacePicker'
 
-  target 'HeroTravelerMobileTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  pod 'IQKeyboardManager'
+  pod 'iOS-MagnifyingGlass', '~> 0.0.2'
+
+  pod 'FBSDKCoreKit'  
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+  pod 'FBSDKPlacesKit'
+  
+  pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '705cab1b7fbafb661d4476e05cf6a98e31ab7793'
+  pod 'FLAnimatedImage'
 
 end
 
-target 'HeroTravelerMobile-tvOS' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
 
-  # Pods for HeroTravelerMobile-tvOS
-
-  target 'HeroTravelerMobile-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == 'react-native-google-maps'
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
+      end
+    end
+    if target.name == "React"
+      target.remove_from_project
+    end
   end
-
 end

@@ -11,8 +11,10 @@
 
 @interface RCTShadowView (DraftJSDirty)
 
-- (void) dirtyDraftJsText;
-- (BOOL) isDraftJsTextDirty;
-- (void) setDraftJsTextComputed;
-
+//- (void) dirtyDraftJsText;
+//- (BOOL) isDraftJsTextDirty;
+//- (void) setDraftJsTextComputed;
+- (void)collectUpdatedFrames:(NSMutableSet<RCTShadowView *> *)viewsWithNewFrame
+                   withFrame:(CGRect)frame
+            absolutePosition:(CGPoint)absolutePosition;
 @end

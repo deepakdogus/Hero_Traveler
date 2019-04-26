@@ -12,6 +12,7 @@
 #import "RNDJSelectionModel.h"
 #import "RNDJDraftJsIndex.h"
 #import "RNDJAutocompleteModel.h"
+#import <RCTText/RCTBaseTextShadowView.h>
 
 typedef NS_ENUM(NSInteger, RCTSizeComparison)
 {
@@ -20,19 +21,21 @@ typedef NS_ENUM(NSInteger, RCTSizeComparison)
   RCTSizeWithinRange,
 };
 
-extern NSString *const RCTIsHighlightedAttributeName;
-extern NSString *const RCTReactTagAttributeName;
+extern NSString *const RNDJDraftJsIsHighlightedAttributeName;
+extern NSString *const RNDJDraftJsReactTagAttributeName;
 extern NSString *const RNDJSingleCursorPositionAttributeName;
 extern NSString *const RNDJDraftJsIndexAttributeName;
 extern NSString *const RNDJDraftJsAutocompleteAttributeName;
 
-@interface RNDJShadowDraftJSEditor : RCTShadowView
+@interface RNDJShadowDraftJSEditor : RCTBaseTextShadowView
 {
   RNDJContentModel* contentModel;
   RNDJSelectionModel* selectionModel;
   RNDJAutocompleteModel* autocompleteModel;
   NSDictionary* _content;
 }
+
+- (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 @property (nonatomic, copy) NSDictionary *content;
 @property (nonatomic, copy) NSDictionary *selection;
@@ -43,38 +46,14 @@ extern NSString *const RNDJDraftJsAutocompleteAttributeName;
 @property (nonatomic, assign) CGFloat defaultAtomicWidth;
 @property (nonatomic, assign) CGFloat defaultAtomicHeight;
 
-
-@property (nonatomic, copy) NSString *fontFamily;
-@property (nonatomic, assign) CGFloat fontSize;
-@property (nonatomic, copy) NSString *fontWeight;
-@property (nonatomic, copy) NSString *fontStyle;
-@property (nonatomic, copy) NSArray *fontVariant;
-@property (nonatomic, assign) CGFloat letterSpacing;
-@property (nonatomic, strong) UIColor *color;
-@property (nonatomic, strong) UIColor *backgroundColor;
-@property (nonatomic, assign) CGFloat opacity;
-@property (nonatomic, assign) NSTextAlignment textAlign;
-@property (nonatomic, assign) CGFloat lineHeight;
-@property (nonatomic, assign) NSUnderlineStyle textDecorationStyle;
-@property (nonatomic, assign) RCTTextDecorationLineType textDecorationLine;
-@property (nonatomic, strong) UIColor *textDecorationColor;
-@property (nonatomic, assign) CGSize textShadowOffset;
-@property (nonatomic, assign) CGFloat textShadowRadius;
-@property (nonatomic, strong) UIColor *textShadowColor;
-
 @property (nonatomic, assign) BOOL showAutocomplete;
 @property (nonatomic, assign) int autocompleteStart;
 @property (nonatomic, assign) int autoCompleteEnd;
-
-@property (nonatomic, assign) BOOL selectable;
-@property (nonatomic, assign) CGFloat fontSizeMultiplier;
-@property (nonatomic, assign) BOOL allowFontScaling;
 
 @property (nonatomic, copy) NSString *placeholderText;
 
 @property (nonatomic, assign) CGFloat paragraphSpacing;
 
-- (void)recomputeText;
+- (void)uiManagerWillPerformMounting;
 
 @end
-

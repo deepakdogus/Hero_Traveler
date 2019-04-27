@@ -46,6 +46,8 @@ extern NSString *const RNDJDraftJsAutocompleteAttributeName;
 @property (nonatomic, assign) CGFloat defaultAtomicWidth;
 @property (nonatomic, assign) CGFloat defaultAtomicHeight;
 
+@property (nonatomic, assign) BOOL selectable;
+
 @property (nonatomic, assign) BOOL showAutocomplete;
 @property (nonatomic, assign) int autocompleteStart;
 @property (nonatomic, assign) int autoCompleteEnd;

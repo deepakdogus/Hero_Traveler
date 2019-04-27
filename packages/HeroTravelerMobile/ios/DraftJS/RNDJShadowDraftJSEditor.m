@@ -49,7 +49,6 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 
   NSAttributedString* _cachedAttributedString;
 
-  NSTextStorage *_cachedTextStorage;
   CGFloat _cachedTextStorageWidth;
   CGFloat _cachedTextStorageWidthMode;
   CGFloat _effectiveLetterSpacing;
@@ -76,9 +75,9 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 
 - (void)dirtyLayout
 {
+  [self invalidateCache];
   [self.superview dirtyLayout];
   YGNodeMarkDirty(self.yogaNode);
-  [self invalidateCache];
 }
 
 - (void)invalidateCache
@@ -93,12 +92,16 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   return [[superDescription substringToIndex:superDescription.length - 1] stringByAppendingFormat:@"; text: %@>", [self attributedTextWithBaseTextAttributes:nil].string];
 }
 
+- (CGRect)calculateTextFrame:(NSTextStorage *)textStorage
+{
+  CGRect textFrame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, self.contentFrame.size},
+                                           self.compoundInsets);
+  
+  return textFrame;
+}
+
 - (void)uiManagerWillPerformMounting
 {
-  if (YGNodeIsDirty(self.yogaNode)) {
-    return;
-  }
-  
   if (!_needsUpdateView) {
     return;
   }
@@ -107,6 +110,7 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   CGRect contentFrame = self.contentFrame;
   NSTextStorage *textStorage = [self textStorageAndLayoutManagerThatFitsSize:self.contentFrame.size
                                                           exclusiveOwnership:YES];
+  CGRect textFrame = [self calculateTextFrame:textStorage];
   
   NSNumber *tag = self.reactTag;
   NSMutableArray<NSNumber *> *descendantViewTags = [NSMutableArray new];
@@ -148,18 +152,18 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
     }];
     
     // Removing all references to Shadow Views to avoid unnececery retainning.
-    [textStorage removeAttribute:kShadowViewAttributeName range:NSMakeRange(0, textStorage.length)];
+//    [textStorage removeAttribute:kShadowViewAttributeName range:NSMakeRange(0, textStorage.length)];
     
     [textView setTextStorage:textStorage
-                contentFrame:contentFrame
+                contentFrame:textFrame
              descendantViews:descendantViews];
-    textView.selectable = self.textAttributes.selectable;
-    textView.hasFocus = self.selectionModel ? self.selectionModel.hasFocus : NO;
+    textView.selectable = self.selectable;//self.textAttributes.selectable;
+    textView.hasFocus = selectionModel ? selectionModel.hasFocus : NO;
     textView.firstIndex = firstIndex;
     textView.lastIndex = lastIndex;
-    textView.selectionStart = self.selectionModel.startIndex;
-    textView.selectionEnd = self.selectionModel.endIndex;
-    textView.contentModel = self.contentModel;
+    textView.selectionStart = selectionModel.startIndex;
+    textView.selectionEnd = selectionModel.endIndex;
+    textView.contentModel = contentModel;
   }];
 }
 
@@ -184,7 +188,9 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   }
   
   CGFloat availableWidth = self.availableSize.width;
-  NSTextStorage *textStorage = [self buildTextStorageForWidth:availableWidth widthMode:YGMeasureModeExactly];
+  NSTextStorage *textStorage =
+  [self textStorageAndLayoutManagerThatFitsSize:self.availableSize
+                             exclusiveOwnership:NO];
   NSLayoutManager *layoutManager = textStorage.layoutManagers.firstObject;
   NSTextContainer *textContainer = layoutManager.textContainers.firstObject;
   NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
@@ -209,7 +215,7 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
       CGRect glyphRect = [layoutManager boundingRectForGlyphRange:range inTextContainer:textContainer];
       CGRect childFrame = {{
         RCTRoundPixelValue(glyphRect.origin.x),
-        RCTRoundPixelValue(glyphRect.origin.y + self.paddingAsInsets.top + glyphRect.size.height - height + font.descender)
+        RCTRoundPixelValue(glyphRect.origin.y + glyphRect.size.height - height + font.descender)
       }, {
         RCTRoundPixelValue(width),
         RCTRoundPixelValue(height)
@@ -301,41 +307,6 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 //  }];
 //}
 
-- (NSTextStorage *)buildTextStorageForWidth:(CGFloat)width widthMode:(YGMeasureMode)widthMode
-{
-  if (
-      _cachedTextStorage &&
-      (width == _cachedTextStorageWidth || (isnan(width) && isnan(_cachedTextStorageWidth))) &&
-      widthMode == _cachedTextStorageWidthMode &&
-      _cachedLayoutDirection == self.textAttributes.layoutDirection
-      ) {
-    return _cachedTextStorage;
-  }
-
-  NSLayoutManager *layoutManager = [NSLayoutManager new];
-
-  NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:[self attributedTextWithBaseTextAttributes:nil]];
-  [textStorage addLayoutManager:layoutManager];
-
-  NSTextContainer *textContainer = [NSTextContainer new];
-  textContainer.lineFragmentPadding = 0.0;
-
-  textContainer.maximumNumberOfLines = 0;
-  textContainer.size = (CGSize){
-    widthMode == YGMeasureModeUndefined || isnan(width) ? CGFLOAT_MAX : width,
-    CGFLOAT_MAX
-  };
-
-  [layoutManager addTextContainer:textContainer];
-  [layoutManager ensureLayoutForTextContainer:textContainer];
-
-  _cachedTextStorageWidth = width;
-  _cachedTextStorageWidthMode = widthMode;
-  _cachedTextStorage = textStorage;
-
-  return textStorage;
-}
-
 - (NSDictionary*) mapStyles:(NSDictionary*)styleDictionariesMap {
   NSMutableDictionary* retStyleMap = [NSMutableDictionary new];
 
@@ -380,6 +351,7 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 
   NSMutableAttributedString* contentAttributedString = [NSMutableAttributedString new];
 
+  [contentAttributedString beginEditing];
   NSMutableSet* fullyHighlightedBlocks = [NSMutableSet new];
 
   BOOL isInHighlightedState = NO;
@@ -607,6 +579,8 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 
     [contentAttributedString addAttribute:RNDJSingleCursorPositionAttributeName value:@YES range:NSMakeRange(singleSelectionIndex, 1)];
   }
+  
+  [contentAttributedString endEditing];
 
   // create a non-mutable attributedString for use by the Text system which avoids copies down the line
   _cachedAttributedString = [[NSAttributedString alloc] initWithAttributedString:contentAttributedString];
@@ -708,10 +682,12 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 
   NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
 
+  [attributedString beginEditing];
   [self _setParagraphStyleOnAttributedString:attributedString
                               fontLineHeight:font.lineHeight
                       heightOfTallestSubview:heightOfTallestSubview
                                    withStyle:style];
+  [attributedString endEditing];
 
   [outAttributedString appendAttributedString:attributedString];
 }
@@ -735,8 +711,9 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   }
 
   NSTextAttachment *attachment = [NSTextAttachment new];
-  attachment.bounds = (CGRect){CGPointZero, {width, height}};
+  attachment.bounds = (CGRect){CGPointZero, {width, height+20}};
   NSMutableAttributedString *attachmentString = [NSMutableAttributedString new];
+  [attachmentString beginEditing];
   [attachmentString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
   [attachmentString appendAttributedString:[[NSAttributedString alloc] initWithString:@" \n"]];
   [attachmentString addAttribute:kShadowViewAttributeName
@@ -745,9 +722,20 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   [attachmentString addAttribute:RNDJDraftJsIndexAttributeName
                            value:[[RNDJDraftJsIndex alloc] initWithKey:block.key offset:0]
                            range:NSMakeRange(0, attachmentString.length)];
+  [attachmentString endEditing];
   [outAttributedString appendAttributedString:attachmentString];
 
 }
+
+//NSTextAttachment *attachment = [NSTextAttachment new];
+//NSMutableAttributedString *embeddedShadowViewAttributedString = [NSMutableAttributedString new];
+//[embeddedShadowViewAttributedString beginEditing];
+//[embeddedShadowViewAttributedString appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+//[embeddedShadowViewAttributedString addAttribute:RCTBaseTextShadowViewEmbeddedShadowViewAttributeName
+//                                           value:shadowView
+//                                           range:(NSRange){0, embeddedShadowViewAttributedString.length}];
+//[embeddedShadowViewAttributedString endEditing];
+//[attributedText appendAttributedString:embeddedShadowViewAttributedString];
 
 // TODO: Move this to run after the block so there can be no conflicting paragraph styles set from inline styles
 /*
@@ -846,6 +834,12 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
 {
   autocompleteModel = nil;
   _autocomplete = autocomplete;
+  [self dirtyLayout];
+}
+
+- (void) setSelectable:(BOOL)selectable
+{
+  _selectable = selectable;
   [self dirtyLayout];
 }
 

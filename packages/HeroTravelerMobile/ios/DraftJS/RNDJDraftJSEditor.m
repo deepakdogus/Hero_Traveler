@@ -757,36 +757,35 @@ typedef enum AutoPeriodState {
           contentFrame:(CGRect)contentFrame
        descendantViews:(NSArray<UIView *> *)descendantViews
 {
-  if (_textStorage != textStorage) {
-    _textStorage = textStorage;
-    
-    NSMutableArray* viewsToNotRemove = [NSMutableArray arrayWithArray:[existingAutocompleteViews allValues]];
-    
-    [viewsToNotRemove addObject:magnifyingGlass];
-    [viewsToNotRemove addObject:startDragView];
-    [viewsToNotRemove addObject:endDragView];
-
+  _textStorage = textStorage;
+  
+  NSMutableArray* viewsToNotRemove = [NSMutableArray arrayWithArray:[existingAutocompleteViews allValues]];
+  
+  [viewsToNotRemove addObject:magnifyingGlass];
+  [viewsToNotRemove addObject:startDragView];
+  [viewsToNotRemove addObject:endDragView];
+  
 #if DEBUG_TOUCHES
-    [viewsToNotRemove addObject:positionLabel];
-    [viewsToNotRemove addObject:debugTouchesView];
+  [viewsToNotRemove addObject:positionLabel];
+  [viewsToNotRemove addObject:debugTouchesView];
 #endif
-    
-    // Update subviews
-    NSArray<UIView *> *nonTextDescendants = descendantViews;
-    [viewsToNotRemove addObjectsFromArray:nonTextDescendants];
-
-    for (UIView *child in self.subviews) {
-      if (![viewsToNotRemove containsObject:child]) {
-        [child removeFromSuperview];
-      }
+  
+  // Update subviews
+  NSArray<UIView *> *nonTextDescendants = descendantViews;
+  [viewsToNotRemove addObjectsFromArray:nonTextDescendants];
+  
+  for (UIView *child in self.subviews) {
+    if (![viewsToNotRemove containsObject:child]) {
+      [child removeFromSuperview];
     }
-    for (UIView *child in nonTextDescendants) {
-      if (![self.subviews containsObject:child]) {
-        [self addSubview:child];
-      }
-    }
-    [self setNeedsDisplay];
   }
+  for (UIView *child in nonTextDescendants) {
+    if (![self.subviews containsObject:child]) {
+      [self addSubview:child];
+    }
+  }
+
+  [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect

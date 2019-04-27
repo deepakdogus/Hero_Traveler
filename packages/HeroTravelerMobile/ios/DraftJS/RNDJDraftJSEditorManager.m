@@ -94,8 +94,21 @@ RCT_EXPORT_SHADOW_PROPERTY(selectable, BOOL)
 - (void)setBridge:(RCTBridge *)bridge
 {
   [super setBridge:bridge];
+  _shadowViews = [NSHashTable weakObjectsHashTable];
   [bridge.uiManager.observerCoordinator addObserver:self];
 }
 
 @end
 
+//- (void)setBridge:(RCTBridge *)bridge
+//{
+//  [super setBridge:bridge];
+//  _shadowViews = [NSHashTable weakObjectsHashTable];
+//  
+//  [bridge.uiManager.observerCoordinator addObserver:self];
+//  
+//  [[NSNotificationCenter defaultCenter] addObserver:self
+//                                           selector:@selector(handleDidUpdateMultiplierNotification)
+//                                               name:RCTAccessibilityManagerDidUpdateMultiplierNotification
+//                                             object:bridge.accessibilityManager];
+//}

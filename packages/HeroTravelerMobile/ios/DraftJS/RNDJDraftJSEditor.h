@@ -27,7 +27,6 @@
 
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, strong) NSTextStorage *textStorage;
-@property (nonatomic, assign) CGRect textFrame;
 @property (nonatomic, assign) BOOL selectable;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInsertTextRequest;
@@ -66,6 +65,10 @@
 
 // The textContentType property is to provide the keyboard with extra information about the semantic intent of the text document.
 @property(nonatomic,copy) UITextContentType textContentType NS_AVAILABLE_IOS(10_0); // default is nil
+
+- (void)setTextStorage:(NSTextStorage *)textStorage
+          contentFrame:(CGRect)contentFrame
+       descendantViews:(NSArray<UIView *> *)descendantViews;
 
 @end
 

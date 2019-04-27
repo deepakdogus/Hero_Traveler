@@ -69,6 +69,10 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   return self;
 }
 
+- (BOOL)isYogaLeafNode
+{
+  return YES;
+}
 
 - (void)dirtyLayout
 {
@@ -106,7 +110,7 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   
   NSNumber *tag = self.reactTag;
   NSMutableArray<NSNumber *> *descendantViewTags = [NSMutableArray new];
-  [textStorage enumerateAttribute:RCTBaseTextShadowViewEmbeddedShadowViewAttributeName
+  [textStorage enumerateAttribute:kShadowViewAttributeName
                           inRange:NSMakeRange(0, textStorage.length)
                           options:0
                        usingBlock:
@@ -118,6 +122,13 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
      [descendantViewTags addObject:shadowView.reactTag];
    }
    ];
+
+  NSString* firstBlockKey = ((RNDJBlockModel*) contentModel.blocks.firstObject).key;
+  RNDJDraftJsIndex* firstIndex = firstBlockKey.length > 0 ? [[RNDJDraftJsIndex alloc] initWithKey:firstBlockKey offset:0] : nil;
+  
+  NSString* lastBlockKey = ((RNDJBlockModel*) contentModel.blocks.lastObject).key;
+  NSUInteger lastBlockIndex = ((RNDJBlockModel*) contentModel.blocks.lastObject).text.length - 1;
+  RNDJDraftJsIndex* lastIndex = lastBlockKey.length > 0 ? [[RNDJDraftJsIndex alloc] initWithKey:lastBlockKey offset:lastBlockIndex] : nil;
   
   [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
     RNDJDraftJSEditor *textView = (RNDJDraftJSEditor *)viewRegistry[tag];
@@ -137,12 +148,18 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
     }];
     
     // Removing all references to Shadow Views to avoid unnececery retainning.
-    [textStorage removeAttribute:RCTBaseTextShadowViewEmbeddedShadowViewAttributeName range:NSMakeRange(0, textStorage.length)];
+    [textStorage removeAttribute:kShadowViewAttributeName range:NSMakeRange(0, textStorage.length)];
     
-    textView.textStorage = textStorage;
-//    [textView setTextStorage:textStorage
-//                contentFrame:contentFrame
-//             descendantViews:descendantViews];
+    [textView setTextStorage:textStorage
+                contentFrame:contentFrame
+             descendantViews:descendantViews];
+    textView.selectable = self.textAttributes.selectable;
+    textView.hasFocus = self.selectionModel ? self.selectionModel.hasFocus : NO;
+    textView.firstIndex = firstIndex;
+    textView.lastIndex = lastIndex;
+    textView.selectionStart = self.selectionModel.startIndex;
+    textView.selectionEnd = self.selectionModel.endIndex;
+    textView.contentModel = self.contentModel;
   }];
 }
 
@@ -218,6 +235,23 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
       [child layoutWithMetrics:localLayoutMetrics layoutContext:localLayoutContext];
     }
   }];
+}
+
+- (void)layoutWithMetrics:(RCTLayoutMetrics)layoutMetrics
+            layoutContext:(RCTLayoutContext)layoutContext
+{
+  // If the view got new `contentFrame`, we have to redraw it because
+  // and sizes of embedded views may change.
+  if (!CGRectEqualToRect(self.layoutMetrics.contentFrame, layoutMetrics.contentFrame)) {
+    _needsUpdateView = YES;
+  }
+  
+  if (self.textAttributes.layoutDirection != layoutMetrics.layoutDirection) {
+    self.textAttributes.layoutDirection = layoutMetrics.layoutDirection;
+    [self invalidateCache];
+  }
+  
+  [super layoutWithMetrics:layoutMetrics layoutContext:layoutContext];
 }
 
 //- (void)applyLayoutToChildren:(YGNodeRef)node
@@ -322,8 +356,6 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   if (!_needsUpdateView && _cachedAttributedString && contentModel) {
     return _cachedAttributedString;
   }
-
-  _needsUpdateView = NO;
 
   if (!_content) {
     _cachedAttributedString = [[NSAttributedString alloc] initWithString:@""];
@@ -626,7 +658,11 @@ NSString *const RNDJDraftJsReactTagAttributeName = @"RNDJDraftJsReactTagAttribut
   NSMutableDictionary* attributes = [NSMutableDictionary new];
 
   if (style.color) {
-    attributes[NSForegroundColorAttributeName] = [style.color colorWithAlphaComponent:CGColorGetAlpha(style.color.CGColor) * [style.opacity floatValue]];
+    if (style.opacity) {
+      attributes[NSForegroundColorAttributeName] = [style.color colorWithAlphaComponent:CGColorGetAlpha(style.color.CGColor) * [style.opacity floatValue]];
+    } else {
+      attributes[NSForegroundColorAttributeName] = [style.color colorWithAlphaComponent:CGColorGetAlpha(style.color.CGColor)];
+    }
   }
 
   if (style.backgroundColor) {

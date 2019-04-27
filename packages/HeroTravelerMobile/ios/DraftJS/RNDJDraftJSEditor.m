@@ -80,6 +80,7 @@ typedef enum AutoPeriodState {
   
   BOOL isReadyToCapitalize;
   AutoPeriodState periodEnterState;
+  CGRect _contentFrame;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -753,6 +754,8 @@ typedef enum AutoPeriodState {
 }
 
 - (void)setTextStorage:(NSTextStorage *)textStorage
+          contentFrame:(CGRect)contentFrame
+       descendantViews:(NSArray<UIView *> *)descendantViews
 {
   if (_textStorage != textStorage) {
     _textStorage = textStorage;
@@ -769,8 +772,7 @@ typedef enum AutoPeriodState {
 #endif
     
     // Update subviews
-    NSMutableArray *nonTextDescendants = [NSMutableArray new];
-    collectNonTextDescendants(self, nonTextDescendants);
+    NSArray<UIView *> *nonTextDescendants = descendantViews;
     [viewsToNotRemove addObjectsFromArray:nonTextDescendants];
 
     for (UIView *child in self.subviews) {
@@ -793,9 +795,8 @@ typedef enum AutoPeriodState {
   NSTextContainer *textContainer = [layoutManager.textContainers firstObject];
   
   NSRange glyphRange = [layoutManager glyphRangeForTextContainer:textContainer];
-  CGRect textFrame = self.textFrame;
-  [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:textFrame.origin];
-  [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:textFrame.origin];
+  [layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:_contentFrame.origin];
+  [layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:_contentFrame.origin];
   
   __block UIBezierPath *highlightPath = nil;
   __block UIBezierPath *startDragPath = nil;

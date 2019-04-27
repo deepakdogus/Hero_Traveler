@@ -30,7 +30,7 @@ import Modal from '../../Components/Modal'
 import Tooltip from '../../Components/Tooltip'
 import EditableCoverMedia from '../../Components/EditableCoverMedia'
 
-// import NativeEditor from '../../Components/NativeEditor/Editor'
+import NativeEditor from '../../Components/NativeEditor/Editor'
 import Toolbar from '../../Components/NativeEditor/Toolbar'
 import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 
@@ -542,21 +542,21 @@ class StoryCoverScreen extends Component {
     return (
       <View style={[styles.editor]}>
         {
-          // <NativeEditor
-          //   ref={this.setEditorRef}
-          //   style={{
-          //     flex: 1,
-          //     minWidth: Metrics.screenWidth,
-          //   }}
-          //   customStyleMap={customStyles}
-          //   onPressImage={this.handlePressAddImage}
-          //   onPressVideo={this.handlePressAddVideo}
-          //   storyId={this.props.workingDraft.id}
-          //   {...this.getContent()}
-          //   setHasFocus={this.setHasFocus}
-          //   setBlockType={this.setBlockType}
-          //   reportContentTouched={this.reportContentTouched}
-          // />
+          <NativeEditor
+            ref={this.setEditorRef}
+            style={{
+              flex: 1,
+              minWidth: Metrics.screenWidth,
+            }}
+            customStyleMap={customStyles}
+            onPressImage={this.handlePressAddImage}
+            onPressVideo={this.handlePressAddVideo}
+            storyId={this.props.workingDraft.id}
+            {...this.getContent()}
+            setHasFocus={this.setHasFocus}
+            setBlockType={this.setBlockType}
+            reportContentTouched={this.reportContentTouched}
+          />
         }
       </View>
     )

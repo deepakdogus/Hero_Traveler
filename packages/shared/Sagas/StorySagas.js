@@ -92,6 +92,7 @@ export function* getNearbyUserFeed(api, { nearbyStoryIds }) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
       put(StoryActions.nearbyFeedSuccess(result, response.count))
     ]
@@ -108,6 +109,7 @@ export function* getBadgeUserFeed(api) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
+      put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
       put(StoryActions.badgeUserFeedSuccess(result, response.count))
     ]

@@ -212,8 +212,8 @@ StorySchema.statics = {
     return this.getFeed(query)
   },
 
-  getStoriesByAuthors(ids) {
-    const query = { author: { $in: ids} }
+  getStoriesByAuthors(authors) {
+    const query = { author: { $in: authors} }
     return this.getFeed(query)
   },
 

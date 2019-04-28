@@ -74,7 +74,7 @@ class Feed extends ContainerWithFeedList {
     if (this.props.signedUp) this.props.signupReset()
   }
 
-  componentDidUpdate(_s, prevState) {
+  componentDidUpdate(_, prevState) {
     if (
       prevState.latitude !== this.state.latitude
       && prevState.longitude !== this.state.longitude
@@ -87,25 +87,25 @@ class Feed extends ContainerWithFeedList {
 
   getFeedByType() {
     switch (this.state.activeTab) {
-    case 'NEARBY':
-      return this.props.nearbyFeedById
-    case 'FROM US':
-      return this.props.badgeUserFeedById
-    case 'STORIES':
-    default:
-      return this.props.userFeedById
+      case 'NEARBY':
+        return this.props.nearbyFeedById
+      case 'FROM US':
+        return this.props.badgeUserFeedById
+      case 'STORIES':
+      default:
+        return this.props.userFeedById
     }
   }
 
   getCountByType() {
     switch (this.state.activeTab) {
-    case 'NEARBY':
-      return this.props.nearbyFeedCount
-    case 'FROM US':
-      return this.props.badgeUserFeedCount
-    case 'STORIES':
-    default:
-      return this.props.userFeedCount
+      case 'NEARBY':
+        return this.props.nearbyFeedCount
+      case 'FROM US':
+        return this.props.badgeUserFeedCount
+      case 'STORIES':
+      default:
+        return this.props.userFeedCount
     }
   }
 

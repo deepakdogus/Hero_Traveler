@@ -23,9 +23,9 @@ const FeedText = styled(CenteredText)`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 600;
   font-size: 30px;
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   padding: 30px 0 0 0;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${sizes.tablet}px) {
     padding: 20px;
     font-size: 18px;
   }
@@ -35,58 +35,95 @@ const Wrapper = styled.div``
 
 const ContentWrapper = styled.div`
   margin: 0 7%;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${sizes.tablet}px) {
     margin: 0;
-    padding:0;
+    padding: 0;
     box-sizing: border-box;
   }
-
 `
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
   border-width: 1px;
   margin-bottom: 23px;
   max-width: 960px;
-  @media (max-width: ${sizes.tablet}px){
+  @media (max-width: ${sizes.tablet}px) {
     display: none;
   }
 `
 
-const tabBarTabs = ['STORIES', 'GUIDES']
+const tabBarTabs = ['STORIES', 'GUIDES', 'NEARBY', 'FROM US']
 
 class Feed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.objectOf(PropTypes.object),
     signedUp: PropTypes.bool,
-    storiesCount: PropTypes.number,
+    userFeedCount: PropTypes.number,
+    badgeUserFeedCount: PropTypes.number,
+    nearbyFeedCount: PropTypes.number,
   }
 
-  componentDidMount(){
-    //get user feed on signUp and reset signUp redux
-    if (this.props.signedUp) {
-      const { pagination } = this.state
-      this.props.getStories(this.props.sessionUserId, pagination)
-      this.props.signupReset()
+  componentDidMount() {
+    const { pagination } = this.state
+    this.props.getStories(this.props.sessionUserId, pagination)
+    this.setupSearchHelper()
+
+    // first attempt may take 20-40 seconds, so grab loc as soon as possible
+    this.getGeolocation()
+
+    // holdover from past implemention, ensure safe removal of logic before deleting
+    if (this.props.signedUp) this.props.signupReset()
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.latitude !== this.state.latitude
+      && prevState.longitude !== this.state.longitude
+      && this.state.latitude
+      && this.state.longitude
+    ) {
+      this.searchNearbyStories()
+    }
+  }
+
+  getFeedByType() {
+    switch (this.state.activeTab) {
+      case 'NEARBY':
+        return this.props.nearbyFeedById
+      case 'FROM US':
+        return this.props.badgeUserFeedById
+      case 'STORIES':
+      default:
+        return this.props.userFeedById
+    }
+  }
+
+  getCountByType() {
+    switch (this.state.activeTab) {
+      case 'NEARBY':
+        return this.props.nearbyFeedCount
+      case 'FROM US':
+        return this.props.badgeUserFeedCount
+      case 'STORIES':
+      default:
+        return this.props.userFeedCount
     }
   }
 
   render() {
-    const {
-      users,
-      stories,
-      storiesById,
-      storiesCount,
-    } = this.props
-    const feedStories = storiesById.map((id) => {
+    const { users, stories } = this.props
+    const feedStories = this.getFeedByType().map(id => {
       return stories[id]
     })
 
-    const {selectedFeedItems} = this.getSelectedFeedItems()
-    const isStory = this.state.activeTab === 'STORIES'
+    const { selectedFeedItems, fetchStatus } = this.getSelectedFeedItems()
+    const isStory = this.state.activeTab !== 'GUIDES'
 
     return (
       <Wrapper>
-        <FeedHeader stories={feedStories} users={users}/>
+        <FeedHeader
+          stories={feedStories}
+          users={users}
+        />
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
@@ -99,7 +136,8 @@ class Feed extends ContainerWithFeedList {
             getTabInfo={this.getTabInfo}
             activeTab={this.state.activeTab}
             feedItems={selectedFeedItems}
-            feedItemCount={isStory ? storiesCount : selectedFeedItems.length}
+            feedItemCount={isStory ? this.getCountByType() : selectedFeedItems.length}
+            fetching={fetchStatus.fetching}
           />
           <Footer />
         </ContentWrapper>
@@ -110,31 +148,50 @@ class Feed extends ContainerWithFeedList {
 
 function mapStateToProps(state) {
   let {
-    userFeedById,
     entities: stories,
-    userStoryFeedCount,
+    userFeedById,
+    badgeUserFeedById,
+    nearbyFeedById,
+    userFeedCount,
+    badgeUserFeedCount,
+    nearbyFeedCount,
   } = state.entities.stories
   const guides = state.entities.guides.entities
   const guidesById = state.entities.guides.feedGuidesById || []
 
   return {
     sessionUserId: state.session.userId,
-    storiesById: userFeedById,
+    userFeedById,
+    nearbyFeedById,
+    badgeUserFeedById,
     guidesById,
     stories,
     guides,
     users: state.entities.users.entities,
-    storiesCount: userStoryFeedCount,
+    userFeedCount,
+    badgeUserFeedCount,
+    nearbyFeedCount,
     signedUp: state.signup.signedUp,
+    userStoriesFetchStatus: state.entities.stories.fetchStatus,
+    draftsFetchStatus: state.storyCreate.fetchStatus,
+    userBookmarksFetchStatus: state.entities.users.fetchStatus,
+    guidesFetchStatus: state.entities.guides.fetchStatus,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getStories: (sessionUserId, _null, params) => dispatch(StoryActions.feedRequest(sessionUserId, params)),
-    getGuides: (sessionUserId) => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
+    getStories: (sessionUserId, params) =>
+      dispatch(StoryActions.feedRequest(sessionUserId, params)),
+    getNearbyStories: nearbyStoryIds =>
+      dispatch(StoryActions.nearbyFeedRequest(nearbyStoryIds)),
+    getBadgeUserStories: () => dispatch(StoryActions.badgeUserFeedRequest()),
+    getGuides: sessionUserId => dispatch(GuideActions.guideFeedRequest(sessionUserId)),
     signupReset: () => dispatch(SignUpActions.signupReset()),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feed)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Feed)

@@ -13,16 +13,22 @@ const Text = styled.span`
   }
 `
 
+const SmallText = styled(Text)`
+  font-size: 15px;
+`
+
 const MessageWrapper = styled.div`
   height: 257px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
 
-const FeedItemMessage = ({ message }) => (
+const FeedItemMessage = ({ message, smallMessage }) => (
   <MessageWrapper>
     <Text>{message}</Text>
+    {smallMessage && <SmallText>{smallMessage}</SmallText>}
   </MessageWrapper>
 )
 
@@ -30,4 +36,5 @@ export default FeedItemMessage
 
 FeedItemMessage.propTypes = {
   message: PropTypes.string,
+  smallMessage: PropTypes.string,
 }

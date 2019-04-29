@@ -1539,6 +1539,7 @@
 				5E59E24373337F1AFBED62F1 /* [CP] Copy Pods Resources */,
 				9150BC42201AC4CC00697D90 /* ShellScript */,
 				91F19969204F2BDF00EC7125 /* CopyFiles */,
+				EED442FBB61F504ADFA10E4C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2288,6 +2289,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		EED442FBB61F504ADFA10E4C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

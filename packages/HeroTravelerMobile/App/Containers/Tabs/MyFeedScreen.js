@@ -1,10 +1,12 @@
 import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Linking, TouchableOpacity } from 'react-native'
+import { View, Linking, TouchableOpacity, Alert, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
+import { getAppstoreAppVersion } from 'react-native-appstore-version-checker'
+import VersionNumber from 'react-native-version-number'
 
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
@@ -25,8 +27,7 @@ import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
 import SearchPlacesPeople from '../SearchPlacesPeople'
 
-const imageHeight
-  = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
   following: 'following',
@@ -76,6 +77,7 @@ class MyFeedScreen extends React.Component {
       activeTab: tabTypes.following,
       hasSearchText: false,
       permissionStatus: undefined,
+      needToUpdateApp: false,
     }
   }
 
@@ -90,6 +92,17 @@ class MyFeedScreen extends React.Component {
     }
     SplashScreen.hide()
 
+    if (!__DEV__) {
+      getAppstoreAppVersion('1288145566') //put any apps id here
+        .then(versionOnAppStore => {
+          const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
+          const currentVersion = VersionNumber.appVersion.split('.')
+          if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
+        })
+        .catch(err => {
+          console.log('error occurred', err)
+        })
+    }
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
@@ -179,21 +192,21 @@ class MyFeedScreen extends React.Component {
 
     let text = ''
     switch (activeTab) {
-    case tabTypes.following:
-      text = `You aren't following any users yet.`
-      break
-    case tabTypes.guides:
-      text = `There are no guides to display.`
-      break
-    case tabTypes.featured:
-    case tabTypes.trending:
-      text = `There are no ${this.state.activeTab} stories to show right now.`
-      break
-    case tabTypes.nearby:
-      text = `There are no stories within a hundred miles of you or we couldn't determine your location.`
-      break
-    default:
-      text = `There is no content available. Check back later.`
+      case tabTypes.following:
+        text = `You aren't following any users yet.`
+        break
+      case tabTypes.guides:
+        text = `There are no guides to display.`
+        break
+      case tabTypes.featured:
+      case tabTypes.trending:
+        text = `There are no ${this.state.activeTab} stories to show right now.`
+        break
+      case tabTypes.nearby:
+        text = `There are no stories within a hundred miles of you or we couldn't determine your location.`
+        break
+      default:
+        text = `There is no content available. Check back later.`
     }
 
     return (
@@ -251,30 +264,30 @@ class MyFeedScreen extends React.Component {
 
   getEntitiesById() {
     switch (this.state.activeTab) {
-    case tabTypes.guides:
-      return this.props.feedGuidesById
-    case tabTypes.nearby:
-      return this.props.nearbyFeedById
-    case tabTypes.fromUs:
-      return this.props.badgeUserFeedById
-    case tabTypes.following:
-    default:
-      return this.props.userFeedById
+      case tabTypes.guides:
+        return this.props.feedGuidesById
+      case tabTypes.nearby:
+        return this.props.nearbyFeedById
+      case tabTypes.fromUs:
+        return this.props.badgeUserFeedById
+      case tabTypes.following:
+      default:
+        return this.props.userFeedById
     }
   }
 
   getEntitiesByType = () => {
     const { activeTab } = this.state
     switch (activeTab) {
-    case tabTypes.nearby:
-      return this.searchNearbyStories()
-    case tabTypes.fromUs:
-      return this.props.attemptGetBadgeUserStories()
-    case tabTypes.guides:
-      return this.props.attemptGetUserFeedGuides(this.props.userId)
-    case tabTypes.following:
-    default:
-      return this.props.attemptGetUserFeedStories(this.props.userId)
+      case tabTypes.nearby:
+        return this.searchNearbyStories()
+      case tabTypes.fromUs:
+        return this.props.attemptGetBadgeUserStories()
+      case tabTypes.guides:
+        return this.props.attemptGetUserFeedGuides(this.props.userId)
+      case tabTypes.following:
+      default:
+        return this.props.attemptGetUserFeedStories(this.props.userId)
     }
   }
 
@@ -295,8 +308,25 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  updateAppNotice(){
+    const APP_STORE_LINK = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
+    Alert.alert(
+      'Update Available',
+      'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
+      [
+        {text: 'Update Now',
+          onPress: () => {
+            if(Platform.OS === 'ios'){
+              Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
+            }
+          }},
+      ],
+    )
+  }
+
   render() {
     let { fetchStatus, sync, stories, user } = this.props
+    const { needToUpdateApp} = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById()
@@ -320,6 +350,7 @@ class MyFeedScreen extends React.Component {
 
     return (
       <View style={styles.statusBarAvoider}>
+        {needToUpdateApp ? this.updateAppNotice() : null}
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}

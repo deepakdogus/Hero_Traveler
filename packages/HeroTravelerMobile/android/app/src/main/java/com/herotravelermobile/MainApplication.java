@@ -4,6 +4,7 @@ import android.support.multidex.MultiDexApplication;
 
 
 import com.facebook.react.ReactApplication;
+import com.masteratul.RNAppstoreVersionCheckerPackage;
 import io.branch.rnbranch.RNBranchPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
 import com.wix.autogrowtextinput.AutoGrowTextInputPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNAppstoreVersionCheckerPackage(),
             new RNBranchPackage(),
             new AutoGrowTextInputPackage(),
             new RNVideoProcessingPackage(),

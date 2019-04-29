@@ -53,6 +53,7 @@
     "react-mixin": "^3.0.5",
     "react-native": "0.53",
     "react-native-animatable": "^1.1.0",
+    "react-native-appstore-version-checker": "^2.7.2",
     "react-native-autogrow-textinput": "5.1.1",
     "react-native-branch": "^2.3.3",
     "react-native-camera": "https://github.com/react-native-community/react-native-camera.git#f7f2ea5cc22e24468a36cc6bfcfeae6af69b02e0",

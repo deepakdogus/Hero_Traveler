@@ -88,24 +88,24 @@ class Feed extends ContainerWithFeedList {
   getFeedByType() {
     switch (this.state.activeTab) {
       case 'NEARBY':
-        return this.props.nearbyFeedById
+        return this.props.nearbyFeedById || []
       case 'FROM US':
-        return this.props.badgeUserFeedById
+        return this.props.badgeUserFeedById || []
       case 'STORIES':
       default:
-        return this.props.userFeedById
+        return this.props.userFeedById || []
     }
   }
 
   getCountByType() {
     switch (this.state.activeTab) {
       case 'NEARBY':
-        return this.props.nearbyFeedCount
+        return this.props.nearbyFeedCount || 0
       case 'FROM US':
-        return this.props.badgeUserFeedCount
+        return this.props.badgeUserFeedCount || 0
       case 'STORIES':
       default:
-        return this.props.userFeedCount
+        return this.props.userFeedCount || 0
     }
   }
 

@@ -329,7 +329,7 @@ class MyFeedScreen extends React.Component {
     const { needToUpdateApp} = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
-    const entitiesById = this.getEntitiesById()
+    const entitiesById = this.getEntitiesById() || []
 
     let bottomContent
     bottomContent = (

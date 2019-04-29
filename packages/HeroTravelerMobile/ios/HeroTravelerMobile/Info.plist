@@ -75,11 +75,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is used to capture media for your stories.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Turn on location services to view stories nearest to you.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>Turn on location services to view stories nearest to you.</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>Turn on location services to view stories nearest to you.</string>
+	<string>Turn on location services to view $(PRODUCT_NAME) stories nearest to you.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allows $(PRODUCT_NAME) to access location for stories</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enable the microphone to record audio for stories</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

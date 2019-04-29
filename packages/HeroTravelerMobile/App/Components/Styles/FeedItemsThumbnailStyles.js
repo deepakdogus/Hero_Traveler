@@ -45,16 +45,16 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // guideIconView: {
-  //   marginTop: 2,
-  //   width: 15,
-  //   alignSelf: 'flex-start',
-  // },
+  guideIconView: {
+    marginTop: 2,
+    width: 15,
+    alignSelf: 'flex-start',
+  },
   guideIconImage: {
-    height: 24,
-    width: 24,
+    height: 30,
+    width: 30,
     zIndex: 1,
-    bottom: 50,
-    left: '35%',
+    bottom: 108,
+    left: 120,
   },
 })

@@ -58,21 +58,19 @@ export default class FeedItem extends Component {
     return (
       <View key={feedItem.id} style={styles.feedItemView}>
         <TouchableOpacity onPress={onPressFeedItem}>
-          <View>
-            <ImageWrapper
-              cached
-              source={{uri: coverUrl}}
-              style={styles.image}
-              resizeMode='cover'
+          <ImageWrapper
+            cached
+            source={{uri: coverUrl}}
+            style={styles.image}
+            resizeMode='cover'
+          />
+          {isGuide && (
+            <TabIcon name='guide-alt' style={{
+              view: styles.guideIconView,
+              image: styles.guideIconImage,
+            }}
             />
-            {isGuide && (
-              <TabIcon name='guide-alt' style={{
-                view: styles.guideIconView,
-                image: styles.guideIconImage,
-              }}
-              />
-            )}
-          </View>
+          )}
           {isVideo && this.renderPlayButton()}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>

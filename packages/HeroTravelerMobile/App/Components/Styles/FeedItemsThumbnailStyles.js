@@ -13,6 +13,7 @@ export default StyleSheet.create({
     height: feedItemHeight,
     width: feedItemWidth,
     borderRadius: 3,
+    zIndex: 0,
   },
   titleContainer: {
     flex: 1,
@@ -44,13 +45,16 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  guideIconView: {
-    marginTop: 2,
-    width: 15,
-    alignSelf: 'flex-start',
-  },
+  // guideIconView: {
+  //   marginTop: 2,
+  //   width: 15,
+  //   alignSelf: 'flex-start',
+  // },
   guideIconImage: {
-    height: 12,
-    width: 12,
+    height: 24,
+    width: 24,
+    zIndex: 1,
+    bottom: 50,
+    left: '35%',
   },
 })

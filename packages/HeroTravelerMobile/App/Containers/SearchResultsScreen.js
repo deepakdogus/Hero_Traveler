@@ -108,6 +108,7 @@ class SearchResultsScreen extends Component {
 
   setupSearchListeners = (helper, type) => {
     helper.on('result', res => {
+      console.log("result is", res)
       const lastSearchResults = {
         ...this.state.lastSearchResults,
         [type]: res.hits,
@@ -125,6 +126,7 @@ class SearchResultsScreen extends Component {
   }
 
   search = (helper, hitCount, { latitude, longitude, country }) => {
+    console.log("doing a search")
     helper.addDisjunctiveFacetRefinement(
       'locationInfo.country',
       `${country}`,

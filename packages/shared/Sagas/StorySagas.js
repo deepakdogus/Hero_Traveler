@@ -188,13 +188,14 @@ export function * uploadMedia(api, {uri, callback, mediaType = 'image'}) {
 }
 
 export function * createCover(api, draft, isGuide){
+  console.log("hitting createCover")
   const videoFileUri =
     draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
     ? draft.coverVideo.uri
     : undefined
   const isImageCover = draft.coverImage
   const cover = getNewCover(draft.coverImage, draft.coverVideo)
-
+  console.log("cover is", cover)
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(cover, isImageCover ? 'image' : 'video')
   // Web and mobile receive two different responses.
@@ -202,6 +203,7 @@ export function * createCover(api, draft, isGuide){
     cloudinaryCover.data = JSON.parse(cloudinaryCover.data)
   }
 
+  console.log("cloudinary cover is", cloudinaryCover)
   if (_.get(cloudinaryCover, 'data.error')) return cloudinaryCover.data
   if (_.get(cloudinaryCover, 'error')) return cloudinaryCover
   if (isImageCover) draft.coverImage = cloudinaryCover.data
@@ -310,6 +312,7 @@ function getSyncProgressSteps(story){
 }
 
 export function * saveLocalDraft (api, action) {
+  console.log("trying to publish")
   const {draft, saveAsDraft = false} = action
   draft.draft = saveAsDraft
   yield [
@@ -324,21 +327,26 @@ export function * saveLocalDraft (api, action) {
       `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
     )),
   ]
-
+  console.log("Trying to save cover")
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
+    console.log("coverr failed")
     yield saveDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
+  console.log("trying to uploadAtomic Assets")
   const atomicResponse = yield uploadAtomicAssets(draft)
   if (atomicResponse && atomicResponse.error){
+    console.log("assetws failed")
     yield saveDraftErrorHandling(draft, atomicResponse.error)
     return
   }
 
+  console.log("trying to hit server")
   const response = yield call(api.createStory, draft)
   if (response.ok) {
+    console.log("success")
     moveVideosFromPrecacheToCache(draft.id)
     const stories = {}
     const story = response.data.story
@@ -379,6 +387,7 @@ export function * updateDraft (api, action) {
 
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
+    console.log("coverResponse is", coverResponse)
     yield updateDraftErrorHandling(draft, coverResponse.error)
     return
   }

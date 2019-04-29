@@ -274,12 +274,6 @@
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(CGRect)frame)
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
-- (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex
-{
-  [super insertReactSubview:view atIndex:atIndex];
-  [self recalculateBackingView];
-}
-
 - (void)layoutSubviews
 {
   [super layoutSubviews];
@@ -297,6 +291,38 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   }
 
   [self updateClippedSubviews];
+}
+
+- (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex
+{
+  [super insertReactSubview:view atIndex:atIndex];
+  if ([view conformsToProtocol:@protocol(RCTCustomRefreshContolProtocol)]) {
+    [_scrollView setCustomRefreshControl:(UIView<RCTCustomRefreshContolProtocol> *)view];
+    if (![view isKindOfClass:[UIRefreshControl class]]
+        && [view conformsToProtocol:@protocol(UIScrollViewDelegate)]) {
+      [self addScrollListener:(UIView<UIScrollViewDelegate> *)view];
+    }
+  } else
+  {
+    [self addSubview:view];
+  }
+  [self recalculateBackingView];
+}
+
+- (void)removeReactSubview:(UIView *)subview
+{
+  [super removeReactSubview:subview];
+  if ([subview conformsToProtocol:@protocol(RCTCustomRefreshContolProtocol)]) {
+    [_scrollView setCustomRefreshControl:nil];
+    if (![subview isKindOfClass:[UIRefreshControl class]]
+        && [subview conformsToProtocol:@protocol(UIScrollViewDelegate)]) {
+      [self removeScrollListener:(UIView<UIScrollViewDelegate> *)subview];
+    }
+  } else
+  {
+    [subview removeFromSuperview];
+  }
+  [self recalculateBackingView];
 }
 
 - (void) addSubview:(UIView *)view
@@ -386,12 +412,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
   [super touchesEnded:touches withEvent:event];
-}
-
-- (void)removeReactSubview:(UIView *)subview
-{
-  [super removeReactSubview:subview];
-  [self recalculateBackingView];
 }
 
 - (void) setCellSeparatorHeight:(CGFloat)cellSeparatorHeight

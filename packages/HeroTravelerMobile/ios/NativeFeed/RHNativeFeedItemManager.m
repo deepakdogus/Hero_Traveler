@@ -48,6 +48,7 @@ RCT_EXPORT_SHADOW_PROPERTY(cellNum, NSInteger)
 - (void)setBridge:(RCTBridge *)bridge
 {
   [super setBridge:bridge];
+  _shadowViews = [NSHashTable weakObjectsHashTable];
   [bridge.uiManager.observerCoordinator addObserver:self];
 }
 

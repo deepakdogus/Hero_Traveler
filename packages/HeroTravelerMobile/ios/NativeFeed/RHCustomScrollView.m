@@ -88,4 +88,13 @@
   }
 }
 
+- (void)setCustomRefreshControl:(UIView<RCTCustomRefreshContolProtocol> *)refreshControl
+{
+  if (_customRefreshControl) {
+    [_customRefreshControl removeFromSuperview];
+  }
+  _customRefreshControl = refreshControl;
+  [self addSubview:_customRefreshControl];
+}
+
 @end

@@ -35,7 +35,11 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_SHADOW_PROPERTY(cellSeparatorHeight, CGFloat)
-RCT_EXPORT_SHADOW_PROPERTY(storyInfos, NSArray)
+//RCT_EXPORT_SHADOW_PROPERTY(storyInfos, NSArray)
++ (NSArray<NSString *> *)propConfigShadow_storyInfos RCT_DYNAMIC {
+  return @[@"NSArray"];
+  
+}
 
 //@property(nonatomic, assign) NSInteger numPreloadBehindCells;
 //@property(nonatomic, assign) NSInteger numPreloadAheadCells;
@@ -66,6 +70,7 @@ RCT_EXPORT_VIEW_PROPERTY(onMomentumScrollEnd, RCTDirectEventBlock)
 - (void)setBridge:(RCTBridge *)bridge
 {
   [super setBridge:bridge];
+  _shadowViews = [NSHashTable weakObjectsHashTable];
   [bridge.uiManager.observerCoordinator addObserver:self];
 }
 

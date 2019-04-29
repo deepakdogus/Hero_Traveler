@@ -35,4 +35,9 @@
   }];
 }
 
+- (void)layoutSubviewsWithContext:(RCTLayoutContext)layoutContext
+{
+  [super layoutSubviewsWithContext:layoutContext];
+}
+
 @end

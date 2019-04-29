@@ -35,7 +35,7 @@
     fullWidth = [UIScreen mainScreen].bounds.size.width;
   }
 
-  // CGFloat totalHeaderHeight = 0.f;
+  CGFloat totalHeaderHeight = 0.f;
   for (RCTShadowView* childShadowView in [self reactSubviews])
   {
     if (![childShadowView isKindOfClass:[RHShadowNativeFeedHeader class]])
@@ -44,6 +44,7 @@
     }
     
     RHShadowNativeFeedHeader* header = (RHShadowNativeFeedHeader*) childShadowView;
+    totalHeaderHeight += header.headerHeight;
     
     YGNodeRef childYogaNode = childShadowView.yogaNode;
     
@@ -61,8 +62,6 @@
     [childShadowView layoutSubviewsWithContext:layoutContext];
   }
   
-  CGFloat baseY = layoutContext.absolutePosition.y;
-
   for (RHShadowNativeFeedItem* childShadowView in [self reactSubviews])
   {
     if (![childShadowView isKindOfClass:[RHShadowNativeFeedItem class]])
@@ -91,8 +90,8 @@
     if (YGFloatIsUndefined(height) || height <= 0) {
       height = 100;
     }
-    
-    CGFloat yPos = baseY;
+   
+    CGFloat yPos = totalHeaderHeight;
     
     for (int i = 0; i < childShadowView.cellNum; i++)
     {
@@ -105,15 +104,28 @@
     }
     
     height = childShadowView.cellNum < _storyInfos.count ? (((RHStoryInfo*)_storyInfos[childShadowView.cellNum]).height) : height;
+   
+    CGRect childFrame = {{
+      RCTRoundPixelValue(x),
+      RCTRoundPixelValue(yPos)
+    }, {
+      RCTRoundPixelValue(width),
+      RCTRoundPixelValue(height)
+    }};
     
-    layoutContext.absolutePosition.x += childLayoutMetrics.frame.origin.x;
-    layoutContext.absolutePosition.y += yPos;
+    RCTLayoutContext localLayoutContext = layoutContext;
+    localLayoutContext.absolutePosition.x += childFrame.origin.x;
+    localLayoutContext.absolutePosition.y += childFrame.origin.y;
     
-    [childShadowView layoutWithMetrics:childLayoutMetrics
-                         layoutContext:layoutContext];
-    
-    // Recursive call.
-    [childShadowView layoutSubviewsWithContext:layoutContext];
+    [childShadowView layoutWithMinimumSize:childFrame.size
+                               maximumSize:childFrame.size
+                           layoutDirection:self.layoutMetrics.layoutDirection
+                             layoutContext:localLayoutContext];
+
+    RCTLayoutMetrics localLayoutMetrics = childShadowView.layoutMetrics;
+    localLayoutMetrics.frame.origin = childFrame.origin; // Reinforcing a proper frame origin for the Shadow View.
+    [childShadowView layoutWithMetrics:localLayoutMetrics layoutContext:localLayoutContext];
+
   }
 }
 

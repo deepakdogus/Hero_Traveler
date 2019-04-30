@@ -79,7 +79,8 @@ class Category extends ContainerWithFeedList {
         <FeedItemListWrapper>
           <FeedItemList
             feedItems={selectedFeedItems}
-            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}/>
+            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}
+          />
           <Footer />
         </FeedItemListWrapper>
       </ContentWrapper>
@@ -111,7 +112,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   const categoryId = ownProps.match.params.categoryId
   return {
-    getStories: (_ignore, storyType) => {
+    getStories: (_0, _1, storyType) => {
       storyType = storyType.toLowerCase()
       if (storyType === 'all') storyType = null
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))

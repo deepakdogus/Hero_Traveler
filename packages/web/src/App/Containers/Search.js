@@ -9,7 +9,6 @@ import env from '../Config/Env'
 import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
-import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
 import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
@@ -284,12 +283,7 @@ class Search extends Component {
         country,
         latitude: lat,
         longitude: lng,
-      } = await formatLocationWeb(
-        description,
-        placeId,
-        geocodeByPlaceId,
-        getLatLng,
-      )
+      } = await formatLocationWeb(description, placeId, geocodeByPlaceId, getLatLng)
 
       if (lat && lng) {
         addRecentSearch({
@@ -305,11 +299,7 @@ class Search extends Component {
         })
         reroute({
           pathname: `/results/${country}/${lat}/${lng}`,
-          search: `?t=${title}${
-            hasSecondaryText(secondaryText)
-              ? `, ${formatSecondaryText(secondaryText)}`
-              : ''
-          }`,
+          search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
         })
       }
     }
@@ -412,18 +402,18 @@ class Search extends Component {
   }
 
   renderChildren = ({ getInputProps, suggestions }) => (
-      <Container>
-        <HeaderInputContainer between="xs">
-          <HeaderInput
-            {...getInputProps({
-              placeholder: 'Type to search',
-            })}
-          />
-          <Text onClick={this.resetSearchText}>{'Cancel'}</Text>
-        </HeaderInputContainer>
-        {this.renderTab(suggestions)}
-      </Container>
-    )
+    <Container>
+      <HeaderInputContainer between="xs">
+        <HeaderInput
+          {...getInputProps({
+            placeholder: 'Type to search',
+          })}
+        />
+        <Text onClick={this.resetSearchText}>{'Cancel'}</Text>
+      </HeaderInputContainer>
+      {this.renderTab(suggestions)}
+    </Container>
+  )
 
   /* The `react-places-autocomplete` package rerenders the child based on the search
    * input. We pass all search components through GoogleLocator so we don't have to

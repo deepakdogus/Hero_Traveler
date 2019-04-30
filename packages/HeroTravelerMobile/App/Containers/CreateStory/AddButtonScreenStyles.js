@@ -15,9 +15,12 @@ export default StyleSheet.create({
     paddingTop: isIPhoneX() ? 20 : 0,
     borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,
+    zIndex: 1,
   },
   content: {
     marginHorizontal: Metrics.doubleBaseMargin,
+    paddingTop: 35,
+    zIndex: 0,
   },
   labelRow: {
     marginTop: Metrics.doubleBaseMargin * 2,

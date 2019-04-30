@@ -191,7 +191,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/user/${userId}/feed/v2`, params)
+    return api.get(`story/feed/userfeed/${userId}`, params)
     .then(response => {
       if (!response.ok) return response
       return {
@@ -201,11 +201,29 @@ const create = () => {
     })
   }
 
-  const getUserFeedOld = (userId, params) => {
-    return api.get(`story/user/${userId}/feed`, {
-      params
+  const getNearbyFeed = (nearbyStoryIds) => {
+    return api
+      .get(`story/feed/nearby`, {
+        nearbyStoryIds: JSON.stringify(nearbyStoryIds)
+      })
+      .then(response => {
+        if (!response.ok) return response
+        return {
+          count: response.data.count,
+          ...safeNormalize(response, [Story], 'data.feed')
+        }
+      })
+  }
+
+  const getBadgeUserFeed = () => {
+    return api.get(`story/feed/badgeUsers`)
+    .then(response => {
+      if (!response.ok) return response
+      return {
+        count: response.data.count,
+        ...safeNormalize(response, [Story], 'data.feed'),
+      }
     })
-    .then(response => safeNormalize(response, [Story]))
   }
 
   const getUserStories = (userId, params) => {
@@ -495,7 +513,8 @@ const create = () => {
     signupFacebook,
     connectFacebook,
     getUserFeed,
-    getUserFeedOld,
+    getNearbyFeed,
+    getBadgeUserFeed,
     createStory,
     getCategories,
     getHashtags,

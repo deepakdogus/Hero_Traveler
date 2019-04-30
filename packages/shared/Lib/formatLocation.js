@@ -24,7 +24,7 @@ export default function formatLocation(place) {
   const addressComponents = normalizeAddressComponents(place.address_components)
   return {
     name: place.name,
-    locality: addressComponents.locality,
+    locality: addressComponents.locality || addressComponents.sublocality_level_1,
     state: addressComponents.administrative_area_level_1,
     country:addressComponents.country,
     latitude: _.get(place, 'geometry.location.lat'),

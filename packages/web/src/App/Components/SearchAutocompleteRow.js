@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
-
 import HorizontalDivider from '../Components/HorizontalDivider'
 
 const AutocompleteRow = styled.div`
@@ -11,9 +9,7 @@ const AutocompleteRow = styled.div`
 `
 
 const TextContainer = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: center;
+  padding: 5px 0;
 `
 
 const PrimaryText = styled.span`
@@ -39,23 +35,20 @@ class SearchAutocompleteRow extends Component {
   handleClick = () => this.props.navigate(this.props.item)
 
   render = () => {
-    const { idx, item: { title, secondaryText} } = this.props
+    const {
+      idx,
+      item: { title, secondaryText },
+    } = this.props
     return (
-      <AutocompleteRow
-        onClick={this.handleClick}
-      >
+      <AutocompleteRow onClick={this.handleClick}>
         {!idx && <HorizontalDivider color="light-grey" />}
         <TextContainer>
           <PrimaryText>
             {title}
-            {hasSecondaryText(secondaryText) ? ',' : ''}
+            {secondaryText ? ',' : ''}
           </PrimaryText>
           <span>&nbsp;</span>
-          {hasSecondaryText(secondaryText) && (
-            <SecondaryText>
-              {formatSecondaryText(secondaryText)}
-            </SecondaryText>
-          )}
+          {!!secondaryText && <SecondaryText>{secondaryText}</SecondaryText>}
         </TextContainer>
         <HorizontalDivider color="light-grey" />
       </AutocompleteRow>

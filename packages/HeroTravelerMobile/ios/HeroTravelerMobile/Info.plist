@@ -31,7 +31,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>160</string>
+	<string>162</string>
 	<key>FacebookAppID</key>
 	<string>1589340484457361</string>
 	<key>FacebookDisplayName</key>
@@ -74,10 +74,10 @@
 	<string>Unused but App Store requires it</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is used to capture media for your stories.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Turn on location services to view $(PRODUCT_NAME) stories nearest to you.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Allows $(PRODUCT_NAME) to access location for stories</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Turn on location services to view $(PRODUCT_NAME) stories nearest to you.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enable the microphone to record audio for stories</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

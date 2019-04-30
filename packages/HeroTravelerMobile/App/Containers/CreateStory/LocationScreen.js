@@ -55,6 +55,12 @@ class LocationScreen extends Component {
     this.setState({ searching: true })
     RNGooglePlaces.getAutocompletePredictions(text, {
       type: this.props.locationType || 'geocode',
+      locationBias: {
+        latitudeSW: -85,
+        longitudeSW: 180,
+        latitudeNE: 85,
+        longitudeNE: -180,
+      },
     })
       .then(predictions => this.setState({ searching: false, predictions }))
       .catch(() => this.setState({ searching: false }))

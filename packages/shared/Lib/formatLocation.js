@@ -1,15 +1,34 @@
 import _ from 'lodash'
 
+const normalizeAddressComponents = address_components => {
+  const addressComponents = {}
+  address_components.forEach(component => {
+    if (component.types) {
+      component.types.forEach(type => {
+        if (type !== 'political') addressComponents[type] = component.long_name
+      })
+    }
+  })
+  return addressComponents
+}
+
+async function extractWeb(place, getLatLng) {
+  const addressComponents =  normalizeAddressComponents(place.address_components)
+  let latLng = await getLatLng(place)
+  addressComponents.latitude = latLng.lat
+  addressComponents.longitude = latLng.lng
+  return addressComponents
+}
+
 export default function formatLocation(place) {
+  const addressComponents = normalizeAddressComponents(place.address_components)
   return {
     name: place.name,
-    locality:
-      _.get(place, 'addressComponents.sublocality_level_1') ||
-      _.get(place, 'addressComponents.locality'),
-    state: _.get(place, 'addressComponents.administrative_area_level_1'),
-    country: _.get(place, 'addressComponents.country'),
-    latitude: place.latitude,
-    longitude: place.longitude
+    locality: addressComponents.locality,
+    state: addressComponents.administrative_area_level_1,
+    country:addressComponents.country,
+    latitude: _.get(place, 'geometry.location.lat'),
+    longitude: _.get(place, 'geometry.location.lng')
   }
 }
 
@@ -36,17 +55,3 @@ export async function formatLocationWeb(
   }
 }
 
-async function extractWeb(place, getLatLng) {
-  const addressComponents = {}
-  place.address_components.forEach(component => {
-    if (component.types) {
-      component.types.forEach(type => {
-        if (type !== 'political') addressComponents[type] = component.long_name
-      })
-    }
-  })
-  let latLng = await getLatLng(place)
-  addressComponents.latitude = latLng.lat
-  addressComponents.longitude = latLng.lng
-  return addressComponents
-}

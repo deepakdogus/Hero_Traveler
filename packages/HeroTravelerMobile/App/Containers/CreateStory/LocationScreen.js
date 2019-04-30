@@ -9,15 +9,24 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
-
 import RNGooglePlaces from 'react-native-google-places'
+
+import Loader from '../../Components/Loader'
+import SelectedItem from '../../Components/SelectedItem'
+
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+
+import env from '../../Config/Env'
+import styles from './LocationScreenStyles'
 import { Colors } from '../../Shared/Themes/'
 import formatLocation from '../../Shared/Lib/formatLocation'
 import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
-import Loader from '../../Components/Loader'
-import SelectedItem from '../../Components/SelectedItem'
-import styles from './LocationScreenStyles'
+
+const placeByIdUri = `https://maps.googleapis.com/maps/api/place/details/json?key=${
+  env.GOOGLE_API_KEY
+}&placeid=`
+
+const placeByIdFields = `&fields=address_component,geometry,name`
 
 class LocationScreen extends Component {
   static defaultProps = {
@@ -69,21 +78,23 @@ class LocationScreen extends Component {
   selectLocation = placeID => () => {
     const { isMultiSelect, onSelectLocation } = this.props
     this.setState({ searching: true })
-    RNGooglePlaces.lookUpPlaceByID(placeID).then(result => {
-      const newLocation = formatLocation(result)
-      if (!isMultiSelect) {
-        this.setState({ searching: false }, () => {
-          onSelectLocation(newLocation)
-        })
-      }
-      else
-        this.setState({
-          searching: false,
-          locations: [...this.state.locations, newLocation],
-          text: '',
-          predictions: [],
-        })
-    })
+    fetch(`${placeByIdUri}${placeID}${placeByIdFields}`)
+      .then(res => res.json())
+      .then(data => {
+        const newLocation = formatLocation(data.result)
+        if (!isMultiSelect) {
+          this.setState({ searching: false }, () => {
+            onSelectLocation(newLocation)
+          })
+        }
+        else
+          this.setState({
+            searching: false,
+            locations: [...this.state.locations, newLocation],
+            text: '',
+            predictions: [],
+          })
+      })
   }
 
   onSubmit = () => {

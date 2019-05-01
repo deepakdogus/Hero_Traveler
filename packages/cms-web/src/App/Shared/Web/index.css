@@ -1,0 +1,90 @@
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+/* Crimson Text Normal Fonstyle */
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('./Fonts/CrimsonText-Roman.ttf');
+}
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('./Fonts/CrimsonText-Italic.ttf');
+  font-style: 'italic';
+}
+
+/* Montserrat Normal Fontstyle */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Fonts/Montserrat-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Fonts/Montserrat-Regular.ttf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Fonts/Montserrat-Medium.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Fonts/Montserrat-Bold.ttf');
+  font-weight: 700;
+}
+
+/* Source Sans Pro Italic Fontstyle*/
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-LightItalic.ttf');
+  font-weight: 300;
+  font-style: 'italic';
+
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-Italic.ttf');
+  font-weight: 400;
+  font-style: 'italic';
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-SemiBoldItalic.ttf');
+  font-weight: 600;
+  font-style: 'italic';
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-BoldItalic.ttf');
+  font-weight: 700;
+  font-style: 'italic';
+}
+
+/* Source Sans Pro Normal Fontstyle*/
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-Regular.ttf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-SemiBold.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('./Fonts/SourceSansPro-Bold.ttf');
+  font-weight: 700;
+}

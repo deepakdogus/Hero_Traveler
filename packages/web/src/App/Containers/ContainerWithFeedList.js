@@ -96,34 +96,38 @@ export default class ContainerWithFeedList extends React.Component {
 
   getTabInfo = page => {
     switch (this.state.activeTab) {
-    case 'DRAFTS':
+      case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
-      this.props.getDeletedStories()
-      return this.props.loadDrafts()
-    case 'BOOKMARKS':
-      return this.props.loadBookmarks(this.props.sessionUserId)
-    case 'GUIDES':
-      return this.props.getGuides(this.props.sessionUserId)
-    case 'NEARBY':
-      return this.getGeolocation()
-    case 'FROM US':
-      return this.props.getBadgeUserStories(this.props.sessionUserId)
-    case 'STORIES':
-    case 'ALL':
-    case 'SEE':
-    case 'DO':
-    case 'EAT':
-    case 'STAY':
-    default:
-      return this.props.getStories(this.props.sessionUserId, {
-        perPage: itemsPerQuery,
-        page,
-      },
-      this.state.activeTab)
+        this.props.getDeletedStories()
+        return this.props.loadDrafts()
+      case 'BOOKMARKS':
+        return this.props.loadBookmarks(this.props.sessionUserId)
+      case 'GUIDES':
+        return this.props.getGuides(this.props.sessionUserId)
+      case 'NEARBY':
+        return this.getGeolocation()
+      case 'FROM US':
+        return this.props.getBadgeUserStories(this.props.sessionUserId)
+      case 'STORIES':
+      case 'ALL':
+      case 'SEE':
+      case 'DO':
+      case 'EAT':
+      case 'STAY':
+      default:
+        return this.props.getStories(
+          this.props.sessionUserId,
+          {
+            perPage: itemsPerQuery,
+            page,
+          },
+          this.state.activeTab,
+        )
     }
   }
 
-  getFeedItemsByIds = (idList, type = 'stories') => idList.map(id => this.props[type][id])
+  getFeedItemsByIds = (idList, type = 'stories') =>
+    idList && this.props[type] ? idList.map(id => this.props[type][id]) : []
 
   getSelectedFeedItems = () => {
     const {
@@ -142,46 +146,46 @@ export default class ContainerWithFeedList extends React.Component {
 
     // will use fetchStatus to show loading/error
     switch (this.state.activeTab) {
-    case 'DRAFTS':
-      return {
-        fetchStatus: draftsFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(draftsById),
-      }
-    case 'BOOKMARKS':
-      return {
-        fetchStatus: userBookmarksFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(userBookmarksById),
-      }
-    case 'GUIDES':
-      return {
-        fetchStatus: guidesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides'),
-      }
-    case 'NEARBY':
-      return {
-        fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(nearbyFeedById),
-      }
-    case 'FROM US':
-      return {
-        fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(badgeUserFeedById),
-      }
-    case 'STORIES':
-      return {
-        fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(userFeedById),
-      }
-    case 'ALL':
-    case 'SEE':
-    case 'DO':
-    case 'EAT':
-    case 'STAY':
-    default:
-      return {
-        fetchStatus: userStoriesFetchStatus,
-        selectedFeedItems: this.getFeedItemsByIds(storiesById),
-      }
+      case 'DRAFTS':
+        return {
+          fetchStatus: draftsFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(draftsById),
+        }
+      case 'BOOKMARKS':
+        return {
+          fetchStatus: userBookmarksFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(userBookmarksById),
+        }
+      case 'GUIDES':
+        return {
+          fetchStatus: guidesFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(guidesById, 'guides'),
+        }
+      case 'NEARBY':
+        return {
+          fetchStatus: userStoriesFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(nearbyFeedById),
+        }
+      case 'FROM US':
+        return {
+          fetchStatus: userStoriesFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(badgeUserFeedById),
+        }
+      case 'STORIES':
+        return {
+          fetchStatus: userStoriesFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(userFeedById),
+        }
+      case 'ALL':
+      case 'SEE':
+      case 'DO':
+      case 'EAT':
+      case 'STAY':
+      default:
+        return {
+          fetchStatus: userStoriesFetchStatus,
+          selectedFeedItems: this.getFeedItemsByIds(storiesById),
+        }
     }
   }
 }

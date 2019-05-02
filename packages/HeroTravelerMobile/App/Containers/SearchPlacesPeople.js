@@ -124,13 +124,13 @@ class SearchPlacesPeople extends Component {
         RNGooglePlaces.getAutocompletePredictions(inputText, {
           type: 'geocode',
         })
-        .then(predictions =>
-          this.setState({
-            searchingGoogle: false,
-            lastLocationPredictions: predictions,
-          }),
-        )
-        .catch(() => this.setState({ searchingGoogle: false }))
+          .then(predictions =>
+            this.setState({
+              searchingGoogle: false,
+              lastLocationPredictions: predictions,
+            }),
+          )
+          .catch(() => this.setState({ searchingGoogle: false }))
       }
 
       // query Algolia for People
@@ -285,7 +285,7 @@ class SearchPlacesPeople extends Component {
           </View>
         </View>
         {/* uncomment when adding channels feature */}
-        {/* {!showSearch && renderTabs && renderTabs()} */}
+        {!showSearch && renderTabs && renderTabs()}
         {!showSearch && children}
         {showSearch && (
           <View style={styles.tabsViewContainer}>

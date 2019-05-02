@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 
@@ -42,6 +42,7 @@ class ExploreScreen extends Component {
 
   componentDidMount() {
     this.props.loadCategories()
+    //load channels here
   }
 
   selectTab = selectedTab => {
@@ -55,6 +56,7 @@ class ExploreScreen extends Component {
       onClickTab={this.selectTab}
       tabStyle={styles.tabStyle}
     />
+
   )
 
   _navToCategoryFeed = category => {
@@ -66,16 +68,25 @@ class ExploreScreen extends Component {
     })
   }
 
+  getEntitiesByType = () => {
+    const {selectedTab} = this.state
+    switch(selectedTab){
+      case tabTypes.categories:
+        return this.props.categories
+      default:
+        return []
+    }
+  }
+
   render() {
     const {
-      categories = {},
       categoriesFetchStatus,
       stories,
       searchHistory,
       addRecentSearch,
       user,
     } = this.props
-    const categoriesArray = _.values(categories)
+    const categoriesArray = _.values(this.getEntitiesByType())
 
     const content = (
       categoriesFetchStatus.fetching && !categoriesArray.length

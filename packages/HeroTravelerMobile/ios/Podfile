@@ -5,9 +5,9 @@ target 'HeroTravelerMobile' do
   # Pods for HeroTravelerMobile
   pod "IQKeyboardManager"
   pod 'iOS-MagnifyingGlass', '~> 0.0.2'
-  pod 'GooglePlaces'
-  pod 'GoogleMaps'
-  pod 'GooglePlacePicker'
+  pod 'GooglePlaces', '~> 3.0'
+  pod 'GoogleMaps', '~> 3.0'
+  pod 'GooglePlacePicker', '~> 3.0'
 
   pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '705cab1b7fbafb661d4476e05cf6a98e31ab7793'
   pod 'FLAnimatedImage'

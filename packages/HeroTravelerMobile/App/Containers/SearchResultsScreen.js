@@ -128,6 +128,18 @@ class SearchResultsScreen extends Component {
   }
 
   search = (helper, hitCount, { latitude, longitude, country }) => {
+    // if getting Google location or formatting fails, show no results
+    if (!country || !latitude || !longitude) {
+      return this.setState({
+        isFetchingStoryResults: false,
+        isFetchingGuideResults: false,
+        lastSearchResults: {
+          stories: [],
+          guides: [],
+        },
+      })
+    }
+
     helper.addDisjunctiveFacetRefinement(
       'locationInfo.country',
       `${country}`,

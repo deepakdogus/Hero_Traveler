@@ -21,6 +21,7 @@ async function extractWeb(place, getLatLng) {
 }
 
 export default function formatLocation(place) {
+  if (!place || !place.address_components) return {}
   const addressComponents = normalizeAddressComponents(place.address_components)
   return {
     name: place.name,

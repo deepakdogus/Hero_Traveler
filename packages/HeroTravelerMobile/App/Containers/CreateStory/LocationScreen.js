@@ -82,19 +82,24 @@ class LocationScreen extends Component {
       .then(res => res.json())
       .then(data => {
         const newLocation = formatLocation(data.result)
+
+        // error handle Google returning bad data / format error
+        if (!Object.keys(newLocation).length) return this.setState({ searching: false })
+
         if (!isMultiSelect) {
-          this.setState({ searching: false }, () => {
+          return this.setState({ searching: false }, () => {
             onSelectLocation(newLocation)
           })
         }
-        else
-          this.setState({
-            searching: false,
-            locations: [...this.state.locations, newLocation],
-            text: '',
-            predictions: [],
-          })
+
+        return this.setState({
+          searching: false,
+          locations: [...this.state.locations, newLocation],
+          text: '',
+          predictions: [],
+        })
       })
+      .catch(error => console.error(error))
   }
 
   onSubmit = () => {
@@ -105,7 +110,8 @@ class LocationScreen extends Component {
   renderPlaces() {
     const { locationType } = this.props
     return this.state.predictions.map(place => {
-      if (locationType === 'regions' && place.types.includes('country')) return null
+      if (locationType === 'regions' && place.types.includes('country'))
+        return null
       return (
         <View key={place.placeID} style={styles.rowWrapper}>
           <TouchableOpacity onPress={this.selectLocation(place.placeID)}>

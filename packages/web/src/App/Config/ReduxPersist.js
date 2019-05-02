@@ -3,7 +3,7 @@ import { asyncLocalStorage } from 'redux-persist/storages'
 
 const REDUX_PERSIST = {
   active: true,
-  reducerVersion: '12',
+  reducerVersion: '11',
   storeConfig: {
     storage: asyncLocalStorage,
     // blacklist: ['login', 'search', 'feed'], // reducer keys that you do NOT want stored to persistence here

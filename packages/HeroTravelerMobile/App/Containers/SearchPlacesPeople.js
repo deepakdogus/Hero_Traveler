@@ -123,12 +123,6 @@ class SearchPlacesPeople extends Component {
         this.setState({ searchingGoogle: true })
         RNGooglePlaces.getAutocompletePredictions(inputText, {
           type: 'geocode',
-          locationBias: {
-            latitudeSW: -85,
-            longitudeSW: 180,
-            latitudeNE: 85,
-            longitudeNE: -180,
-          },
         })
           .then(predictions =>
             this.setState({
@@ -218,8 +212,7 @@ class SearchPlacesPeople extends Component {
       searchingGoogle,
       searchingAlgolia,
     } = this.state
-    const showSearch
-      = lastPeopleSearchResults
+    const showSearch = lastPeopleSearchResults
       || lastLocationPredictions
       || selectedTabIndex !== null
     // TODO: remove conditional navBarBorder when you want to display the tab bar;
@@ -341,7 +334,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(UserActions.unfollowUser(sessionUserId, userIdToUnfollow)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchPlacesPeople)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPlacesPeople)

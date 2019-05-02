@@ -275,30 +275,10 @@ class Search extends Component {
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  navToLocationResults = async item => {
-    if (item.searchText && item.searchType) {
-      this.navToCachedLocation(item)
-    }
-    else {
-      this.navToNewLocation(item)
-    }
-  }
-
-  navToCachedLocation = item => {
-    const { reroute, addRecentSearch } = this.props
-    addRecentSearch({ ...item, searchText: this.state.inputText })
-
-    const { country, lat, lng, title, secondaryText } = item
-    return reroute({
-      pathname: `/results/${country}/${lat}/${lng}`,
-      search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
-    })
-  }
-
-  navToNewLocation = async ({ description, placeId, secondaryText }) => {
+  navToLocationResults = async ({ description, placeId, secondaryText }) => {
     const { reroute, addRecentSearch } = this.props
     try {
-      const {
+      let {
         name: title,
         country,
         latitude: lat,
@@ -314,7 +294,6 @@ class Search extends Component {
           title,
           lat,
           lng,
-          country,
           description,
           secondaryText,
         })

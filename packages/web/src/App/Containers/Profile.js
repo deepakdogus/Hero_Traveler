@@ -168,16 +168,16 @@ class Profile extends ContainerWithFeedList {
           uploadMedia={uploadMedia}
           sessionUserId={sessionUserId}
         />
-        {!isEdit &&
-          <ListWrapper>
+        {!isEdit
+          && <ListWrapper>
             <TabBar
               tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
               activeTab={this.state.activeTab}
               onClickTab={this.onClickTab}
             />
 
-            { (!!selectedFeedItems.length) &&
-            <FeedItemListWrapper>
+            { (!!selectedFeedItems.length)
+            && <FeedItemListWrapper>
               <FeedItemList feedItems={selectedFeedItems} />
               <Footer />
             </FeedItemListWrapper>
@@ -204,7 +204,7 @@ function mapStateToProps(state, ownProps) {
     stories: stories.entities,
     guides: guides.entities,
     userStoriesFetchStatus: getUserFetchStatus(stories, userId),
-    storiesById: getByUser(stories, userId),
+    userFeedById: getByUser(stories, userId),
     guidesFetchStatus: guides.fetchStatus,
     guidesById: _.get(guides, `guideIdsByUserId[${userId}]`, []),
     draftsFetchStatus: stories.drafts.fetchStatus,

@@ -3,13 +3,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
+  Image,
 } from 'react-native'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
-import { ImageCrop } from 'react-native-image-cropper'
+// import { ImageCrop } from 'react-native-image-cropper'
 import { Actions as NavActions } from 'react-native-router-flux'
+import ImageZoom from 'react-native-image-pan-zoom'
 
 import NavBar from './NavBar'
 import CameraRollPicker from '../../Components/CameraRollPicker/CameraRollPicker'
@@ -71,17 +72,30 @@ class SlideshowCover extends Component{
     else {
       slideshow.push(file)
     }
-
-    // this.capture()
+    Image.getSize(galleryImagePath, (width, height) => {
+      console.log('image width, height', width, height)
+      this.setState({
+        width,
+        height,
+      })
+    })
     this.setState({
       galleryImagePath,
+    }, () => {
+      // this.capture()
     })
     this.props.updateWorkingDraft({ slideshow })
   }
 
   capture = () => {
-    this.cropper.crop()
-      .then(base64 => console.log('capture', base64))
+    console.log('this.cropper', this.cropper)
+    this.refs.cropper.crop()
+      .then(myUri => {
+        console.log('capture', myUri)
+        Image.getSize(myUri, (width, height) => {
+          console.log('image width, height', width, height)
+        })
+      })
   }
 
   isValid() {
@@ -181,18 +195,37 @@ class SlideshowCover extends Component{
   }
 
   renderImageCropper = () => {
-    const { galleryImagePath } = this.state
+    const { galleryImagePath, width, height } = this.state
     return (
       <Fragment>
-        <ImageCrop 
-          image={galleryImagePath}
-          cropHeight={300}
+        <ImageZoom
           cropWidth={Metrics.screenWidth}
-          maxZoom={80}
-          minZoom={20}
-          panToMove={true}
-          pinchToZoom={true}
-        />
+          cropHeight={300}
+          imageWidth={width}
+          imageHeight={height}
+        >
+          <Image
+            style={{ width, height }}
+            source={{
+              uri: galleryImagePath,
+            }}
+          />
+        </ImageZoom>
+        {/*
+          <ImageCrop 
+            ref={'cropper'}
+            image={galleryImagePath}
+            cropHeight={300}
+            cropWidth={Metrics.screenWidth}
+            maxZoom={80}
+            minZoom={20}
+            panToMove={true}
+            pinchToZoom={true}
+            format="file"
+            filePath={`${RNFetchBlob.fs.dirs.CacheDir}/temp_post_image.jpg`}
+            type="jpg"
+          />
+        */}
         <View style={styles.horizontalGrid} />
         <View style={styles.verticalGrid} />
       </Fragment>

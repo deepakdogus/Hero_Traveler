@@ -146,8 +146,6 @@ class CameraRollPicker extends Component {
     var uri = item.node.image.uri
     var isSelected = (this._arrayObjectIndexOf(selected, 'uri', uri) >= 0) ? true : false
 
-    console.log('_renderImage item', item)
-
     return (
       <ImageItem
         key={uri}

@@ -69,6 +69,7 @@
     "react-native-hockeyapp": "^0.5.1",
     "react-native-htmlview": "0.12.1",
     "react-native-image-cropper": "^0.4.5",
+    "react-native-image-pan-zoom": "^2.1.11",
     "react-native-image-picker": "^0.26.2",
     "react-native-img-cache": "1.5.3",
     "react-native-keyboard-spacer": "0.4.1",

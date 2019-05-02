@@ -14,12 +14,7 @@ import styles from './Styles/SearchResultsScreenStyles'
 import Colors from '../Shared/Themes/Colors'
 import formatLocation from '../Shared/Lib/formatLocation'
 import { navToProfile } from '../Navigation/NavigationRouter'
-
-const placeByIdUri = `https://maps.googleapis.com/maps/api/place/details/json?key=${
-  env.GOOGLE_API_KEY
-}&placeid=`
-
-const placeByIdFields = `&fields=address_component,geometry,name`
+import { getPlaceDetail } from '../Services/GooglePlaces'
 
 const algoliasearch = algoliasearchModule(
   env.SEARCH_APP_NAME,
@@ -104,9 +99,11 @@ class SearchResultsScreen extends Component {
   }
 
   getLocationDataFromGoogle = async () => {
-    const response = await fetch(`${placeByIdUri}${this.props.location.placeID}${placeByIdFields}`)
-    const data = await response.json()
-    return formatLocation(data.result)
+    const { location } = this.props
+    if (!location || !location.placeID) return {}
+
+    const data = await getPlaceDetail(location.placeID)
+    return formatLocation(data)
   }
 
   setupSearchListeners = (helper, type) => {

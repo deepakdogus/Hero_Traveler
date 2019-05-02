@@ -16,17 +16,11 @@ import SelectedItem from '../../Components/SelectedItem'
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 
-import env from '../../Config/Env'
 import styles from './LocationScreenStyles'
 import { Colors } from '../../Shared/Themes/'
 import formatLocation from '../../Shared/Lib/formatLocation'
 import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
-
-const placeByIdUri = `https://maps.googleapis.com/maps/api/place/details/json?key=${
-  env.GOOGLE_API_KEY
-}&placeid=`
-
-const placeByIdFields = `&fields=address_component,geometry,name`
+import { getPlaceDetail } from '../../Services/GooglePlaces'
 
 class LocationScreen extends Component {
   static defaultProps = {
@@ -75,31 +69,29 @@ class LocationScreen extends Component {
       .catch(() => this.setState({ searching: false }))
   }
 
-  selectLocation = placeID => () => {
+  selectLocation = placeID => async () => {
     const { isMultiSelect, onSelectLocation } = this.props
     this.setState({ searching: true })
-    fetch(`${placeByIdUri}${placeID}${placeByIdFields}`)
-      .then(res => res.json())
-      .then(data => {
-        const newLocation = formatLocation(data.result)
 
-        // error handle Google returning bad data / format error
-        if (!Object.keys(newLocation).length) return this.setState({ searching: false })
+    const data = await getPlaceDetail(placeID)
+    const newLocation = formatLocation(data)
 
-        if (!isMultiSelect) {
-          return this.setState({ searching: false }, () => {
-            onSelectLocation(newLocation)
-          })
-        }
+    // error handle Google returning bad data / format error
+    if (!Object.keys(newLocation).length)
+      return this.setState({ searching: false })
 
-        return this.setState({
-          searching: false,
-          locations: [...this.state.locations, newLocation],
-          text: '',
-          predictions: [],
-        })
+    if (!isMultiSelect) {
+      return this.setState({ searching: false }, () => {
+        onSelectLocation(newLocation)
       })
-      .catch(error => console.error(error))
+    }
+
+    return this.setState({
+      searching: false,
+      locations: [...this.state.locations, newLocation],
+      text: '',
+      predictions: [],
+    })
   }
 
   onSubmit = () => {

@@ -33,6 +33,7 @@ import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
 import deleteUser from './deleteUser'
+import getAllUsersIsChannel from './getAllUsersIsChannel'
 
 const router = express.Router()
 
@@ -40,6 +41,10 @@ router.get(
   '/',
   hasValidOauth,
   endpointWrapper(getMe)
+)
+
+router.get('/all',
+  endpointWrapper(getAllUsersIsChannel)
 )
 
 router.post('/',

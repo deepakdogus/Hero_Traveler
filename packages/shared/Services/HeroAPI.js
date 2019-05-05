@@ -195,6 +195,11 @@ const create = () => {
     .then(response => safeNormalize(response, User))
   }
 
+  const getUsersThatAreChannels = () => {
+    return api.get('user/allpromoted')
+    .then(response => safeNormalize(response, [User]))
+  }
+
   const updateUser = (userId, attrs) => {
     return api.put(`user/${userId}`, attrs)
   }
@@ -544,6 +549,7 @@ const create = () => {
     getMe,
     updateUser,
     getUser,
+    getUsersThatAreChannels,
     resetPasswordRequest,
     resetPassword,
     deleteUser,

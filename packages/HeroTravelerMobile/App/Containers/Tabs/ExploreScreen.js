@@ -102,7 +102,7 @@ class ExploreScreen extends Component {
           />
         </ScrollView>
       )
-
+      
     return (
       <View style={styles.root}>
         <SearchPlacesPeople
@@ -133,13 +133,14 @@ const mapStateToProps = state => {
     user: state.entities.users.entities[state.session.userId],
     stories: state.entities.stories.entities,
     searchHistory: state.history.searchHistory,
+    channels: state.entities.users,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    loadChannels: () => dispatch(UserActions.loadUserChannel()),
+    loadChannels: () => dispatch(UserActions.loadUsersChannels()),
     addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }

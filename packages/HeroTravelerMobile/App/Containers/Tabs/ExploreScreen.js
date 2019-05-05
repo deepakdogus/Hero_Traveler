@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
 
 import styles, {
@@ -42,6 +43,7 @@ class ExploreScreen extends Component {
 
   componentDidMount() {
     this.props.loadCategories()
+    this.props.loadChannels()
     //load channels here
   }
 
@@ -137,6 +139,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadChannels: () => dispatch(UserActions.loadUserChannel()),
     addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }

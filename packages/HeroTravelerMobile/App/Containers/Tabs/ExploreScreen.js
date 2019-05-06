@@ -100,6 +100,7 @@ class ExploreScreen extends Component {
       user,
     } = this.props
     const categoriesArray = _.values(this.getEntitiesByType())
+    console.log(categoriesArray, 'this is the categoriesArray')
 
     const content = (
       categoriesFetchStatus.fetching && !categoriesArray.length

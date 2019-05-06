@@ -57,7 +57,7 @@ export default class ExploreGrid extends Component {
           adjustsFontSizeToFit
           minimumFontScale={0.9}
         >
-          {category.title}
+          {category.title || category.username}
         </Text>
       </View>
     )

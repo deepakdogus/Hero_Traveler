@@ -92,7 +92,7 @@ export const INITIAL_STATE = Immutable({
   usersBookmarksById: {},
   userFollowersByUserIdAndId: {},
   userFollowingByUserIdAndId: {},
-  channels: [],
+  channelsByID: [],
   error: null,
   adminUsers: {
     fetchStatus: initialFetchStatus(),
@@ -124,7 +124,7 @@ export const loadUsersChannelsSuccess = (state, {channels}) => {
       fetching: false,
       loaded: true
     },
-    channels,
+    channelsByID: channels,
     error: null
   })
 }

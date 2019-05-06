@@ -96,8 +96,12 @@ export function * deleteUser(api) {
 
 export function * getUsersChannels(api){
   const response = yield call(api.getUsersThatAreChannels)
+  const {entities, result } = response.data
   if(response.ok){
-    console.log(response.data, 'in if statement')
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(UserActions.loadUsersChannelsSuccess(result))
+    ]
   } else {
     yield put(UserActions.loadUsersChannelsFailure(new Error('error loading users that are channels')))
   }

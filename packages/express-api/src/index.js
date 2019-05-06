@@ -8,6 +8,7 @@ import cors from 'cors'
 import routes from './routes'
 import passport from './passport'
 import {cleanup as apnCleanup} from './apn'
+import indexUsers from '../patches/indexUsers'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -65,7 +66,7 @@ initCore({
     if (err) {
       console.error(err)
     } else {
-      console.log(`App running on port ${PORT}`)
+      indexUsers().then(doThis => console.log(`App running on port ${PORT}`))
     }
   })
 })

@@ -194,12 +194,13 @@ class CategoryFeedScreen extends React.Component {
       error,
       title,
       categoryGuidesById,
+      user
     } = this.props
+    console.log(this.props, 'finding out the title')
     const { selectedTab, refreshing } = this.state
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
-
     if (error) {
       topContent = this._wrapElt(
         <Text style={styles.message}>
@@ -243,12 +244,10 @@ class CategoryFeedScreen extends React.Component {
       )
     }
 
-    console.log(this.props, 'this is the props in categoryfeedscreen')
-
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <NavBar
-          title={title}
+          title={title || user.username}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
           leftIcon="arrowLeft"

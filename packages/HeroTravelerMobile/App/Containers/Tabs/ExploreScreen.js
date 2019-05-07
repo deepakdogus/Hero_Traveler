@@ -50,6 +50,7 @@ class ExploreScreen extends Component {
 
   selectTab = selectedTab => {
     this.setState({ selectedTab })
+    selectedTab === tabTypes.channels ? this.setState({channelsSize: true}) : this.setState({channelsSize: false})
   }
 
   renderTabs = () => (
@@ -81,10 +82,11 @@ class ExploreScreen extends Component {
           filteredChannelsThatAreUsers.push(users[channelsByID[i]])
         }
       }
-      this.setState({channelsSize: true})
-    } else {
-      this.setState({channelsSize: false})
+      // this.setState({channelsSize: true})
     }
+
+    // if(selectedTab === tabTypes.categories) this.setState({channelsSize: false})
+
     switch(selectedTab){
       case tabTypes.categories:
         return categories

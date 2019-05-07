@@ -8,7 +8,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import StoryActions, {
   getByCategory,
   getFetchStatus,
-  fromUserRequest,
+  getByUser,
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
@@ -268,10 +268,11 @@ class CategoryFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  console.log(props, 'this is the state in CFS')
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
-    storiesById: getByCategory(state.entities.stories, props.categoryId),
+    storiesById: props.categoryOrUser ? getByUser(state.entities.stories, props.categoryId) : getByCategory(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
       `entities.guides.guideIdsByCategoryId[${props.categoryId}]`,

@@ -38,6 +38,7 @@ class ExploreScreen extends Component {
     super(props)
     this.state = {
       selectedTab: tabTypes.categories,
+      channelsSize: false,
     }
   }
 
@@ -80,6 +81,9 @@ class ExploreScreen extends Component {
           filteredChannelsThatAreUsers.push(users[channelsByID[i]])
         }
       }
+      this.setState({channelsSize: true})
+    } else {
+      this.setState({channelsSize: false})
     }
     switch(selectedTab){
       case tabTypes.categories:
@@ -99,6 +103,9 @@ class ExploreScreen extends Component {
       addRecentSearch,
       user,
     } = this.props
+
+    const {channelsSize} = this.state
+
     const categoriesArray = _.values(this.getEntitiesByType())
     console.log(categoriesArray, 'this is the categoriesArray')
 
@@ -111,6 +118,7 @@ class ExploreScreen extends Component {
           <ExploreGrid
             onPress={this._navToCategoryFeed}
             categories={categoriesArray}
+            channelsSizing={channelsSize}
           />
         </ScrollView>
       )

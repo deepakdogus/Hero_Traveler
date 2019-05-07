@@ -50,7 +50,7 @@ class ExploreScreen extends Component {
 
   selectTab = selectedTab => {
     this.setState({ selectedTab })
-    selectedTab === tabTypes.channels ? this.setState({channelsSize: true}) : this.setState({channelsSize: false})
+    // selectedTab === tabTypes.channels ? this.setState({channelsSize: true}) : this.setState({channelsSize: false})
   }
 
   renderTabs = () => (
@@ -69,6 +69,7 @@ class ExploreScreen extends Component {
       title: category.title,
       leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
       navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
+      categoryOrUser: category.username ? true : false,
     })
   }
 
@@ -82,10 +83,7 @@ class ExploreScreen extends Component {
           filteredChannelsThatAreUsers.push(users[channelsByID[i]])
         }
       }
-      // this.setState({channelsSize: true})
     }
-
-    // if(selectedTab === tabTypes.categories) this.setState({channelsSize: false})
 
     switch(selectedTab){
       case tabTypes.categories:
@@ -106,10 +104,9 @@ class ExploreScreen extends Component {
       user,
     } = this.props
 
-    const {channelsSize} = this.state
+    const {selectedTab} = this.state
 
     const categoriesArray = _.values(this.getEntitiesByType())
-    console.log(categoriesArray, 'this is the categoriesArray')
 
     const content = (
       categoriesFetchStatus.fetching && !categoriesArray.length
@@ -120,7 +117,7 @@ class ExploreScreen extends Component {
           <ExploreGrid
             onPress={this._navToCategoryFeed}
             categories={categoriesArray}
-            channelsSizing={channelsSize}
+            channelsSizing={selectedTab === tabTypes.channels ? true : false}
           />
         </ScrollView>
       )

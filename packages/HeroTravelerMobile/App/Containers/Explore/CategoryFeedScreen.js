@@ -8,6 +8,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import StoryActions, {
   getByCategory,
   getFetchStatus,
+  fromUserRequest,
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
@@ -68,12 +69,32 @@ class CategoryFeedScreen extends React.Component {
   }
 
   loadStories() {
+    // if(this.props.categoryOrUser){
+    //   this.props.loadUserStories(this.props.categoryId)
+    // } else {
+    //   console.log('else in loadStories')
+    //   let storyType = this.state.selectedTab
+    //   this.props.loadCategoryStories(this.props.categoryId, storyType)
+    // }
     let storyType = this.state.selectedTab
-    this.props.loadCategoryStories(this.props.categoryId, storyType)
+    this.props.categoryOrUser ? 
+      (this.props.loadUserStories(this.props.categoryId))
+      :
+      (this.props.loadCategoryStories(this.props.categoryId, storyType))
   }
 
   loadGuides() {
-    this.props.loadCategoryGuides(this.props.categoryId)
+    // console.log(this.props.categoryOrUser, 'category or user')
+    // if(this.props.categoryOrUser){
+    //   this.props.loadUserGuides(this.props.categoryId)
+    // } else {
+    //   console.log('else in loadGuides')
+    //   this.props.loadCategoryGuides(this.props.categoryId)
+    // }
+    this.props.categoryOrUser ? 
+      (this.props.loadUserGuides(this.props.categoryId))
+      :
+      (this.props.loadCategoryGuides(this.props.categoryId))
   }
 
   loadData() {
@@ -222,6 +243,8 @@ class CategoryFeedScreen extends React.Component {
       )
     }
 
+    console.log(this.props, 'this is the props in categoryfeedscreen')
+
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <NavBar
@@ -267,6 +290,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(GuideActions.getCategoryGuides(categoryId)),
     loadCategoryStories: (categoryId, storyType) =>
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    loadUserStories: (userId) => 
+      dispatch(StoryActions.fromUserRequest(userId)),
+    loadUserGuides: (userId) => 
+      dispatch(GuideActions.getUserGuides(userId)),
     getSelectedCategories: () =>
       dispatch(SignupActions.signupGetUsersCategories()),
     followCategory: () =>

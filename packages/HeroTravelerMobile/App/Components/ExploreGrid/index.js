@@ -30,8 +30,6 @@ export default class ExploreGrid extends Component {
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })
 
-    console.log(this.props, 'explore grid props')
-
     return (
       <View key={category.id} style={styles.gridItem}>
         <ImageWrapper

@@ -197,18 +197,16 @@ export default class FeedItemPreview extends Component {
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
-            <TouchableOpacity onPress={this._touchUser}>
-              <Avatar
-                size={isReadingScreen ? 'small' : 'extraSmall'}
-                style={styles.avatar}
-                avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-              />
-            </TouchableOpacity>
-            <View style={styles.verticalCenter}>
-              <TouchableOpacity
-                onPress={this._touchUser}
-                style={styles.profileButton}
-              >
+            <View>
+              <TouchableOpacity onPress={this._touchUser}>
+                <Avatar
+                  size={isReadingScreen ? 'small' : 'extraSmall'}
+                  style={styles.avatar}
+                  avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={this._touchUser}>
                 {hasBadge(user.role) && (
                   <TabIcon
                     name={roleToIconName[user.role]}
@@ -216,8 +214,16 @@ export default class FeedItemPreview extends Component {
                       image: styles.badgeImage,
                       view: styles.badgeView,
                     }}
-                 />
+                  />
                 )}
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.verticalCenter}>
+              <TouchableOpacity
+                onPress={this._touchUser}
+                style={styles.profileButton}
+              >
                 <Text style={[
                   styles.username,
                   isReadingScreen && styles.usernameReading,
@@ -238,10 +244,10 @@ export default class FeedItemPreview extends Component {
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
                 <Text style={[
-                    profileViewStyles.blackButtonText,
-                    isFollowing ? null : profileViewStyles.followButtonText,
-                    styles.followFollowingText,
-                  ]}
+                  profileViewStyles.blackButtonText,
+                  isFollowing ? null : profileViewStyles.followButtonText,
+                  styles.followFollowingText,
+                ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 </Text>

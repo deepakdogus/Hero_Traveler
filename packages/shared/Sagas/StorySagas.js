@@ -380,6 +380,7 @@ function getSyncProgressSteps(story) {
 
 export function* saveLocalDraft(api, action) {
   const { draft, saveAsDraft = false } = action
+
   draft.draft = saveAsDraft
   yield [
     put(

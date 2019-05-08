@@ -172,6 +172,7 @@ GuideSchema.statics = {
   },
 }
 
+GuideSchema.index({title: 'text'})
 GuideSchema.plugin(softDelete, {overrideMethods: true})
 
 const hideStorylessGuides = {

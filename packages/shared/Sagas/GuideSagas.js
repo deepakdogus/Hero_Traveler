@@ -207,13 +207,13 @@ export function * adminPutGuide (api, action) {
 }
 
 export function * adminDeleteGuide (api, action) {
-  const { id, history, message } = action.payload
+  const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteGuide, id)
   if (response.ok && response.data) {
     const record = response.data
     yield put(GuideActions.adminDeleteGuideSuccess(id))
     message.success('Guide was deleted')
-    history.goBack()
+    if (cb) cb()
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     message.error(error)

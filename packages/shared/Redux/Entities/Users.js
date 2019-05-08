@@ -591,7 +591,7 @@ export const adminGetUserFailure = (state, { error }) => {
 export const adminGetUserSuccess = (state, { res }) => {
   let list = [...state.getIn(['adminUsers', 'byId'])]
   let total = state.getIn(['adminUsers', 'total'])
-  const { record } = res
+  const { record = {} } = res
   const userIndex = _.findIndex(list, { id: record.id })
   if (userIndex >= 0) {
     list[userIndex] = record

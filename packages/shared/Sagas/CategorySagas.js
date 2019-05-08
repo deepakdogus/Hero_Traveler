@@ -51,13 +51,13 @@ export function * adminPutCategory (api, action) {
 }
 
 export function * adminDeleteCategory (api, action) {
-  const { id, history, message } = action.payload
+  const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteCategory, id)
   if (response.ok && response.data) {
     const record = response.data
     yield put(CategoryActions.adminDeleteCategorySuccess(id))
     message.success('Category was deleted')
-    history.goBack()
+    if (cb) cb()
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     message.error(error)

@@ -5,6 +5,7 @@ import { Icon, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash/get'
+
 import CategoriesActions from '../../Shared/Redux/Entities/Categories'
 import Images from '../../Themes/Images'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
@@ -61,10 +62,11 @@ const columns = [{
 },
 {
   title: 'Image',
-  render: (item) =>
-    (<SquareImg
+  render: (item) => (
+    <SquareImg
       src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder}
-    />),
+    />
+  ),
 },
 {
   title: 'Edit',

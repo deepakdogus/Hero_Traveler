@@ -130,10 +130,10 @@ const images = {
   iconSquareFlag: require('../Images/ht-icons/share-menu-flag.png'),
   googlePlayBadge: require('../Images/ht-icons/google-play-badge.png'),
   appleAppStoreBadge: require('../Images/ht-icons/apple-app-store-badge.svg'),
-  iconContributorBadge: require('../Images/ht-icons/contributor-badge.png'),
-  iconFounderBadge: require('../Images/ht-icons/founder-badge.png'),
-  iconFellowBadge: require('../Images/ht-icons/fellow-badge.png'),
-  iconLocalBadge: require('../Images/ht-icons/local-hero-badge.png'),
+  iconContributorBadge: require('../Images/ht-icons/contributor.png'),
+  iconFounderBadge: require('../Images/ht-icons/founding-member.png'),
+  iconFellowBadge: require('../Images/ht-icons/fellow.png'),
+  iconLocalBadge: require('../Images/ht-icons/local-hero.png'),
   iconErrorExclamation: require('../Images/ht-icons/error.png'),
   iconInfoDark: require('../Images/ht-icons/icon_info_dark.png'),
   iconInfoDarkLarge: require('../Images/ht-icons/icon_info_dark-large.png'),
@@ -154,6 +154,8 @@ const images = {
   iconActivityStay: require('../Images/ht-icons/icon_activity-stay.png'),
   iconAddButton: require('../Images/ht-icons/icon_add-button.png'),
   iconHeaderNotifications: require('../Images/ht-icons/icon_header-notifications.png'),
+  iconStarRatingActive: require('../Images/ht-icons/icon_rating-star-active.png'),
+  iconStarRatingInactive: require('../Images/ht-icons/icon_rating-star-inactive.png'),
 }
 
 export default images

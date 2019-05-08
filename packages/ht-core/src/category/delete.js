@@ -5,6 +5,6 @@ export default function deleteCategory(id) {
 
   return categoryPromise
     .then((category) => {
-      return category.delete();
-    });
+      return category.delete()
+    })
 }

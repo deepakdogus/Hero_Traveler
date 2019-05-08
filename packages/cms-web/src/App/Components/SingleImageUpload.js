@@ -5,7 +5,7 @@ import get from 'lodash/get'
 
 import { Upload, Icon, Modal, message } from 'antd'
 
-import CloudinaryAPI from '../Shared/Services/CloudinaryAPI'
+import CloudinaryAPI from '../Services/CloudinaryAPI'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const FullWidthImg = styled.img`
@@ -14,15 +14,15 @@ const FullWidthImg = styled.img`
 
 function beforeUpload(file) {
   const isJPG = file.type === 'image/jpeg'
-  // const isPNG = file.type === 'image/png'
-  if (!isJPG) {
+  const isPNG = file.type === 'image/png'
+  if (!isJPG && !isPNG) {
     message.error('You can only upload JPG or PNG file!')
   }
   const isLt2M = file.size / 1024 / 1024 < 5
   if (!isLt2M) {
     message.error('Image must smaller than 5MB!')
   }
-  return (isJPG) && isLt2M
+  return (isJPG || isPNG) && isLt2M
 }
 
 class SingleImageUpload extends React.Component {
@@ -76,7 +76,7 @@ class SingleImageUpload extends React.Component {
     const { onChange } = this.props
     const { file } = handledFileProps
     const reader = new FileReader()
-    
+
     reader.onload = (event) => {
       file.uri = reader.result
       CloudinaryAPI.uploadMediaFile(file, 'image')

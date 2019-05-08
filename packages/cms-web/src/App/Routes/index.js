@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import {Route} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -25,7 +25,7 @@ const RouterWrapper = styled.div`
 class AppRoot extends Component {
   render() {
     return (
-      <div>
+      <Fragment>
         <Session /> 
         <AuthChecker>
           <Header />
@@ -52,7 +52,7 @@ class AppRoot extends Component {
             />
           </RouterWrapper>
         </AuthChecker>
-      </div>
+      </Fragment>
     )
   }
 }

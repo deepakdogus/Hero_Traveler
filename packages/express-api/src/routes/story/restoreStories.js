@@ -6,7 +6,7 @@ const restoreStory = async(id) => {
 
 
 export default function restoreStories(req, res) {
-  const ids = req.body.ids
-  const restoreTasks = ids.map(i => restoreStory(i))
+  const { ids } = req.body
+  const restoreTasks = ids.map(id => restoreStory(id))
   return Promise.all(restoreTasks)
 }

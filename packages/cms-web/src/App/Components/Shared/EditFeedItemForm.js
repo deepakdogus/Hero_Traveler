@@ -2,9 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Checkbox, message } from 'antd'
 import mapValues from 'lodash/mapValues'
+import styled from 'styled-components'
 import FormControls from './FormControls'
 
 const FormItem = Form.Item
+
+const StyledForm = styled(Form)`
+  margin-top: '20px'
+`
 
 class EditFeedItemForm extends React.Component {
   handleSubmit = (e) => {
@@ -40,11 +45,10 @@ class EditFeedItemForm extends React.Component {
     }
 
     return (
-      <Form
+      <StyledForm
         layout="vertical"
         onSubmit={this.handleSubmit}
         className="login-form"
-        style={{ marginTop: '20px' }}
       >
         <FormItem {...formItemLayout} label="Title">
           {getFieldDecorator('title', {
@@ -94,7 +98,7 @@ class EditFeedItemForm extends React.Component {
           isDeleting={isDeleting}
           formLoading={formLoading}
         />
-      </Form>
+      </StyledForm>
     )
   }
 }

@@ -55,17 +55,12 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleWindowResize)
-    window.addEventListener('scroll', this.handleScroll)
-  }
-
-  componentWillMount() {
     this.handleWindowResize()
+    window.addEventListener('resize', this.handleWindowResize)
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize)
-    window.removeEventListener('scroll', this.handleScroll)
   }
 
   shouldDisengageNavbar = () => {

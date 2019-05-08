@@ -165,6 +165,8 @@ CategorySchema.pre('save', function(next) {
   next()
 })
 
+CategorySchema.index({title: 'text'})
+
 CategorySchema.plugin(slug, {truncate: 50})
 CategorySchema.plugin(softDelete, {overrideMethods: true})
 

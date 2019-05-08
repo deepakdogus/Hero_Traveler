@@ -5,7 +5,7 @@ import StoryActions from '../Redux/Entities/Stories'
 import StartupActions from '../Redux/StartupRedux'
 import SessionActions from '../Redux/SessionRedux'
 import SignupActions from '../Redux/SignupRedux'
-import { loginToFacebookAndGetUserInfo } from '../Services/FacebookConnect'
+import { loginToFacebookAndGetUserInfo } from '../../Services/FacebookConnect'
 
 const currentUserId = ({session}) => session.userId
 
@@ -266,13 +266,13 @@ export function * adminPutUser (api, action) {
 }
 
 export function * adminDeleteUser (api, action) {
-  const { id, history, message } = action.payload
+  const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteUser, id)
   if (response.ok && response.data) {
     const record = response.data
     yield put(UserActions.adminDeleteUserSuccess(id))
     message.success('User was deleted')
-    history.goBack()
+    if (cb) cb()
   } else {
     const error = response.data ? response.data.message : 'Error fetching data'
     message.error(error)

@@ -28,6 +28,7 @@ import {
   hasBadge,
 } from '../Shared/Lib/badgeHelpers'
 import { showPublishDate } from '../Shared/Lib/dateHelpers'
+import StarRating from '../Containers/CreateStory/StarRating'
 
 // FeedItems are either a Story or a Guide
 export default class FeedItemPreview extends Component {
@@ -196,18 +197,16 @@ export default class FeedItemPreview extends Component {
       ]}>
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
-            <TouchableOpacity onPress={this._touchUser}>
-              <Avatar
-                size={isReadingScreen ? 'small' : 'extraSmall'}
-                style={styles.avatar}
-                avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
-              />
-            </TouchableOpacity>
-            <View style={styles.verticalCenter}>
-              <TouchableOpacity
-                onPress={this._touchUser}
-                style={styles.profileButton}
-              >
+            <View>
+              <TouchableOpacity onPress={this._touchUser}>
+                <Avatar
+                  size={isReadingScreen ? 'small' : 'extraSmall'}
+                  style={styles.avatar}
+                  avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={this._touchUser}>
                 {hasBadge(user.role) && (
                   <TabIcon
                     name={roleToIconName[user.role]}
@@ -215,8 +214,16 @@ export default class FeedItemPreview extends Component {
                       image: styles.badgeImage,
                       view: styles.badgeView,
                     }}
-                 />
+                  />
                 )}
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.verticalCenter}>
+              <TouchableOpacity
+                onPress={this._touchUser}
+                style={styles.profileButton}
+              >
                 <Text style={[
                   styles.username,
                   isReadingScreen && styles.usernameReading,
@@ -237,10 +244,10 @@ export default class FeedItemPreview extends Component {
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
                 <Text style={[
-                    profileViewStyles.blackButtonText,
-                    isFollowing ? null : profileViewStyles.followButtonText,
-                    styles.followFollowingText,
-                  ]}
+                  profileViewStyles.blackButtonText,
+                  isFollowing ? null : profileViewStyles.followButtonText,
+                  styles.followFollowingText,
+                ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 </Text>
@@ -294,7 +301,7 @@ export default class FeedItemPreview extends Component {
   }
 
   renderBottomSection() {
-    const {counts, description, coverCaption, draft, type} = this.props.feedItem
+    const {counts, description, coverCaption, draft, type, rating} = this.props.feedItem
     const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
 
     if (this.isGuideReadingScreen()) return null
@@ -342,6 +349,14 @@ export default class FeedItemPreview extends Component {
             </Text>
           )}
         </TouchableOpacity>
+        {isReadingScreen && rating && false && (
+          <View style={storyReadingScreenStyles.starRating}>
+            <Text style={storyReadingScreenStyles.experience}>
+              Overall Experience:
+            </Text>
+            <StarRating valueSelected={rating} />
+          </View>
+        )}
         <View style={styles.lastRow}>
           {!isReadingScreen && (
             <View style={styles.leftRow}>

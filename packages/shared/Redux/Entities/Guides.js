@@ -273,7 +273,7 @@ export const adminGetGuideFailure = (state, { error }) => {
 export const adminGetGuideSuccess = (state, { res }) => {
   let list = [...state.getIn(['adminGuides', 'byId'])]
   let total = state.getIn(['adminGuides', 'total'])
-  const { record } = res
+  const { record = {} } = res
   const recordIndex = _.findIndex(list, { id: record.id })
   if (recordIndex >= 0) {
     list[recordIndex] = record

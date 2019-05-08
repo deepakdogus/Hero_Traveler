@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import {
   isStoryLiked,
@@ -270,6 +271,7 @@ class FeedItemPreview extends Component {
     sessionUserId: PropTypes.string,
     author: PropTypes.object,
     guideId: PropTypes.string,
+    guideAuthor: PropTypes.string,
     isStory: PropTypes.bool,
     isLiked: PropTypes.bool,
     isBookmarked: PropTypes.bool,
@@ -349,17 +351,18 @@ class FeedItemPreview extends Component {
 
   render() {
     const {
-      guideId,
       feedItem,
-      sessionUserId,
+      guideId,
+      guideAuthor,
       isLiked,
       isBookmarked,
       isStory,
+      sessionUserId,
       type,
     } = this.props
 
     const isList = type === 'list'
-    const isGuideAuthor = !!guideId && sessionUserId === this.props.author.id
+    const isGuideAuthor = sessionUserId === guideAuthor
 
     /*
      * in cases where story/guide is retrieved from algolia, author prop will be
@@ -389,7 +392,7 @@ class FeedItemPreview extends Component {
       <MarginWrapper>
         <DirectionalWrapper>
           <ImageContainer
-            onClick={guideId ? this.noop : this.navToFeedItem}
+            onClick={this.navToFeedItem}
             src={imageUrl}
           >
             <StyledOverlay overlayColor='black' >
@@ -428,7 +431,7 @@ class FeedItemPreview extends Component {
                     iconTextProps={AvatarTextStyles}
                     imageTextProps={AvatarTextStyles}
                     avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-                    isStoryPreview
+                    isFeedItemPreview
                     size='avatar'
                     type='profile'
                     onClick={this.navToUserProfile}
@@ -489,7 +492,7 @@ class FeedItemPreview extends Component {
 const mapStateToProps = (state, ownProps) => {
   const {session, entities} = state
   const sessionUserId = session.userId
-  const {feedItem, isStory} = ownProps
+  const {feedItem, isStory, guideId} = ownProps
 
   let feedItemProps = null
   if (feedItem) {
@@ -508,6 +511,12 @@ const mapStateToProps = (state, ownProps) => {
     feedItemProps.isLiked = isStory
       ? isStoryLiked(entities.users, sessionUserId, feedItem.id)
       : isGuideLiked(entities.users, sessionUserId, feedItem.id)
+    if (guideId) {
+      feedItemProps.guideAuthor = _.get(
+        state,
+        `entities.guides.entities[${guideId}].author`,
+      )
+    }
   }
 
   return {

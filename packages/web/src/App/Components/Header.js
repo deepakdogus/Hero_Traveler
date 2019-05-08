@@ -148,7 +148,7 @@ class Header extends React.Component {
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
       this.props.getLikesAndBookmarks(this.props.userId)
       this.closeModal()
-      if (nextProps.isSignedUp) nextProps.reroute('/signup/topics')
+      if (nextProps.isSignedUp) nextProps.reroute('/signup/info')
     }
   }
 

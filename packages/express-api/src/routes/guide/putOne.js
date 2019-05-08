@@ -6,5 +6,5 @@ import _ from 'lodash'
 export default async function updateUser(req) {
   const attrs = Object.assign({}, req.body)
   attrs.id = req.params.id
-  return Guide.updateGuide(attrs);
+  return Guide.updateGuide(attrs)
 }

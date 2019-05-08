@@ -42,6 +42,27 @@ const AccountSchema = Schema({
   uid: String
 })
 
+const LocationInfoSchema = Schema({
+  name: {
+    type: String,
+  },
+  locality: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
+})
+
 export const ModelName = 'User'
 
 const UserSchema = new Schema({
@@ -212,6 +233,18 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
+  birthday: {
+    type: Date,
+    hideJSON: true,
+  },
+  locationInfo: {
+    type: [LocationInfoSchema],
+    hideJSON: true,
+  },
+  gender: {
+    hideJSON: true,
+    type: String
+  }
 }, {
   timestamps: true,
   toObject: {
@@ -283,7 +316,6 @@ UserSchema.statics = {
       notificationTypes: defaultNotificationTypes,
     })
   },
-
   // includes soft-deleted by default
   getMany({ page = 1, perPage = 5, search='', sort, query }) {
     let queryToApply = {}
@@ -294,7 +326,7 @@ UserSchema.statics = {
 
     if (search !== '') {
       queryToApply['$text'] = { $search: search }
-    } 
+    }
 
     let sortToApply = {createdAt: -1}
     if (sort) {
@@ -310,7 +342,13 @@ UserSchema.statics = {
         .sort(sortToApply)
           .exec(),
     })
-  }
+  },
+  getBadgeUsers() {
+    return this.find({
+      role: { $ne: 'user'}
+    })
+    .lean()
+  },
 }
 
 UserSchema.methods = {

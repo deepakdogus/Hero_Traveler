@@ -85,7 +85,7 @@ class SignupTopics extends Component {
           </NavLinkContainer>
           <Container>
             <SizedDiv>
-              <Title>WELCOME!</Title>
+              <Title>FOLLOW TOPICS</Title>
               <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
               <ExploreGrid
                 categories={this.props.categories}

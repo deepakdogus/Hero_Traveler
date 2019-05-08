@@ -13,5 +13,6 @@ export default function createLocalDraft(authorId){
     },
     draft: true,
     flagged: false,
+    rating: 5,
   }
 }

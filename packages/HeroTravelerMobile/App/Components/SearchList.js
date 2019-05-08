@@ -1,15 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  SectionList,
-  View,
-  Text,
-  Keyboard,
-} from 'react-native'
+import { SectionList, View, Text, Keyboard } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
-
-import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
 import styles from './Styles/SearchPlacesPeopleStyles'
 
@@ -39,9 +32,7 @@ class SearchList extends Component {
     Keyboard.dismiss()
 
     let title = location.primaryText || location.title
-    title += hasSecondaryText(location.secondaryText)
-      ? `, ${formatSecondaryText(location.secondaryText)}`
-      : ''
+    title += location.secondaryText ? `, ${location.secondaryText}` : ''
 
     NavActions.searchResults({
       location,
@@ -84,18 +75,19 @@ class SearchList extends Component {
         </View>
       )
 
-  renderLocationRow = ({ item, item: {title, primaryText, secondaryText} }) => {
+  renderLocationRow = ({
+    item,
+    item: { title, primaryText, secondaryText },
+  }) => {
     const TextContainer = (
       <View style={styles.textContainer}>
         <Text style={styles.listItemText}>
           {primaryText || title}
-          {hasSecondaryText(secondaryText) ? ',' : ''}
+          {secondaryText ? ',' : ''}
           &nbsp;
         </Text>
-        {!!secondaryText && secondaryText.indexOf(', ') !== -1 && (
-          <Text style={styles.listItemSecondaryText}>
-            {formatSecondaryText(secondaryText)}
-          </Text>
+        {secondaryText && (
+          <Text style={styles.listItemSecondaryText}>{secondaryText}</Text>
         )}
       </View>
     )
@@ -127,16 +119,14 @@ class SearchList extends Component {
   userIsFollowed = userId => _.includes(this.props.myFollowedUsers, userId)
 
   //recent searches
-  shouldDisplayRecent = (type) => {
-    const {
-      searchHistory,
-      hasSearchText,
-      query,
-    } = this.props
+  shouldDisplayRecent = type => {
+    const { searchHistory, hasSearchText, query } = this.props
 
-    return this.hasNoResults()
+    return (
+      this.hasNoResults()
       && !!searchHistory[type].length
       && (!hasSearchText || query.length < 3)
+    )
   }
 
   shouldDisplayRecentPlaces = () => this.shouldDisplayRecent('places')
@@ -170,19 +160,17 @@ class SearchList extends Component {
       lastPeopleSearchResults,
       lastLocationPredictions,
     } = this.props
-    const searchHits = _.get(lastPeopleSearchResults, 'hits', []).slice(0, MAX_ITEMS)
+    const searchHits = _.get(lastPeopleSearchResults, 'hits', []).slice(
+      0,
+      MAX_ITEMS,
+    )
     const locationHits = lastLocationPredictions || []
 
-    return !isSearching
-      && !searchHits.length
-      && !locationHits.length
+    return !isSearching && !searchHits.length && !locationHits.length
   }
 
   renderNoResults = () => {
-    const {
-      hasSearchText,
-      query,
-    } = this.props
+    const { hasSearchText, query } = this.props
     if (!(this.hasNoResults() && hasSearchText && query.length >= 3)) return null
     return (
       <View style={styles.noResults}>

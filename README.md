@@ -17,7 +17,7 @@ After registration, we will close any future registrations, as our private npm w
 This project has only been tested on v7.7.2):
 
 ```bash
-nvm use 7.7.2
+n 7.7.2
 npm i -g react-native-cli
 npm set registry https://npm.abeck.io/
 npm login
@@ -67,6 +67,17 @@ Eager Notification URL: `https://06859835.ngrok.io/story/draft/cover-video`(just
   * `prod_GUIDES`
   * `prod_CATEGORIES`
   * `prod_HASHTAGS`
+
+### 4. Mailchimp (Email list subscriptions)
+* Create an account on mailchimp.com or use an existing one
+* Get your API key
+  * Click your username in the top right, then account in the dropdown
+  * Go to Extra > API keys
+  * Create a key and add it to your .env
+* Get your list id
+  * Go to the List tab
+  * Create a new list if one was not created for you at sign up and click its name
+  * From the individual list view got to Settings > List name and defaults and copy the List ID
 
 ## Setting up your ENV
 ### 1. Shell profile

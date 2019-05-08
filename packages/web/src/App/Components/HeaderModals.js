@@ -19,6 +19,7 @@ import DeleteFeedItem from './Modals/DeleteFeedItem'
 import RemoveStoryFromGuide from './Modals/RemoveStoryFromGuide'
 import EmailVerificationConfirmation from './Modals/EmailVerificationConfirmation'
 import ErrorModal from './Modals/ErrorModal'
+import AddActionButton from './Modals/AddActionButton'
 
 // Right Modals
 import RightModal from './RightModal'
@@ -244,7 +245,17 @@ export default class HeaderModals extends React.Component {
         >
           <ErrorModal closeModal={closeGlobalModal} />
         </Modal>
-
+        <Modal
+          isOpen={globalModalThatIsOpen === 'addActionButton'}
+          contentLabel="Add Action Button"
+          onRequestClose={closeModal}
+          style={customModalStyles}
+        >
+          <AddActionButton
+            closeModal={closeGlobalModal}
+            params={globalModalParams}
+          />
+        </Modal>
         <RightModal
           isOpen={globalModalThatIsOpen === 'notificationsThread'}
           contentLabel='Notifications Thread'

@@ -14,14 +14,14 @@ import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
 import { getNewCover } from '../Redux/helpers/coverUpload'
 import CloudinaryAPI, {
   moveVideoToPreCache,
-  moveVideosFromPrecacheToCache
+  moveVideosFromPrecacheToCache,
 } from '../../Services/CloudinaryAPI'
 import UXActions from '../../Redux/UXRedux'
 import pathAsFileObject from '../Lib/pathAsFileObject'
 import { isLocalMediaAsset } from '../Lib/getVideoUrl'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
-import hasConnection from '../../Lib/hasConnection'
+import hasConnection from '../Lib/hasConnection'
 import { currentUserId } from './SessionSagas'
 
 const hasInitialAppDataLoaded = ({ entities }, userId) =>
@@ -633,11 +633,12 @@ export function* loadDrafts(api) {
 export function* getGuideStories(api, { guideId }) {
   const response = yield call(api.getGuideStories, guideId)
   if (response.ok) {
-    const { entities } = response.data
+    const {entities, result} = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
-      put(StoryActions.receiveStories(entities.stories))
+      put(StoryActions.receiveStories(entities.stories)),
+      put(StoryActions.receiveStoriesByGuide(guideId, result)),
     ]
   }
   // no fail case... worse case they will see less stories
@@ -720,3 +721,78 @@ export function* syncPendingUpdates(api) {
     }
   }
 }
+
+
+export function * adminGetStories (api, action) {
+  const { params } = action
+  const response = yield call(api.adminGetStories, params)
+  if (response.ok && response.data && response.data.data) {
+    const { data, count } = response.data
+    yield put(StoryActions.adminGetStoriesSuccess({ data, count }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(StoryActions.adminGetStoriesFailure(error))
+  }
+}
+
+export function * adminGetStory (api, action) {
+  const { id } = action
+  const response = yield call(api.adminGetStory, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminGetStorySuccess({ record }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(StoryActions.adminGetStoryFailure(error))
+  }
+}
+
+export function * adminPutStory (api, action) {
+  const { values, id, message } = action.payload
+  const response = yield call(api.adminPutStory, { values, id })
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminGetStorySuccess({ record }))
+    message.success('Story was updated')
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(StoryActions.adminPutStoryFailure())
+  }
+}
+
+export function * adminDeleteStory (api, action) {
+  const { id, message, cb } = action.payload
+  const response = yield call(api.adminDeleteStory, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(StoryActions.adminDeleteStorySuccess(id))
+    message.success('Story was deleted')
+    if (cb) cb()
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(StoryActions.adminDeleteStoryFailure())
+  }
+}
+
+export function * adminRestoreStories (api, action) {
+  const { ids, message, getParams } = action.payload
+  const response = yield call(api.adminRestoreStories, ids)
+  if (response.ok && response.data) {
+    const record = response.data
+    message.success('Stories were restored')
+    const storyResponse = yield call(api.adminGetStories, getParams)
+    if (storyResponse.ok && storyResponse.data && storyResponse.data.data) {
+      const { data, count } = storyResponse.data
+      yield put(StoryActions.adminGetStoriesSuccess({ data, count }))
+    } else {
+      const error = storyResponse.data ? storyResponse.data.message : 'Error fetching data'
+      yield put(StoryActions.adminGetStoriesFailure(error))
+    }
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+  }
+}
+

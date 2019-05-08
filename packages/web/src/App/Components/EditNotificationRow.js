@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
-import {Row} from './FlexboxGrid'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 import {Colors} from '../Shared/Themes'
 
 import 'react-ios-switch/build/bundle.css'

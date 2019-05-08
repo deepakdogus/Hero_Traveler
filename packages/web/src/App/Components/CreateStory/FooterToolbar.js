@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
-import {Row} from '../FlexboxGrid'
-import RoundedButton from '../RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 
 const Container = styled.div`
   position: fixed;

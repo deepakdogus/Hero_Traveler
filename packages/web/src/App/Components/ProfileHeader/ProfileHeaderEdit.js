@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import PhotoEditor from '../Modals/PhotoEditor'
-import VerticalCenter from '../VerticalCenter'
-import { Row } from '../FlexboxGrid'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 import {
   StyledAvatar,
   ButtonWrapper,
 } from './ProfileHeaderShared'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
 import ResizableTextarea from '../ResizableTextarea'
 
 import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'

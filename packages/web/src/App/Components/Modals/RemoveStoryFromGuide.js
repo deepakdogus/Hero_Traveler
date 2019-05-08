@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import GuideActions from '../../Shared/Redux/Entities/Guides'
-import {Row} from '../FlexboxGrid'
-import RoundedButton from '../RoundedButton'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import { Container, Title } from './Shared'
 
 const StyledTitle = styled(Title)`

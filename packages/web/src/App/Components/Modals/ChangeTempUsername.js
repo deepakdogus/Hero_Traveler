@@ -9,7 +9,7 @@ import {
 } from 'redux-form'
 import _ from 'lodash'
 
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {
   Container,
@@ -17,7 +17,7 @@ import {
   Text,
   ErrorMessage,
 } from './Shared'
-import { Row } from '../FlexboxGrid'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 import FormInput from '../FormInput'
 import {
   validate,

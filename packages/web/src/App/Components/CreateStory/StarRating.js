@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { AbstractStarRating } from '../../Shared/AbstractComponents'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const Container = styled.div`
   display: flex;

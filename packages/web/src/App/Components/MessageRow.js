@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import SpaceBetweenRow from './SpaceBetweenRow'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import Avatar from './Avatar'
+import Avatar from '../Shared/Web/Components/Avatar'
 import HorizontalDivider from './HorizontalDivider'
 import {
   UserName,

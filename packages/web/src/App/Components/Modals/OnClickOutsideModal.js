@@ -6,7 +6,7 @@ import {
   Container,
   ExteriorCloseXContainer,
 } from './Shared'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 import UXActions from '../../Redux/UXRedux'
 
 class OnClickOutsideModal extends Component {

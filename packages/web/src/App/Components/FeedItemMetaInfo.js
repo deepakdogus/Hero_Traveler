@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
-import Icon from './Icon'
-import { Row } from './FlexboxGrid'
+import Icon from '../Shared/Web/Components/Icon'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 import { displayLocationDetails } from '../Shared/Lib/locationHelpers'
 import { showTravelDate, getTripDate } from '../Shared/Lib/dateHelpers'
 

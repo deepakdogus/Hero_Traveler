@@ -5,7 +5,7 @@ import get from 'lodash/get'
 
 import { Upload, Icon, Modal, message } from 'antd'
 
-import CloudinaryAPI from '../Shared/Services/CloudinaryAPI'
+import CloudinaryAPI from '../Services/CloudinaryAPI'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
 const FullWidthImg = styled.img`
@@ -76,7 +76,7 @@ class SingleImageUpload extends React.Component {
     const { onChange } = this.props
     const { file } = handledFileProps
     const reader = new FileReader()
-    
+
     reader.onload = (event) => {
       file.uri = reader.result
       CloudinaryAPI.uploadMediaFile(file, 'image')

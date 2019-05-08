@@ -601,6 +601,13 @@
 			remoteGlobalIDString = 2215B993E71FD766A2BFD424A42A4331;
 			remoteInfo = IQKeyboardManager;
 		};
+		F72B9252227E2B9000731C89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 66AEC2FF18407696BB68FE8175EFECDD;
+			remoteInfo = "Google-Maps-iOS-Utils";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1400,6 +1407,7 @@
 			isa = PBXGroup;
 			children = (
 				9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */,
+				F72B9253227E2B9000731C89 /* libGoogle-Maps-iOS-Utils.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
@@ -2164,6 +2172,13 @@
 			remoteRef = EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F72B9253227E2B9000731C89 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = F72B9252227E2B9000731C89 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2242,7 +2257,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
@@ -2263,7 +2278,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9150BC42201AC4CC00697D90 /* ShellScript */ = {

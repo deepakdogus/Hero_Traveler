@@ -6,7 +6,7 @@ import SessionActions from '../Redux/SessionRedux'
 import UserActions from '../Redux/Entities/Users'
 import {
   loginToFacebookAndGetUserInfo,
-} from '../Services/FacebookConnect'
+} from '../../Services/FacebookConnect'
 
 // attempts to signup with email
 export function * signupEmail (api, action) {

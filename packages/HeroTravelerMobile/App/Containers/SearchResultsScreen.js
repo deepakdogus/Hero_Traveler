@@ -5,15 +5,16 @@ import { Actions as NavActions } from 'react-native-router-flux'
 // Search
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
-// Locations
-import RNGooglePlaces from 'react-native-google-places'
 
-import env from '../Config/Env'
-import Colors from '../Shared/Themes/Colors'
-import styles from './Styles/SearchResultsScreenStyles'
-import { navToProfile } from '../Navigation/NavigationRouter'
 import FeedItemsOfType from '../Components/FeedItemsOfType'
 import Loader from '../Components/Loader'
+
+import env from '../Config/Env'
+import styles from './Styles/SearchResultsScreenStyles'
+import Colors from '../Shared/Themes/Colors'
+import formatLocation from '../Shared/Lib/formatLocation'
+import { navToProfile } from '../Navigation/NavigationRouter'
+import { getPlaceDetail } from '../Services/GooglePlaces'
 
 const algoliasearch = algoliasearchModule(
   env.SEARCH_APP_NAME,
@@ -98,12 +99,11 @@ class SearchResultsScreen extends Component {
   }
 
   getLocationDataFromGoogle = async () => {
-    const {
-      latitude,
-      longitude,
-      addressComponents: { country },
-    } = await RNGooglePlaces.lookUpPlaceByID(this.props.location.placeID)
-    return { latitude, longitude, country }
+    const { location } = this.props
+    if (!location || !location.placeID) return {}
+
+    const data = await getPlaceDetail(location.placeID)
+    return formatLocation(data)
   }
 
   setupSearchListeners = (helper, type) => {
@@ -114,27 +114,39 @@ class SearchResultsScreen extends Component {
       }
       type === 'guides'
         ? this.setState({
-            isFetchingGuideResults: false,
-            lastSearchResults,
-          })
+          isFetchingGuideResults: false,
+          lastSearchResults,
+        })
         : this.setState({
-            isFetchingStoryResults: false,
-            lastSearchResults,
+          isFetchingStoryResults: false,
+          lastSearchResults,
         })
     })
   }
 
   search = (helper, hitCount, { latitude, longitude, country }) => {
+    // if getting Google location or formatting fails, show no results
+    if (!country || !latitude || !longitude) {
+      return this.setState({
+        isFetchingStoryResults: false,
+        isFetchingGuideResults: false,
+        lastSearchResults: {
+          stories: [],
+          guides: [],
+        },
+      })
+    }
+
     helper.addDisjunctiveFacetRefinement(
       'locationInfo.country',
       `${country}`,
     )
     helper
-    .setQuery('')
-    .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-    .setQueryParameter('aroundPrecision', METER_PRECISION)
-    .setQueryParameter('hitsPerPage', hitCount)
-    .search()
+      .setQuery('')
+      .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
+      .setQueryParameter('aroundPrecision', METER_PRECISION)
+      .setQueryParameter('hitsPerPage', hitCount)
+      .search()
   }
 
   navToSeeAll = (type, feedItems) => () => NavActions.searchResultsSeeAll({

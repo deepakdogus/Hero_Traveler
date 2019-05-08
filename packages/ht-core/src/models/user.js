@@ -316,7 +316,6 @@ UserSchema.statics = {
       notificationTypes: defaultNotificationTypes,
     })
   },
-
   // includes soft-deleted by default
   getMany({ page = 1, perPage = 5, search='', sort, query }) {
     let queryToApply = {}
@@ -327,7 +326,7 @@ UserSchema.statics = {
 
     if (search !== '') {
       queryToApply['$text'] = { $search: search }
-    } 
+    }
 
     let sortToApply = {createdAt: -1}
     if (sort) {
@@ -343,7 +342,13 @@ UserSchema.statics = {
         .sort(sortToApply)
           .exec(),
     })
-  }
+  },
+  getBadgeUsers() {
+    return this.find({
+      role: { $ne: 'user'}
+    })
+    .lean()
+  },
 }
 
 UserSchema.methods = {

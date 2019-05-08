@@ -9,7 +9,6 @@ import env from '../Config/Env'
 import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
-import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
 import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
@@ -276,20 +275,35 @@ class Search extends Component {
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  navToLocationResults = async ({ description, placeId, secondaryText }) => {
+  navToLocationResults = async item => {
+    if (item.searchText && item.searchType) {
+      this.navToCachedLocation(item)
+    }
+    else {
+      this.navToNewLocation(item)
+    }
+  }
+
+  navToCachedLocation = item => {
+    const { reroute, addRecentSearch } = this.props
+    addRecentSearch({ ...item, searchText: this.state.inputText })
+
+    const { country, lat, lng, title, secondaryText } = item
+    return reroute({
+      pathname: `/results/${country}/${lat}/${lng}`,
+      search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
+    })
+  }
+
+  navToNewLocation = async ({ description, placeId, secondaryText }) => {
     const { reroute, addRecentSearch } = this.props
     try {
-      let {
+      const {
         name: title,
         country,
         latitude: lat,
         longitude: lng,
-      } = await formatLocationWeb(
-        description,
-        placeId,
-        geocodeByPlaceId,
-        getLatLng,
-      )
+      } = await formatLocationWeb(description, placeId, geocodeByPlaceId, getLatLng)
 
       if (lat && lng) {
         addRecentSearch({
@@ -300,16 +314,13 @@ class Search extends Component {
           title,
           lat,
           lng,
+          country,
           description,
           secondaryText,
         })
         reroute({
           pathname: `/results/${country}/${lat}/${lng}`,
-          search: `?t=${title}${
-            hasSecondaryText(secondaryText)
-              ? `, ${formatSecondaryText(secondaryText)}`
-              : ''
-          }`,
+          search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
         })
       }
     }
@@ -412,18 +423,18 @@ class Search extends Component {
   }
 
   renderChildren = ({ getInputProps, suggestions }) => (
-      <Container>
-        <HeaderInputContainer between="xs">
-          <HeaderInput
-            {...getInputProps({
-              placeholder: 'Type to search',
-            })}
-          />
-          <Text onClick={this.resetSearchText}>{'Cancel'}</Text>
-        </HeaderInputContainer>
-        {this.renderTab(suggestions)}
-      </Container>
-    )
+    <Container>
+      <HeaderInputContainer between="xs">
+        <HeaderInput
+          {...getInputProps({
+            placeholder: 'Type to search',
+          })}
+        />
+        <Text onClick={this.resetSearchText}>{'Cancel'}</Text>
+      </HeaderInputContainer>
+      {this.renderTab(suggestions)}
+    </Container>
+  )
 
   /* The `react-places-autocomplete` package rerenders the child based on the search
    * input. We pass all search components through GoogleLocator so we don't have to

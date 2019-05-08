@@ -25,7 +25,9 @@ export default class ExploreGrid extends Component {
   }
 
   renderItem = category => {
-    const categoryUrl = getImageUrl(category.image, 'categoryThumbnail', {
+    // console.log(category.channelImage.original.path)
+
+    const categoryUrl = getImageUrl(category.image || category.channelImage.original.path, 'categoryThumbnail', {
       width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })

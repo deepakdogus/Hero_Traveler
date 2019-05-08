@@ -24,26 +24,25 @@ export default class ExploreGrid extends Component {
     else return null
   }
 
-  renderItem = category => {
-    // console.log(category.channelImage.original.path)
-
-    const categoryUrl = getImageUrl(category.image || category.channelImage.original.path, 'categoryThumbnail', {
+  renderItem = categoryOrChannel => {
+    const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
+    const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
       width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })
 
     return (
-      <View key={category.id} style={styles.gridItem}>
+      <View key={categoryOrChannel.id} style={styles.gridItem}>
         <ImageWrapper
           cached={false}
           background={true}
-          source={{ uri: categoryUrl }}
+          source={{ uri: categoryOrChannelUrl }}
           style={styles.gridImage}
           imageStyle={{ borderRadius: 6 }}
         >
-          <TouchableWithoutFeedback onPress={this._onPress(category)}>
+          <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
             <View style={styles.gridImage}>
-              {category.selected && (
+              {categoryOrChannel.selected && (
                 <TabIcon
                   name="redCheckOutlined"
                   style={{ view: styles.selectedIcon }}
@@ -59,7 +58,7 @@ export default class ExploreGrid extends Component {
           adjustsFontSizeToFit
           minimumFontScale={0.9}
         >
-          {category.title || category.username}
+          {categoryOrChannel.title || categoryOrChannel.username}
         </Text>
       </View>
     )

@@ -46,11 +46,12 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
-  renderFeedItem = (feedItem, index) => {
+  renderFeedItem = ({feedItem, index}) => {
     const {
       tabTypes, selectedTab, isStory,
       editable, sessionUserId, location,
     } = this.props
+
     return (
       <ConnectedFeedItemPreview
         isFeed={true}

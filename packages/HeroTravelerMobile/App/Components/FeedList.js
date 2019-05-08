@@ -177,12 +177,13 @@ and so we do not need to add the property to (almost) every FeedList call we mak
        feedItemViews = targetEntities.slice(minCell, maxCell).map((entity) => {
          i = i + 1
          keyIndex = keyIndex + 1
+
          return (
            <NativeFeedItem
              key={`FeedItem:${keyIndex}`}
              cellNum={i}
             >
-             {this.props.renderFeedItem({item: entity, index:i})}
+             {this.props.renderFeedItem({feedItem: entity, index:i})}
            </NativeFeedItem>
          )
        })

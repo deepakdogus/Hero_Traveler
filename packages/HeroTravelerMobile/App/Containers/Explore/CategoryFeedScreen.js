@@ -117,7 +117,7 @@ class CategoryFeedScreen extends React.Component {
     )
   }
 
-  renderFeedItem = (feedItem, index) => {
+  renderFeedItem = ({feedItem, index}) => {
     return (
       <ConnectedFeedItemPreview
         isStory={this.state.selectedTab !== restrictedTabTypes.guides}

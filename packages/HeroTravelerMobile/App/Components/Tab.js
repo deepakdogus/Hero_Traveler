@@ -57,7 +57,10 @@ Tab.propTypes = {
   text: PropTypes.string,
   onPress: PropTypes.func,
   selected: PropTypes.bool,
-  style: PropTypes.number,
+  style: PropTypes.oneOfType([
+    PropTypes.number, // StyleSheet.create returns numbers
+    PropTypes.object,
+  ]),
 }
 
 export default Tab

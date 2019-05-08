@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-// import { NativeModules } from 'react-native'
+import { NativeModules } from 'react-native'
 import { connect } from 'react-redux'
 import UserActions, {getByBookmarks} from '../../Shared/Redux/Entities/Users'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
@@ -9,7 +9,7 @@ import ProfileView, {TabTypes} from '../../Components/ProfileView'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import { getPendingDraftsIds } from '../../Shared/Lib/getPendingDrafts'
 
-// const VideoManager = NativeModules.VideoManager
+const VideoManager = NativeModules.VideoManager
 
 class ProfileScreen extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -42,15 +42,15 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (
-    //   this.props.guideIds !== prevProps.guideIds
-    //   || this.props.userStoriesById !== prevProps.userStoriesById
-    // ) {
-    //   VideoManager.cleanDrafts([
-    //     ...this.props.draftsById,
-    //     ...this.props.pendingDraftsIds,
-    //   ])
-    // }
+    if (
+      this.props.guideIds !== prevProps.guideIds
+      || this.props.userStoriesById !== prevProps.userStoriesById
+    ) {
+      VideoManager.cleanDrafts([
+        ...this.props.draftsById,
+        ...this.props.pendingDraftsIds,
+      ])
+    }
   }
 
   _selectTab = (tab) => {

@@ -12,6 +12,5 @@ export default () => {
   }
 
   // Allow/disallow font-scaling in app
-  console.log("inside Config")
   Text.defaultProps.allowFontScaling = AppConfig.allowTextFontScaling
 }

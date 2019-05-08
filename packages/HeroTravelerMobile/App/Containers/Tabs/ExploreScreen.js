@@ -50,7 +50,6 @@ class ExploreScreen extends Component {
 
   selectTab = selectedTab => {
     this.setState({ selectedTab })
-    // selectedTab === tabTypes.channels ? this.setState({channelsSize: true}) : this.setState({channelsSize: false})
   }
 
   renderTabs = () => (
@@ -69,7 +68,7 @@ class ExploreScreen extends Component {
       title: category.title,
       leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
       navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-      categoryOrUser: category.username ? true : false,
+      isCategory: category.username ? true : false,
     })
   }
 

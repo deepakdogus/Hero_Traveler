@@ -7,11 +7,11 @@ import FeedList from '../Components/FeedList'
 
 const mapStateToProps = (state, ownProps) => {
   const {entities} = state
-
   // mapping Ids to actual stories or guides
   let mapFunc
   if (ownProps.isStory) {
     const getStoryFromEntities = (storyId) => _.get(entities, `stories.entities[${storyId}]`)
+    // console.log(getStoryFromEntities,'these are the props on connectedFeedList')
     if (ownProps.isDraftsTab) {
       mapFunc = (storyId) => {
         return getStoryFromEntities(storyId)

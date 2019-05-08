@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { getSize } from './Icon'
+import { getSize } from '../Shared/Web/Components/Icon'
 
 function getSizeOverrideDefault(props){
   return getSize(props, 'auto')

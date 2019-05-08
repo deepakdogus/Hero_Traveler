@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import { Link } from 'react-router-dom'
-import { Col } from '../FlexboxGrid'
+import { Col } from '../../Shared/Web/Components/FlexboxGrid'
 import {
   StyledRow,
   StyledRoundedLoginButton,
@@ -11,7 +11,7 @@ import {
   Logo,
   Divider,
   SearchNav,
-} from './Shared'
+} from '../../Shared/Web/Components/Headers/Shared'
 
 const ItemsRow = styled(StyledRow)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {

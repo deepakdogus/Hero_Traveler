@@ -7,7 +7,7 @@ import LoginActions from '../../../Shared/Redux/LoginRedux'
 import UXActions from '../../../Redux/UXRedux'
 
 import OnClickOutsideModal from '../OnClickOutsideModal'
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import {
   Title,
   StyledInput,

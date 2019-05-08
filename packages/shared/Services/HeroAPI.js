@@ -136,6 +136,15 @@ const create = () => {
     })
   }
 
+  const loginAdmin = (username, password) => {
+    return api.post('admin/auth', {}, {
+      auth: {
+        username,
+        password
+      }
+    })
+  }
+
   const logout = (tokens) => {
     return api.post('auth/revoke', {
       tokens: tokens
@@ -485,6 +494,52 @@ const create = () => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
+  const adminGetUsers = (params) => api.get(`admin/users`, params)
+
+  const adminGetUser = (id) => api.get(`admin/users/${id}`)
+
+  const adminPutUser = ({ id, values }) => api.put(`admin/users/${id}`, values)
+
+  const adminDeleteUser = (id) => api.delete(`admin/users/${id}`)
+
+  const adminRestoreUsers = (ids) => api.post('admin/users/restore', { ids })
+
+  const adminGetCategories = (params) => api.get('admin/categories', params)
+
+  const adminGetCategory = (id) => api.get(`admin/categories/${id}`)
+
+  const adminPutCategory = ({ id, values }) => api.put(`admin/categories/${id}`, values)
+
+  const adminPostCategory = ({ values }) => api.post(`admin/categories`, values)
+
+  const adminDeleteCategory = (id) => api.delete(`admin/categories/${id}`)
+
+  const adminRestoreCategories = (ids) => api.post('admin/categories/restore', { ids })
+
+  const adminGetStories = (params) => api.get('admin/stories', params)
+
+  const adminGetStory = (id) => api.get(`admin/stories/${id}`)
+
+  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, { story: values })
+
+  const adminDeleteStory = (id) => api.delete(`admin/stories/${id}`)
+
+  const adminRestoreStories = (ids) => api.post('admin/stories/restore', { ids })
+
+  const adminGetGuides = (params) => api.get('admin/guides', params)
+
+  const adminGetGuide = (id) => api.get(`admin/guides/${id}`)
+
+  const adminPutGuide = ({ id, values }) => api.put(`admin/guides/${id}`, values)
+
+  const adminDeleteGuide = (id) => api.delete(`admin/guides/${id}`)
+
+  const adminRestoreGuides = (ids) => api.post('admin/guides/restore', { ids })
+
+  const adminGetTotalStats = () => api.get('admin/stats/total')
+
+  const adminGetNewStats = (params) => api.get('admin/stats/new', params)
+
   // ------
   // STEP 3
   // ------
@@ -501,6 +556,7 @@ const create = () => {
     setAuth,
     unsetAuth,
     login,
+    loginAdmin,
     logout,
     refreshTokens,
     getMe,
@@ -571,6 +627,29 @@ const create = () => {
     getCategoryGuides,
     likeGuide,
     unlikeGuide,
+    adminGetUsers,
+    adminGetUser,
+    adminPutUser,
+    adminDeleteUser,
+    adminRestoreUsers,
+    adminGetStories,
+    adminGetStory,
+    adminPutStory,
+    adminDeleteStory,
+    adminRestoreStories,
+    adminGetGuides,
+    adminGetGuide,
+    adminPutGuide,
+    adminDeleteGuide,
+    adminRestoreGuides,
+    adminGetCategories,
+    adminGetCategory,
+    adminPutCategory,
+    adminPostCategory,
+    adminDeleteCategory,
+    adminRestoreCategories,
+    adminGetTotalStats,
+    adminGetNewStats
   }
 }
 

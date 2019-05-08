@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Icon from './Icon'
-import { Col } from './FlexboxGrid'
+import Icon from '../Shared/Web/Components/Icon'
+import { Col } from '../Shared/Web/Components/FlexboxGrid'
 import { shareLinkOnTwitter, shareLinkOnEmail } from '../Lib/sharingWeb'
 
 const StyledIcon = styled(Icon)`

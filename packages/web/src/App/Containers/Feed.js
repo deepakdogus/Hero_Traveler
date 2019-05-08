@@ -12,7 +12,7 @@ import SignUpActions from '../Shared/Redux/SignupRedux'
 import Footer from '../Components/Footer'
 import HorizontalDivider from '../Components/HorizontalDivider'
 import TabBar from '../Components/TabBar'
-import { sizes } from '../Themes/Metrics'
+import { sizes } from '../Shared/Web/Themes/Metrics'
 
 const CenteredText = styled.p`
   text-align: center;

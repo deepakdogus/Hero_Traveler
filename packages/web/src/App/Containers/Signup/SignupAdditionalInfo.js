@@ -9,8 +9,8 @@ import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unch
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
 // component imports
-import RoundedButton from '../../Components/RoundedButton'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
 import { Title, Subtitle } from './SignupSocial'
 import HorizontalDivider from '../../Components/HorizontalDivider'
 import DropdownDatePicker from '../../Components/DropdownDatePicker'

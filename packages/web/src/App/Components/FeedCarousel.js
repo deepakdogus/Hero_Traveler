@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Carousel from 'nuka-carousel'
 
-import RoundedButton from './RoundedButton'
-import Icon from './Icon'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import Icon from '../Shared/Web/Components/Icon'
 
 import './Styles/CarouselStyles.css'
 

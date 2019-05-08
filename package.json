@@ -10,7 +10,5 @@
     "build": "docker-compose build",
     "deploy": "docker stack deploy --with-registry-auth --compose-file=docker-compose.yaml api"
   },
-  "dependencies": {
-    "ngrok": "^3.1.1"
-  }
+  "dependencies": {}
 }

@@ -398,6 +398,7 @@ export function* saveLocalDraft(api, action) {
       )
     )
   ]
+
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
     yield saveDraftErrorHandling(draft, coverResponse.error)
@@ -462,7 +463,6 @@ export function* updateDraft(api, action) {
 
   const coverResponse = yield createCover(api, draft)
   if (coverResponse.error) {
-    console.log("coverResponse is", coverResponse)
     yield updateDraftErrorHandling(draft, coverResponse.error)
     return
   }

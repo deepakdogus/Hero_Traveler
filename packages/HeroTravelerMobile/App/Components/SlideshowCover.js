@@ -87,7 +87,6 @@ export default class SlideshowCover extends Component {
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
     const {children, showPlayButton, isFeed, isGuide} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
-
     return (
       <TouchableWithoutFeedback
         style={{flex: 1}}
@@ -306,6 +305,7 @@ export default class SlideshowCover extends Component {
   render() {
     const { slideshow } = this.props
     const { currentIndex } = this.state
+    const { height } = this._getWidthHeight()
     return (
       <View style={styles.root}>
         <Swiper
@@ -317,7 +317,7 @@ export default class SlideshowCover extends Component {
           onIndexChanged={this._handleIndexChanged}
           style={{
             marginBottom: 20,
-            height: 350,
+            height,
             backgroundColor: 'white',
             position: 'relative',
           }}

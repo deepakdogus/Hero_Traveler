@@ -8,9 +8,10 @@ import {
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import Immutable from 'seamless-immutable'
-// import { ImageCrop } from 'react-native-image-cropper'
+import ImageCrop from '../../Components/ImageCropper'
 import { Actions as NavActions } from 'react-native-router-flux'
-import ImageZoom from 'react-native-image-pan-zoom'
+import RNFetchBlob from 'react-native-fetch-blob'
+// import ImageZoom from 'react-native-image-pan-zoom'
 
 import NavBar from './NavBar'
 import CameraRollPicker from '../../Components/CameraRollPicker/CameraRollPicker'
@@ -81,19 +82,29 @@ class SlideshowCover extends Component{
     })
     this.setState({
       galleryImagePath,
+      slideshow,
     }, () => {
-      // this.capture()
+      this.capture()
     })
-    this.props.updateWorkingDraft({ slideshow })
   }
 
   capture = () => {
-    console.log('this.cropper', this.cropper)
+    const { slideshow, galleryImagePath } = this.state
+    const currentImageIndex = _.findIndex(slideshow, { uri: galleryImagePath })
+    const currentImage = slideshow[currentImageIndex]
+    if (currentImage.type === 'video') {
+      return this.props.updateWorkingDraft({slideshow})
+    }
     this.refs.cropper.crop()
       .then(myUri => {
         console.log('capture', myUri)
         Image.getSize(myUri, (width, height) => {
-          console.log('image width, height', width, height)
+          console.log('after capture image width, height', width, height)
+          currentImage.uri = myUri
+          _.set(currentImage, 'original.meta.height', height)
+          _.set(currentImage, 'original.meta.width', width)
+          _.set(slideshow, [currentImageIndex], currentImage)
+          this.props.updateWorkingDraft({slideshow})
         })
       })
   }
@@ -198,34 +209,19 @@ class SlideshowCover extends Component{
     const { galleryImagePath, width, height } = this.state
     return (
       <Fragment>
-        <ImageZoom
-          cropWidth={Metrics.screenWidth}
+        <ImageCrop 
+          ref={'cropper'}
+          image={galleryImagePath}
           cropHeight={300}
-          imageWidth={width}
-          imageHeight={height}
-        >
-          <Image
-            style={{ width, height }}
-            source={{
-              uri: galleryImagePath,
-            }}
-          />
-        </ImageZoom>
-        {/*
-          <ImageCrop 
-            ref={'cropper'}
-            image={galleryImagePath}
-            cropHeight={300}
-            cropWidth={Metrics.screenWidth}
-            maxZoom={80}
-            minZoom={20}
-            panToMove={true}
-            pinchToZoom={true}
-            format="file"
-            filePath={`${RNFetchBlob.fs.dirs.CacheDir}/temp_post_image.jpg`}
-            type="jpg"
-          />
-        */}
+          cropWidth={Metrics.screenWidth}
+          maxZoom={100}
+          minZoom={1}
+          panToMove={true}
+          pinchToZoom={true}
+          format="file"
+          filePath={`${RNFetchBlob.fs.dirs.CacheDir}/temp_post_image.jpg`}
+          type="jpg"
+        />
         <View style={styles.horizontalGrid} />
         <View style={styles.verticalGrid} />
       </Fragment>

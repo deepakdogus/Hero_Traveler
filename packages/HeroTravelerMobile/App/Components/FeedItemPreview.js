@@ -125,7 +125,7 @@ export default class FeedItemPreview extends Component {
           },
         },
       ],
-   )
+    )
   }
 
   _touchUser = () => {
@@ -221,7 +221,7 @@ export default class FeedItemPreview extends Component {
                       image: styles.badgeImage,
                       view: styles.badgeView,
                     }}
-                 />
+                  />
                 )}
                 <Text style={[
                   styles.username,
@@ -242,7 +242,8 @@ export default class FeedItemPreview extends Component {
                   styles.followFollowingButton,
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
-                <Text style={[
+                <Text
+                  style={[
                     profileViewStyles.blackButtonText,
                     isFollowing ? null : profileViewStyles.followButtonText,
                     styles.followFollowingText,
@@ -433,21 +434,21 @@ export default class FeedItemPreview extends Component {
         {isReadingScreen && this.renderUserSection()}
         {
           isSlideshow && (
-          <SlideshowCover
-            areInRenderLocation={this.props.areInRenderLocation}
-            autoPlayVideo={this.props.autoPlayVideo}
-            allowVideoPlay={this.props.allowVideoPlay}
-            slideshow={feedItem.slideshow}
-            onPress={this._onPress}
-            showPlayButton={showPlayButton}
-            playButtonSize={playButtonSize}
-            isFeed={this.props.isFeed}
-            shouldEnableAutoplay={this.shouldEnableAutoplay()}
-            title={this.props.feedItem.title}
-            isReadingScreen={isReadingScreen}
-            isGuide={!isStory}
-          />
-        )}
+            <SlideshowCover
+              areInRenderLocation={this.props.areInRenderLocation}
+              autoPlayVideo={this.props.autoPlayVideo}
+              allowVideoPlay={this.props.allowVideoPlay}
+              slideshow={feedItem.slideshow}
+              onPress={this._onPress}
+              showPlayButton={showPlayButton}
+              playButtonSize={playButtonSize}
+              isFeed={this.props.isFeed}
+              shouldEnableAutoplay={this.shouldEnableAutoplay()}
+              title={this.props.feedItem.title}
+              isReadingScreen={isReadingScreen}
+              isGuide={!isStory}
+            />
+          )}
         {!isSlideshow && isShowCover && (
           <FeedItemCover
             areInRenderLocation={this.props.areInRenderLocation}

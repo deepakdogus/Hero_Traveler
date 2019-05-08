@@ -39,6 +39,10 @@ export default StyleSheet.create({
     color: Colors.red,
     marginRight: Metrics.baseMargin,
   },
+  notificationText: {
+    flexGrow: 1,
+    color: Colors.background,
+  },
   settingsLabel: {
     fontWeight: '900',
     fontSize: 16,

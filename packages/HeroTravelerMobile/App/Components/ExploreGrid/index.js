@@ -34,39 +34,38 @@ export default class ExploreGrid extends Component {
 
     return (
       <View key={categoryOrChannel.id} style={styles.gridItem}>
-        <ImageWrapper
-          cached={false}
-          background={true}
-          source={{ uri: categoryOrChannelUrl }}
-          style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
-          imageStyle={{ borderRadius: 6 }}
-        >
-          <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
-            <View style={styles.gridImage}>
-              {categoryOrChannel.selected && (
-                <TabIcon
-                  name="redCheckOutlined"
-                  style={{ view: styles.selectedIcon }}
-                />
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-        </ImageWrapper>
-        <Text
-          style={styles.gridItemText}
-          numberOfLines={2}
-          ellipsizeMode={'tail'}
-          adjustsFontSizeToFit
-          minimumFontScale={0.9}
-        >
-          {isChannel ? null : categoryOrChannel.title}
-        </Text>
+        <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
+          <View style={styles.gridImage}>
+            <ImageWrapper
+              cached={false}
+              background={true}
+              source={{ uri: categoryOrChannelUrl }}
+              style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
+              imageStyle={{ borderRadius: 6 }}
+            >
+            {categoryOrChannel.selected && (
+              <TabIcon
+                name="redCheckOutlined"
+                style={{ view: styles.selectedIcon }}
+              />
+            )}
+            </ImageWrapper>
+            <Text
+              style={styles.gridItemText}
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+              adjustsFontSizeToFit
+              minimumFontScale={0.9}
+            >
+              {isChannel ? null : categoryOrChannel.title}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     )
   }
 
   render() {
-    console.log(this.props, 'these are the props in explore grid')
     return (
       <View style={styles.grid}>
         {this.props.categories.map(this.renderItem)}

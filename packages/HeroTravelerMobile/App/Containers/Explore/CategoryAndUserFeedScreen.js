@@ -254,7 +254,6 @@ class CategoryAndUserFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  // console.log(state.entities.users.entities[props.categoryId], 'this is the state in CFS')
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),

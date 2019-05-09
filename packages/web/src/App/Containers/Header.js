@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 
-import { Grid } from '../Components/FlexboxGrid'
+import { Grid } from '../Shared/Web/Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
@@ -16,7 +16,7 @@ import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import HeaderModals from '../Components/HeaderModals'
-import { sizes } from '../Themes/Metrics'
+import { sizes } from '../Shared/Web/Themes/Metrics'
 import {
   haveFieldsChanged,
   hasChangedSinceSave,
@@ -146,7 +146,7 @@ class Header extends React.Component {
     }
     if (!prevProps.signedUp && signedUp) {
       logCompletedRegistrationEvent()
-      reroute('/signup/topics')
+      reroute('/signup/info')
     }
     if (prevProps.pathname !== pathname) {
       window.scrollTo({

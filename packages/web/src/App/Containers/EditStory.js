@@ -141,17 +141,23 @@ class EditStory extends Component {
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const {
       reroute,
       match,
       originalDraft,
       workingDraft,
+      userId,
     } = this.props
 
     const hasCompletedSave = this.props.syncProgress > 0
       && this.props.syncProgressSteps === this.props.syncProgress
       && prevProps.syncProgress !== this.props.syncProgress
+
+    // you should not be able to edit a story if you are not the author
+    if (_.get(workingDraft, 'author') !== userId) {
+      return reroute('/feed')
+    }
 
     if (originalDraft && originalDraft.id && match.isExact) {
       return reroute(`/editStory/${originalDraft.id}/cover`)
@@ -196,25 +202,25 @@ class EditStory extends Component {
 
   _updateDraft = (publish) => {
     const {
-      originalDraft,
       workingDraft,
       subPath,
       saveDraft,
     } = this.props
 
     // publish is sometimes an event so we need to expressly check if true
-    this.setState({ saveAction: publish === true ? 'publish' : 'update' })
+    const saveAsPublished = publish === true
+    this.setState({ saveAction: saveAsPublished ? 'publish' : 'update' })
 
     const cleanedDraft = this.cleanDraft(workingDraft)
 
-    if (isLocalDraft(workingDraft.id)) {
-      saveDraft(cleanedDraft, !(publish === true))
+    if (isLocalDraft(cleanedDraft.id)) {
+      saveDraft(cleanedDraft, !saveAsPublished)
     }
     else {
-      if (publish && cleanedDraft.draft) cleanedDraft.draft = false
+      if (saveAsPublished && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
-        originalDraft.id,
+        cleanedDraft.id,
         cleanedDraft,
         null,
         isRepublishing,
@@ -267,13 +273,16 @@ class EditStory extends Component {
       cleanedDraft.title = _.trim(cleanedDraft.title)
     }
     if (!isFieldSame('description', workingDraft, originalDraft)) {
-     cleanedDraft.description = _.trim(cleanedDraft.description)
+      cleanedDraft.description = _.trim(cleanedDraft.description)
     }
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    // undefined if user navs directly to editStory URI
+    if (this.getEditorState) {
+      cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    }
     if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
   }

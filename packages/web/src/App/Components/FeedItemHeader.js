@@ -5,20 +5,18 @@ import styled from 'styled-components'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getVideoUrls } from '../Shared/Lib/getVideoUrl'
 
-import Avatar from './Avatar'
-import VerticalCenter from './VerticalCenter'
+import Avatar from '../Shared/Web/Components/Avatar'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
-import {Row} from './FlexboxGrid'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 import Video from './Video'
-import RoundedButton from './RoundedButton'
-import Icon from './Icon'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import Icon from '../Shared/Web/Components/Icon'
+import StarRating from './CreateStory/StarRating'
+
 import { displayLocationPreview } from '../Shared/Lib/locationHelpers'
 import { showPublishDate } from '../Shared/Lib/dateHelpers'
-
-import {
-  roleToIconName,
-  hasBadge,
-} from '../Shared/Lib/badgeHelpers'
+import { roleToIconName, hasBadge } from '../Shared/Lib/badgeHelpers'
 
 const UserInfoRow = styled(Row)`
   align-items: center;
@@ -31,7 +29,7 @@ const Title = styled.p`
   font-size: 38px;
   line-height: 50px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 20px;
     padding-right: 20px;
@@ -54,12 +52,25 @@ const Subtitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 18px;
     padding-left: 20px;
     padding-right: 20px;
   }
+`
+
+const OverallExperience = styled.div`
+  display: flex;
+`
+
+const OverallExperienceText = styled.p`
+  margin: 3px 10px 0 0;
+  font-size: 16px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 600;
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
 `
 
 const LocationText = styled(Subtitle)`
@@ -79,12 +90,12 @@ const RedText = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.redHighlights};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 `
 
 const Username = styled(RedText)`
   cursor: pointer;
-  margin-left: ${props => props.hasBadge ? '6px' : '0'}
+  margin-left: ${props => (props.hasBadge ? '6px' : '0')};
 `
 
 const TimeStamp = styled(RedText)`
@@ -115,7 +126,7 @@ const CoverCaption = styled.p`
   font-weight: 300;
   font-size: 14px;
   color: ${props => props.theme.Colors.bioGrey};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 20px 0 0 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
@@ -219,14 +230,14 @@ export default class FeedItemHeader extends React.Component {
   }
 
   getMediaType() {
-    const {feedItem} = this.props
+    const { feedItem } = this.props
     if (feedItem.coverVideo && !feedItem.coverImage) return 'video'
     if (feedItem.coverImage) return 'image'
     return undefined
   }
 
   getCoverImage() {
-    const {feedItem} = this.props
+    const { feedItem } = this.props
     if (this.getMediaType() === 'video') {
       return getImageUrl(feedItem.coverVideo, 'video')
     }
@@ -269,21 +280,19 @@ export default class FeedItemHeader extends React.Component {
           <UserInfoRow>
             <Avatar
               avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-              size='medium'
-              type='profile'
+              size="medium"
+              type="profile"
               onClick={this._profileReroute}
               responsiveProps={responsiveAvatarStyles}
             />
             <SpacedVerticalCenter>
               <Row>
-                <ClickableContainer
-                  onClick={this._profileReroute}
-                >
+                <ClickableContainer onClick={this._profileReroute}>
                   {hasBadge(author.role) && (
                     <VerticalCenter>
                       <BadgeIcon
                         name={roleToIconName[author.role]}
-                        size='mediumSmall'
+                        size="mediumSmall"
                         profileAvatar={author.profile.avatar}
                       />
                     </VerticalCenter>
@@ -298,8 +307,8 @@ export default class FeedItemHeader extends React.Component {
                 {!isUsersFeedItem && (
                   <SpacedVerticalCenter>
                     <RoundedButton
-                      margin='none'
-                      padding='smallEven'
+                      margin="none"
+                      padding="smallEven"
                       onClick={isFollowing ? unfollowUser : followUser}
                       type={isFollowing ? undefined : 'blackWhite'}
                       text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
@@ -316,20 +325,16 @@ export default class FeedItemHeader extends React.Component {
             {isUsersFeedItem && (
               <VerticalCenter>
                 <ClickableRow onClick={this._editReroute}>
-                  <PencilIcon
-                    name='pencilBlack'
-                  />
-                  <EditText>
-                    Edit {isStory ? 'Story' : 'Guide'}
-                  </EditText>
+                  <PencilIcon name="pencilBlack" />
+                  <EditText>Edit {isStory ? 'Story' : 'Guide'}</EditText>
                 </ClickableRow>
               </VerticalCenter>
             )}
             {onClickAddToGuide && !isDraft && (
               <RoundedButton
-                margin='noRight'
-                padding='smallEven'
-                text='Add To Guide'
+                margin="noRight"
+                padding="smallEven"
+                text="Add To Guide"
                 onClick={this._onClickAddToGuide}
                 textProps={addToGuideButtonStyles}
                 responsiveButtonProps={hideButtonStyles}
@@ -337,8 +342,8 @@ export default class FeedItemHeader extends React.Component {
             )}
             {!isUsersFeedItem && sessionUserId && (
               <RoundedButton
-                margin='none'
-                padding='smallEven'
+                margin="none"
+                padding="smallEven"
                 onClick={isFollowing ? unfollowUser : followUser}
                 type={isFollowing ? undefined : 'blackWhite'}
                 text={isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
@@ -349,20 +354,12 @@ export default class FeedItemHeader extends React.Component {
             )}
           </Row>
         </TopRow>
-        {!isStory && (
-          <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>
-        )}
-        {
-          mediaType === 'image' && !shouldHideCover && (
-          <CoverImage
-            src={this.getCoverImage()}
-          />
-        )}
-        {
-          mediaType === 'video' && !shouldHideCover && (
+        {!isStory && <GuideTitle mediaType={mediaType}>{feedItem.title}</GuideTitle>}
+        {mediaType === 'image' && !shouldHideCover && <CoverImage src={this.getCoverImage()} />}
+        {mediaType === 'video' && !shouldHideCover && (
           <Video
             {...getVideoUrls(feedItem.coverVideo, false)}
-            type='cover'
+            type="cover"
             withPrettyControls
           />
         )}
@@ -372,13 +369,15 @@ export default class FeedItemHeader extends React.Component {
             <LocationText>{displayLocationPreview(feedItem.locationInfo)}</LocationText>
             <Title mediaType={mediaType}>{feedItem.title}</Title>
             <Subtitle>{feedItem.description}</Subtitle>
+            {feedItem.rating && false && (
+              <OverallExperience>
+                <OverallExperienceText>Overall Experience:</OverallExperienceText>
+                <StarRating valueSelected={feedItem.rating} />
+              </OverallExperience>
+            )}
           </div>
         )}
-        {isStory && (
-          <StyledDivider
-            color={'lighter-grey'}
-          />
-        )}
+        {isStory && <StyledDivider color={'lighter-grey'} />}
       </Container>
     )
   }

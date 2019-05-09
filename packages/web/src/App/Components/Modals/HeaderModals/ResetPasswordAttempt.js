@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 
 import LoginActions from '../../../Shared/Redux/LoginRedux'
 import UXActions from '../../../Redux/UXRedux'
-import RoundedButton from '../../RoundedButton'
-import { Row } from '../../FlexboxGrid'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
+import { Row } from '../../../Shared/Web/Components/FlexboxGrid'
 import { Container, Title, StyledInput, ErrorMessage, RightModalCloseX } from '../../Modals/Shared'
 import { FieldConstraints } from '../../../Shared/Lib/userFormValidation'
 

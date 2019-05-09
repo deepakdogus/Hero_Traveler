@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import Avatar from '../Avatar'
-import VerticalCenter from '../VerticalCenter'
+import Avatar from '../../Shared/Web/Components/Avatar'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 
 export const UsernameBaseStyles = `
   font-weight: 600;

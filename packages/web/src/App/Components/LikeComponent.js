@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Icon from './Icon'
-import {Row} from './FlexboxGrid'
+import Icon from '../Shared/Web/Components/Icon'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 
 const Likes = styled.span`
   color: ${props => props.horizontal ? props.theme.Colors.grey : props.theme.Colors.snow};

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row, Col} from './FlexboxGrid'
+import {Row, Col} from '../Shared/Web/Components/FlexboxGrid'
 
 const TextBox = styled.div`
   background-color: ${props => props.isSender ? props.theme.Colors.blueBubble : props.theme.Colors.lightGreyAreas};

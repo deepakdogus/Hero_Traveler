@@ -22,6 +22,7 @@
     "react-cookie": "^2.1.1",
     "react-day-picker": "^7.0.6",
     "react-dom": "^15.6.1",
+    "react-dropdown": "^1.6.4",
     "react-flexbox-grid": "^1.1.3",
     "react-google-maps": "next",
     "react-html5video": "^2.5.1",
@@ -53,11 +54,13 @@
     "postbuild": "node check-service-worker.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "share": "rimraf src/App/shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/shared",
-    "share:watch": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg}\" src/App/Shared --watch"
+    "share": "rm -rf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared && rm -rf src/App/Shared/Web && mkdir src/App/Shared/Web && cpx \"../sharedWeb/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared/Web",
+    "watchShared": "rimraf src/App/Shared && mkdir src/App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared --watch",
+    "watchSharedWeb": "rimraf src/App/Shared/Web && mkdir src/App/Shared/Web && cpx \"../sharedWeb/**/*.{ts,tsx,js,jsx,json,ttf,png,svg,jpg,css,ttf}\" src/App/Shared/Web --watch",
+    "share:watch": "concurrently --kill-others \"npm run watchShared\" \"npm run watchSharedWeb\""
   },
   "devDependencies": {
-    "concurrently": "^3.5.0",
+    "concurrently": "^3.6.1",
     "cpx": "^1.5.0",
     "reactotron-apisauce": "^1.12.2",
     "reactotron-react-js": "^1.12.2",

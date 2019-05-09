@@ -9,18 +9,17 @@ import env from '../Config/Env'
 import UserActions from '../Shared/Redux/Entities/Users'
 import HistoryActions from '../Shared/Redux/HistoryRedux'
 import { runIfAuthed } from '../Lib/authHelpers'
-import { hasSecondaryText, formatSecondaryText } from '../Shared/Lib/locationHelpers'
 
 import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
-import { Row } from '../Components/FlexboxGrid'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 
 // search
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete'
 import { formatLocationWeb } from '../Shared/Lib/formatLocation'
 
 const MAX_RESULTS = 10
@@ -250,7 +249,7 @@ class Search extends Component {
       })
       return this.helper.setQuery(textValue).search()
     }
- else {
+    else {
       this.setState({ activeTab, algoliaResults: {} })
     }
   }
@@ -276,32 +275,57 @@ class Search extends Component {
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  navToLocationResults = async ({ id, description, secondaryText }) => {
-    const { reroute, addRecentSearch } = this.props
-    let { name: title, country, latitude: lat, longitude: lng } = await formatLocationWeb(
-      description,
-      geocodeByAddress,
-      getLatLng,
-    )
+  navToLocationResults = async item => {
+    if (item.searchText && item.searchType) {
+      this.navToCachedLocation(item)
+    }
+    else {
+      this.navToNewLocation(item)
+    }
+  }
 
-    if (lat && lng) {
-      addRecentSearch({
-        searchType: 'places',
-        searchText: this.state.inputText,
-        contentType: 'location',
-        id,
-        title,
-        lat,
-        lng,
-        description,
-        secondaryText,
-      })
-      reroute({
-        pathname: `/results/${country}/${lat}/${lng}`,
-        search: `?t=${title}${
-          hasSecondaryText(secondaryText) ? `, ${formatSecondaryText(secondaryText)}` : ''
-        }`,
-      })
+  navToCachedLocation = item => {
+    const { reroute, addRecentSearch } = this.props
+    addRecentSearch({ ...item, searchText: this.state.inputText })
+
+    const { country, lat, lng, title, secondaryText } = item
+    return reroute({
+      pathname: `/results/${country}/${lat}/${lng}`,
+      search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
+    })
+  }
+
+  navToNewLocation = async ({ description, placeId, secondaryText }) => {
+    const { reroute, addRecentSearch } = this.props
+    try {
+      const {
+        name: title,
+        country,
+        latitude: lat,
+        longitude: lng,
+      } = await formatLocationWeb(description, placeId, geocodeByPlaceId, getLatLng)
+
+      if (lat && lng) {
+        addRecentSearch({
+          searchType: 'places',
+          searchText: this.state.inputText,
+          contentType: 'location',
+          id: placeId,
+          title,
+          lat,
+          lng,
+          country,
+          description,
+          secondaryText,
+        })
+        reroute({
+          pathname: `/results/${country}/${lat}/${lng}`,
+          search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
+        })
+      }
+    }
+    catch (e) {
+      console.error(e)
     }
   }
 
@@ -321,7 +345,7 @@ class Search extends Component {
     const {
       searchHistory: { places },
     } = this.props
-    if (!inputText)
+    if (!inputText) {
       return (
         <SearchAutocompleteList
           label="RECENT SEARCHES"
@@ -329,9 +353,11 @@ class Search extends Component {
           navigate={this.navToLocationResults}
         />
       )
+    }
 
     const formattedLocations = suggestions.map(suggestion => ({
       id: suggestion.id,
+      placeId: suggestion.placeId,
       title: suggestion.formattedSuggestion.mainText,
       secondaryText: suggestion.formattedSuggestion.secondaryText,
       description: suggestion.description,
@@ -441,17 +467,19 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     followUser: (sessionUserId, userIdToFollow) =>
-      dispatch(runIfAuthed(
-        sessionUserId,
-        UserActions.followUser,
-        [sessionUserId, userIdToFollow],
-      )),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      dispatch(runIfAuthed(
-        sessionUserId,
-        UserActions.unfollowUser,
-        [sessionUserId, userIdToUnfollow],
-      )),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
     loadUserFollowing: sessionUserID =>
       dispatch(UserActions.loadUserFollowing(sessionUserID)),
     reroute: path => dispatch(push(path)),

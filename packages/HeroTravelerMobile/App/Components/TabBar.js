@@ -47,7 +47,7 @@ export default class TabBar extends Component {
         <Tab
           key={index}
           style={tabStyle}
-          text={key.toUpperCase()}
+          text={tabs[key].toUpperCase()}
           selected={activeTab === tabs[key]}
           onPress={this._onCickTab(tabs[key])}
         />

@@ -7,18 +7,18 @@ target 'HeroTravelerMobile' do
   use_frameworks!
 
   # Pods for HeroTravelerMobile
-  pod 'GooglePlaces'
-  pod 'GoogleMaps'
-  pod 'GooglePlacePicker'
+  pod 'GooglePlaces', '~> 3.0'
+  pod 'GoogleMaps', '~> 3.0'
+  pod 'GooglePlacePicker', '~> 3.0'
 
   pod 'IQKeyboardManager'
   pod 'iOS-MagnifyingGlass', '~> 0.0.2'
 
-  pod 'FBSDKCoreKit'  
+  pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'FBSDKPlacesKit'
-  
+
   pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '705cab1b7fbafb661d4476e05cf6a98e31ab7793'
   pod 'FLAnimatedImage'
 
@@ -27,6 +27,11 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    targets_to_ignore = %w(React yoga)
+
+    if targets_to_ignore.include? target.name
+      target.remove_from_project
+    end
     if target.name == 'react-native-google-maps'
       target.build_configurations.each do |config|
         config.build_settings['CLANG_ENABLE_MODULES'] = 'No'

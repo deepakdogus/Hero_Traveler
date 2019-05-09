@@ -213,3 +213,77 @@ export function * removeAvatar(api, {userId}) {
     )))
   }
 }
+
+export function * adminGetUsers (api, action) {
+  const { params } = action
+  const response = yield call(api.adminGetUsers, params)
+  if (response.ok && response.data && response.data.data) {
+    const { data, count } = response.data
+    yield put(UserActions.adminGetUsersSuccess({ data, count }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(UserActions.adminGetUsersFailure(error))
+  }
+}
+
+export function * adminGetUser (api, action) {
+  const { id } = action
+  const response = yield call(api.adminGetUser, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(UserActions.adminGetUserSuccess({ record }))
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    yield put(UserActions.adminGetUserFailure(error))
+  }
+}
+
+export function * adminPutUser (api, action) {
+  const { values, id, message } = action.payload
+  const response = yield call(api.adminPutUser, { values, id })
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(UserActions.adminGetUserSuccess({ record }))
+    message.success('User was updated')
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(UserActions.adminPutUserFailure())
+  }
+}
+
+export function * adminDeleteUser (api, action) {
+  const { id, message, cb } = action.payload
+  const response = yield call(api.adminDeleteUser, id)
+  if (response.ok && response.data) {
+    const record = response.data
+    yield put(UserActions.adminDeleteUserSuccess(id))
+    message.success('User was deleted')
+    if (cb) cb()
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+    yield put(UserActions.adminDeleteUserFailure())
+  }
+}
+
+export function * adminRestoreUsers (api, action) {
+  const { ids, message, getParams } = action.payload
+  const response = yield call(api.adminRestoreUsers, ids)
+  if (response.ok && response.data) {
+    const record = response.data
+    message.success('Users were restored')
+    const userResponse = yield call(api.adminGetUsers, getParams)
+    if (userResponse.ok && userResponse.data && userResponse.data.data) {
+      const { data, count } = userResponse.data
+      yield put(UserActions.adminGetUsersSuccess({ data, count }))
+    } else {
+      const error = userResponse.data ? userResponse.data.message : 'Error fetching data'
+      yield put(UserActions.adminGetUsersFailure(error))
+    }
+  } else {
+    const error = response.data ? response.data.message : 'Error fetching data'
+    message.error(error)
+  }
+}
+

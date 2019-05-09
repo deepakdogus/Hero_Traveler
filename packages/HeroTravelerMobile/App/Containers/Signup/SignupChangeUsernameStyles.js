@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   navBar: {
     height: Metrics.navBarHeight,
-    paddingTop: Metrics.baseMargin,
+    paddingTop: isIPhoneX ? Metrics.baseMargin + 10 : Metrics.baseMargin,
     backgroundColor: Colors.background,
     width: '100%',
     flexDirection: 'row',
@@ -13,19 +14,19 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
   navButton: {
-    marginTop: 20
+    marginTop: 20,
   },
   root: {
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
   header: {
-    marginBottom: Metrics.section
+    marginBottom: Metrics.section,
   },
   title: {
     ...Fonts.style.title,
     fontSize: 16,
     textAlign: 'center',
-    color: Colors.snow
+    color: Colors.snow,
   },
   subtitle: {
     ...Fonts.style.instructions,
@@ -48,24 +49,24 @@ export default StyleSheet.create({
     marginBottom: Metrics.marginVertical,
     borderBottomWidth: 1,
     borderBottomColor: Colors.whiteAlphaPt3,
-    borderStyle: 'solid'
+    borderStyle: 'solid',
   },
   input: {
     ...Fonts.style.inputLabels,
     height: 40,
     flexShrink: 1,
-    color: Colors.snow
+    color: Colors.snow,
   },
   error: {
     marginTop: Metrics.marginVertical,
     marginBottom: -25.5,
     color: Colors.errorRed,
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   errorView: {
     position: 'absolute',
     right: 0,
-    bottom: 55
+    bottom: 55,
   },
 })

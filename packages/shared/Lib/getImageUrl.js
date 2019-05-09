@@ -28,7 +28,6 @@ function buildUrl(base: string, uri: string, urlParameters: object): string {
     const parameterString = parameters.join(',')
     return `${base}/${parameterString}/${uri}`
   }
-
   return `${base}/${uri}`
 }
 
@@ -59,7 +58,7 @@ function getUri(image: object|string, type: string): ?string {
     if (isFromFacebook(image)) return filename
 
     // hot fix to avoid search crashing. Need to bulk update algolia
-    const folderPath = folders ? folders.join('/') : 'files'
+    const folderPath = folders && !_.isEmpty(folders) ? folders.join('/') : 'files'
     return `${folderPath}/${filename}`
   }
 

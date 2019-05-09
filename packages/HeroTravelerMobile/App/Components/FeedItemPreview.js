@@ -65,7 +65,10 @@ export default class FeedItemPreview extends Component {
     isAuthor: PropTypes.bool,
     myFollowedUsers: PropTypes.arrayOf(PropTypes.string),
     showPlayButton: PropTypes.bool,
-    titleStyle: PropTypes.number,
+    titleStyle: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object,
+    ]),
     onPressBookmark: PropTypes.func,
     onPressRemoveBookmark: PropTypes.func,
     isBookmarked: PropTypes.bool,

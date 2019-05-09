@@ -25,6 +25,7 @@
     "react": "16.8.3",
     "react-mixin": "^5.0.0",
     "react-native": "0.59.0",
+    "react-native-appstore-version-checker": "^2.7.2",
     "react-native-branch": "^3.0.0-beta.3",
     "react-native-camera": "^2.0.2",
     "react-native-draftjs-render": "^2.9.0",

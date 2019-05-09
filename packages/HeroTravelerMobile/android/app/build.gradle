@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-appstore-version-checker')
     implementation project(':react-native-google-places')
     implementation project(':react-native-camera')
     implementation project(':react-native-image-picker')

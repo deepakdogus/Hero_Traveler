@@ -36,7 +36,7 @@ export default StyleSheet.create({
     marginRight: 60,
   },
   textInputWrapper: {
-    flexGrow: 0.7,
+    flexGrow: 1,
     height: 35,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGreyAreas,

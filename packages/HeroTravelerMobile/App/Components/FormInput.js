@@ -83,10 +83,7 @@ class FormInput extends Component {
       <Fragment>
         {!!cost && <Text style={detailsStyles.currency}>$</Text>}
         <TextInput
-          style={[
-            detailsStyles.longInputText,
-            value ? null : { color: Colors.navBarText },
-          ]}
+          style={detailsStyles.longInputText}
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
           placeholder={placeholder}

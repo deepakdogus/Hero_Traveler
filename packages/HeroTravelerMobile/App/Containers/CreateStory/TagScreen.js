@@ -355,25 +355,25 @@ class TagScreen extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.content}>
-          <View style={styles.formWrapper}>
-            <View style={styles.textInputWrapper}>
-              <TextInput
-                ref='input'
-                style={styles.textInput}
-                value={this.state.text}
-                placeholder={'Add ' + _.upperFirst(this._getTagTypeText(true))}
-                onChangeText={this._inputChanged}
-                onSubmitEditing={this._addNewTag}
-                onFocus={this.setInputFocused}
-                autoCorrect={this.props.tagType === TAG_TYPE_CATEGORY}
-                // onBlur={this.setInputBlurred}
-              />
-            </View>
-          </View>
           <ScrollView style={{flexGrow: 3}}>
           {/*
             Render the selected tags
           */}
+            <View style={styles.formWrapper}>
+              <View style={styles.textInputWrapper}>
+                <TextInput
+                  ref='input'
+                  style={styles.textInput}
+                  value={this.state.text}
+                  placeholder={'Add ' + _.upperFirst(this._getTagTypeText(true))}
+                  onChangeText={this._inputChanged}
+                  onSubmitEditing={this._addNewTag}
+                  onFocus={this.setInputFocused}
+                  autoCorrect={this.props.tagType === TAG_TYPE_CATEGORY}
+                  // onBlur={this.setInputBlurred}
+                />
+              </View>
+            </View>
           {_.size(this.state.selectedTags) > 0 && (
             <View style={styles.selectedTags}>
               {_.map(this.state.selectedTags, tag => {

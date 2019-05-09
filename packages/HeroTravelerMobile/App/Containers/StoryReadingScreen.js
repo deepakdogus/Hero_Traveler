@@ -230,7 +230,7 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
-  stripLinks = (draftjsContent) => {
+  stripLinks = (draftjsContent = {}) => {
     const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
     const entityMap = renderContent ? renderContent.entityMap : null
     if (renderContent && entityMap) {
@@ -246,9 +246,14 @@ class StoryReadingScreen extends React.Component {
     return renderContent
   }
 
+  hasHashtags() {
+    return !!_.get(this, 'props.story.hashtags', []).length
+  }
+
   renderBody = () => {
     const {story} = this.props
     const draftjsContent = this.stripLinks(story.draftjsContent)
+
     return (
       <Fragment>
         <View style={styles.divider}/>
@@ -260,7 +265,7 @@ class StoryReadingScreen extends React.Component {
               atomicHandler={atomicHandler}
             />
           )}
-          {!!this.props.story.hashtags && (
+          {this.hasHashtags() && (
             this.renderHashtags()
           )}
           {!!story.videoDescription && (

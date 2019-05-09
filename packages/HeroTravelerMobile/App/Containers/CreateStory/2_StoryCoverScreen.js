@@ -349,7 +349,7 @@ class StoryCoverScreen extends Component {
     if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
     if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
-    // draft.draftjsContent = this.editor.getEditorStateAsObject()
+    draft.draftjsContent = this.editor.getEditorStateAsObject()
     return draft
   }
 

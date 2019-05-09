@@ -25,12 +25,12 @@ export default class ExploreGrid extends Component {
   }
 
   renderItem = categoryOrChannel => {
+    const {isChannel} = this.props
     const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
     const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
-      width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
+      width: isChannel ? null : Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })
-    const {isChannel} = this.props
 
     return (
       <View key={categoryOrChannel.id} style={styles.gridItem}>

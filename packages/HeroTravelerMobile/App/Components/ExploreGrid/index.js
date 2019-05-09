@@ -30,6 +30,7 @@ export default class ExploreGrid extends Component {
       width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })
+    const {isChannel} = this.props
 
     return (
       <View key={categoryOrChannel.id} style={styles.gridItem}>
@@ -37,7 +38,7 @@ export default class ExploreGrid extends Component {
           cached={false}
           background={true}
           source={{ uri: categoryOrChannelUrl }}
-          style={styles.gridImage}
+          style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
           imageStyle={{ borderRadius: 6 }}
         >
           <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
@@ -58,13 +59,14 @@ export default class ExploreGrid extends Component {
           adjustsFontSizeToFit
           minimumFontScale={0.9}
         >
-          {categoryOrChannel.title || categoryOrChannel.username}
+          {isChannel ? null : categoryOrChannel.title}
         </Text>
       </View>
     )
   }
 
   render() {
+    console.log(this.props, 'these are the props in explore grid')
     return (
       <View style={styles.grid}>
         {this.props.categories.map(this.renderItem)}

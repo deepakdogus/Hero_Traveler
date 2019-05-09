@@ -116,7 +116,7 @@ class ExploreScreen extends Component {
           <ExploreGrid
             onPress={this._navToCategoryFeed}
             categories={categoriesArray}
-            channelsSizing={selectedTab === tabTypes.channels ? true : false}
+            isChannel={selectedTab === tabTypes.channels ? true : false}
           />
         </ScrollView>
       )

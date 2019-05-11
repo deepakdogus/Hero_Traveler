@@ -122,7 +122,7 @@ export default class FeedItemPreview extends Component {
           },
         },
       ],
-   )
+    )
   }
 
   _touchUser = () => {
@@ -189,6 +189,8 @@ export default class FeedItemPreview extends Component {
     const {user, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
+    const userAvatar = user && user.profile ? user.profile.avatar : undefined
+
     return (
       <View style={[
         styles.verticalCenter, styles.userContainer,
@@ -201,7 +203,7 @@ export default class FeedItemPreview extends Component {
               <Avatar
                 size={isReadingScreen ? 'small' : 'extraSmall'}
                 style={styles.avatar}
-                avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+                avatarUrl={getImageUrl(userAvatar, 'avatar')}
               />
             </TouchableOpacity>
             <View style={styles.verticalCenter}>
@@ -216,7 +218,7 @@ export default class FeedItemPreview extends Component {
                       image: styles.badgeImage,
                       view: styles.badgeView,
                     }}
-                 />
+                  />
                 )}
                 <Text style={[
                   styles.username,
@@ -238,10 +240,10 @@ export default class FeedItemPreview extends Component {
                 ]}
                 onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
                 <Text style={[
-                    profileViewStyles.blackButtonText,
-                    isFollowing ? null : profileViewStyles.followButtonText,
-                    styles.followFollowingText,
-                  ]}
+                  profileViewStyles.blackButtonText,
+                  isFollowing ? null : profileViewStyles.followButtonText,
+                  styles.followFollowingText,
+                ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 </Text>

@@ -77,10 +77,11 @@ export default class ProfileUserInfo extends Component {
 
   renderUserInfo() {
     const { user } = this.props
+    const userFullName = user && user.profile ? user.profile.fullName : undefined
     return (
       <View style={styles.userInfoWrapper}>
         <Text style={styles.titleText}>{user.username}</Text>
-        <Text style={styles.italicText}>{user.profile.fullName}</Text>
+        <Text style={styles.italicText}>{userFullName}</Text>
         {!!(user.about) && (
           <Text
             style={styles.aboutText}
@@ -118,7 +119,8 @@ export default class ProfileUserInfo extends Component {
 
   renderFirstRow() {
     const {user} = this.props
-    const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
+    const userAvatar = user && user.profile ? user.profile.avatar : undefined
+    const avatarUrl = getImageUrl(userAvatar, 'avatarLarge')
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>
@@ -151,7 +153,7 @@ export default class ProfileUserInfo extends Component {
         )}
         <View style={[styles.secondRowSection, styles.readBioSection]}>
           <TouchableOpacity onPress={this._navToViewBio} >
-              <Text style={styles.readBioText}>Read bio</Text>
+            <Text style={styles.readBioText}>Read bio</Text>
           </TouchableOpacity>
         </View>
       </View>

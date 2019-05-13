@@ -189,7 +189,7 @@ export default class FeedItemPreview extends Component {
     const {user, isReadingScreen, isAuthor} = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
-    const userAvatar = user && user.profile ? user.profile.avatar : undefined
+    const userAvatar = _.get(user, 'profile.avatar')
 
     return (
       <View style={[

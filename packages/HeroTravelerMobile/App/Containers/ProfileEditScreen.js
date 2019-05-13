@@ -73,7 +73,7 @@ class ProfileEditScreen extends React.Component {
           this.props.updateUserSuccess({
             id: data.id,
             profile: {
-              tempAvatar: data && data.profile ? data.profile.avatar : undefined,
+              tempAvatar: _.get(data, 'profile.avatar')
             },
           })
         }
@@ -262,7 +262,7 @@ const mapStateToProps = (state) => {
     user,
     initialValues: {
       username: user.username,
-      fullName: user & user.profile ? user.profile.fullName : undefined,
+      fullName: _.get(user, 'profile.fullName')
       about: user.about,
       bio: user.bio,
     },

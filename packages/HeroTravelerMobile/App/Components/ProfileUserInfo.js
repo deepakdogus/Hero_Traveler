@@ -77,7 +77,7 @@ export default class ProfileUserInfo extends Component {
 
   renderUserInfo() {
     const { user } = this.props
-    const userFullName = user && user.profile ? user.profile.fullName : undefined
+    const userFullName = _.get(user, 'profile.fullName')
     return (
       <View style={styles.userInfoWrapper}>
         <Text style={styles.titleText}>{user.username}</Text>
@@ -119,7 +119,7 @@ export default class ProfileUserInfo extends Component {
 
   renderFirstRow() {
     const {user} = this.props
-    const userAvatar = user && user.profile ? user.profile.avatar : undefined
+    const userAvatar = _.get(user, 'profile.avatar')
     const avatarUrl = getImageUrl(userAvatar, 'avatarLarge')
     return (
       <View style={styles.profileWrapper}>

@@ -28,7 +28,7 @@
     "react-native-branch": "^3.0.0-beta.3",
     "react-native-camera": "^2.0.2",
     "react-native-draftjs-render": "^2.9.0",
-    "react-native-fast-image": "^5.2.0",
+    "react-native-fast-image": "^6.0.0",
     "react-native-fbsdk": "^0.8.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-places": "^2.5.2",

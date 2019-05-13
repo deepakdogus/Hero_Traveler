@@ -60,12 +60,15 @@
 		551B12F485C2445C9A576522 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E3E08DC282E423DA212B971 /* FontAwesome.ttf */; };
 		5FE3179D7838449599B9D545 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 004C68B5E7404674B06BA2BA /* MaterialCommunityIcons.ttf */; };
 		6233E17F48914491B89F3863 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BC752DFE8C0466FBEBD9B02 /* libSplashScreen.a */; };
-		6EC1E2B2971545E4B2156CD4 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 538869C5FEEA476BAB78AE52 /* libFastImage.a */; };
 		7E62E3DCCEB64CC2BB43D718 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76C10F96780640D3ADA95CC2 /* FontAwesome5_Brands.ttf */; };
 		82345CEC079549ACB22A6BC3 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE4441BF1C14803A9EA1650 /* libRNGooglePlaces.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85371E48A74C4F2DBD54BCBE /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3663E5F12F144FEAA78BF42C /* SourceSansPro-Italic.ttf */; };
 		90E09F840750424AACDD1D83 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBADABDCD0374A7486286A3B /* Feather.ttf */; };
+		91478F8B2289BB77007A9E4B /* FFFastImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 91478F4A2289BB77007A9E4B /* FFFastImageView.m */; };
+		91478F8C2289BB77007A9E4B /* FFFastImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 91478F4B2289BB77007A9E4B /* FFFastImageSource.m */; };
+		91478F8D2289BB77007A9E4B /* RCTConvert+FFFastImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 91478F4C2289BB77007A9E4B /* RCTConvert+FFFastImage.m */; };
+		91478F8E2289BB77007A9E4B /* FFFastImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 91478F4D2289BB77007A9E4B /* FFFastImageViewManager.m */; };
 		916BC385227367B900215EC0 /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 916BC384227367B900215EC0 /* FLAnimatedImage.framework */; };
 		927B9B1B3E624A0F971CB381 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C6DEE5F9AFF461A87470BF5 /* libRNFetchBlob.a */; };
 		929A2664A4A5428180E1A75C /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D18D90CD31A4B2FB76EE377 /* AntDesign.ttf */; };
@@ -493,13 +496,6 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
-		EF962D5B2246A00D00B72870 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0F5D060F968B4485A9E6BD36 /* FastImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
-			remoteInfo = FastImage;
-		};
 		EFB2E7AA2248018800D63B84 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B809CF0F090445F4A569EC3E /* RNVersionNumber.xcodeproj */;
@@ -626,7 +622,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeroTravelerMobileTests.m; sourceTree = "<group>"; };
 		0E3E08DC282E423DA212B971 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../App/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
-		0F5D060F968B4485A9E6BD36 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* HeroTravelerMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroTravelerMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -677,6 +672,14 @@
 		833DA996CF9245ACADBA399F /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CrimsonText-Roman.ttf"; path = "../App/Fonts/CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
 		8DFC2BA093EE46C4995285FA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		8FC54BED386441F8A48603F8 /* libRNCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCamera.a; sourceTree = "<group>"; };
+		91478F472289BB77007A9E4B /* RCTConvert+FFFastImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+FFFastImage.h"; sourceTree = "<group>"; };
+		91478F482289BB77007A9E4B /* FFFastImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageSource.h; sourceTree = "<group>"; };
+		91478F492289BB77007A9E4B /* FFFastImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageViewManager.h; sourceTree = "<group>"; };
+		91478F4A2289BB77007A9E4B /* FFFastImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageView.m; sourceTree = "<group>"; };
+		91478F4B2289BB77007A9E4B /* FFFastImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageSource.m; sourceTree = "<group>"; };
+		91478F4C2289BB77007A9E4B /* RCTConvert+FFFastImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+FFFastImage.m"; sourceTree = "<group>"; };
+		91478F4D2289BB77007A9E4B /* FFFastImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageViewManager.m; sourceTree = "<group>"; };
+		91478F4E2289BB77007A9E4B /* FFFastImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageView.h; sourceTree = "<group>"; };
 		916BC2EC227363E800215EC0 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IQKeyboardManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		916BC384227367B900215EC0 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLAnimatedImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9492526E66A049D5AFC24951 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
@@ -873,7 +876,6 @@
 				1C0D258FF8D946A9B1A15BEA /* libRCTFBSDK.a in Frameworks */,
 				D674C2A375DB446F92261604 /* libreact-native-branch.a in Frameworks */,
 				6233E17F48914491B89F3863 /* libSplashScreen.a in Frameworks */,
-				6EC1E2B2971545E4B2156CD4 /* libFastImage.a in Frameworks */,
 				FAA49B31C8334B6399438D8D /* libRNCAsyncStorage.a in Frameworks */,
 				0DE0996F493343B3A0C37740 /* libRNGestureHandler.a in Frameworks */,
 				2B14F228C936484680DDEF04 /* libRNVectorIcons.a in Frameworks */,
@@ -1106,7 +1108,6 @@
 				271BAC47E51149E08EE8F4A0 /* RCTFBSDK.xcodeproj */,
 				7F39B3B1546D4680B2A4D456 /* RNBranch.xcodeproj */,
 				32B5EC8AD05C4B4EBDC3E4E7 /* SplashScreen.xcodeproj */,
-				0F5D060F968B4485A9E6BD36 /* FastImage.xcodeproj */,
 				9492526E66A049D5AFC24951 /* RNCAsyncStorage.xcodeproj */,
 				6629F98E8FCC4C8897D1ED9E /* RNGestureHandler.xcodeproj */,
 				EA4DD8EBE2974FD3BA8EEE8E /* RNVectorIcons.xcodeproj */,
@@ -1134,6 +1135,7 @@
 			children = (
 				EF098453226E0ECB000CE771 /* NativeFeed */,
 				EF04D37C226E0D98002B8729 /* DraftJS */,
+				91478F462289BB77007A9E4B /* FastImage */,
 				EF242646226E0CDC00A18EAA /* Video */,
 				EF5802762264E12F007935B7 /* GPUImage.xcodeproj */,
 				EF58024C2264E049007935B7 /* RNVideoProcessing */,
@@ -1160,6 +1162,21 @@
 				2D02E4901E0B4A5D006451C7 /* HeroTravelerMobile-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		91478F462289BB77007A9E4B /* FastImage */ = {
+			isa = PBXGroup;
+			children = (
+				91478F472289BB77007A9E4B /* RCTConvert+FFFastImage.h */,
+				91478F482289BB77007A9E4B /* FFFastImageSource.h */,
+				91478F492289BB77007A9E4B /* FFFastImageViewManager.h */,
+				91478F4A2289BB77007A9E4B /* FFFastImageView.m */,
+				91478F4B2289BB77007A9E4B /* FFFastImageSource.m */,
+				91478F4C2289BB77007A9E4B /* RCTConvert+FFFastImage.m */,
+				91478F4D2289BB77007A9E4B /* FFFastImageViewManager.m */,
+				91478F4E2289BB77007A9E4B /* FFFastImageView.h */,
+			);
+			path = FastImage;
 			sourceTree = "<group>";
 		};
 		ADBDB9201DFEBF0600ED6528 /* Products */ = {
@@ -1481,14 +1498,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EF962D582246A00C00B72870 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EF962D5C2246A00D00B72870 /* libFastImage.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		EFB2E7A62248018700D63B84 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1686,10 +1695,6 @@
 				{
 					ProductGroup = EF911EFD2247179F002C27E2 /* Products */;
 					ProjectRef = 8DFC2BA093EE46C4995285FA /* AirMaps.xcodeproj */;
-				},
-				{
-					ProductGroup = EF962D582246A00C00B72870 /* Products */;
-					ProjectRef = 0F5D060F968B4485A9E6BD36 /* FastImage.xcodeproj */;
 				},
 				{
 					ProductGroup = EF5802772264E12F007935B7 /* Products */;
@@ -2126,13 +2131,6 @@
 			remoteRef = EF962D1922469D1900B72870 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EF962D5C2246A00D00B72870 /* libFastImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFastImage.a;
-			remoteRef = EF962D5B2246A00D00B72870 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		EFB2E7AB2248018800D63B84 /* libRNVersionNumber.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2431,6 +2429,7 @@
 				EF5802752264E0BF007935B7 /* ICGRulerView.m in Sources */,
 				EF04D3D9226E0E06002B8729 /* RNDJEntityRangeModel.m in Sources */,
 				EF0984B1226E0EE5000CE771 /* RHShadowNativeFeed.m in Sources */,
+				91478F8B2289BB77007A9E4B /* FFFastImageView.m in Sources */,
 				EF2426A1226E0D0D00A18EAA /* VideoDownloadItem.m in Sources */,
 				EF0984AF226E0EE5000CE771 /* RHNativeFeedItemManager.m in Sources */,
 				EF04D3E1226E0E27002B8729 /* RNDJBaseModel.m in Sources */,
@@ -2461,6 +2460,7 @@
 				EF04D3C6226E0DC8002B8729 /* RNDJAutocorrectView.m in Sources */,
 				EF0984AC226E0EE5000CE771 /* RHNativeFeedManager.m in Sources */,
 				EF5802682264E0B0007935B7 /* RNTrimmerViewManager.swift in Sources */,
+				91478F8D2289BB77007A9E4B /* RCTConvert+FFFastImage.m in Sources */,
 				EF24269D226E0D0D00A18EAA /* RCTVideoPlayerViewController.m in Sources */,
 				EF0984B4226E0EE5000CE771 /* RHCustomScrollView.m in Sources */,
 				EF0984B2226E0EE5000CE771 /* RHNativeFeedHeader.m in Sources */,
@@ -2478,9 +2478,11 @@
 				EF58025F2264E08B007935B7 /* AVUtilities.swift in Sources */,
 				EF0984AE226E0EE5000CE771 /* RHNativeFeedHeaderManager.m in Sources */,
 				EF242699226E0D0D00A18EAA /* DownloadSessionManager.m in Sources */,
+				91478F8E2289BB77007A9E4B /* FFFastImageViewManager.m in Sources */,
 				EF0984B0226E0EE5000CE771 /* RHNativeFeed.m in Sources */,
 				EF5802612264E08B007935B7 /* RNVideoTrimmerBridge.m in Sources */,
 				EF0984AD226E0EE5000CE771 /* RHShadowNativeFeedHeader.m in Sources */,
+				91478F8C2289BB77007A9E4B /* FFFastImageSource.m in Sources */,
 				EF24269F226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

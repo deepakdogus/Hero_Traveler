@@ -145,17 +145,18 @@ and so we do not need to add the property to (almost) every FeedList call we mak
      const entitiesInfo = targetEntities.map((entity) => {
        let totalPadding = Metrics.feedCell.padding
 
+       // Setting headerImage to null to cancel prefetch check
        if (entity && entity.coverImage) {
          return {
-           headerImage: getImageUrl(entity.coverImage, 'optimized', imageOptions),
+           headerImage: null, //getImageUrl(entity.coverImage, 'optimized', imageOptions),
            height: Metrics.feedCell.imageCellHeight + totalPadding,
          }
        }
        else if (entity && entity.coverVideo) {
-         let headerImage = getImageUrl(entity.coverVideo, 'optimized', videoOptions, entity.cover)
-         if (isLocalMediaAsset(headerImage)) {
+         //let headerImage = getImageUrl(entity.coverVideo, 'optimized', videoOptions, entity.cover)
+         //if (isLocalMediaAsset(headerImage)) {
            headerImage = null
-         }
+         //}
 
          return {
            headerImage,

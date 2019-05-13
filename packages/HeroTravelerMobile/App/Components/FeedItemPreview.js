@@ -1,13 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  Text,
-  Alert,
-  TouchableOpacity,
-} from 'react-native'
-import {Actions as NavActions} from 'react-native-router-flux'
+import { View, Text, Alert, TouchableOpacity } from 'react-native'
+import { Actions as NavActions } from 'react-native-router-flux'
 
 import formatCount from '../Shared/Lib/formatCount'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -23,10 +18,7 @@ import Avatar from './Avatar'
 import FeedItemCover from './FeedItemCover'
 import TabIcon from './TabIcon'
 import GuideMap from './GuideMap'
-import {
-  roleToIconName,
-  hasBadge,
-} from '../Shared/Lib/badgeHelpers'
+import { roleToIconName, hasBadge } from '../Shared/Lib/badgeHelpers'
 import { showPublishDate } from '../Shared/Lib/dateHelpers'
 import StarRating from '../Containers/CreateStory/StarRating'
 
@@ -99,13 +91,13 @@ export default class FeedItemPreview extends Component {
   }
 
   _touchEdit = () => {
-    const {isStory, feedItem} = this.props
+    const { isStory, feedItem } = this.props
     if (isStory) this.navToStoryEdit()
     else NavActions.createGuide({ guideId: feedItem.id })
   }
 
   _touchTrash = () => {
-    const { deleteStory, feedItem, user, isStory, deleteGuide} = this.props
+    const { deleteStory, feedItem, user, isStory, deleteGuide } = this.props
     Alert.alert(
       `Delete ${isStory ? 'Story' : 'Guide'}`,
       `Are you sure you want to delete this ${isStory ? 'story' : 'guide'}?`,
@@ -125,7 +117,7 @@ export default class FeedItemPreview extends Component {
           },
         },
       ],
-   )
+    )
   }
 
   _touchUser = () => {
@@ -147,20 +139,19 @@ export default class FeedItemPreview extends Component {
     return this.props.onPressBookmark()
   }
 
-  renderDate(){
-    const {isReadingScreen, feedItem} = this.props
+  renderDate() {
+    const { isReadingScreen, feedItem } = this.props
     return (
-      <Text style={[
-        styles.dateText,
-        isReadingScreen && styles.dateTextReading,
-      ]}>
+      <Text
+        style={[styles.dateText, isReadingScreen && styles.dateTextReading]}
+      >
         {showPublishDate(feedItem)}
       </Text>
     )
   }
 
   hasLocation = () => {
-    const {locationInfo, locations = []} = this.props.feedItem
+    const { locationInfo, locations = [] } = this.props.feedItem
     return !!locationInfo || locations.length !== 0
   }
 
@@ -171,33 +162,33 @@ export default class FeedItemPreview extends Component {
       isReadingScreen,
       feedItem: { description },
     } = this.props
-    return !!description
-      && !(!isStory && isFeed)
-      && isReadingScreen
+    return !!description && !(!isStory && isFeed) && isReadingScreen
   }
 
-  shouldRenderBookmarks = () => (
-    this.props.showLike
-    && this.props.onPressBookmark
-    && this.props.isStory
-  )
+  shouldRenderBookmarks = () =>
+    this.props.showLike && this.props.onPressBookmark && this.props.isStory
 
   getLocationText = () => {
-    const {locationInfo, locations = []} = this.props.feedItem
+    const { locationInfo, locations = [] } = this.props.feedItem
     if (locationInfo) return displayLocationPreview(locationInfo)
     else if (locations.length) return displayLocationPreview(locations[0])
   }
 
   renderUserSection() {
-    const {user, isReadingScreen, isAuthor} = this.props
+    const { user, isReadingScreen, isAuthor } = this.props
     const isFollowing = _.includes(this.props.myFollowedUsers, user.id)
 
+    const userAvatar = _.get(user, 'profile.avatar')
+
     return (
-      <View style={[
-        styles.verticalCenter, styles.userContainer,
-        isReadingScreen && styles.storyInfoContainer,
-        !isReadingScreen && styles.previewUserContainer,
-      ]}>
+      <View
+        style={[
+          styles.verticalCenter,
+          styles.userContainer,
+          isReadingScreen && styles.storyInfoContainer,
+          !isReadingScreen && styles.previewUserContainer,
+        ]}
+      >
         <View style={styles.userContent}>
           <View style={styles.leftUserContent}>
             <View>
@@ -205,7 +196,7 @@ export default class FeedItemPreview extends Component {
                 <Avatar
                   size={isReadingScreen ? 'small' : 'extraSmall'}
                   style={styles.avatar}
-                  avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+                  avatarUrl={getImageUrl(userAvatar, 'avatar')}
                 />
               </TouchableOpacity>
 
@@ -227,10 +218,12 @@ export default class FeedItemPreview extends Component {
                 onPress={this._touchUser}
                 style={styles.profileButton}
               >
-                <Text style={[
-                  styles.username,
-                  isReadingScreen && styles.usernameReading,
-                ]}>
+                <Text
+                  style={[
+                    styles.username,
+                    isReadingScreen && styles.usernameReading,
+                  ]}
+                >
                   {user.username}
                 </Text>
               </TouchableOpacity>
@@ -245,12 +238,16 @@ export default class FeedItemPreview extends Component {
                   isFollowing ? null : profileViewStyles.followButton,
                   styles.followFollowingButton,
                 ]}
-                onPress={isFollowing ? this._onPressUnfollow : this._onPressFollow}>
-                <Text style={[
-                  profileViewStyles.blackButtonText,
-                  isFollowing ? null : profileViewStyles.followButtonText,
-                  styles.followFollowingText,
-                ]}
+                onPress={
+                  isFollowing ? this._onPressUnfollow : this._onPressFollow
+                }
+              >
+                <Text
+                  style={[
+                    profileViewStyles.blackButtonText,
+                    isFollowing ? null : profileViewStyles.followButtonText,
+                    styles.followFollowingText,
+                  ]}
                 >
                   {isFollowing ? 'FOLLOWING' : '+ FOLLOW'}
                 </Text>
@@ -277,44 +274,57 @@ export default class FeedItemPreview extends Component {
   }
 
   renderTitle() {
-    const {title, description} = this.props.feedItem
-    const {isReadingScreen, titleStyle, isStory, isFeed} = this.props
-    let showDescription = (isStory || !isFeed)
+    const { title, description } = this.props.feedItem
+    const { isReadingScreen, titleStyle, isStory, isFeed } = this.props
+    let showDescription = isStory || !isFeed
     return (
-      <Text style={[
-        styles.title,
-        (description && showDescription) ? styles.titleWithDescription : {},
-        isReadingScreen ? styles.storyReadingTitle : {},
-        (isReadingScreen && description && showDescription) ? styles.storyReadingTitleWithDescription : {},
-        titleStyle,
-      ]}>
+      <Text
+        style={[
+          styles.title,
+          description && showDescription ? styles.titleWithDescription : {},
+          isReadingScreen ? styles.storyReadingTitle : {},
+          isReadingScreen && description && showDescription
+            ? styles.storyReadingTitleWithDescription
+            : {},
+          titleStyle,
+        ]}
+      >
         {title}
       </Text>
     )
   }
 
   isGuideReadingScreen() {
-    const {isStory, isReadingScreen} = this.props
+    const { isStory, isReadingScreen } = this.props
     return !isStory && isReadingScreen
   }
 
   getIsLiked = () => {
-    const {isStory, isStoryLiked, isGuideLiked} = this.props
+    const { isStory, isStoryLiked, isGuideLiked } = this.props
     return isStory ? isStoryLiked : isGuideLiked
   }
 
   renderBottomSection() {
-    const {counts, description, coverCaption, draft, type, rating} = this.props.feedItem
-    const {isReadingScreen, isStory, isStoryLiked, isGuideLiked} = this.props
+    const {
+      counts,
+      description,
+      coverCaption,
+      draft,
+      type,
+      rating,
+    } = this.props.feedItem
+    const { isReadingScreen, isStory, isStoryLiked, isGuideLiked } = this.props
 
     if (this.isGuideReadingScreen()) return null
 
     return (
-      <View style={[
-        styles.storyInfoContainer,
-        styles.bottomContainer,
-        !isReadingScreen && styles.roundedBottomContainer,
-      ]}>
+      <View
+        style={[
+          styles.storyInfoContainer,
+          styles.bottomContainer,
+          !isReadingScreen && styles.roundedBottomContainer,
+        ]}
+      >
         {isReadingScreen && !!coverCaption && (
           <Text style={[storyReadingScreenStyles.caption, styles.caption]}>
             {coverCaption}
@@ -341,10 +351,7 @@ export default class FeedItemPreview extends Component {
             {this.getLocationText()}
           </Text>
         )}
-        <TouchableOpacity
-          onPress={this._onPress}
-          disabled={!!isReadingScreen}
-        >
+        <TouchableOpacity onPress={this._onPress} disabled={!!isReadingScreen}>
           {this.renderTitle()}
           {this.shouldRenderDescription() && (
             <Text style={storyReadingScreenStyles.description}>
@@ -362,28 +369,25 @@ export default class FeedItemPreview extends Component {
         )}
         <View style={styles.lastRow}>
           {!isReadingScreen && (
-            <View style={styles.leftRow}>
-              {this.renderUserSection()}
-            </View>
+            <View style={styles.leftRow}>{this.renderUserSection()}</View>
           )}
 
           {!draft && (
             <View style={styles.rightRow}>
-              {this.shouldRenderBookmarks()
-                && (
-                  <View style={styles.bookmarkContainer}>
-                    <TouchableOpacity
-                      onPress={this._onPressBookmark}
-                    >
-                      <TabIcon
-                        name={this.props.isBookmarked ? 'bookmark-active' : 'bookmark'}
-                        style={{
-                          image: styles.bookmark,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
+              {this.shouldRenderBookmarks() && (
+                <View style={styles.bookmarkContainer}>
+                  <TouchableOpacity onPress={this._onPressBookmark}>
+                    <TabIcon
+                      name={
+                        this.props.isBookmarked ? 'bookmark-active' : 'bookmark'
+                      }
+                      style={{
+                        image: styles.bookmark,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
               {this.props.showLike && (
                 <LikesComponent
                   onPress={this._onPressLike}
@@ -399,19 +403,17 @@ export default class FeedItemPreview extends Component {
     )
   }
 
-  shouldEnableAutoplay(){
+  shouldEnableAutoplay() {
     return this.props.isVisible !== false && this.props.areInRenderLocation
   }
 
   getOnPress = () => {
-    const {isStory, onPressStory, onPressGuide, feedItem} = this.props
+    const { isStory, onPressStory, onPressGuide, feedItem } = this.props
     if (!isStory) return onPressGuide
-    return isLocalDraft(feedItem.id)
-      ? this.navToStoryEdit
-      : onPressStory
+    return isLocalDraft(feedItem.id) ? this.navToStoryEdit : onPressStory
   }
 
-  render () {
+  render() {
     const {
       feedItem,
       showPlayButton,
@@ -423,16 +425,16 @@ export default class FeedItemPreview extends Component {
     if (!feedItem) return null
 
     // using FeedItemPreview height as proxy for FeedItemCover playbutton size
-    const height = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
+    const height
+      = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
     const cover = feedItem.coverImage || feedItem.coverVideo
     const isReadingScreen = location === 'story' || location === 'guide'
 
     return (
-      <View style={[
-        styles.contentContainer,
-        !isReadingScreen && styles.cardView,
-      ]}>
+      <View
+        style={[styles.contentContainer, !isReadingScreen && styles.cardView]}
+      >
         {isReadingScreen && this.renderUserSection()}
         {isShowCover && (
           <FeedItemCover
@@ -452,11 +454,7 @@ export default class FeedItemPreview extends Component {
             style={styles.feedItemCover}
           />
         )}
-        {!isShowCover && (
-          <GuideMap
-            stories={selectedStories}
-          />
-        )}
+        {!isShowCover && <GuideMap stories={selectedStories} />}
         {this.renderBottomSection()}
       </View>
     )
@@ -464,9 +462,15 @@ export default class FeedItemPreview extends Component {
 
   _onPressLike = () => {
     const {
-      feedItem, isStory, sessionUserId,
-      isGuideLiked, onPressGuideLike, onPressGuideUnlike,
-      isStoryLiked, onPressStoryLike, onPressStoryUnlike,
+      feedItem,
+      isStory,
+      sessionUserId,
+      isGuideLiked,
+      onPressGuideLike,
+      onPressGuideUnlike,
+      isStoryLiked,
+      onPressStoryLike,
+      onPressStoryUnlike,
     } = this.props
 
     if (isStory) {

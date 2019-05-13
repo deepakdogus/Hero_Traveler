@@ -42,7 +42,7 @@ class ProfileView extends React.Component {
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
-    onSelectTab: PropTypes.func,
+    onSelectTab: PropTypes.func.isRequired,
     user: PropTypes.object,
     accessToken: PropTypes.string,
     completeTooltip: PropTypes.func,
@@ -97,7 +97,7 @@ class ProfileView extends React.Component {
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab})
-      this.props.onSelectTab(tab)
+      if (this.props.onSelectTab) this.props.onSelectTab(tab)
     }
   }
 

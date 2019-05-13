@@ -42,7 +42,13 @@ class FollowFollowingRow extends Component {
   render() {
     const {user, isFollowing, sessionUserId, isSignup, styledInset} = this.props
     const Touchable = isSignup ? View : TouchableOpacity
+
+    const [ userAvatar, userFullName ] = user && user.profile
+      ? [user.profile.avatar, user.profile.fullName]
+      : [undefined, undefined]
+
     let followingText
+
     if (isFollowing) followingText = 'FOLLOWING'
     else if (user.id !== sessionUserId) followingText = 'FOLLOW'
 
@@ -61,10 +67,10 @@ class FollowFollowingRow extends Component {
           >
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+              avatarUrl={getImageUrl(userAvatar, 'avatar')}
             />
             <View style={styles.nameWrapper}>
-              <Text style={styles.name}>{user.profile.fullName}</Text>
+              <Text style={styles.name}>{userFullName}</Text>
               {!!user.counts && (
                 <Text style={styles.followerCount}>{user.counts.followers} followers</Text>
               )}

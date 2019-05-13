@@ -21,7 +21,7 @@ import ShadowButton from '../Components/ShadowButton'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import { FormTextInput } from '../Components/FormTextInput';
+import { FormTextInput } from '../Components/FormTextInput'
 import {
   validate,
   asyncValidate as asyncValidateOriginal,
@@ -33,11 +33,10 @@ const api = HeroAPI.create()
 
 const asyncValidate = (values) => {
   // Make the validation ignore our own username
-  return asyncValidateOriginal(values, null, true);
+  return asyncValidateOriginal(values, null, true)
 }
 
 class ProfileEditScreen extends React.Component {
-
   static propTypes = {
     user: PropTypes.object,
     accessToken: PropTypes.string,
@@ -53,7 +52,7 @@ class ProfileEditScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      error: null
+      error: null,
     }
   }
 
@@ -65,31 +64,31 @@ class ProfileEditScreen extends React.Component {
 
   _handleUpdateAvatarPhoto = (data) => {
     api.uploadAvatarImage(this.props.user.id, pathAsFileObject(data))
-    .then(({ data }) => {
+      .then(({ data }) => {
       // if there is a message it means there was an error
-      if (data.message) {
-        return Promise.reject(new Error(data.message))
-      }
-      else {
-        this.props.updateUserSuccess({
-          id: data.id,
-          profile: {
-            tempAvatar: data.profile.avatar,
-          }
-        })
-      }
-    })
-    .then(() => {
-      NavActions.pop()
-    })
-    .catch(() => {
-      NavActions.pop()
-      this.setState({error: 'There was an error updating your profile photo. Please try again'})
-    })
+        if (data.message) {
+          return Promise.reject(new Error(data.message))
+        }
+        else {
+          this.props.updateUserSuccess({
+            id: data.id,
+            profile: {
+              tempAvatar: _.get(data, 'profile.avatar'),
+            },
+          })
+        }
+      })
+      .then(() => {
+        NavActions.pop()
+      })
+      .catch(() => {
+        NavActions.pop()
+        this.setState({error: 'There was an error updating your profile photo. Please try again'})
+      })
   }
 
   _onRight = () => {
-    this._updateUser();
+    this._updateUser()
   }
 
   _updateUser = () => {
@@ -107,15 +106,16 @@ class ProfileEditScreen extends React.Component {
 
     // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
     // need to add fullName so that we dont accidentally set it to undefined
-    const profileReverts = {
-      fullName: profile.fullName,
-      cover: profile.cover,
-      avatar: profile.avatar,
+    if (profile) {
+      const profileReverts = {
+        fullName: profile.fullName,
+        cover: profile.cover,
+        avatar: profile.avatar,
+      }
+      this.props.updateUser({
+        profile: profileReverts,
+      })
     }
-
-    this.props.updateUser({
-      profile: profileReverts,
-    })
 
     this.props.updateUserSuccess({
       id,
@@ -143,10 +143,10 @@ class ProfileEditScreen extends React.Component {
 
   renderAvatar() {
     const user = this.props.user
-
-    const avatarUrl = (user.profile.tempAvatar)
-      ? getImageUrl(user.profile.tempAvatar, 'avatarLarge')
-      : getImageUrl(user.profile.avatar, 'avatarLarge')
+    const [userAvatar, tempAvatar] = user && user.profile
+      ? [user.profile.avatar, user.profile.tempAvatar]
+      : [undefined, undefined]
+    const avatarUrl = getImageUrl(tempAvatar ? tempAvatar : userAvatar, 'avatarLarge')
 
     return (
       <View style={styles.profileWrapper}>
@@ -240,8 +240,8 @@ class ProfileEditScreen extends React.Component {
             </View>
           </ScrollView>
         </View>
-        {this.state.error &&
-          <ShadowButton
+        {this.state.error
+          && <ShadowButton
             style={styles.errorButton}
             onPress={this._clearError}
             text={this.state.error}
@@ -255,14 +255,14 @@ class ProfileEditScreen extends React.Component {
 const selector = formValueSelector('editProfileForm')
 
 const mapStateToProps = (state) => {
-  const {userId} = state.session;
-  const user = state.entities.users.entities[userId];
+  const {userId} = state.session
+  const user = state.entities.users.entities[userId]
   return {
     accessToken: _.find(state.session.tokens, {type: 'access'}).value,
     user,
     initialValues: {
       username: user.username,
-      fullName: user.profile.fullName,
+      fullName: _.get(user, 'profile.fullName'),
       about: user.about,
       bio: user.bio,
     },
@@ -271,7 +271,7 @@ const mapStateToProps = (state) => {
       fullName: _.trim(selector(state, 'fullName')),
       about: _.trim(selector(state, 'about')),
       bio: _.trim(selector(state, 'bio')),
-    }
+    },
   }
 }
 
@@ -291,5 +291,5 @@ export default R.compose(
     validate,
     asyncValidate: asyncValidate,
     asyncBlurFields: ['username', 'email'],
-  })
+  }),
 )(ProfileEditScreen)

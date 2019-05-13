@@ -106,17 +106,16 @@ class ProfileEditScreen extends React.Component {
 
     // currently tempCover and tempAvatar are actually directly saved to DB - so we need to revert
     // need to add fullName so that we dont accidentally set it to undefined
-    const profileReverts = profile
-      ? {
+    if (profile) {
+      const profileReverts = {
         fullName: profile.fullName,
         cover: profile.cover,
         avatar: profile.avatar,
       }
-      : {}
-
-    if (profile) this.props.updateUser({
-      profile: profileReverts,
-    })
+      this.props.updateUser({
+        profile: profileReverts,
+      })
+    }
 
     this.props.updateUserSuccess({
       id,

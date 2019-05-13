@@ -8,6 +8,7 @@ import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import UserActions from '../Shared/Redux/Entities/Users'
 import TabBar from '../Components/TabBar'
 
 const CenteredText = styled.p`
@@ -38,7 +39,12 @@ const ContentWrapper = styled.div`
   }
 `
 
-const tabBarTabs = ['CHANNELS', 'CATEGORIES']
+const tabTypes = {
+  channels: 'CHANNELS',
+  categories: 'CATEGORIES'
+}
+
+const tabBarTabs = [tabTypes.channels, tabTypes.categories]
 
 class Explore extends Component {
   static propTypes = {
@@ -49,15 +55,17 @@ class Explore extends Component {
   }
 
   state = {
-    activeTab: 'CHANNELS'
+    activeTab: tabBarTabs.channels
   }
 
   componentDidMount() {
     this.props.loadCategories()
+    this.props.loadUsersThatAreChannels()
+    this.props.loadUsers()
   }
 
-  _navToCategory = (categoryId) => {
-    this.props.reroute(`/category/${categoryId}`)
+  _navToCategory = (categoryAndChannelId) => {
+    this.props.reroute(`/category/${categoryAndChannelId}`)
   }
 
   onClickTab = event => {
@@ -65,19 +73,41 @@ class Explore extends Component {
     if(this.state.activeTab !== tab) this.setState({activeTab: tab})
   }
 
+  getEntitiesByType = () => {
+    const {activeTab} = this.state
+    const {channels, users, categories} = this.props
+    const filteredChannelsThatAreUsers = []
+    if(activeTab === tabTypes.channels){
+      for(let i = 0; i < channels.length; i++){
+        if(users[channels[i]]){
+          filteredChannelsThatAreUsers.push(users[channels[i]])
+        }
+      }
+    }
+     switch(activeTab){
+      case tabTypes.categories:
+        return categories
+      case tabTypes.channels:
+        return filteredChannelsThatAreUsers
+      default:
+        return []
+    }
+  }
+
   render() {
+    const categoriesArray = this.getEntitiesByType()
+    console.log(categoriesArray, 'category array')
     return (
       <Wrapper>
         <ExploreHeader/>
+        <TabBar
+          tabs={tabBarTabs}
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
+        />
         <ContentWrapper>
-          <ExploreText>EXPLORE</ExploreText>
-            <TabBar
-              tabs={tabBarTabs}
-              /*activeTab={this.state.activeTab}*/
-              onClickTab={this.onClickTab}
-            />
             <ExploreGrid
-              categories={this.props.categories}
+              categories={categoriesArray}
               onClickCategory={this._navToCategory}
             />
           <Footer />
@@ -94,6 +124,8 @@ function mapStateToProps(state, ownProps) {
   } = state.entities.categories
 
   return {
+    channels: state.entities.users.channelsByID,
+    users: state.entities.users.entities,
     categories,
     categoriesFetchStatus,
   }
@@ -101,6 +133,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    loadUsers: () => dispatch(UserActions.loadUser()),
+    loadUsersThatAreChannels: () => dispatch(UserActions.loadUsersChannels()),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     reroute: (path) => dispatch(push(path)),
   }

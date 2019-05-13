@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-core",
-  "version": "0.0.90",
+  "version": "0.1.0",
   "description": "HERO Traveler core server functions",
   "main": "dist/index.js",
   "scripts": {
@@ -18,13 +18,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hero/ht-util": "^0.0.62",
+    "@hero/ht-util": "^0.1.0",
     "algoliasearch": "^3.22.1",
-    "babel-preset-flow": "^6.23.0",
-    "babel-register": "^6.23.0",
-    "babel-template": "^6.26.0",
-    "babel-traverse": "^6.26.0",
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^3.0.6",
     "consolidate": "^0.14.5",
     "joi": "^10.2.2",
     "lodash": "^4.17.4",
@@ -42,9 +38,13 @@
     "standard-error": "^1.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
+    "babel-template": "^6.26.0",
+    "babel-traverse": "^6.26.0",
     "flow-bin": "^0.44.2",
     "rimraf": "^2.6.1",
     "watch": "^1.0.2"

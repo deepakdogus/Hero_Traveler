@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-util",
-  "version": "0.0.64",
+  "version": "0.1.0",
   "description": "Common server/client javascript functions",
   "main": "dist/index.js",
   "keywords": [],
@@ -19,10 +19,10 @@
     "dev:cms": "watch 'npm run build && npm run copy-local:cms && npm run copy-local:core' src"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-register": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "rimraf": "^2.6.1",
     "watch": "^1.0.2"
   },

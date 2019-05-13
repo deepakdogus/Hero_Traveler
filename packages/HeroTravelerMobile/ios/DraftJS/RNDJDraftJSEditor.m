@@ -428,8 +428,8 @@ typedef enum AutoPeriodState {
 
 - (RNDJDraftJsIndex*) draftJsIndexForPointInView:(CGPoint)point
 {
-  point.y -= _contentInset.top;
-  point.x -= _contentInset.left;
+  point.y -= _contentFrame.origin.y;
+  point.x -= _contentFrame.origin.x;
   
 #if DEBUG_TOUCHES
   debugTouchesToLeft.constant = point.x;
@@ -758,6 +758,7 @@ typedef enum AutoPeriodState {
        descendantViews:(NSArray<UIView *> *)descendantViews
 {
   _textStorage = textStorage;
+  _contentFrame = contentFrame;
   
   NSMutableArray* viewsToNotRemove = [NSMutableArray arrayWithArray:[existingAutocompleteViews allValues]];
   
@@ -816,8 +817,8 @@ typedef enum AutoPeriodState {
      inTextContainer:textContainer
      usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
        enclosingRect = CGRectInset(enclosingRect, 0, -2);
-       CGRect startRect = CGRectMake(enclosingRect.origin.x - 2,
-                                     enclosingRect.origin.y,
+       CGRect startRect = CGRectMake(enclosingRect.origin.x - 2 + _contentFrame.origin.x,
+                                     enclosingRect.origin.y + _contentFrame.origin.y,
                                      2,
                                      enclosingRect.size.height);
        startDragPath = [UIBezierPath bezierPathWithRoundedRect:startRect cornerRadius:1];
@@ -840,8 +841,8 @@ typedef enum AutoPeriodState {
      inTextContainer:textContainer
      usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
        enclosingRect = CGRectInset(enclosingRect, 0, -2);
-       CGRect endRect = CGRectMake(enclosingRect.origin.x + enclosingRect.size.width,
-                                   enclosingRect.origin.y,
+       CGRect endRect = CGRectMake(enclosingRect.origin.x + enclosingRect.size.width + _contentFrame.origin.x,
+                                   enclosingRect.origin.y + _contentFrame.origin.y,
                                    2,
                                    enclosingRect.size.height);
        endDragPath = [UIBezierPath bezierPathWithRoundedRect:endRect cornerRadius:1];
@@ -862,7 +863,13 @@ typedef enum AutoPeriodState {
      withinSelectedGlyphRange:range
      inTextContainer:textContainer
      usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-       UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(enclosingRect, -2, -2) cornerRadius:2];
+       UIBezierPath *path = [UIBezierPath
+                             bezierPathWithRoundedRect:CGRectMake(
+                                                                  enclosingRect.origin.x - 2 + _contentFrame.origin.x,
+                                                                  enclosingRect.origin.y - 2 + _contentFrame.origin.y,
+                                                                  enclosingRect.size.width + 4,
+                                                                  enclosingRect.size.height + 4)
+                             cornerRadius:2];
        if (highlightPath) {
          [highlightPath appendPath:path];
        } else {
@@ -898,7 +905,10 @@ typedef enum AutoPeriodState {
      
      __block UIBezierPath* newPath = nil;
      [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
-       CGRect highlightRect = CGRectInset(enclosingRect, -2, -2);
+       CGRect highlightRect = CGRectMake(enclosingRect.origin.x - 2 + _contentFrame.origin.x,
+                                         enclosingRect.origin.y - 2 + _contentFrame.origin.y,
+                                         enclosingRect.size.width + 4,
+                                         enclosingRect.size.height + 4);
        
        lastPoint = CGPointMake(highlightRect.origin.x, highlightRect.origin.y+highlightRect.size.height);
        
@@ -948,7 +958,8 @@ typedef enum AutoPeriodState {
     
     [layoutManager enumerateEnclosingRectsForGlyphRange:range withinSelectedGlyphRange:range inTextContainer:textContainer usingBlock:^(CGRect enclosingRect, __unused BOOL *__) {
       
-      CGRect cursorRect = CGRectMake(enclosingRect.origin.x, enclosingRect.origin.y, 2, enclosingRect.size.height);
+      CGRect cursorRect = CGRectMake(enclosingRect.origin.x + _contentFrame.origin.x,
+                                     enclosingRect.origin.y + _contentFrame.origin.y, 2, enclosingRect.size.height);
 
       if (fabs(_lastCursorRect.origin.x - cursorRect.origin.x) > 1 || fabs(_lastCursorRect.origin.y - cursorRect.origin.y) > 1) {
         [self scrollToCursorIfNeeded];

@@ -90,7 +90,7 @@ class Tile extends React.Component {
             selected={category.selected}
             overlayColor='black'
           >
-            <Title>{category.title}</Title>
+            <Title>{category.title || category.username}</Title>
           </TitleContainer>
           {isSelected &&
             <RedCheck name='redCheck' />

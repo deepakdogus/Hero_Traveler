@@ -64,8 +64,13 @@ class Explore extends Component {
     this.props.loadUsers()
   }
 
-  _navToCategory = (categoryAndChannelId) => {
-    this.props.reroute(`/category/${categoryAndChannelId}`)
+  _navToCategory = (categoryId) => {
+    this.props.reroute(`/category/${categoryId}`)
+  }
+
+  _navToChannel = (userId) => {
+    console.log(userId, 'userId')
+    this.props.reroute(`/profile/${userId}/view`)
   }
 
   onClickTab = event => {
@@ -96,7 +101,7 @@ class Explore extends Component {
 
   render() {
     const categoriesArray = this.getEntitiesByType()
-    console.log(categoriesArray, 'category array')
+    const {activeTab} = this.state
     return (
       <Wrapper>
         <ExploreHeader/>
@@ -108,7 +113,7 @@ class Explore extends Component {
         <ContentWrapper>
             <ExploreGrid
               categories={categoriesArray}
-              onClickCategory={this._navToCategory}
+              onClickCategory={this.state.activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
             />
           <Footer />
         </ContentWrapper>

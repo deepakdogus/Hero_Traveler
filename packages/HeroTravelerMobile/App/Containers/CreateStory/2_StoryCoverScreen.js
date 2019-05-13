@@ -504,7 +504,7 @@ class StoryCoverScreen extends Component {
   }
 
   setBlockType = (blockType) => {
-    if (this.toolbar) {
+    if (this.toolbar && blockType) {
       this.toolbar.setBlockType(blockType)
     }
   }
@@ -636,74 +636,74 @@ class StoryCoverScreen extends Component {
             style={styles.navBarStyle}
           />
           <View style={this._getCoverStyle()}>
-              {error && (
-                <ShadowButton
-                  style={styles.errorButton}
-                  onPress={this.clearError}
-                  text={error}
-                />
-              )}
-              <EditableCoverMedia
-                isPhoto={this.isPhotoType()}
-                media={coverImage || coverVideo}
-                clearError={this.clearError}
-                targetId={id}
-                onUpdate={updateWorkingDraft}
-                onTrimError={this.onTrimError}
-                jumpToTop={this.jumpToTop}
+            {error && (
+              <ShadowButton
+                style={styles.errorButton}
+                onPress={this.clearError}
+                text={error}
               />
-            </View>
-            <View style={styles.titlesWrapper}>
-              {!this.hasNoCover() && (
-                <TextInput
-                  style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
-                  placeholder='Add a caption...'
-                  value={coverCaption}
-                  onChangeText={this.setCoverCaption}
-                  returnKeyType='done'
-                  blurOnSubmit
-                />
-              )}
+            )}
+            <EditableCoverMedia
+              isPhoto={this.isPhotoType()}
+              media={coverImage || coverVideo}
+              clearError={this.clearError}
+              targetId={id}
+              onUpdate={updateWorkingDraft}
+              onTrimError={this.onTrimError}
+              jumpToTop={this.jumpToTop}
+            />
+          </View>
+          <View style={styles.titlesWrapper}>
+            {!this.hasNoCover() && (
               <TextInput
-                style={[
-                  styles.titleInput,
-                  {height: this.state.titleHeight},
-                ]}
-                placeholder='Add a title'
-                placeholderTextColor={Colors.background}
-                value={title}
-                onChangeText={this.setTitleAndFocus}
-                onFocus={this.jumpToTitle}
+                style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
+                placeholder='Add a caption...'
+                value={coverCaption}
+                onChangeText={this.setCoverCaption}
                 returnKeyType='done'
-                maxLength={40}
-                multiline={true}
-                blurOnSubmit
-                onContentSizeChange={this.setTitleHeight}
-              />
-              <TextInput
-                style={styles.description}
-                placeholder='Add a subtitle'
-                placeholderTextColor={Colors.grey}
-                value={description}
-                onChangeText={this.setDescriptionAndFocus}
-                onFocus={this.jumpToTitle}
-                returnKeyType='done'
-                maxLength={50}
                 blurOnSubmit
               />
-              <View style={styles.divider}/>
-            </View>
-            <View style={styles.editorWrapper}>
-              {this.renderEditor()}
-            </View>
+            )}
+            <TextInput
+              style={[
+                styles.titleInput,
+                {height: this.state.titleHeight},
+              ]}
+              placeholder='Add a title'
+              placeholderTextColor={Colors.background}
+              value={title}
+              onChangeText={this.setTitleAndFocus}
+              onFocus={this.jumpToTitle}
+              returnKeyType='done'
+              maxLength={40}
+              multiline={true}
+              blurOnSubmit
+              onContentSizeChange={this.setTitleHeight}
+            />
+            <TextInput
+              style={styles.description}
+              placeholder='Add a subtitle'
+              placeholderTextColor={Colors.grey}
+              value={description}
+              onChangeText={this.setDescriptionAndFocus}
+              onFocus={this.jumpToTitle}
+              returnKeyType='done'
+              maxLength={50}
+              blurOnSubmit
+            />
+            <View style={styles.divider}/>
+          </View>
+          <View style={styles.editorWrapper}>
+            {this.renderEditor()}
+          </View>
           {<View style={styles.toolbarAvoiding}></View>}
         </ScrollView>
         {showIntroTooltip && (
-            <Tooltip
-              type='image-edit'
-              onDismiss={this._completeIntroTooltip}
-              dimBackground={true}
-            />
+          <Tooltip
+            type='image-edit'
+            onDismiss={this._completeIntroTooltip}
+            dimBackground={true}
+          />
         )}
         {this.editor && (
           <KeyboardTrackingView
@@ -711,11 +711,11 @@ class StoryCoverScreen extends Component {
             trackInteractive={true}
           >
             {
-            <Toolbar
-              ref={this.setToolbarRef}
-              display={this.state.toolbarDisplay}
-              onPress={this.editor.onToolbarPress}
-            />
+              <Toolbar
+                ref={this.setToolbarRef}
+                display={this.state.toolbarDisplay}
+                onPress={this.editor.onToolbarPress}
+              />
             }
           </KeyboardTrackingView>
         )}

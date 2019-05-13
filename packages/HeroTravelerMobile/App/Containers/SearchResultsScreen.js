@@ -89,8 +89,8 @@ class SearchResultsScreen extends Component {
 
   componentWillUnmount () {
     // avoids not showing new results/showing deleted stories
-    this.guideHelper.clearCache()
-    this.storyHelper.clearCache()
+    if (this.guideHelper) this.guideHelper.clearCache()
+    if (this.storyHelper) this.storyHelper.clearCache()
   }
 
   hasHistoryData = () => {
@@ -107,7 +107,7 @@ class SearchResultsScreen extends Component {
   }
 
   setupSearchListeners = (helper, type) => {
-    helper.on('result', res => {
+    if (helper) helper.on('result', res => {
       const lastSearchResults = {
         ...this.state.lastSearchResults,
         [type]: res.hits,
@@ -136,6 +136,8 @@ class SearchResultsScreen extends Component {
         },
       })
     }
+
+    if (!helper) return
 
     helper.addDisjunctiveFacetRefinement(
       'locationInfo.country',

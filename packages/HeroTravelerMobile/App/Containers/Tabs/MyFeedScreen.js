@@ -92,6 +92,7 @@ class MyFeedScreen extends React.Component {
     }
     SplashScreen.hide()
 
+    // check app store version
     if (!__DEV__) {
       getAppstoreAppVersion('1288145566') //put any apps id here
         .then(versionOnAppStore => {
@@ -103,12 +104,17 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
     }
+
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
       const nearbyStoryIds = res.hits.map(story => story.id)
       this.props.attemptGetNearbyFeedStories(nearbyStoryIds)
     })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.activeTab !== this.state.activeTab) this.getEntitiesByType()
   }
 
   componentWillUnmount() {
@@ -293,7 +299,7 @@ class MyFeedScreen extends React.Component {
 
   selectTab = activeTab => {
     if (activeTab === tabTypes.nearby) this.getLocationPermission()
-    this.setState({ activeTab }, () => this.getEntitiesByType())
+    this.setState({ activeTab })
   }
 
   renderTabs() {

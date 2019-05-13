@@ -19,7 +19,7 @@ target 'HeroTravelerMobile' do
   pod 'FBSDKShareKit'
   pod 'FBSDKPlacesKit'
 
-  pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '705cab1b7fbafb661d4476e05cf6a98e31ab7793'
+  pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '3db441165dd2f9e93a92b042a5e92f1f743014d5'
   pod 'FLAnimatedImage'
 
 end

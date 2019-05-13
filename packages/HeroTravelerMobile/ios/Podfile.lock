@@ -26,9 +26,9 @@ PODS:
     - GoogleMaps/Base (= 3.0.3)
   - iOS-MagnifyingGlass (0.0.2)
   - IQKeyboardManager (6.0.2)
-  - SDWebImage (4.3.3):
-    - SDWebImage/Core (= 4.3.3)
-  - SDWebImage/Core (4.3.3)
+  - SDWebImage (4.4.6):
+    - SDWebImage/Core (= 4.4.6)
+  - SDWebImage/Core (4.4.6)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -41,7 +41,7 @@ DEPENDENCIES:
   - GooglePlaces (~> 3.0)
   - iOS-MagnifyingGlass (~> 0.0.2)
   - IQKeyboardManager
-  - SDWebImage (from `https://github.com/rehashstudio/SDWebImage.git`, commit `705cab1b7fbafb661d4476e05cf6a98e31ab7793`)
+  - SDWebImage (from `https://github.com/rehashstudio/SDWebImage.git`, commit `3db441165dd2f9e93a92b042a5e92f1f743014d5`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -59,12 +59,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   SDWebImage:
-    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :commit: 3db441165dd2f9e93a92b042a5e92f1f743014d5
     :git: https://github.com/rehashstudio/SDWebImage.git
 
 CHECKOUT OPTIONS:
   SDWebImage:
-    :commit: 705cab1b7fbafb661d4476e05cf6a98e31ab7793
+    :commit: 3db441165dd2f9e93a92b042a5e92f1f743014d5
     :git: https://github.com/rehashstudio/SDWebImage.git
 
 SPEC CHECKSUMS:
@@ -79,8 +79,8 @@ SPEC CHECKSUMS:
   GooglePlaces: f09e76993c9c3ee4af8f4f7f535bb94d6aa3b649
   iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: c49d59e358aeeffaa0280aa305093c2b194d2607
-  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
 
-PODFILE CHECKSUM: e8c9639e2fbbc9599b0da662fe83ad81f9e6a0aa
+PODFILE CHECKSUM: 6ed196e62fe0b3fd03edc7970e361dde262b1fc7
 
 COCOAPODS: 1.6.1

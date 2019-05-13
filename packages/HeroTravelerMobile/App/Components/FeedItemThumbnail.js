@@ -64,15 +64,15 @@ export default class FeedItem extends Component {
             style={styles.image}
             resizeMode='cover'
           />
+          {isGuide && (
+            <TabIcon name='guide-alt' style={{
+              view: styles.guideIconView,
+              image: styles.guideIconImage,
+            }}
+            />
+          )}
           {isVideo && this.renderPlayButton()}
           <View style={styles.titleContainer}>
-            {isGuide && (
-              <TabIcon name='guide' style={{
-                  view: styles.guideIconView,
-                  image: styles.guideIconImage,
-                }}
-              />
-            )}
             <Text style={styles.title}>
               {feedItem.title}
             </Text>

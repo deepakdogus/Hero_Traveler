@@ -14,7 +14,7 @@ import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
 import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
-import { Row } from '../Components/FlexboxGrid'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 
 // search
 import algoliasearchModule from 'algoliasearch'

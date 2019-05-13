@@ -52,7 +52,6 @@
 /* Begin PBXBuildFile section */
 		01F54FFAF0189D229570B132161DE18F /* AIRGoogleMapMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 313ABFC7565B3A6CA8597168D4AD8979 /* AIRGoogleMapMarkerManager.m */; settings = {COMPILER_FLAGS = "-DHAVE_GOOGLE_MAPS=1 -DHAVE_GOOGLE_MAPS_UTILS=1 -fno-modules"; }; };
 		07369DDBAE7D97CCE30B2D802978FF2C /* IQTitleBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0A899DEF4D6B755B3B5D89638A88C3 /* IQTitleBarButtonItem.m */; };
-		07812BE724558B741661645AB42C0B05 /* YGNodePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5CBF934E1D8C78798D9ABE998402FC /* YGNodePrint.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		08BAD76543E37D58FFD368C44C6BD3B4 /* IQBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 436EFBA7E507A8458C1C7F2D59FB0DBD /* IQBarButtonItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0A91FE63B62EB5D5B845BB2C517B6960 /* AIRMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD8FF61B19231B08CE1D8843EDE86C7 /* AIRMapMarker.m */; };
 		0C5CB3D9BA014C8CD2D3BB0BE3CDE3FE /* SDWebImageCoderHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6440F0B8F937350A8C97C1E17C0BA235 /* SDWebImageCoderHelper.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -124,7 +123,6 @@
 		43A6A2F2F318BAE09E5FD488D82C7148 /* nl.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 94A5FDF096F1B8F739CFE3A34EA810F9 /* nl.lproj */; };
 		44BED1B9016B6E459CF0FFF95457CB2E /* AIRWeakMapReference.h in Headers */ = {isa = PBXBuildFile; fileRef = ABE450E3555933DE335735FAC6724489 /* AIRWeakMapReference.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		454D9963BF544C4FCCC72851881FFDC8 /* IQUIView+Hierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F40D8EFB24903224E6B9B41AFACB49 /* IQUIView+Hierarchy.m */; };
-		4592ED2CE263086E74E1442F1DC750A4 /* YGNodePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9603495ACA8080D2085D303CDDC2FB81 /* YGNodePrint.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		4666D20F27B8AC63D751DDA7FCC3C712 /* GMUGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 53F3B7DC43B75AFC646CB2798BE5A75E /* GMUGroundOverlay.m */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
 		46C813AF0B833AA1EC325A1508D83FD2 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D65D5CAA93C1AB13BB1759C33D6CF9 /* UIImage+GIF.m */; };
 		475A6CD77FFA2540798D19D6BF1396BC /* GQTPointQuadTreeChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 7018691C3309DE9597222B20F756FFFB /* GQTPointQuadTreeChild.m */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
@@ -147,10 +145,8 @@
 		5093062E5861A8932FB17DCF9665FC3D /* AIRWeakMapReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D55F0F1F57A35C4314B36767C5050EA /* AIRWeakMapReference.m */; };
 		512794A53D9EA11FD2BC17944E5E840F /* GMULineString.m in Sources */ = {isa = PBXBuildFile; fileRef = 801AE83077CE3325F9BCC764A7D2E7B9 /* GMULineString.m */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
 		528F45434D090B84AA43752EEE76F014 /* UIView+WebCacheOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = B82410AF24793740594A0B4EF26892DC /* UIView+WebCacheOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		54B03411BB9176ECE00D39214E6A5991 /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D742056AB0453C209312286067A20B0 /* Yoga-internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		56C23CB7D8BB8B95BD2665AC5E412C62 /* AIRGMSPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F92DDE85B1DA502DC0FB22FA4C669F /* AIRGMSPolyline.m */; settings = {COMPILER_FLAGS = "-DHAVE_GOOGLE_MAPS=1 -DHAVE_GOOGLE_MAPS_UTILS=1 -fno-modules"; }; };
 		5712CEF76AF2C4DB63E5E53C833B4F1F /* AIRGoogleMapOverlayManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 19F214A507DFD087CFF924D66B5FB96D /* AIRGoogleMapOverlayManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5744A6F00208EF8897CF494924C924A4 /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C74CDAB292DA3C7AEB46212B3763CC5B /* YGNode.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		575E95C42EF4A09E2F0CD3EA856667CF /* SDWebImageFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED3F6CD32AA2F92E4B754BCF4836F76 /* SDWebImageFrame.m */; };
 		5812488095708373E9E51B019356DEA1 /* IQTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = EB17513A4DBAEF3229371914FAF90B7E /* IQTextView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		58C1437BBD530692BD09F0729378D41C /* IQKeyboardManager-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C0B0415D96DD599AE0210B612E4DA2EB /* IQKeyboardManager-dummy.m */; };
@@ -169,7 +165,6 @@
 		677B33D2663F14B0A894560DE3DCE104 /* AIRMapPolyline.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D0FB50C5A8D9E1A9294DE76B52B9BC /* AIRMapPolyline.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		686AE345570E3524F01FA83A37DFF472 /* AIRWeakTimerReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FCBD79FE85232B9B2A1F6B75D33BC66 /* AIRWeakTimerReference.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6905F692727699427964C8D78C4CEFD4 /* GMUKMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 50101183A767421694EDD0E67DCBDF4C /* GMUKMLParser.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6BBEDAF368F3939D2795034CDB60AA54 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E5929E1E79A1D68E4EFFD4CA4F6663F6 /* YGEnums.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		6BDFFB8721417FAEC426828C53661A74 /* Arrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EC00230563728D5FF8B921821F9C4F23 /* Arrow@3x.png */; };
 		6C36D0A87B25E7AF8A9797484D1443A9 /* AIRGoogleMapCalloutSubview.h in Headers */ = {isa = PBXBuildFile; fileRef = 2592036FAAB0995E7AEFC644288B9235 /* AIRGoogleMapCalloutSubview.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6E27363AD92F0932222A72C54B3BE5E7 /* AIRMapLocalTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 990B43504D68C376BB9DDCC995F45744 /* AIRMapLocalTileOverlay.m */; };
@@ -213,7 +208,6 @@
 		8B0789FFB0A55BDBCE594C86852BEC91 /* IQUIView+IQKeyboardToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 97435BDB34A5CA94ABCDCDEAF75F61FC /* IQUIView+IQKeyboardToolbar.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8B5D6353C9664984E0FD33E24807991B /* AIRGoogleMapMarkerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 545C5ACC94D1462EA9368F270692ABDB /* AIRGoogleMapMarkerManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8C950D15880AA344425F886FE6877EE5 /* GMUGeometryContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 066DFD3CAD29A182B21CA11BD8BF8A62 /* GMUGeometryContainer.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		8CCFC754E62022F5B92660BA10455FA1 /* Yoga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EAC6C0A19D5C2A591A3359269719B2F /* Yoga.cpp */; settings = {COMPILER_FLAGS = "-fno-omit-frame-pointer -fexceptions -Wall -Werror -std=c++1y -fPIC -fno-objc-arc"; }; };
 		8EBDE1F536533ED4F10D07FAA72955C9 /* hr.lproj in Resources */ = {isa = PBXBuildFile; fileRef = C7FC9BD73007FCEA869B190FB83F2279 /* hr.lproj */; };
 		8ED757A92B5E4013A7761C9F5AC98C77 /* IQPreviousNextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DEF472763EEB9F53425E01C7604A2B /* IQPreviousNextView.m */; };
 		8F982C2F3FE4B92DAF62DF030F476F88 /* SDWebImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C23E65374F6E52438C67036813DB643 /* SDWebImageManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -280,14 +274,12 @@
 		BC1AB64AF2DB84C0D36A3FCE3E8B4195 /* fa.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 60B64AD959C2EDF22DEE30CF54206F11 /* fa.lproj */; };
 		BD8E5BF4E8AF477A8E65993C05589447 /* GMUDefaultClusterIconGenerator+Testing.h in Headers */ = {isa = PBXBuildFile; fileRef = 17B227C469D1E18DFFC5B3AF9F1CAC7A /* GMUDefaultClusterIconGenerator+Testing.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BF59DC1C2A0E0E65EDB9BE951DF1EC3D /* GMUFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D3E222624669058E20B7831B8747BF5 /* GMUFeature.m */; settings = {COMPILER_FLAGS = "-fno-modules"; }; };
-		C00AE23FCAAB17254E90F4618E475A6A /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F82257DC73DD670A86DA3B6C9502D34 /* YGMacros.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C04FE92FAAFA008D9BEF594FC4464318 /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BF038FD56C3B7139ACB22428E614A52 /* NSData+ImageContentType.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C05452FFDE1CEC44128F40FD091BE1F3 /* SDWebImageCoderHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B906E5A7C7BF4E918DBC44ED63AF8C /* SDWebImageCoderHelper.m */; };
 		C128689AD8BF7A028DDBBF79A0F6CEF2 /* GQTPointQuadTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = DD7E8D0473723930660BBF18F9801F24 /* GQTPointQuadTreeItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C17A918AB615BA9A3AB0A76183B9DBE7 /* IQNSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B948199CE987AC3A6A10DFD4219611 /* IQNSArray+Sort.m */; };
 		C362AA354FE4D3D9EB2341AE9474D0BC /* SDWebImageImageIOCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F83DC06B6C65D5AD3E5893E0B18A873 /* SDWebImageImageIOCoder.m */; };
 		C363D1839948D5D5D32DF8725FE3A091 /* feedbackActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 3670CAF95B417BA134CDBF5D28C802F4 /* feedbackActivity~ipad.png */; };
-		C3A67D7C608F9959CF87343543344282 /* Yoga.h in Headers */ = {isa = PBXBuildFile; fileRef = 414379D33CF5B28D8AD36BDFF0503360 /* Yoga.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C3F3C9C5E5AC185EFAB88E59344B6D8C /* AIRGMSPolyline.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A3235D622C03206B0CA61C89535C4B6 /* AIRGMSPolyline.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C5BB639C2D8CCA146B5C0BDF411FC741 /* pt-PT.lproj in Resources */ = {isa = PBXBuildFile; fileRef = C5D1B3F4454B5B02ADB7F704C196CAAD /* pt-PT.lproj */; };
 		C6CC30A3F864B05EE207C2B403BFFED8 /* fr.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 6E3D8250C165841A6207115F35B5F6A5 /* fr.lproj */; };
@@ -307,7 +299,6 @@
 		D1E7780AAA2307DA6798BFEC2459FEE4 /* IQUIView+Hierarchy.h in Headers */ = {isa = PBXBuildFile; fileRef = EBFD0C2ACFBB361BBD67EB3A8AA42F24 /* IQUIView+Hierarchy.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D2066B8C4849CA8E552C32FA278AD8C2 /* GMUClusterRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8184B1C76785A04F8C67CE6BB784E2C3 /* GMUClusterRenderer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D2E1F967EEE9A9CF29C75D136DBD434D /* AIRMapLocalTileOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = 60817D2D82DED7CA35ECCA5FE623F4FB /* AIRMapLocalTileOverlay.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D32C785B04F0061594CC4C91C263BD7A /* yoga-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D50608FB99ABC14E5FB775C6073E07A /* yoga-dummy.m */; };
 		D408D74BDBDD78D884E0602A18274277 /* AIRGoogleMapCalloutSubviewManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDA684D5866132238BA1ADB6101D1F3D /* AIRGoogleMapCalloutSubviewManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D44580617978DB4122F5682824F87C8D /* IQToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DA53780BE07E5DFA17BD38E873EC8B9 /* IQToolbar.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D512422D1D1A76952E998165E6DACB1F /* IQKeyboardManagerConstantsInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = C5C3AF91B3BE326134667C6F97C0B5A6 /* IQKeyboardManagerConstantsInternal.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -334,7 +325,6 @@
 		E2E8C2798CEB56E48B115376C93AE3D3 /* NSButton+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D139F9AA0925A8D29A540559D783771 /* NSButton+WebCache.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E377DE2BAA4E1438E8C68B07E4185F6E /* iconCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 905B886D9B13AE1F237F6BE7C7A1A567 /* iconCamera.png */; };
 		E512F99D708DDE53695E5C998BC9EFEA /* AIRWeakTimerReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F46B23EF43A22E5FE8204A64B2D8AB5 /* AIRWeakTimerReference.m */; };
-		E5B03D6BB9E4629D8259590F50257FAF /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E471F57E5DC77F02FD1991E858491B /* YGEnums.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E5EE03D0EF49F0CFC1C61F8051C3C9B0 /* AIRDummyView.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8771576F2DB1C9F17F824AC58EAFD0 /* AIRDummyView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E61D015F05F4341F61315A74E1D16ED1 /* IconGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7B1073CB33C7C2789160B27C973F0E /* IconGradient.png */; };
 		E7305B1BDE3BBA52E185D87FF10AFD9A /* AIRDummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 759477029E9C433BD3F488DA132459A8 /* AIRDummyView.m */; settings = {COMPILER_FLAGS = "-DHAVE_GOOGLE_MAPS=1 -DHAVE_GOOGLE_MAPS_UTILS=1 -fno-modules"; }; };
@@ -380,7 +370,6 @@
 		FEB457835033FE0FCA32973C21ED8F8A /* GQTPointQuadTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 773BC3128A0D6A87D5450C0D7EFFB27D /* GQTPointQuadTree.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FEBFB9086094FDFC908A1FA6D96A3736 /* AIRGoogleMapCallout.h in Headers */ = {isa = PBXBuildFile; fileRef = 415F817ED3DFDCC23DC33D6C246DF89B /* AIRGoogleMapCallout.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF474CEEFF20CEE0CCA269C9787A010A /* IconGradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FED813F598E67C177581022DBB72A68 /* IconGradient@2x.png */; };
-		FF5790BFAD029F73CC9F79E75B7710BC /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 0528786C64B8BF7E5DA81D76B927E1A5 /* YGNode.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF913280B71A9BA839161601E5594E02 /* SDWebImageCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = BD551388E24BB2AAB9B03BFABD4CE076 /* SDWebImageCompat.h */; settings = {ATTRIBUTES = (Project, ); }; };
 /* End PBXBuildFile section */
 
@@ -431,7 +420,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A2ED7079515C4AD28721FE19DFB519A;
+			remoteGlobalIDString = 0000000064F0;
 			remoteInfo = yoga;
 		};
 		700E0B1E0AAF52F0172FB7A27BF313CE /* PBXContainerItemProxy */ = {
@@ -1345,13 +1334,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		668012D5866893FD3DD257C9B47511A6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		67E947B7B1DA3210135E1FEBA3AE60AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2931,19 +2913,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7879FCBCFD608F0B6E7C552EADF2BE2B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E5B03D6BB9E4629D8259590F50257FAF /* YGEnums.h in Headers */,
-				C00AE23FCAAB17254E90F4618E475A6A /* YGMacros.h in Headers */,
-				FF5790BFAD029F73CC9F79E75B7710BC /* YGNode.h in Headers */,
-				07812BE724558B741661645AB42C0B05 /* YGNodePrint.h in Headers */,
-				54B03411BB9176ECE00D39214E6A5991 /* Yoga-internal.h in Headers */,
-				C3A67D7C608F9959CF87343543344282 /* Yoga.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		80BC0F1D604B2301E587EC5E6C9AEDBD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -3102,23 +3071,6 @@
 			name = "react-native-maps";
 			productName = "react-native-maps";
 			productReference = CBEAA5314BA9A17637B77FE168FFFE38 /* libreact-native-maps.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		4A2ED7079515C4AD28721FE19DFB519A /* yoga */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D18941ADA2E3EC69B3A62F84810108D3 /* Build configuration list for PBXNativeTarget "yoga" */;
-			buildPhases = (
-				7879FCBCFD608F0B6E7C552EADF2BE2B /* Headers */,
-				6F42C7D59F9270E607E5A621C29F1405 /* Sources */,
-				67E947B7B1DA3210135E1FEBA3AE60AD /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = yoga;
-			productName = yoga;
-			productReference = A80F683D236F3430B6D7A45C5678F76A /* libyoga.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		5DB2EF00B4B58B00BEE281DB53A16516 /* react-native-google-maps */ = {
@@ -3308,7 +3260,6 @@
 				5DB2EF00B4B58B00BEE281DB53A16516 /* react-native-google-maps */,
 				06868D85E40F0A09B3119A4BD923ACD5 /* react-native-maps */,
 				E521857F0B06319249F0A32F55B2939C /* SDWebImage */,
-				4A2ED7079515C4AD28721FE19DFB519A /* yoga */,
 			);
 		};
 /* End PBXProject section */
@@ -3514,18 +3465,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6F42C7D59F9270E607E5A621C29F1405 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6BBEDAF368F3939D2795034CDB60AA54 /* YGEnums.cpp in Sources */,
-				5744A6F00208EF8897CF494924C924A4 /* YGNode.cpp in Sources */,
-				4592ED2CE263086E74E1442F1DC750A4 /* YGNodePrint.cpp in Sources */,
-				D32C785B04F0061594CC4C91C263BD7A /* yoga-dummy.m in Sources */,
-				8CCFC754E62022F5B92660BA10455FA1 /* Yoga.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7B43E223DAB8641E2407E34864FD3687 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3611,7 +3550,6 @@
 		25DEA101C99B021BA2C2AF48F7825B02 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = yoga;
-			target = 4A2ED7079515C4AD28721FE19DFB519A /* yoga */;
 			targetProxy = 5A8957E03AEC92A448C95CF4D13B3AD9 /* PBXContainerItemProxy */;
 		};
 		301653ED6DF8F591D5E2D1C8B0D2336C /* PBXTargetDependency */ = {
@@ -3947,30 +3885,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		48F9FC522A2AF9CC17E6ACA20344EAC1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB29B31A4D136C7DD81878AC3518832A /* yoga.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/yoga/yoga-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = yoga;
-				PRODUCT_NAME = yoga;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
 		};
 		595DD5539089161955FE3C7084B0C9B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4332,31 +4246,6 @@
 			};
 			name = Debug;
 		};
-		E52D0EBFEC74AFCCE76275A6D2CD34EA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB29B31A4D136C7DD81878AC3518832A /* yoga.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/yoga/yoga-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = yoga;
-				PRODUCT_NAME = yoga;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		E6EE9F7EDB12BCA2A43FF35515F5FC6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 328F2CC73C9530AAA38265A926B49213 /* react-native-google-maps.xcconfig */;
@@ -4526,15 +4415,6 @@
 			buildConfigurations = (
 				112AE6F656F2CBFA714EFEEA0DFF271B /* Debug */,
 				C36035421C432B6CE2574B0C1DF29616 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D18941ADA2E3EC69B3A62F84810108D3 /* Build configuration list for PBXNativeTarget "yoga" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				48F9FC522A2AF9CC17E6ACA20344EAC1 /* Debug */,
-				E52D0EBFEC74AFCCE76275A6D2CD34EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

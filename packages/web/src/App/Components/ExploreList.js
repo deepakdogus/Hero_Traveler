@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Grid, Row } from './FlexboxGrid'
+import { Grid, Row } from '../Shared/Web/Components/FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import SpaceBetweenRow from './SpaceBetweenRow'
-import RoundedButton from './RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import HorizontalDivider from './HorizontalDivider'
 
 import {

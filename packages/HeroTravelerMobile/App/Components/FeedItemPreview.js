@@ -220,6 +220,14 @@ export default class FeedItemPreview extends Component {
                     }}
                   />
                 )}
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.verticalCenter}>
+              <TouchableOpacity
+                onPress={this._touchUser}
+                style={styles.profileButton}
+              >
                 <Text style={[
                   styles.username,
                   isReadingScreen && styles.usernameReading,

@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import { RightTitle, RightModalCloseX, Text } from './Shared'
-import { Row } from '../FlexboxGrid'
-import Icon from '../Icon'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const Container = styled.div`
   width: 570px;

@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 })
 
 const SIZES = {
-  extraSmall: 32,
-  almostExtraSmall: 36,
+  extraSmall: 42,
+  almostExtraSmall: 46,
   small: 40,
   medium: 50,
   large: 83,

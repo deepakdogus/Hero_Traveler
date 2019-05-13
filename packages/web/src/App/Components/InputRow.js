@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import VerticalCenter from './VerticalCenter'
-import RoundedButton from './RoundedButton'
-import {Row} from './FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 
 const Container = styled.div`
   margin: ${props => props.margin ? props.margin : '0'};

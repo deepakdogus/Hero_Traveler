@@ -12,7 +12,6 @@ export default function encryptPassword(password) {
       if (err) {
         return reject(err)
       }
-
       return resolve(hash)
     })
   })

@@ -6,7 +6,7 @@ import uploadFile, {
 } from '../../Utils/uploadFile'
 import { insertAtomicBlock } from '../../Shared/Lib/draft-js-helpers'
 import { removeMedia } from '../../Lib/web-draft-js-helpers'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 import styled from 'styled-components'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import { extractUploadData } from '../../Shared/Sagas/StorySagas'

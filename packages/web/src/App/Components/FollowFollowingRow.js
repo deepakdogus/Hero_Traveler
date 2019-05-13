@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import SpaceBetweenRow from './SpaceBetweenRow'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import Avatar from './Avatar'
-import RoundedButton from './RoundedButton'
+import Avatar from '../Shared/Web/Components/Avatar'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import HorizontalDivider from './HorizontalDivider'
 
 const Container = styled.div`

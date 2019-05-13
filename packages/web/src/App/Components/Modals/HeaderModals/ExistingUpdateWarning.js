@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import {
   Container,
   Title,
   Text,
 } from '../Shared'
-import {Row} from '../../FlexboxGrid'
+import {Row} from '../../../Shared/Web/Components/FlexboxGrid'
 import StoryCreateActions from '../../../Shared/Redux/StoryCreateRedux'
 
 class ExistingUpdateWarning extends React.Component {

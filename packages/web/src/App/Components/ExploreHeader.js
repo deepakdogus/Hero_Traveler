@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 import background from '../Shared/Images/explore-hero.jpg'
 import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import { OverlayStyles } from './Overlay'
-import HeaderTopGradient from './Headers/Shared/HeaderTopGradient'
+import HeaderTopGradient from '../Shared/Web/Components/Headers/Shared/HeaderTopGradient'
 import { Images } from '../Shared/Themes'
 
 const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`

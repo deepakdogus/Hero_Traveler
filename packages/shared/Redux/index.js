@@ -3,13 +3,13 @@ import configureStore from './CreateStore'
 import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'
+import admin from './Admin'
 import {SessionTypes} from './SessionRedux'
 // related to nav which is device specific so not located in shared folder
 import routes from '../../Redux/Routes'
 
-export default () => {
-  /* ------------- Assemble The Reducers ------------- */
-  const appReducer = combineReducers({
+export default (includeAdmin = false) => {
+  const reducers = {
     login: require('./LoginRedux').reducer,
     signup: require('./SignupRedux').reducer,
     session: require('./SessionRedux').reducer,
@@ -22,7 +22,10 @@ export default () => {
     pendingUpdates: require('./PendingUpdatesRedux').reducer,
     ux: require('../../Redux/UXRedux').reducer,
     history: require('./HistoryRedux').reducer,
-  })
+  }
+  if (includeAdmin) reducers.admin = admin
+  /* ------------- Assemble The Reducers ------------- */
+  const appReducer = combineReducers(reducers)
 
   const rootReducer = (state, action) => {
     // Allows us to reset store state completely

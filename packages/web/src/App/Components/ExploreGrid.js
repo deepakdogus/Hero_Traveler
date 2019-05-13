@@ -113,6 +113,7 @@ export default class ExploreGrid extends React.Component {
     console.log('categories sjfksdjfklsdjf', categories)
     const renderedCategories = Object.keys(categories).map((key) => {
       const category = categories[key]
+      console.log('id', categories.id)
       return (
         <Tile
           key={category.id}

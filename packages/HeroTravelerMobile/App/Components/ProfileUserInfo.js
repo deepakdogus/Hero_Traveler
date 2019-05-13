@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
+import _ from 'lodash'
 
 import styles from './Styles/ProfileViewStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'

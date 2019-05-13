@@ -55,7 +55,7 @@ class Explore extends Component {
   }
 
   state = {
-    activeTab: tabBarTabs.channels
+    activeTab: tabTypes.channels
   }
 
   componentDidMount() {

@@ -110,7 +110,7 @@ export default class ExploreGrid extends React.Component {
 
   render() {
     const {categories, getIsSelected, onClickCategory} = this.props
-    console.log('categories', categories)
+    console.log('categories sjfksdjfklsdjf', categories)
     const renderedCategories = Object.keys(categories).map((key) => {
       const category = categories[key]
       return (

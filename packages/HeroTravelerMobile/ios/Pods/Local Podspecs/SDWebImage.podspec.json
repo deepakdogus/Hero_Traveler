@@ -1,6 +1,6 @@
 {
   "name": "SDWebImage",
-  "version": "4.3.3",
+  "version": "4.4.6",
   "platforms": {
     "osx": "10.9",
     "ios": "7.0",
@@ -9,13 +9,13 @@
   },
   "license": "MIT",
   "summary": "Asynchronous image downloader with cache support with an UIImageView category.",
-  "homepage": "https://github.com/rs/SDWebImage",
+  "homepage": "https://github.com/SDWebImage/SDWebImage",
   "authors": {
     "Olivier Poitrey": "rs@dailymotion.com"
   },
   "source": {
-    "git": "https://github.com/rs/SDWebImage.git",
-    "tag": "4.3.3"
+    "git": "https://github.com/SDWebImage/SDWebImage.git",
+    "tag": "4.4.6"
   },
   "description": "This library provides a category for UIImageView with support for remote images coming from the web. It provides an UIImageView category adding web image and cache management to the Cocoa Touch framework, an asynchronous image downloader, an asynchronous memory + disk image caching with automatic cache expiration handling, a guarantee that the same URL won't be downloaded several times, a guarantee that bogus URLs won't be retried again and again, and performances!",
   "requires_arc": true,
@@ -61,9 +61,6 @@
         "FLAnimatedImage": [
           "~> 1.0"
         ]
-      },
-      "xcconfig": {
-        "USER_HEADER_SEARCH_PATHS": "$(inherited) $(SRCROOT)/FLAnimatedImage/FLAnimatedImage"
       }
     },
     {
@@ -87,7 +84,7 @@
 
         ],
         "libwebp": [
-          "~> 0.5"
+          ">= 0.5"
         ]
       }
     }

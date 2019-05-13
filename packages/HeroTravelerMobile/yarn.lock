@@ -5252,6 +5252,11 @@ lodash.restparam@^3.0.0:
   resolved "https://npm.abeck.io:443/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
   integrity sha1-k2pOMJ7zMKdkXtQUWYbIWuWyCAU=
 
+lodash.result@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/lodash.result/-/lodash.result-4.5.2.tgz#cb45b27fb914eaa8d8ee6f0ce7b2870b87cb70aa"
+  integrity sha1-y0Wyf7kU6qjY7m8M57KHC4fLcKo=
+
 lodash.some@^4.4.0:
   version "4.6.0"
   resolved "https://npm.abeck.io:443/lodash.some/-/lodash.some-4.6.0.tgz#1bb9f314ef6b8baded13b549169b2a945eb68e4d"
@@ -6621,6 +6626,13 @@ react-native-animatable@^1.1.0:
   integrity sha512-cVTQXa/cp8gfxcl+l6I1rGAI7EeoNZ0ur9vtxb3tD5iGlJbIyUfQK61e6BycnZewdgQ639Mp6OrueXTpZlv76Q==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-appstore-version-checker@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-appstore-version-checker/-/react-native-appstore-version-checker-2.7.2.tgz#431cc9b666d2d42fdc63a44a12cdad7aa53f56ab"
+  integrity sha512-cHGj7TY4ePhO7EvHXT7rq0rdYesfn7JNOyi6CjFdzBePVLv5Y7liOQsbjaAW5yUTav66ATeiV+mIVmfOlGhqGQ==
+  dependencies:
+    lodash.result "^4.5.2"
 
 react-native-autogrow-textinput@5.1.1:
   version "5.1.1"

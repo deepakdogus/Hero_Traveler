@@ -12,16 +12,16 @@ import {
 } from '../../Shared/Lib/AddStoryToGuidesHelpers'
 import GuideSelectRow, { DefaultContainer } from '../GuideSelectRow'
 import SpaceBetweenRow from '../SpaceBetweenRow'
-import VerticalCenter from '../VerticalCenter'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import CenteredButtons from '../CenteredButtons'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   RightTitle,
   RightModalCloseX,
   StyledVerticalCenter,
 } from './Shared'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const Container = styled.div`
   min-height: 100vh;

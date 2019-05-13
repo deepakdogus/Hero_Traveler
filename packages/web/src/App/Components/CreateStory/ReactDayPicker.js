@@ -5,7 +5,7 @@ import onClickOutside from 'react-onclickoutside'
 import DayPicker from 'react-day-picker'
 import './Styles/ReactDayPickerStyles.css'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const Container = styled.div``
 

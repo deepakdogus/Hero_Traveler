@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from './Icon'
-import VerticalCenter from './VerticalCenter'
+import Icon from '../Shared/Web/Components/Icon'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import {Text} from './Modals/Shared'
 
 const StyledVerticalCenter = styled(VerticalCenter)`

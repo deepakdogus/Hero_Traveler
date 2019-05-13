@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Icon from '../../Icon'
+import Icon from '../../../Shared/Web/Components/Icon'
 import './buttonStyles.css'
 
 const PlusButtonWrapper = styled.div`

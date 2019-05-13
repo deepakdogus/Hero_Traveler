@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import {
   Container,
   Title,
   Text,
 } from '../Shared'
-import {Row} from '../../FlexboxGrid'
+import {Row} from '../../../Shared/Web/Components/FlexboxGrid'
 
 export default class SaveEdits extends React.Component {
   static propTypes = {

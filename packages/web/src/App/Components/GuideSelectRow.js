@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import SpaceBetweenRow from './SpaceBetweenRow'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
-import Icon from './Icon'
+import Icon from '../Shared/Web/Components/Icon'
 import {StyledVerticalCenter} from './Modals/Shared'
 
 const imageMetrics = {

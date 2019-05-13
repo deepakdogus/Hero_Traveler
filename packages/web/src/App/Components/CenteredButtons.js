@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row} from './FlexboxGrid'
-import VerticalCenter from './VerticalCenter'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const StyledRow = styled(Row)`
   justify-content: center;

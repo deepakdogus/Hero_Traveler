@@ -31,7 +31,7 @@ const updateAlgoliaIndex = (guide, updatedGuide) => {
 export default async function updateGuide(attrs, assetFormater) {
   let guide = await Guide.findById(attrs.id)
   attrs = _.omit(attrs, 'author')
-  if (hasNewCover(attrs)) await addCover(attrs, assetFormater)
+  if (hasNewCover(attrs) && assetFormater) await addCover(attrs, assetFormater)
 
   if (attrs.categories && _.size(attrs.categories)) {
     // @TODO: this should probably happen in middleware

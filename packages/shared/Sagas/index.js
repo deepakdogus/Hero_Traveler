@@ -10,6 +10,7 @@ import {
 } from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
+import getAdditionalSagas from './getAdditionalSagas'
 
 /* ------------- Types ------------- */
 
@@ -121,7 +122,6 @@ import {
   getComments,
   createComment
 } from './CommentsSagas'
-
 
 /* ------------- API ------------- */
 
@@ -238,6 +238,10 @@ export default function *root () {
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
     takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
+
+    //Admin
+    ...getAdditionalSagas(heroAPI),
+    
     fork(watchRefreshTokens),
   ]
 }

@@ -12,7 +12,7 @@ passport.use(
           return null
         })
         .catch(err => {
-          console.log('Auth error', err)
+          console.log('Auth error basic strategy', err)
           next(new Error('Unauthorized'))
           return null
         })
@@ -29,7 +29,6 @@ passport.use(
           return null
         })
         .catch(err => {
-          console.log('Auth error', err)
           next(new Error('Unauthorized'))
           return null
         })

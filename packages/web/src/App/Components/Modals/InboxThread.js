@@ -7,7 +7,7 @@ import InboxThreadRow from '../InboxThreadRow'
 import {RightTitle} from './Shared'
 import {randomDate} from './Shared/RandomDate'
 import InputRow from '../InputRow'
-import VerticalCenter from '../VerticalCenter'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 
 const Container = styled.div``
 

@@ -8,7 +8,7 @@ import SignupActions from '../../../Shared/Redux/SignupRedux'
 import UXActions from '../../../Redux/UXRedux'
 
 import OnClickOutsideModal from '../OnClickOutsideModal'
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
   Title,

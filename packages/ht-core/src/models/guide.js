@@ -7,11 +7,13 @@ import {ModelName as UserRef} from './user'
 import {ModelName as UploadRef} from './upload'
 import {ModelName as StoryRef} from './story'
 import {Constants} from '@hero/ht-util'
+import Promise from 'bluebird'
 export const ModelName = 'Guide'
 
 const GuideSchema = new Schema({
   title: {
     type: String,
+    index: true,
     required: true,
   },
   description: {
@@ -84,6 +86,10 @@ const GuideSchema = new Schema({
     min: 1,
     max: 30,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
   toObject: {
@@ -136,8 +142,37 @@ GuideSchema.statics = {
       })
       .exec()
   },
+  // includes soft-deleted results
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
+        .populate('author')
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
+  },
 }
 
+GuideSchema.index({title: 'text'})
 GuideSchema.plugin(softDelete, {overrideMethods: true})
 
 const hideStorylessGuides = {

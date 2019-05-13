@@ -17,7 +17,7 @@ import {
   modalPadding,
 } from './Shared'
 import HorizontalDivider from '../HorizontalDivider'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 import onClickOutside from 'react-onclickoutside'
 

@@ -8,6 +8,7 @@ import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
+import TabBar from '../Components/TabBar'
 
 const CenteredText = styled.p`
   text-align: center;
@@ -37,12 +38,18 @@ const ContentWrapper = styled.div`
   }
 `
 
+const tabBarTabs = ['CHANNELS', 'CATEGORIES']
+
 class Explore extends Component {
   static propTypes = {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
     reroute: PropTypes.func,
+  }
+
+  state = {
+    activeTab: 'CHANNELS'
   }
 
   componentDidMount() {
@@ -53,12 +60,22 @@ class Explore extends Component {
     this.props.reroute(`/category/${categoryId}`)
   }
 
+  onClickTab = event => {
+    let tab = event.target.innerHTML
+    if(this.state.activeTab !== tab) this.setState({activeTab: tab})
+  }
+
   render() {
     return (
       <Wrapper>
         <ExploreHeader/>
         <ContentWrapper>
           <ExploreText>EXPLORE</ExploreText>
+            <TabBar
+              tabs={tabBarTabs}
+              /*activeTab={this.state.activeTab}*/
+              onClickTab={this.onClickTab}
+            />
             <ExploreGrid
               categories={this.props.categories}
               onClickCategory={this._navToCategory}

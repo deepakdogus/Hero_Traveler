@@ -28,10 +28,10 @@ const CategoryTile = styled.div`
 `
 
 const ChannelTile = styled.div`
+  height: 150px;
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
   background-size: contain;
-  height: 70px;
   padding-top: 50%;
   padding-bottom: 50%;
 `
@@ -106,6 +106,7 @@ class Tile extends React.Component {
                 getImageUrl(
                   image,
                   'original',
+                  
                 )
               }
             />

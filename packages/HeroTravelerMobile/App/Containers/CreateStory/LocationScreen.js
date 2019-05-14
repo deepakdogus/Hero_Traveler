@@ -9,15 +9,18 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
-
 import RNGooglePlaces from 'react-native-google-places'
+
+import Loader from '../../Components/Loader'
+import SelectedItem from '../../Components/SelectedItem'
+
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+
+import styles from './LocationScreenStyles'
 import { Colors } from '../../Shared/Themes/'
 import formatLocation from '../../Shared/Lib/formatLocation'
 import { displayLocationDetails } from '../../Shared/Lib/locationHelpers'
-import Loader from '../../Components/Loader'
-import SelectedItem from '../../Components/SelectedItem'
-import styles from './LocationScreenStyles'
+import { getPlaceDetail } from '../../Services/GooglePlaces'
 
 class LocationScreen extends Component {
   static defaultProps = {
@@ -55,28 +58,39 @@ class LocationScreen extends Component {
     this.setState({ searching: true })
     RNGooglePlaces.getAutocompletePredictions(text, {
       type: this.props.locationType || 'geocode',
+      locationBias: {
+        latitudeSW: -85,
+        longitudeSW: 180,
+        latitudeNE: 85,
+        longitudeNE: -180,
+      },
     })
       .then(predictions => this.setState({ searching: false, predictions }))
       .catch(() => this.setState({ searching: false }))
   }
 
-  selectLocation = placeID => () => {
+  selectLocation = placeID => async () => {
     const { isMultiSelect, onSelectLocation } = this.props
     this.setState({ searching: true })
-    RNGooglePlaces.lookUpPlaceByID(placeID).then(result => {
-      const newLocation = formatLocation(result)
-      if (!isMultiSelect) {
-        this.setState({ searching: false }, () => {
-          onSelectLocation(newLocation)
-        })
-      }
-      else
-        this.setState({
-          searching: false,
-          locations: [...this.state.locations, newLocation],
-          text: '',
-          predictions: [],
-        })
+
+    const data = await getPlaceDetail(placeID)
+    const newLocation = formatLocation(data)
+
+    // error handle Google returning bad data / format error
+    if (!Object.keys(newLocation).length)
+      return this.setState({ searching: false })
+
+    if (!isMultiSelect) {
+      return this.setState({ searching: false }, () => {
+        onSelectLocation(newLocation)
+      })
+    }
+
+    return this.setState({
+      searching: false,
+      locations: [...this.state.locations, newLocation],
+      text: '',
+      predictions: [],
     })
   }
 
@@ -88,7 +102,8 @@ class LocationScreen extends Component {
   renderPlaces() {
     const { locationType } = this.props
     return this.state.predictions.map(place => {
-      if (locationType === 'regions' && place.types.includes('country')) return null
+      if (locationType === 'regions' && place.types.includes('country'))
+        return null
       return (
         <View key={place.placeID} style={styles.rowWrapper}>
           <TouchableOpacity onPress={this.selectLocation(place.placeID)}>

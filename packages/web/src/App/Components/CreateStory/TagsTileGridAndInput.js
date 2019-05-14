@@ -9,7 +9,7 @@ import {
   Grid,
   Row,
   Col,
-} from '../FlexboxGrid'
+} from '../../Shared/Web/Components/FlexboxGrid'
 import { StyledInput } from './FeedItemDetails'
 import config from '../../Config/Env'
 import Tile from './Tile'

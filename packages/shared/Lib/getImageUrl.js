@@ -28,7 +28,6 @@ function buildUrl(base: string, uri: string, urlParameters: object): string {
     const parameterString = parameters.join(',')
     return `${base}/${parameterString}/${uri}`
   }
-
   return `${base}/${uri}`
 }
 

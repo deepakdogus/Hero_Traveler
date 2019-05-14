@@ -10,8 +10,8 @@ import {
   Title,
   Text,
 } from './Shared'
-import RoundedButton from '../RoundedButton'
-import { Row } from '../FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 
 class EmailVerificationConfirmation extends React.Component {
   static propTypes = {

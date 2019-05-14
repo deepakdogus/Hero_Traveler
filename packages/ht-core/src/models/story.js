@@ -148,11 +148,11 @@ const StorySchema = new Schema(
     }],
     actionButton: {
       type: {
-        type: String,
+        type: String
       },
       link: {
-        type: String,
-      },
+        type: String
+      }
     }
   },
   {
@@ -196,6 +196,36 @@ StorySchema.statics = {
       .sort({ publishedDate: -1 })
   },
 
+  // includes soft-deleted by default
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    } 
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
+        .populate('author')
+        .populate('categories.title')
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
+  },
+
   getUserFeed(userId, followingIds, page = 1, perPage = 100) {
     const query = {
       draft: false,
@@ -208,18 +238,25 @@ StorySchema.statics = {
       ]
     }
 
+    return this.getFeed(query, page, perPage)
+  },
+
+  getStoriesById(ids) {
+    const query = {
+      _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) }
+    }
+    return this.getFeed(query)
+  },
+
+  getStoriesByAuthors(authors) {
+    const query = { author: { $in: authors} }
+    return this.getFeed(query)
+  },
+
+  getFeed(query, page = 1, perPage = 100) {
     return Promise.props({
       count: this.count(query).exec(),
-      feed: this.list({
-        draft: false,
-        flagged: false,
-        $or: [
-          { author: userId },
-          { author: { $in: followingIds } },
-          { categories: { $in: followingIds } },
-          { featured: true }
-        ]
-      })
+      feed: this.list(query)
         .skip((page - 1) * perPage)
         .limit(perPage)
         .exec()
@@ -228,6 +265,12 @@ StorySchema.statics = {
 
   getUserStories(userId) {
     return this.list({ author: userId, draft: false }).exec()
+  },
+
+  getCountUserStories(userId) {
+    return this
+      .count({author: userId})
+      .exec()
   },
 
   getSearchStory(storyId) {
@@ -243,14 +286,16 @@ StorySchema.statics = {
 
   isAuthor(storyId, userId) {
     return this.findOne({ _id: storyId })
-    .select('author')
-    .then(story => {
-      return String(story.author) === String(userId)
-    })
+      .select('author')
+      .then(story => {
+        return String(story.author) === String(userId)
+      })
   }
 }
 
-StorySchema.plugin(slug, { truncate: 120 })
-StorySchema.plugin(softDelete, { overrideMethods: true })
+StorySchema.index({title: 'text'})
+
+StorySchema.plugin(slug, {truncate: 120})
+StorySchema.plugin(softDelete, {overrideMethods: true})
 
 export default mongoose.model(ModelName, StorySchema)

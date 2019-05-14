@@ -55,8 +55,8 @@ class CommentsScreen extends React.Component {
 
   componentDidMount() {
     this.props.storyId
-    ? this.props.getComments(this.props.storyId, 'story')
-    : this.props.getComments(this.props.guideId, 'guide')
+      ? this.props.getComments(this.props.storyId, 'story')
+      : this.props.getComments(this.props.guideId, 'guide')
   }
 
   isValid() {
@@ -69,8 +69,8 @@ class CommentsScreen extends React.Component {
     // blur to hide keyboard
     this.input.blur()
     this.props.storyId
-    ? this.props.createComment(this.props.storyId, 'story', this.state.text)
-    : this.props.createComment(this.props.guideId, 'guide', this.state.text)
+      ? this.props.createComment(this.props.storyId, 'story', this.state.text)
+      : this.props.createComment(this.props.guideId, 'guide', this.state.text)
 
     this.setState({
       text: '',
@@ -82,8 +82,8 @@ class CommentsScreen extends React.Component {
   _onContentSizeChange = () => {
     let {comments, storyId, guideId} = this.props
     storyId
-    ? comments = comments['story'][storyId] || []
-    : comments = comments['guide'][guideId] || []
+      ? comments = comments['story'][storyId] || []
+      : comments = comments['guide'][guideId] || []
 
     if (comments.length > 6) {
       this._scrollView.scrollToEnd({animated: true})
@@ -109,8 +109,8 @@ class CommentsScreen extends React.Component {
   render () {
     let {comments, storyId, guideId} = this.props
     storyId
-    ? comments = comments['story'][storyId]
-    : comments = comments['guide'][guideId]
+      ? comments = comments['story'][storyId]
+      : comments = comments['guide'][guideId]
 
     return (
       <View style={[
@@ -123,16 +123,24 @@ class CommentsScreen extends React.Component {
           style={[
             styles.list,
             this.state.isFocused ? {height: listHeight - 295} : {},
-          ]}>
-        {comments && comments.map(comment => (
-          <Comment
-            avatarUrl={getImageUrl(comment.user.profile.avatar, 'avatar')}
-            name={comment.user.profile.fullName}
-            comment={comment.content}
-            timestamp={moment(comment.createdAt).fromNow()}
-            key={comment.createdAt.toString()}
-          />
-        ))}
+          ]}
+        >
+          {comments && comments.map(comment => {
+            const { user } = comment
+            const [ userAvatar, userFullName ] = user && user.profile
+              ? [user.profile.avatar, user.profile.fullName]
+              : [undefined, undefined]
+
+            return (
+              <Comment
+                avatarUrl={getImageUrl(userAvatar, 'avatar')}
+                name={userFullName}
+                comment={comment.content}
+                timestamp={moment(comment.createdAt).fromNow()}
+                key={comment.createdAt.toString()}
+              />
+            )
+          })}
         </ScrollView>
         <View>
           <View style={styles.inputGroupWrapper}>

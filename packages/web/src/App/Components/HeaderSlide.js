@@ -7,15 +7,15 @@ import { NavLink } from 'react-router-dom'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 
-import Avatar from './Avatar'
+import Avatar from '../Shared/Web/Components/Avatar'
 import HeaderImageWrapper from './HeaderImageWrapper'
-import VerticalCenter, {VerticalCenterStyles} from './VerticalCenter'
-import { Row } from './FlexboxGrid'
+import VerticalCenter, {VerticalCenterStyles} from '../Shared/Web/Components/VerticalCenter'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 import HorizontalDivider from './HorizontalDivider'
 import Video from './Video'
-import { NavLinkStyled } from './NavLinkStyled'
+import { NavLinkStyled } from '../Shared/Web/Components/NavLinkStyled'
 import RotatedArrow from './RotatedArrow'
-import RoundedButton from './RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 
 const ProfileLink = styled(NavLinkStyled)`
   ${VerticalCenterStyles}
@@ -30,7 +30,7 @@ const Title = styled.p`
     return props.mediaType === 'video' ? '30px' : '65px'
   }};
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   margin: 0;
   width: 90vw;
@@ -48,7 +48,7 @@ const Subtitle = styled.p`
   font-weight: 400;
   font-size: 23px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   font-style: italic;
   margin: 0 0 10px 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -71,7 +71,7 @@ const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
   height: 570px;
-  top:0;
+  top: 0;
   text-align: center;
   z-index: 1;
   align-items: center;
@@ -115,7 +115,7 @@ const StoryInfo = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   display: inline-block;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 11px;
@@ -157,67 +157,76 @@ export default class HeaderSlide extends React.Component {
   }
 
   getMediaType() {
-    const {story} = this.props
+    const { story } = this.props
     if (story.coverVideo && !story.coverImage) return 'video'
     if (story.coverImage) return 'image'
     return undefined
   }
 
   getCoverImage() {
-    const {story, isPreview} = this.props
+    const { story, isPreview } = this.props
     if (isPreview && this.getMediaType() === 'video') {
       return getImageUrl(story.coverVideo, 'optimized', videoThumbnailOptions)
     }
     return getImageUrl(story.coverImage)
   }
 
-  render () {
-    const {story, author, isPreview} = this.props
+  render() {
+    const { story, author, isPreview } = this.props
     const mediaType = this.getMediaType()
+
+    if (!story || !author) return null
 
     return (
       <HeaderImageWrapper
         backgroundImage={this.getCoverImage()}
         size={isPreview ? 'preview' : 'fullScreen'}
-        type='story'
+        type="story"
       >
         <Centered>
-          <Title mediaType={mediaType} isPreview={isPreview}>{story.title}</Title>
+          <Title
+            mediaType={mediaType}
+            isPreview={isPreview}
+          >
+            {story.title}
+          </Title>
           <StyledHorizontalDivider />
           <Subtitle>{story.description}</Subtitle>
-          {isPreview &&
-           <NavLink
-               to={`/story/${story.id}`}
-           >
-            <StyledRoundedButton
-              padding='even'
-              text='READ MORE'
-              width='168px'
-              height='50px'
-              responsiveTextProps={responsiveReadMoreTextStyles}
-              responsiveButtonProps={responsiveReadMoreStyles}
+          {isPreview && (
+            <NavLink to={`/story/${story.id}`}>
+              <StyledRoundedButton
+                padding="even"
+                text="READ MORE"
+                width="168px"
+                height="50px"
+                responsiveTextProps={responsiveReadMoreTextStyles}
+                responsiveButtonProps={responsiveReadMoreStyles}
+              />
+            </NavLink>
+          )}
+          {!isPreview && mediaType === 'video' && (
+            <Video
+              src={getVideoUrl(story.coverVideo, false)}
+              type="cover"
             />
-           </NavLink>
-          }
-          {!isPreview && mediaType === 'video' &&
-            <Video src={getVideoUrl(story.coverVideo, false)} type='cover'/>
-          }
+          )}
         </Centered>
         <BottomContainer>
-          <Row center='xs'>
+          <Row center="xs">
             <ProfileLink to={`/profile/${author.id}/view`}>
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
-                size='extraMedium'
-                type='profile'
+                size="extraMedium"
+                type="profile"
                 responsiveProps={responsiveAvatarProps}
               />
             </ProfileLink>
             <VerticalCenter>
               <StoryInfoRow>
-                <StoryInfo>By{' '}
+                <StoryInfo>
+                  By{' '}
                   <NavLinkStyled to={`/profile/${author.id}/view`}>
-                  {author.username}
+                    {author.username}
                   </NavLinkStyled>
                 </StoryInfo>
                 <Divider>&nbsp;</Divider>
@@ -225,11 +234,11 @@ export default class HeaderSlide extends React.Component {
               </StoryInfoRow>
             </VerticalCenter>
           </Row>
-          {!isPreview &&
-            <Row center='xs'>
-              <DownArrow name='arrowRight'/>
+          {!isPreview && (
+            <Row center="xs">
+              <DownArrow name="arrowRight" />
             </Row>
-          }
+          )}
         </BottomContainer>
       </HeaderImageWrapper>
     )

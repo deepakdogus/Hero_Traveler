@@ -13,7 +13,7 @@ import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import FeedItemDetails from '../Components/CreateStory/FeedItemDetails'
 import { TrashButton } from '../Components/CreateStory/FooterToolbar'
 import CenteredButtons from '../Components/CenteredButtons'
-import RoundedButton from '../Components/RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import {
   SharedCreateGuide,
   mapStateToProps,
@@ -25,8 +25,8 @@ import {
   customModalStyles,
 } from './EditStory'
 import { Title, Text } from '../Components/Modals/Shared'
-import { Row } from '../Components/FlexboxGrid'
-import VerticalCenter from '../Components/VerticalCenter'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const StyledTitle = styled(Title)`
   margin: 20px 0px 0px 0px;

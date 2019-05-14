@@ -8,9 +8,9 @@ import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 import UXActions from '../../Redux/UXRedux'
 
-import RoundedButton from '../../Components/RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
 import {
   Title,
   Subtitle,

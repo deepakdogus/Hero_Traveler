@@ -8,6 +8,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import StoryActions, {
   getByCategory,
   getFetchStatus,
+  getByUser,
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
@@ -41,7 +42,7 @@ const restrictedTabTypes = {
   guides: 'guides',
 }
 
-class CategoryFeedScreen extends React.Component {
+class CategoryAndUserFeedScreen extends React.Component {
   static propTypes = {
     categoryId: PropTypes.string,
     user: PropTypes.object,
@@ -63,16 +64,24 @@ class CategoryFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: 'stories',
+      selectedTab: null,
+      name: '',
     }
   }
 
   loadStories() {
-    this.props.loadCategoryStories(this.props.categoryId)
+    let storyType = this.state.selectedTab
+    this.props.isCategory ? 
+      (this.props.loadUserStories(this.props.categoryId))
+      :
+      (this.props.loadCategoryStories(this.props.categoryId, storyType))
   }
 
   loadGuides() {
-    this.props.loadCategoryGuides(this.props.categoryId)
+    this.props.isCategory ? 
+      (this.props.loadUserGuides(this.props.categoryId))
+      :
+      (this.props.loadCategoryGuides(this.props.categoryId))
   }
 
   loadData() {
@@ -172,12 +181,12 @@ class CategoryFeedScreen extends React.Component {
       error,
       title,
       categoryGuidesById,
+      userChannelName
     } = this.props
-    const { selectedTab, refreshing } = this.state
+    const { selectedTab, refreshing, name } = this.state
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
-
     if (error) {
       topContent = this._wrapElt(
         <Text style={styles.message}>
@@ -224,7 +233,7 @@ class CategoryFeedScreen extends React.Component {
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <NavBar
-          title={title}
+          title={title || userChannelName.username || null}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
           leftIcon="arrowLeft"
@@ -248,7 +257,7 @@ const mapStateToProps = (state, props) => {
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
-    storiesById: getByCategory(state.entities.stories, props.categoryId),
+    storiesById: props.isCategory ? getByUser(state.entities.stories, props.categoryId) : getByCategory(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
       `entities.guides.guideIdsByCategoryId[${props.categoryId}]`,
@@ -257,6 +266,7 @@ const mapStateToProps = (state, props) => {
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
     location: state.routes.scene.name,
+    userChannelName: state.entities.users.entities[props.categoryId],
   }
 }
 
@@ -266,6 +276,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(GuideActions.getCategoryGuides(categoryId)),
     loadCategoryStories: (categoryId, storyType) =>
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
+    loadUserStories: (userId) => 
+      dispatch(StoryActions.fromUserRequest(userId)),
+    loadUserGuides: (userId) => 
+      dispatch(GuideActions.getUserGuides(userId)),
     getSelectedCategories: () =>
       dispatch(SignupActions.signupGetUsersCategories()),
     followCategory: () =>
@@ -278,4 +292,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CategoryFeedScreen)
+)(CategoryAndUserFeedScreen)

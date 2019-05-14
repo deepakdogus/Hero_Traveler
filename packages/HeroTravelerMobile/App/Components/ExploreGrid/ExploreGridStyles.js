@@ -26,9 +26,13 @@ export default StyleSheet.create({
     lineHeight: 20,
     paddingBottom: 10,
   },
-  gridImage: {
+  gridImageForCategories: {
     width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
     height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5,
+  },
+  gridImageForChannels: {
+    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
+    height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 25,
   },
   selectedIcon: {
     position: 'absolute',

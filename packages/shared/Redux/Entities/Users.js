@@ -6,6 +6,9 @@ import {fetching, fetchingError, fetchingSuccess} from '../helpers/fetchStatus'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  loadUsersChannels: null,
+  loadUsersChannelsSuccess: ['channels'],
+  loadUsersChannelsFailure: ['error'],
   loadUser: ['userId'],
   loadUserSuccess: ['user'],
   loadUserFailure: ['error'],
@@ -89,6 +92,7 @@ export const INITIAL_STATE = Immutable({
   usersBookmarksById: {},
   userFollowersByUserIdAndId: {},
   userFollowingByUserIdAndId: {},
+  channelsByID: [],
   error: null,
   adminUsers: {
     fetchStatus: initialFetchStatus(),
@@ -106,6 +110,34 @@ export const INITIAL_STATE = Immutable({
 })
 
 /* ------------- Reducers ------------- */
+
+export const loadUsersChannels = (state) => {
+  return state.setIn(
+    ['fetchStatus'],
+    {fetching: true, loaded: false}
+  )
+}
+
+export const loadUsersChannelsSuccess = (state, {channels}) => {
+  return state.merge({
+    fetchStatus: {
+      fetching: false,
+      loaded: true
+    },
+    channelsByID: channels,
+    error: null
+  })
+}
+
+export const loadUsersChannelsFailure = (state, {error}) => {
+  return state.merge({
+    error, 
+    fetchStatus: {
+      fetching: false, 
+      loaded: false
+    }
+  })
+}
 
 export const loadUser = (state) => {
   return state.setIn(
@@ -662,6 +694,9 @@ export const resetActivities = (state) => state.merge({
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.LOAD_USERS_CHANNELS]: loadUsersChannels,
+  [Types.LOAD_USERS_CHANNELS_SUCCESS]: loadUsersChannelsSuccess,
+  [Types.LOAD_USERS_CHANNELS_FAILURE]: loadUsersChannelsFailure,
   [Types.LOAD_USER_SUGGESTIONS_REQUEST]: suggestions,
   [Types.LOAD_USER_SUGGESTIONS_SUCCESS]: suggestionsSuccess,
   [Types.LOAD_USER_SUGGESTIONS_FAILURE]: suggestionsFailure,

@@ -292,7 +292,7 @@ class SearchPlacesPeople extends Component {
           </View>
         </View>
         {/* uncomment when adding channels feature */}
-        {/* {!showSearch && renderTabs && renderTabs()} */}
+        {!showSearch && renderTabs && renderTabs()}
         {!showSearch && children}
         {showSearch && (
           <View style={styles.tabsViewContainer}>

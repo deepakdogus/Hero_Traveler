@@ -59,6 +59,7 @@ import { openScreen } from '../../Sagas/OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import { getHashtags } from './HashtagSagas'
 import {
+  getUsersChannels,
   updateUser,
   removeAvatar,
   connectFacebook,
@@ -209,6 +210,7 @@ export default function *root () {
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
     takeLatest(UserTypes.LOAD_USER, loadUser, heroAPI),
+    takeLatest(UserTypes.LOAD_USERS_CHANNELS, getUsersChannels, heroAPI),
     takeLatest(UserTypes.UPDATE_USER, updateUser, heroAPI),
     takeLatest(UserTypes.REMOVE_AVATAR, removeAvatar, heroAPI),
     takeLatest(UserTypes.CONNECT_FACEBOOK, connectFacebook, heroAPI),

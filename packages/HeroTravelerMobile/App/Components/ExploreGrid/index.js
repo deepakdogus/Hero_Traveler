@@ -24,41 +24,43 @@ export default class ExploreGrid extends Component {
     else return null
   }
 
-  renderItem = category => {
-    const categoryUrl = getImageUrl(category.image, 'categoryThumbnail', {
-      width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
+  renderItem = categoryOrChannel => {
+    const {isChannel} = this.props
+    const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
+    const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
+      width: isChannel ? null : Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
       height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
     })
 
     return (
-      <View key={category.id} style={styles.gridItem}>
-        <ImageWrapper
-          cached={false}
-          background={true}
-          source={{ uri: categoryUrl }}
-          style={styles.gridImage}
-          imageStyle={{ borderRadius: 6 }}
-        >
-          <TouchableWithoutFeedback onPress={this._onPress(category)}>
-            <View style={styles.gridImage}>
-              {category.selected && (
-                <TabIcon
-                  name="redCheckOutlined"
-                  style={{ view: styles.selectedIcon }}
-                />
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-        </ImageWrapper>
-        <Text
-          style={styles.gridItemText}
-          numberOfLines={2}
-          ellipsizeMode={'tail'}
-          adjustsFontSizeToFit
-          minimumFontScale={0.9}
-        >
-          {category.title}
-        </Text>
+      <View key={categoryOrChannel.id} style={styles.gridItem}>
+        <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
+          <View style={styles.gridImage}>
+            <ImageWrapper
+              cached={false}
+              background={true}
+              source={{ uri: categoryOrChannelUrl }}
+              style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
+              imageStyle={{ borderRadius: 6 }}
+            >
+            {categoryOrChannel.selected && (
+              <TabIcon
+                name="redCheckOutlined"
+                style={{ view: styles.selectedIcon }}
+              />
+            )}
+            </ImageWrapper>
+            <Text
+              style={styles.gridItemText}
+              numberOfLines={2}
+              ellipsizeMode={'tail'}
+              adjustsFontSizeToFit
+              minimumFontScale={0.9}
+            >
+              {isChannel ? null : categoryOrChannel.title}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     )
   }

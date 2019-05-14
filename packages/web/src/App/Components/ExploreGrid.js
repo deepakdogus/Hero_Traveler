@@ -62,7 +62,7 @@ const RedCheck = styled(Icon)`
 
 // created specific component to optimize speed with _onClickTile
 class Tile extends React.Component {
-   static propTypes = {
+  static propTypes = {
     category: PropTypes.object,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
@@ -74,13 +74,16 @@ class Tile extends React.Component {
 
   render(){
     const {category, isSelected} = this.props
+    console.log(this.props, 'these are the props')
+    const image = category.image || category.channelImage
+    console.log(image, 'this is the image')
     return (
       <Col xs={4} lg={3} >
         <Wrapper onClick={this._onClickTile}>
           <CategoryTile
             imageSource={
               getImageUrl(
-                category.image,
+                image,
                 'categoryThumbnail',
                 {width: 400, height: 400},
               )
@@ -90,7 +93,7 @@ class Tile extends React.Component {
             selected={category.selected}
             overlayColor='black'
           >
-            <Title>{category.title}</Title>
+            <Title>{category.title || category.username}</Title>
           </TitleContainer>
           {isSelected &&
             <RedCheck name='redCheck' />
@@ -110,7 +113,6 @@ export default class ExploreGrid extends React.Component {
 
   render() {
     const {categories, getIsSelected, onClickCategory} = this.props
-    console.log('categories', categories)
     const renderedCategories = Object.keys(categories).map((key) => {
       const category = categories[key]
       return (

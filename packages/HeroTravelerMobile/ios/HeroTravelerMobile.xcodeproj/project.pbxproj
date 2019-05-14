@@ -23,7 +23,6 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140B78E2F5D1476F8C9FC935 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73B3EB991952464C96A8539F /* FontAwesome5_Regular.ttf */; };
@@ -130,6 +129,7 @@
 		EF24269F226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242692226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.m */; };
 		EF2426A0226E0D0D00A18EAA /* RCTVideoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242696226E0D0D00A18EAA /* RCTVideoCache.m */; };
 		EF2426A1226E0D0D00A18EAA /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */; };
+		EF557781228B4D9900D3D561 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF557780228B4D9900D3D561 /* Launch Screen.storyboard */; };
 		EF5802532264E076007935B7 /* RNVideoProcessingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF58024E2264E075007935B7 /* RNVideoProcessingManager.swift */; };
 		EF5802542264E076007935B7 /* VideoProcessingGPUFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5802502264E075007935B7 /* VideoProcessingGPUFilters.swift */; };
 		EF5802552264E076007935B7 /* RNVideoProcessingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5802512264E076007935B7 /* RNVideoProcessingBridge.m */; };
@@ -627,7 +627,6 @@
 		13B07F961A680F5B00A75B9A /* HeroTravelerMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroTravelerMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = HeroTravelerMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = HeroTravelerMobile/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = HeroTravelerMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = HeroTravelerMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = HeroTravelerMobile/main.m; sourceTree = "<group>"; };
@@ -792,6 +791,7 @@
 		EF242695226E0D0D00A18EAA /* UIViewController+WatchFullscreenChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WatchFullscreenChanges.h"; sourceTree = "<group>"; };
 		EF242696226E0D0D00A18EAA /* RCTVideoCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTVideoCache.m; sourceTree = "<group>"; };
 		EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDownloadItem.m; sourceTree = "<group>"; };
+		EF557780228B4D9900D3D561 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EF58024D2264E075007935B7 /* RNVideoProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNVideoProcessing.h; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing.h"; sourceTree = "<group>"; };
 		EF58024E2264E075007935B7 /* RNVideoProcessingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVideoProcessingManager.swift; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessingManager.swift"; sourceTree = "<group>"; };
 		EF58024F2264E075007935B7 /* RNVideoProcessing-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNVideoProcessing-Bridging-Header.h"; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1007,10 +1007,10 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				DD76AEE2EBC14497999D5D8C /* branch.json */,
 				EF5802922264E216007935B7 /* HeroTravelerMobile-Bridging-Header.h */,
+				EF557780228B4D9900D3D561 /* Launch Screen.storyboard */,
 			);
 			name = HeroTravelerMobile;
 			sourceTree = "<group>";
@@ -2245,11 +2245,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				A54D6A63AAF34F9995CBB2FD /* branch.json in Resources */,
 				9D4AB52ABEED4DEEA9C21D44 /* CrimsonText-Italic.ttf in Resources */,
 				9F74313D6AC6404395D56173 /* CrimsonText-Roman.ttf in Resources */,
 				551B12F485C2445C9A576522 /* FontAwesome.ttf in Resources */,
+				EF557781228B4D9900D3D561 /* Launch Screen.storyboard in Resources */,
 				ACA4922637F04233B35264CB /* Montserrat-Bold.ttf in Resources */,
 				2BC1E74002E1430FAD1F1E49 /* Montserrat-Light.ttf in Resources */,
 				D3A56D9EC25648919BE0D53B /* Montserrat-Medium.ttf in Resources */,
@@ -2524,18 +2524,6 @@
 			targetProxy = EF58028F2264E1C9007935B7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = HeroTravelerMobile;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

@@ -13,7 +13,7 @@ const StyledGrid = styled(Grid)`
 `
 
 const Wrapper = styled.div`
-  margin: 1px;
+  margin: 10px;
   position: relative;
   cursor: pointer;
 `
@@ -28,7 +28,8 @@ const CategoryTile = styled.div`
 `
 
 const ChannelTile = styled.div`
-  height: 150px;
+  min-height: 120px;
+  max-height: 140px;
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
   background-size: contain;

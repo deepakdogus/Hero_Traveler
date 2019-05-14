@@ -27,6 +27,15 @@ const CategoryTile = styled.div`
   position: relative;
 `
 
+const ChannelTile = styled.div`
+  background-image: ${props => `url(${props.imageSource})`};
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 70px;
+  padding-top: 50%;
+  padding-bottom: 50%;
+`
+
 const TitleContainer = styled(OverlayHover)`
   ${VerticalCenterStyles};
   position: absolute;
@@ -74,24 +83,38 @@ class Tile extends React.Component {
 
   render(){
     const {category, isSelected} = this.props
-    const image = category.image || category.channelImage
+    const image = category.image || category.channelImage || null
+    let row = category.image ? 4 : 2
+    let col = category.image ? 3 : 2
     return (
-      <Col xs={4} lg={3} >
+      <Col xs={row} lg={col} >
         <Wrapper onClick={this._onClickTile}>
-          <CategoryTile
-            imageSource={
-              getImageUrl(
-                image,
-                'categoryThumbnail',
-                {width: 400, height: 400},
-              )
-            }
-          />
+          {
+              category.image ? 
+            <CategoryTile
+              imageSource={
+                getImageUrl(
+                  image,
+                  'categoryThumbnail',
+                  {width: 400, height: 400},
+                )
+              }
+            />
+            :
+            <ChannelTile
+              imageSource={
+                getImageUrl(
+                  image,
+                  'original',
+                )
+              }
+            />
+          }
           <TitleContainer
             selected={category.selected}
             overlayColor='black'
           >
-            <Title>{category.title || category.username}</Title>
+            <Title>{category.title || null}</Title>
           </TitleContainer>
           {isSelected &&
             <RedCheck name='redCheck' />

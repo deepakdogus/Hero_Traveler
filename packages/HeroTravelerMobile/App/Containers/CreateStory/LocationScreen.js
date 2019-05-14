@@ -170,25 +170,25 @@ class LocationScreen extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.content}>
-          <View style={styles.formWrapper}>
-            <View style={styles.textInputWrapper}>
-              <TextInput
-                ref="input"
-                style={[styles.textInput, styles.boldText]}
-                value={this.state.text}
-                placeholder="Enter a Location"
-                placeholderTextColor={Colors.navBarText}
-                onChangeText={this._onChangeText}
-                onSubmitEditing={this.onSubmit}
-                returnKeyType="done"
-                autoFocus={!location}
-              />
-            </View>
-          </View>
           <ScrollView
             style={styles.scrollView}
             keyboardShouldPersistTaps="always"
           >
+            <View style={styles.formWrapper}>
+              <View style={styles.textInputWrapper}>
+                <TextInput
+                  ref="input"
+                  style={[styles.textInput, styles.boldText]}
+                  value={this.state.text}
+                  placeholder="Enter a Location"
+                  placeholderTextColor={Colors.navBarText}
+                  onChangeText={this._onChangeText}
+                  onSubmitEditing={this.onSubmit}
+                  returnKeyType="done"
+                  autoFocus={!location}
+                />
+              </View>
+            </View>
             {!!locations.length && this.renderSelectedLocations()}
             {searching && (
               <Loader

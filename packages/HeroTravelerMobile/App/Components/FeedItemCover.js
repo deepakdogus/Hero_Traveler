@@ -120,15 +120,14 @@ export default class FeedItemCover extends Component {
     )
   }
 
-  getEmbeddedImageStyle = () => ({
-    ...embeddedImageStyle,
-    width: this.props.isReadingScreen
-      ? Metrics.screenWidth
-      : '100%',
-    borderRadius: this.props.isReadingScreen
-      ? 0
-      : 6,
-  })
+  getEmbeddedImageStyle = () => {
+    const { isReadingScreen } = this.props
+    const additionalStyle = isReadingScreen ? readingScreenImage : feedScreenImage
+    return {
+      ...embeddedImageStyle,
+      ...additionalStyle,
+    }
+  }
 
   renderImage() {
     let imageUrl = getImageUrl(
@@ -313,6 +312,17 @@ const embeddedImageStyle = {
   bottom: 0,
   left: 0,
   right: 0,
+}
+
+const readingScreenImage = {
+  width: Metrics.screenWidth,
+  borderRadius: 0,
+}
+
+const feedScreenImage = {
+  width: '100%',
+  borderRadius: 6,
+  backgroundColor: Colors.snow,
 }
 
 const styles = StyleSheet.create({

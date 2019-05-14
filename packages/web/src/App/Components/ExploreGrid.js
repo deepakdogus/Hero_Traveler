@@ -74,9 +74,7 @@ class Tile extends React.Component {
 
   render(){
     const {category, isSelected} = this.props
-    console.log(this.props, 'these are the props')
     const image = category.image || category.channelImage
-    console.log(image, 'this is the image')
     return (
       <Col xs={4} lg={3} >
         <Wrapper onClick={this._onClickTile}>

@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.92":
-  version "0.0.92"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.92.tgz#59387f4b76c98416eafcffe729d9deee2d5e470d"
-  integrity sha512-8Y6ktQcregkb8KjjHBtyt+t5xohSUcDtk6hJTqE8HDVs69qdwOSitwAjMBTKZO9rIcoojdP8qXCr20hUXJT22w==
+"@hero/ht-core@0.1.0":
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.1.0.tgz#3b725d2d92a1db190dc96e9cfd8d75e93eeb7bb5"
+  integrity sha512-kV5ROiyDzbDACJhRI0jU7w0MkO/jBupTVxhSf+crULsIYvsIoo5M5Daw3e8scIIP7/+X8+sDywIG37HVEKh1Kg==
   dependencies:
-    "@hero/ht-util" "^0.0.67"
+    "@hero/ht-util" "^0.1.0"
     algoliasearch "^3.22.1"
     bcrypt "^3.0.6"
     consolidate "^0.14.5"
@@ -26,10 +26,10 @@
     rand-token "^0.3.0"
     standard-error "^1.1.0"
 
-"@hero/ht-util@^0.0.67":
-  version "0.0.67"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.67.tgz#7cea6610ba4a2c582e2eaa3716b6b9e56bfd5b78"
-  integrity sha512-47LflbHZextAKCgOat+2QzW66EUP5er2Of8tMy4r6cS/sU96z5YGT7WvybCMOfz9lUl5B6e+LqKHqiFbbBXMBQ==
+"@hero/ht-util@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.1.0.tgz#9bf20cfea0639d58fa54bb614713aa05b4984d52"
+  integrity sha512-D0Yp+m08jlQS7DfmajwAN3xlrjmAyUsn7kMSP3zX4kijvZbU38W98iIpPK7kJQ6Wxb4qa6GQk+evCKlU8YDJXg==
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"

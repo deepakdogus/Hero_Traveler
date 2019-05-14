@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@hero/ht-util@^0.0.67":
-  version "0.0.67"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.67.tgz#7cea6610ba4a2c582e2eaa3716b6b9e56bfd5b78"
-  integrity sha512-47LflbHZextAKCgOat+2QzW66EUP5er2Of8tMy4r6cS/sU96z5YGT7WvybCMOfz9lUl5B6e+LqKHqiFbbBXMBQ==
+"@hero/ht-util@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.1.0.tgz#9bf20cfea0639d58fa54bb614713aa05b4984d52"
+  integrity sha512-D0Yp+m08jlQS7DfmajwAN3xlrjmAyUsn7kMSP3zX4kijvZbU38W98iIpPK7kJQ6Wxb4qa6GQk+evCKlU8YDJXg==
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"
@@ -2553,10 +2553,10 @@ querystring-es3@^0.2.1:
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
 
-rand-token@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/rand-token/-/rand-token-0.3.0.tgz#32c0e672200867766a13601a21cef98ac67478c7"
-  integrity sha1-MsDmciAIZ3ZqE2AaIc75isZ0eMc=
+rand-token@^0.4.0:
+  version "0.4.0"
+  resolved "https://npm.abeck.io:443/rand-token/-/rand-token-0.4.0.tgz#1a565b6ad12d92dd4b30c4c4e5945e8aa24a5b3b"
+  integrity sha512-FLNNsir2R+XY8LKsZ+8u/w0qZ4sGit7cpNdznsI77cAVob6UlVPueDKRyjJ3W1Q6FJLgAVH98JvlqqpSaL7NEQ==
 
 randomatic@^3.0.0:
   version "3.1.1"

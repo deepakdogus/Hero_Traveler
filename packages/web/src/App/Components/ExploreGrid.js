@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   margin: 10px;
   position: relative;
   cursor: pointer;
+  ${props => !props.isCategory ? 'margin-bottom: 20px;' : 'margin-bottom: 10px;'}
 `
 
 const CategoryTile = styled.div`
@@ -89,7 +90,7 @@ class Tile extends React.Component {
     let col = category.image ? 3 : 2
     return (
       <Col xs={row} lg={col} >
-        <Wrapper onClick={this._onClickTile}>
+        <Wrapper onClick={this._onClickTile} isCategory={category.image ? true : false}>
           {
               category.image ? 
             <CategoryTile
@@ -107,7 +108,6 @@ class Tile extends React.Component {
                 getImageUrl(
                   image,
                   'original',
-                  
                 )
               }
             />

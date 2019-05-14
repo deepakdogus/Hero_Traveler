@@ -11,24 +11,6 @@ import CategoryActions from '../Shared/Redux/Entities/Categories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import TabBar from '../Components/TabBar'
 
-const CenteredText = styled.p`
-  text-align: center;
-  color: ${props => props.theme.Colors.background};
-`
-
-const ExploreText = styled(CenteredText)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 30px;
-  letter-spacing: .6px;
-  padding: 50px 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 18px;
-    padding: 30px 0px;
-    margin: 0;
-  }
-`
-
 const Wrapper = styled.div``
 
 const ContentWrapper = styled.div`
@@ -41,7 +23,7 @@ const ContentWrapper = styled.div`
 
 const tabTypes = {
   channels: 'CHANNELS',
-  categories: 'CATEGORIES'
+  categories: 'CATEGORIES',
 }
 
 const tabBarTabs = [tabTypes.channels, tabTypes.categories]
@@ -51,11 +33,15 @@ class Explore extends Component {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
+    loadUsersThatAreChannels: PropTypes.func,
+    loadUsers: PropTypes.func,
     reroute: PropTypes.func,
+    channels: PropTypes.array,
+    users: PropTypes.object,
   }
 
   state = {
-    activeTab: tabTypes.channels
+    activeTab: tabTypes.channels,
   }
 
   componentDidMount() {
@@ -69,7 +55,6 @@ class Explore extends Component {
   }
 
   _navToChannel = (userId) => {
-    console.log(userId, 'userId')
     this.props.reroute(`/profile/${userId}/view`)
   }
 
@@ -89,7 +74,7 @@ class Explore extends Component {
         }
       }
     }
-     switch(activeTab){
+    switch(activeTab){
       case tabTypes.categories:
         return categories
       case tabTypes.channels:
@@ -107,13 +92,13 @@ class Explore extends Component {
         <ExploreHeader/>
         <TabBar
           tabs={tabBarTabs}
-          activeTab={this.state.activeTab}
+          activeTab={activeTab}
           onClickTab={this.onClickTab}
         />
         <ContentWrapper>
             <ExploreGrid
               categories={categoriesArray}
-              onClickCategory={this.state.activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
+              onClickCategory={activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
             />
           <Footer />
         </ContentWrapper>

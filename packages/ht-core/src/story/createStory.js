@@ -51,6 +51,7 @@ export default async function createStory(storyData, assetFormater) {
       authorDetails.role == Constants.USER_ROLES_FOUNDING_MEMBER_VALUE
       || authorDetails.role == Constants.USER_ROLES_CONTRIBUTOR_VALUE
       || authorDetails.role == Constants.USER_ROLES_FELLOW_VALUE
+      || authorDetails.role == Constants.USER_ROLES_LOCAL_HERO_VALUE
     )
   } else {
     throw new Error('Could not find the author for this story')

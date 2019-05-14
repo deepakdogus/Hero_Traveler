@@ -54,6 +54,7 @@ const filterOptions = [
   'contributor',
   'founding member',
   'fellow',
+  'local hero',
 ]
 
 class UsersList extends React.Component {

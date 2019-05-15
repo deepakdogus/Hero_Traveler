@@ -5,6 +5,8 @@ import {ConnectedRouter} from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { CookiesProvider } from 'react-cookie'
 
+import { initializeFirebase } from '../Services/Firebase'
+
 import createStore from '../Shared/Redux'
 import {history} from '../Redux/Routes'
 import themes from '../Shared/Themes'
@@ -12,6 +14,8 @@ import themes from '../Shared/Themes'
 import Routes from './Routes'
 
 const store = createStore()
+
+initializeFirebase()
 
 class AppRoot extends Component {
   render() {

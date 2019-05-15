@@ -369,7 +369,7 @@ class MyFeedScreen extends React.Component {
           stories={stories}
           user={user}
           placeholder={`Search`}
-        >
+          >
           {bottomContent}
         </SearchPlacesPeople>
       </View>

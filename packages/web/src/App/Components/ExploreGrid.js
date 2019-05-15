@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   margin: 10px;
   position: relative;
   cursor: pointer;
-  ${props => !props.isCategory ? 'margin-bottom: 20px;' : 'margin-bottom: 10px;'}
+  ${props => props.isCategory ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;'}
 `
 
 const CategoryTile = styled.div`

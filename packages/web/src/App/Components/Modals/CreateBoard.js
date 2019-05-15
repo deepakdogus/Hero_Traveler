@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 
 import {RightTitle, StyledInput, RightModalCloseX} from './Shared'
 import CenteredButtons from '../CenteredButtons'
-import VerticalCenter from '../VerticalCenter'
-import RoundedButton from '../RoundedButton'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 
 const Container = styled.div``
 

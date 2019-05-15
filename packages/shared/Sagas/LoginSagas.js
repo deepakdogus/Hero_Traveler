@@ -7,14 +7,14 @@ import UserActions from '../Redux/Entities/Users'
 import errorFormatter from '../Lib/errorFormatter'
 
 // attempts to login
-export function * login (api, { userIdentifier, password }) {
+export function * login (api, { userIdentifier, password, requestType = 'default' }) {
   try {
+    const method = requestType === 'admin' ? api.loginAdmin : api.login
     const response = yield call(
-      api.login,
+      method,
       userIdentifier,
       password
     )
-
     if (response.ok) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})
@@ -28,14 +28,12 @@ export function * login (api, { userIdentifier, password }) {
         put(SessionActions.initializeSession(user.id, tokens)),
         put(LoginActions.loginSuccess()),
         put(UserActions.fetchActivities()),
-        put(SignupActions.signupGetUsersCategories()),
+        put(SignupActions.signupGetUsersCategories())
       ]
-    }
-    else {
+    } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))
     }
-  }
-  catch (error) {
+  } catch (error) {
     yield put(LoginActions.loginFailure(error))
   }
 }

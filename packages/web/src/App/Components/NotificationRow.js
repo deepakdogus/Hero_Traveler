@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import {
   getContent,
@@ -13,8 +13,8 @@ import {
   getAvatar,
   getUsername,
 } from '../Shared/Lib/NotificationHelpers'
-import Avatar from './Avatar'
-import { getSize } from './Icon'
+import Avatar from '../Shared/Web/Components/Avatar'
+import { getSize } from '../Shared/Web/Components/Icon'
 import HorizontalDivider from './HorizontalDivider'
 import { UserNameStyles, Timestamp } from './Modals/Shared'
 import SpaceBetweenRow from './SpaceBetweenRow'

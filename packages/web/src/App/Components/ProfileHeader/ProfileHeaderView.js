@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { Row, Col } from '../FlexboxGrid'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
+import { Row, Col } from '../../Shared/Web/Components/FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import {
   Username,
@@ -13,8 +13,8 @@ import {
   StyledAvatar,
   BottomLeftText,
 } from './ProfileHeaderShared'
-import { NavLinkStyled } from '../NavLinkStyled'
-import VerticalCenter from '../VerticalCenter'
+import { NavLinkStyled } from '../../Shared/Web/Components/NavLinkStyled'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import { FollowButtonStyle } from '../FollowFollowingRow'
 import {
   hasBadge,

@@ -6,11 +6,11 @@ import styled from 'styled-components'
 import { AbstractAddButton } from '../../Shared/AbstractComponents'
 import OnClickOutsideModal from './OnClickOutsideModal'
 import { Title } from './Shared'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import { StyledInput as Input } from '../CreateStory/FeedItemDetails'
 
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const FlexContainer = styled.div`
   display: flex;

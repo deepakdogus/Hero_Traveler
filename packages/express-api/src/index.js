@@ -30,6 +30,7 @@ const whitelist = [
   process.env.CORS_ORIGIN2,
   process.env.CORS_ORIGIN3,
   process.env.CORS_ORIGIN4,
+  process.env.CORS_ORIGIN5,
 ]
 
 app.use(cors({

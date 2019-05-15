@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import {
   Row,
   Col,
-} from '../FlexboxGrid'
-import Icon from '../Icon'
+} from '../../Shared/Web/Components/FlexboxGrid'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const WrapperCol = styled(Col)`
   margin: 5px 10px;

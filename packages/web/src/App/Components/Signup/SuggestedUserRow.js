@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Avatar from '../Avatar'
-import RoundedButton from '../RoundedButton'
+import Avatar from '../../Shared/Web/Components/Avatar'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import VerticalCenter from '../VerticalCenter'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 
 const UserContainer = styled.div`
   margin: 0 3%;
@@ -38,7 +38,6 @@ const Followers = styled.p`
   margin: 0;
   color: ${props => props.theme.Colors.grey};
 `
-
 
 export default class SocialMediaRow extends Component {
    static propTypes = {

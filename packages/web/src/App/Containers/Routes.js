@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import Loadable from 'react-loadable'
 
-import Session from './Session'
+import Session from '../Shared/Web/Containers/Session'
 
 import AuthRoute from './AuthRoute'
 

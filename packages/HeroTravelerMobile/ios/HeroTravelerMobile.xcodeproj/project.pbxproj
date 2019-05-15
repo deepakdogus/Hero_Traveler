@@ -420,13 +420,6 @@
 			remoteGlobalIDString = A69F52F4B835A53D4D3A50AD6A1A4713;
 			remoteInfo = "react-native-maps";
 		};
-		916DBF2A203C89F60097DE98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 09155546907045CEBA7956601D321EA0;
-			remoteInfo = yoga;
-		};
 		916DBF60203C8A1B0097DE98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 916DBF5C203C8A1B0097DE98 /* AutoGrowTextInput.xcodeproj */;
@@ -588,12 +581,26 @@
 			remoteGlobalIDString = D834CED81CC64F2400FA5668;
 			remoteInfo = KeyboardTrackingView;
 		};
+		EF3CF668227B8B1200C81303 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 66AEC2FF18407696BB68FE8175EFECDD;
+			remoteInfo = "Google-Maps-iOS-Utils";
+		};
 		EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2215B993E71FD766A2BFD424A42A4331;
 			remoteInfo = IQKeyboardManager;
+		};
+		F72B9252227E2B9000731C89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 66AEC2FF18407696BB68FE8175EFECDD;
+			remoteInfo = "Google-Maps-iOS-Utils";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1395,6 +1402,7 @@
 			isa = PBXGroup;
 			children = (
 				9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */,
+				EF3CF669227B8B1200C81303 /* libGoogle-Maps-iOS-Utils.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
@@ -1402,7 +1410,6 @@
 				916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */,
 				916DBF29203C89F60097DE98 /* libreact-native-maps.a */,
 				9162A0E220448F09005BA024 /* libSDWebImage.a */,
-				916DBF2B203C89F60097DE98 /* libyoga.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2005,13 +2012,6 @@
 			remoteRef = 916DBF28203C89F60097DE98 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		916DBF2B203C89F60097DE98 /* libyoga.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libyoga.a;
-			remoteRef = 916DBF2A203C89F60097DE98 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2145,11 +2145,25 @@
 			remoteRef = EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EF3CF669227B8B1200C81303 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = EF3CF668227B8B1200C81303 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libIQKeyboardManager.a;
 			remoteRef = EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F72B9253227E2B9000731C89 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = F72B9252227E2B9000731C89 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2230,7 +2244,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
@@ -2251,7 +2265,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9150BC42201AC4CC00697D90 /* ShellScript */ = {

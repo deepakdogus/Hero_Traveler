@@ -17,15 +17,15 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import isTooltipComplete, {Types as TooltipTypes} from '../Shared/Lib/firstTimeTooltips'
 
 export const TabTypes = {
-  stories: 'TAB_STORIES',
-  drafts: 'TAB_DRAFTS',
-  bookmarks: 'TAB_BOOKMARKS',
-  guides: 'TAB_GUIDES',
+  stories: 'STORIES',
+  drafts: 'DRAFTS',
+  bookmarks: 'BOOKMARKS',
+  guides: 'GUIDES',
 }
 
 const ViewOnlyTabTypes = {
-  stories: 'TAB_STORIES',
-  guides: 'TAB_GUIDES',
+  stories: 'STORIES',
+  guides: 'GUIDES',
 }
 
 class ProfileView extends React.Component {
@@ -42,7 +42,7 @@ class ProfileView extends React.Component {
     location: PropTypes.string,
     error: PropTypes.object,
     refresh: PropTypes.func,
-    onSelectTab: PropTypes.func,
+    onSelectTab: PropTypes.func.isRequired,
     user: PropTypes.object,
     accessToken: PropTypes.string,
     completeTooltip: PropTypes.func,
@@ -97,7 +97,7 @@ class ProfileView extends React.Component {
   selectTab = (tab) => {
     if (this.state.selectedTab !== tab) {
       this.setState({selectedTab: tab})
-      this.props.onSelectTab(tab)
+      if (this.props.onSelectTab) this.props.onSelectTab(tab)
     }
   }
 
@@ -178,8 +178,8 @@ class ProfileView extends React.Component {
 
     const rootStyles = editable
       ? [
-          styles.flexOne,
-          styles.containerWithTabbar,
+        styles.flexOne,
+        styles.containerWithTabbar,
       ] : styles.flexOneReadOnly
 
     return (

@@ -1,24 +1,41 @@
 PODS:
   - FLAnimatedImage (1.0.12)
-  - GoogleMaps (2.5.0):
-    - GoogleMaps/Maps (= 2.5.0)
-  - GoogleMaps/Base (2.5.0)
-  - GoogleMaps/Maps (2.5.0):
+  - Google-Maps-iOS-Utils (2.1.0):
+    - Google-Maps-iOS-Utils/Clustering (= 2.1.0)
+    - Google-Maps-iOS-Utils/Geometry (= 2.1.0)
+    - Google-Maps-iOS-Utils/Heatmap (= 2.1.0)
+    - Google-Maps-iOS-Utils/QuadTree (= 2.1.0)
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Clustering (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Geometry (2.1.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Heatmap (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/QuadTree (2.1.0):
+    - GoogleMaps
+  - GoogleMaps (3.0.3):
+    - GoogleMaps/Maps (= 3.0.3)
+  - GoogleMaps/Base (3.0.3)
+  - GoogleMaps/Maps (3.0.3):
     - GoogleMaps/Base
-  - GooglePlacePicker (2.5.0):
-    - GoogleMaps (= 2.5.0)
-    - GooglePlaces (= 2.5.0)
-  - GooglePlaces (2.5.0):
-    - GoogleMaps/Base (= 2.5.0)
+  - GooglePlacePicker (3.0.3):
+    - GoogleMaps (= 3.0.3)
+    - GooglePlaces (= 3.0.3)
+  - GooglePlaces (3.0.3):
+    - GoogleMaps/Base (= 3.0.3)
   - HockeySDK/AllFeaturesLib (5.1.2)
   - iOS-MagnifyingGlass (0.0.2)
   - IQKeyboardManager (5.0.7)
   - React (0.53.0):
     - React/Core (= 0.53.0)
-  - react-native-google-maps (0.20.1):
-    - GoogleMaps (= 2.5.0)
+  - react-native-google-maps (0.24.0):
+    - Google-Maps-iOS-Utils (= 2.1.0)
+    - GoogleMaps (= 3.0.3)
     - React
-  - react-native-maps (0.20.1):
+  - react-native-maps (0.24.0):
     - React
   - React/BatchedBridge (0.53.0):
     - React/Core
@@ -63,9 +80,9 @@ PODS:
 
 DEPENDENCIES:
   - FLAnimatedImage
-  - GoogleMaps
-  - GooglePlacePicker
-  - GooglePlaces
+  - GoogleMaps (~> 3.0)
+  - GooglePlacePicker (~> 3.0)
+  - GooglePlaces (~> 3.0)
   - HockeySDK/AllFeaturesLib
   - iOS-MagnifyingGlass (~> 0.0.2)
   - IQKeyboardManager
@@ -89,6 +106,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FLAnimatedImage
+    - Google-Maps-iOS-Utils
     - GoogleMaps
     - GooglePlacePicker
     - GooglePlaces
@@ -116,18 +134,19 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
-  GooglePlacePicker: 1573e644ab54564d95c2643edc0f29091609e966
-  GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
+  Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
+  GoogleMaps: fd5c9fa58871781b9fb94d4936f19c69fe60ce32
+  GooglePlacePicker: 0c90898945f02ef36cce86fc9a107e1c5d3d26b1
+  GooglePlaces: f09e76993c9c3ee4af8f4f7f535bb94d6aa3b649
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   iOS-MagnifyingGlass: b11b7d3e8be7de22c85f0edcaa75538bdf0827dc
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
-  React: 988a7dbd5626e0dd4f4b63fb444fa7e3d975e5b7
-  react-native-google-maps: 963fc78a5ac32dad3a726e4fa08b5307faa5cab2
-  react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  React: 6a94a44468604816ad2fd3bae908b2ebbab0f95d
+  react-native-google-maps: 6142058c902e207524e1d92277d749cf9e2c3bd7
+  react-native-maps: d87d8ed456d4132112fb1d2ee9baf3470c0f211d
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
-  yoga: 55da126afc384965b96bff46652464373b330add
+  yoga: 36cb943786c0587f19094c593b5683074d679c46
 
-PODFILE CHECKSUM: 8d73bb490530e01d0c2d3a36cb5c10e295935b4e
+PODFILE CHECKSUM: dcba6842f9dba897fbf8d22a22641879c39d0bdc
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

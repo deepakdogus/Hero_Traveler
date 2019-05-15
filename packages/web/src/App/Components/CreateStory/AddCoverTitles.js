@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 import {
   SubTitle,
   Input,
@@ -13,10 +13,10 @@ import getVideoUrl, { getVideoUrls } from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import { VerticalCenterStyles } from '../VerticalCenter'
+import { VerticalCenterStyles } from '../../Shared/Web/Components/VerticalCenter'
 import Video from '../Video'
-import Loader from '../Loader'
-import { Row } from '../FlexboxGrid'
+import Loader from '../../Shared/Web/Components/Loader'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 
 const coverHeight = 350
 

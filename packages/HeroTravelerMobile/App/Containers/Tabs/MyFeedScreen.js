@@ -80,19 +80,10 @@ class MyFeedScreen extends React.Component {
       permissionStatus: undefined,
       needToUpdateApp: false,
       needToUpdateIOS: false,
-      needToUpdateIOSAlertOnce: true,
     }
   }
 
   componentDidMount() {
-    const {needToUpdateIOS, needToUpdateIOSAlertOnce} = this.state
-    if(!needToUpdateIOS){
-      console.log('this is working')
-      const systemVersion = DeviceInfo.getSystemVersion().split('.');
-      const newestIOS = 12
-      if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true, needToUpdateIOSAlertOnce: false})
-    }
-
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
@@ -121,6 +112,13 @@ class MyFeedScreen extends React.Component {
       const nearbyStoryIds = res.hits.map(story => story.id)
       this.props.attemptGetNearbyFeedStories(nearbyStoryIds)
     })
+
+    const {needToUpdateIOS} = this.state
+    if(!needToUpdateIOS){
+      const systemVersion = DeviceInfo.getSystemVersion().split('.');
+      const newestIOS = 12
+      if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
+    }
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -341,16 +339,15 @@ class MyFeedScreen extends React.Component {
   }
 
   updateIOSNotice(){
-    const {needToUpdateIOSAlertOnce, needToUpdateIOS} = this.state
     const systemVersion = DeviceInfo.getSystemVersion()
-    !needToUpdateIOSAlertOnce && needToUpdateIOS && Alert.alert(
-      'Update Available',
-      `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
-      [
-        {text: 'Continue',
-          onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
-        }
-      ]
+    Alert.alert(
+        'Update Available',
+        `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
+        [
+          {text: 'Continue',
+            onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
+          }
+        ]
     )
   }
 
@@ -396,7 +393,7 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
-        {!needToUpdateIOSAlertOnce && needToUpdateIOS && this.updateIOSNotice()}
+        {!needToUpdateIOS && this.updateIOSNotice()}
       </View>
     )
   }

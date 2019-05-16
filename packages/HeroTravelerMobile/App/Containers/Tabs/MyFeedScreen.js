@@ -105,6 +105,13 @@ class MyFeedScreen extends React.Component {
         .catch(err => {
           console.log('error occurred', err)
         })
+
+      const {needToUpdateIOS} = this.state
+      if(!needToUpdateIOS){
+        const systemVersion = DeviceInfo.getSystemVersion().split('.');
+        const newestIOS = 12
+        if(newestIOS - Number(systemVersion[0]) >= 1) this.setState({needToUpdateIOS: true})
+      }
     }
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
@@ -112,13 +119,6 @@ class MyFeedScreen extends React.Component {
       const nearbyStoryIds = res.hits.map(story => story.id)
       this.props.attemptGetNearbyFeedStories(nearbyStoryIds)
     })
-
-    const {needToUpdateIOS} = this.state
-    if(!needToUpdateIOS){
-      const systemVersion = DeviceInfo.getSystemVersion().split('.');
-      const newestIOS = 12
-      if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
-    }
   }
 
   componentDidUpdate (prevProps, prevState) {

@@ -13,9 +13,10 @@ const StyledGrid = styled(Grid)`
 `
 
 const Wrapper = styled.div`
-  margin: 1px;
+  margin: 10px;
   position: relative;
   cursor: pointer;
+  ${props => props.isCategory ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;'}
 `
 
 const CategoryTile = styled.div`
@@ -25,6 +26,16 @@ const CategoryTile = styled.div`
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;
+`
+
+const ChannelTile = styled.div`
+  min-height: 120px;
+  max-height: 140px;
+  background-image: ${props => `url(${props.imageSource})`};
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-top: 50%;
+  padding-bottom: 50%;
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -74,26 +85,38 @@ class Tile extends React.Component {
 
   render(){
     const {category, isSelected} = this.props
-    console.log(this.props, 'these are the props')
-    const image = category.image || category.channelImage
-    console.log(image, 'this is the image')
+    const image = category.image || category.channelImage || null
+    let row = category.image ? 4 : 2
+    let col = category.image ? 3 : 2
     return (
-      <Col xs={4} lg={3} >
-        <Wrapper onClick={this._onClickTile}>
-          <CategoryTile
-            imageSource={
-              getImageUrl(
-                image,
-                'categoryThumbnail',
-                {width: 400, height: 400},
-              )
-            }
-          />
+      <Col xs={row} lg={col} >
+        <Wrapper onClick={this._onClickTile} isCategory={category.image ? true : false}>
+          {
+              category.image ? 
+            <CategoryTile
+              imageSource={
+                getImageUrl(
+                  image,
+                  'categoryThumbnail',
+                  {width: 400, height: 400},
+                )
+              }
+            />
+            :
+            <ChannelTile
+              imageSource={
+                getImageUrl(
+                  image,
+                  'original',
+                )
+              }
+            />
+          }
           <TitleContainer
             selected={category.selected}
             overlayColor='black'
           >
-            <Title>{category.title || category.username}</Title>
+            <Title>{category.title || null}</Title>
           </TitleContainer>
           {isSelected &&
             <RedCheck name='redCheck' />

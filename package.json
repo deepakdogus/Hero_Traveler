@@ -10,5 +10,7 @@
     "build": "docker-compose build",
     "deploy": "docker stack deploy --with-registry-auth --compose-file=docker-compose.yaml api"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-native-device-info": "^1.7.0"
+  }
 }

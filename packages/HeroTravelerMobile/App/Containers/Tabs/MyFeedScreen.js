@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { getAppstoreAppVersion } from 'react-native-appstore-version-checker'
 import VersionNumber from 'react-native-version-number'
+import DeviceInfo from 'react-native-device-info'
 
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
@@ -78,10 +79,15 @@ class MyFeedScreen extends React.Component {
       hasSearchText: false,
       permissionStatus: undefined,
       needToUpdateApp: false,
+      needToUpdateIOS: false,
     }
   }
 
   componentDidMount() {
+    const systemVersion = DeviceInfo.getSystemVersion().split('.');
+    const newestIOS = 12
+    if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
+
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
       this.props.attemptGetUserFeedGuides(this.props.userId)
@@ -104,7 +110,6 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
     }
-
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
@@ -330,9 +335,22 @@ class MyFeedScreen extends React.Component {
     )
   }
 
+  updateIOSNotice(){
+    const systemVersion = DeviceInfo.getSystemVersion()
+    Alert.alert(
+      'Update Available',
+      `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
+      [
+        {text: 'Continue',
+          onPress: () => this.setState({needToUpdateIOS: false})
+        }
+      ]
+    )
+  }
+
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateApp} = this.state
+    const { needToUpdateApp, needToUpdateIOS} = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
@@ -372,6 +390,7 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
+        {needToUpdateIOS ? this.updateIOSNotice() : null}
       </View>
     )
   }

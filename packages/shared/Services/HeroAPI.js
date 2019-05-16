@@ -196,7 +196,7 @@ const create = () => {
   }
 
   const getUsersThatAreChannels = () => {
-    return api.get('user/allpromoted')
+    return api.get('user/channels')
     .then(response => safeNormalize(response, [User]))
   }
 

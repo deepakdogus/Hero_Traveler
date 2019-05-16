@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import {
   View,
@@ -123,8 +124,10 @@ class ImageCrop extends Component {
             {x: this.offsetX, y: this.offsetY},
             this.state.zoom,
           )
-          console.log('movement', movement)
+          console.log('onPanResponderMove movement', movement)
           console.log('centerX, centerY', movement.x, movement.y)
+          console.log('this.state', this.state)
+          console.log('this.props', this.props)
           this.setState({centerX: movement.x})
           this.setState({centerY: movement.y})
         }
@@ -134,6 +137,7 @@ class ImageCrop extends Component {
             let a = evt.nativeEvent.changedTouches[0].locationX - evt.nativeEvent.changedTouches[1].locationX
             let b = evt.nativeEvent.changedTouches[0].locationY - evt.nativeEvent.changedTouches[1].locationY
             let c = Math.sqrt( a * a + b * b )
+            console.log('zooming', c)
             this.zoomLastDistance = c.toFixed(1)
           }
           else{
@@ -151,6 +155,7 @@ class ImageCrop extends Component {
             this.setState({
               zoom: zoom,
             })
+            console.log('upd state zoom', zoom, this.state)
             //Set last distance..
             this.zoomLastDistance = this.zoomCurrentDistance
           }
@@ -192,6 +197,7 @@ class ImageCrop extends Component {
             source={{ uri: this.props.image}}
             imageSize={{height: this.state.imageHeight, width: this.state.imageWidth}}
             resizeMode="cover"
+            onCrop={this.onCrop}
             zoom={this.state.zoom}
             center={[this.state.centerX, this.state.centerY]}
           />
@@ -199,6 +205,16 @@ class ImageCrop extends Component {
       </View>
     )
   }
+
+  onCrop = (cropParams) => {
+    if (!_.isEqual(this.state.cropParams, cropParams)) {
+      this.setState({
+        cropParams,
+      })
+      this.props.onCrop(cropParams)
+    }
+  }
+
   crop(){
     return this.refs.cropit.captureFrame({quality: this.props.quality, type: this.props.type, format: this.props.format, filePath: this.props.filePath})
   }
@@ -228,6 +244,7 @@ ImageCrop.propTypes = {
   type: PropTypes.string,
   format: PropTypes.string,
   filePath: PropTypes.string,
+  onCrop: PropTypes.func,
 }
 
 export default ImageCrop

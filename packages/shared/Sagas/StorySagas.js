@@ -326,7 +326,7 @@ function * createSlideshow(draft){
   const promise = yield Promise.all(draft.slideshow.map((item, index) => {
     const {uri, type} = item
     if (isLocalMediaAsset(uri)) {
-      return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type)
+      return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
       .then(response => {
         console.log('cloudinary response', response)
         if (response.error) return response

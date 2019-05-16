@@ -35,6 +35,7 @@ const Image = GL.createComponent(
     resizeMode = 'cover',
     center,
     zoom,
+    onCrop,
   }) => {
     if (!imageSize) {
       if (source.width && source.height) {
@@ -46,42 +47,44 @@ const Image = GL.createComponent(
     }
     let crop
     switch (resizeMode) {
-    case 'cover': {
-      console.log('imageSize', imageSize)
-      if (!center) center = [ 0.5, 0.5 ]
-      if (!zoom) zoom = 1
-      let rect = rectCrop(zoom, center)({ width, height }, imageSize)
-      rect = rectClamp(rect, [ 0, 0, imageSize.width, imageSize.height ])
-      crop = [
-        rect[0] / imageSize.width,
-        rect[1] / imageSize.height,
-        rect[2] / imageSize.width,
-        rect[3] / imageSize.height,
-      ]
-      console.log('crop', crop)
-      break
-    }
-    case 'contain': {
-      if (center || zoom) {
-        console.warn("gl-react-image: center and zoom props are only supported with resizeMode='cover'")
+      case 'cover': {
+        console.log('imageSize', imageSize)
+        if (!center) center = [ 0.5, 0.5 ]
+        if (!zoom) zoom = 1
+        let rect = rectCrop(zoom, center)({ width, height }, imageSize)
+        rect = rectClamp(rect, [ 0, 0, imageSize.width, imageSize.height ])
+        console.log('rect', rect)
+        if (onCrop) onCrop(rect)
+        crop = [
+          rect[0] / imageSize.width,
+          rect[1] / imageSize.height,
+          rect[2] / imageSize.width,
+          rect[3] / imageSize.height,
+        ]
+        console.log('crop', crop)
+        break
       }
-      const ratio = width / height
-      const imageRatio = imageSize.width / imageSize.height
-      crop
-      = ratio > imageRatio
-          ? [ (1 - ratio / imageRatio) / 2, 0, ratio / imageRatio, 1 ]
-          : [ 0, (1 - imageRatio / ratio) / 2, 1, imageRatio / ratio ]
-      break
-    }
-    case 'stretch':
-      if (center || zoom) {
-        console.warn("gl-react-image: center and zoom props are only supported with resizeMode='cover'")
+      case 'contain': {
+        if (center || zoom) {
+          console.warn("gl-react-image: center and zoom props are only supported with resizeMode='cover'")
+        }
+        const ratio = width / height
+        const imageRatio = imageSize.width / imageSize.height
+        crop
+        = ratio > imageRatio
+            ? [ (1 - ratio / imageRatio) / 2, 0, ratio / imageRatio, 1 ]
+            : [ 0, (1 - imageRatio / ratio) / 2, 1, imageRatio / ratio ]
+        break
       }
-      crop = [ 0, 0, 1, 1 ]
-      break
+      case 'stretch':
+        if (center || zoom) {
+          console.warn("gl-react-image: center and zoom props are only supported with resizeMode='cover'")
+        }
+        crop = [ 0, 0, 1, 1 ]
+        break
 
-    default:
-      throw new Error('gl-react-image: unknown resizeMode=' + resizeMode)
+      default:
+        throw new Error('gl-react-image: unknown resizeMode=' + resizeMode)
     }
 
     return <GL.Node

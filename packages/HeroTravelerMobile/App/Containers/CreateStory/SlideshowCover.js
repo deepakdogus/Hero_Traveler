@@ -82,31 +82,9 @@ class SlideshowCover extends Component{
     })
     this.setState({
       galleryImagePath,
-      slideshow,
     }, () => {
-      this.capture()
+      this.props.updateWorkingDraft({slideshow})
     })
-  }
-
-  capture = () => {
-    const { slideshow, galleryImagePath } = this.state
-    const currentImageIndex = _.findIndex(slideshow, { uri: galleryImagePath })
-    const currentImage = slideshow[currentImageIndex]
-    if (currentImage.type === 'video') {
-      return this.props.updateWorkingDraft({slideshow})
-    }
-    this.refs.cropper.crop()
-      .then(myUri => {
-        console.log('capture', myUri)
-        Image.getSize(myUri, (width, height) => {
-          console.log('after capture image width, height', width, height)
-          currentImage.uri = myUri
-          _.set(currentImage, 'original.meta.height', height)
-          _.set(currentImage, 'original.meta.width', width)
-          _.set(slideshow, [currentImageIndex], currentImage)
-          this.props.updateWorkingDraft({slideshow})
-        })
-      })
   }
 
   isValid() {
@@ -205,8 +183,21 @@ class SlideshowCover extends Component{
     return Promise.resolve(this.props.updateWorkingDraft(cleanedDraft))
   }
 
+  cropSelectedImage = (params) => {
+    const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
+    const { galleryImagePath } = this.state
+    console.log('cropSelectedImage crop', galleryImagePath, slideshow, params)
+    const imageIndex = _.findIndex(slideshow, { uri: galleryImagePath })
+    console.log('imageIndex', imageIndex)
+    if (imageIndex >= 0) {
+      _.set(slideshow, [imageIndex, 'original', 'meta', 'crop'], params)
+      console.log('cropSelectedImage', slideshow)
+      this.props.updateWorkingDraft({slideshow})
+    }
+  }
+
   renderImageCropper = () => {
-    const { galleryImagePath, width, height } = this.state
+    const { galleryImagePath } = this.state
     return (
       <Fragment>
         <ImageCrop 
@@ -214,6 +205,7 @@ class SlideshowCover extends Component{
           image={galleryImagePath}
           cropHeight={300}
           cropWidth={Metrics.screenWidth}
+          onCrop={this.cropSelectedImage}
           maxZoom={100}
           minZoom={1}
           panToMove={true}

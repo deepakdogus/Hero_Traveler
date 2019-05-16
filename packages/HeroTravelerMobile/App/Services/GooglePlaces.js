@@ -10,6 +10,7 @@ export async function getPlaceDetail (placeId, placeByIdFields = DEFAULT_FIELDS)
   try {
     const res = await fetch(`${API_URI_BASE}${placeId}${placeByIdFields}`)
     const data = await res.json()
+    console.log('data', data)
     if (data.status !== 'OK') throw new Error(`Google Places API Error: ${data.status}`)
     return data.result
   }

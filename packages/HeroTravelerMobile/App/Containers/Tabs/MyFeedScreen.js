@@ -80,13 +80,14 @@ class MyFeedScreen extends React.Component {
       permissionStatus: undefined,
       needToUpdateApp: false,
       needToUpdateIOS: false,
+      needToUpdateIOSAlertOnce: false,
     }
   }
 
   componentDidMount() {
     const systemVersion = DeviceInfo.getSystemVersion().split('.');
     const newestIOS = 12
-    if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
+    if(newestIOS - Number(systemVersion[0]) >= 0 && !needToUpdateIOSAlertOnce) this.setState({needToUpdateIOS: true})
 
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
@@ -350,7 +351,7 @@ class MyFeedScreen extends React.Component {
 
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateApp, needToUpdateIOS} = this.state
+    const { needToUpdateApp, needToUpdateIOS, needToUpdateIOSAlertOnce } = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
@@ -390,7 +391,7 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
-        {needToUpdateIOS ? this.updateIOSNotice() : null}
+        {!needToUpdateIOSAlertOnce && needToUpdateIOS ? this.updateIOSNotice() : null}
       </View>
     )
   }

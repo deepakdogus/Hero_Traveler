@@ -93,6 +93,7 @@ class EditUserForm extends React.Component {
               <Option value="contributor">Contributor</Option>
               <Option value="founding member">Founding Member</Option>
               <Option value="fellow">Fellow</Option>
+              <Option value="local hero">Local Hero</Option>
             </Select>,
           )}
         </FormItem>

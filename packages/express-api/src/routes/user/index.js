@@ -43,7 +43,7 @@ router.get(
   endpointWrapper(getMe)
 )
 
-router.get('/allpromoted',
+router.get('/channels',
   endpointWrapper(getAllUsersIsChannel)
 )
 

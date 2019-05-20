@@ -116,8 +116,6 @@ class CategoryAndUserFeedScreen extends React.Component {
   )
 
   _changeTab = selectedTab => {
-    console.log('tab change')
-    this.loadGuides()
     if(selectedTab !== restrictedTabTypes.guides) this.loadStories()  
     if(selectedTab !== restrictedTabTypes.stories) this.loadGuides()
     this.setState(

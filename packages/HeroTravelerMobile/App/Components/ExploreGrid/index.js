@@ -5,7 +5,6 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native'
-
 import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'

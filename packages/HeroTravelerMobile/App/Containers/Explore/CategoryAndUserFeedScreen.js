@@ -64,7 +64,7 @@ class CategoryAndUserFeedScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      selectedTab: null,
+      selectedTab: restrictedTabTypes.stories,
       name: '',
     }
   }

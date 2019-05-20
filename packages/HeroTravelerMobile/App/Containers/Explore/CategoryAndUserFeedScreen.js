@@ -78,6 +78,7 @@ class CategoryAndUserFeedScreen extends React.Component {
   }
 
   loadGuides() {
+    console.log('activated')
     this.props.isCategory ? 
       (this.props.loadUserGuides(this.props.categoryId))
       :
@@ -115,12 +116,13 @@ class CategoryAndUserFeedScreen extends React.Component {
   )
 
   _changeTab = selectedTab => {
+    console.log('tab change')
+    this.loadGuides()
+    if(selectedTab !== restrictedTabTypes.guides) this.loadStories()  
+    if(selectedTab !== restrictedTabTypes.stories) this.loadGuides()
     this.setState(
       {
         selectedTab,
-      },
-      () => {
-        if (selectedTab !== restrictedTabTypes.guides) this.loadStories()
       },
     )
   }
@@ -254,6 +256,7 @@ class CategoryAndUserFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  console.log(props.categoryId, state, 'state')
   return {
     user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
@@ -261,6 +264,7 @@ const mapStateToProps = (state, props) => {
     categoryGuidesById: _.get(
       state,
       `entities.guides.guideIdsByCategoryId[${props.categoryId}]`,
+      `entities.guides.guideIdsByUserId[${props.categoryId}]`,
       [],
     ),
     error: state.entities.stories.error,

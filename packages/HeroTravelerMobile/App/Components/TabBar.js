@@ -33,7 +33,7 @@ export default class TabBar extends Component {
     largeTabBar: PropTypes.bool,
   }
 
-  _onCickTab = (tabValue) => {
+  _onClickTab = (tabValue) => {
     return () => this.props.onClickTab(tabValue)
   }
 
@@ -46,7 +46,7 @@ export default class TabBar extends Component {
           style={tabStyle}
           text={tabs[key].toUpperCase()}
           selected={activeTab === tabs[key]}
-          onPress={this._onCickTab(tabs[key])}
+          onPress={this._onClickTab(tabs[key])}
         />
       )
     })

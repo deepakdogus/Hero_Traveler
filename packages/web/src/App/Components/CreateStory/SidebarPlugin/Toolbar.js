@@ -3,8 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey'
 import {
-  BoldButton,
   HeadlineOneButton,
+  UnorderedListButton,
 } from 'draft-js-buttons'
 import {
   AddImageButton,
@@ -32,7 +32,7 @@ class Toolbar extends React.Component {
     children: externalProps => (
       // may be use React.Fragment instead of div to improve perfomance after React 16
       <div>
-        <BoldButton {...externalProps} />
+        <UnorderedListButton {...externalProps} />
         <AddImageButton {...externalProps} />
         <HeadlineOneButton {...externalProps} />
         <AddVideoButton {...externalProps} />

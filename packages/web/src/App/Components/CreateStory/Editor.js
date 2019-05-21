@@ -3,17 +3,25 @@ import PropTypes from 'prop-types'
 import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import 'draft-js/dist/Draft.css'
+import {
+  ItalicButton,
+  BoldButton,
+  HeadlineOneButton,
+  BlockquoteButton,
+} from 'draft-js-buttons'
 import styled from 'styled-components'
 
 import { convertFromRaw, convertToRaw } from '../../Shared/Lib/draft-js-helpers'
 import { removeMedia, createSelectionWithFocus } from '../../Lib/web-draft-js-helpers'
 
+import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-plugin'
+import createSideToolbarPlugin from './SidebarPlugin'
+
+import MediaComponent from './EditorMediaComponent'
+
 import colors from '../../Shared/Themes/Colors'
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
-
-import createSideToolbarPlugin from './SidebarPlugin'
-import MediaComponent from './EditorMediaComponent'
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
@@ -23,9 +31,10 @@ const EditorWrapper = styled.div`
     margin-right: 15px;
   }
 `
+const inlineToolbarPlugin = createInlineToolbarPlugin()
+const { InlineToolbar } = inlineToolbarPlugin
 
 const sideToolbarPlugin = createSideToolbarPlugin()
-
 const { SideToolbar } = sideToolbarPlugin
 
 const styleMap = {
@@ -122,6 +131,8 @@ export default class BodyEditor extends React.Component {
 
     if (currBlockType === 'unstyled') className = 'editorParagraph'
     if (currBlockType === 'header-one') className = 'editorHeaderOne'
+    if (currBlockType === 'blockquote') className = 'editorBlockquote'
+    if (currBlockType === 'unordered-list-item') className = 'editorUnorderedListItem'
     if (nextBlockType && nextBlockType === 'atomic' && currBlockType !== 'atomic') {
       className += ' editorSpacer'
     }
@@ -181,13 +192,30 @@ export default class BodyEditor extends React.Component {
           editorState={this.state.editorState}
           placeholder="Tell your story"
           onChange={this.onChange}
-          plugins={[sideToolbarPlugin]}
+          plugins={[sideToolbarPlugin, inlineToolbarPlugin]}
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
           onBlur={this.onBlur}
         />
         <SideToolbar />
+        <InlineToolbar>
+        {
+          (externalProps) => (
+              <div>
+                <BoldButton {...externalProps} />
+                <ItalicButton {...externalProps} />
+                {/* LINK BUTTON HERE */}
+                <Separator {...externalProps} />
+                <HeadlineOneButton {...externalProps} />
+                <BlockquoteButton {...externalProps} />
+                {/* <Separator {...externalProps} /> */}
+                {/* ALIGN LEFT BUTTON HERE */}
+                {/* ALIGN CENTER BUTTON HERE */}
+              </div>
+            )
+          }
+        </InlineToolbar>
       </EditorWrapper>
     )
   }

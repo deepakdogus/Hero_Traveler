@@ -26,6 +26,7 @@ export const BodyText = styled.p`
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: 0.6px;
+  word-break: break-all;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 20px;
     padding-right: 20px;
@@ -65,7 +66,8 @@ const StyledLink = styled.a`
   text-decoration: none;
   font-style: normal;
   cursor: pointer;
-  > u, * {
+  > u,
+  * {
     text-decoration: none;
     font-style: normal;
   }
@@ -74,8 +76,35 @@ const StyledLink = styled.a`
 const StyledStrong = styled.strong`
   font-weight: 600;
   text-decoration: none;
-  > u, * {
+  > u,
+  * {
     text-decoration: none;
+  }
+`
+
+const StyledBlockquote = styled.blockquote`
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  font-size: 23px;
+  line-height: 34px;
+  color: #1a1c21;
+  margin: 0 70px;
+`
+
+const StyledUnorderedListItem = styled.li`
+  margin: 0;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 400;
+  font-size: 18px;
+  color: ${props => props.theme.Colors.grey};
+  letter-spacing: 0.6px;
+  line-height: 30px;
+  word-break: break-all;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -125,7 +154,18 @@ const blocks = {
       <Spacer key={1} />,
     ]),
   atomic: getAtomic,
-  blockquote: (children, { keys }) => <blockquote key={keys[0]}>{children}</blockquote>,
+  blockquote: (children, { keys }) => [
+    <StyledBlockquote key={keys[0]}>{children}</StyledBlockquote>,
+    <Spacer key={1} />,
+  ],
+  'unordered-list-item': (children, { keys }) => [
+    <ul key={1}>
+      {children.map((child, i) => (
+        <StyledUnorderedListItem key={keys[i]}>{child}</StyledUnorderedListItem>
+      ))}
+    </ul>,
+    <Spacer key={2} />,
+  ],
   'header-one': (children, { keys }) =>
     children.map((child, i) => [
       <HeaderOne key={keys[i]}>{child}</HeaderOne>,
@@ -166,7 +206,7 @@ export default class StoryContentRenderer extends React.Component {
         <StyledLink
           key={key}
           href={entity.url}
-          target='_blank'
+          target="_blank"
           rel="noopener noreferrer"
         >
           {children}
@@ -184,6 +224,22 @@ export default class StoryContentRenderer extends React.Component {
     const lastSection = contentSections[lastIdx]
     const lastSectionLastIdx = lastSection.length - 1
     const lastBlock = lastSection[lastSectionLastIdx]
+
+    // remove gap between paragraph text and start of an unordered list
+    contentSections.forEach((section, idx) => {
+      if (
+        idx > 0
+        && section[0]
+        && section[0].type === 'ul'
+        && contentSections[idx - 1]
+        && _.get(
+          contentSections[idx - 1],
+          `[${contentSections[idx - 1].length - 1}][1].props.spacer`,
+        )
+      ) {
+        contentSections[idx - 1][1].pop()
+      }
+    })
 
     // sections [array] contain blocks [array], which contain block parts [objects]
     // e.g. [ [[{text}, {spacer}], [{text}, {spacer}]], [[{spacer}, {image}, {spacer}, {spacer}]] ]

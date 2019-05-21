@@ -11,6 +11,8 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getBodyVideoUrls } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
+const LINK_ROLES = ['user', 'admin', 'brand', 'contributor', 'founding Member', 'fellow']
+
 const ContentContainer = styled.div``
 
 const StyledImage = styled(Image)`
@@ -55,8 +57,26 @@ Spacer.defaultProps = {
   spacer: true,
 }
 
+// some sites may nest elements inside anchor tags that contain their own styles
+// targeting the children attempts to apply a single flat style to entire pasted link
+const StyledLink = styled.a`
+  font-weight: 600;
+  color: ${props => props.theme.Colors.redHighlights};
+  text-decoration: none;
+  font-style: normal;
+  cursor: pointer;
+  > u, * {
+    text-decoration: none;
+    font-style: normal;
+  }
+`
+
 const StyledStrong = styled.strong`
   font-weight: 600;
+  text-decoration: none;
+  > u, * {
+    text-decoration: none;
+  }
 `
 
 const inline = {
@@ -75,16 +95,13 @@ const getAtomic = (children, { data, keys }) => {
     let media
 
     if (mediaBlock.type === 'image') {
-      media = (<StyledImage src={getImageUrl(mediaBlock.url, 'contentBlock')} />)
+      media = <StyledImage src={getImageUrl(mediaBlock.url, 'contentBlock')} />
     }
     else if (mediaBlock.type === 'video') {
-      media = (
-        <Video
-          {...getBodyVideoUrls(mediaBlock.url)}
-          withPrettyControls
-        />
-
-      )
+      media = <Video
+        {...getBodyVideoUrls(mediaBlock.url)}
+        withPrettyControls
+              />
     }
     else return null
 
@@ -103,24 +120,27 @@ const getAtomic = (children, { data, keys }) => {
 // only actually using unstyled - atomic - header-one
 const blocks = {
   unstyled: (children, { keys }) =>
-    children.map((child, i) => [<BodyText key={keys[i]}>{child}</BodyText>, <Spacer key={1} />]),
+    children.map((child, i) => [
+      <BodyText key={keys[i]}>{child}</BodyText>,
+      <Spacer key={1} />,
+    ]),
   atomic: getAtomic,
   blockquote: (children, { keys }) => <blockquote key={keys[0]}>{children}</blockquote>,
   'header-one': (children, { keys }) =>
-    children.map((child, i) => [<HeaderOne key={keys[i]}>{child}</HeaderOne>, <Spacer key={1} />]),
-  'header-two': (children, { keys }) => children.map((child, i) => <h2 key={keys[i]}>{child}</h2>),
+    children.map((child, i) => [
+      <HeaderOne key={keys[i]}>{child}</HeaderOne>,
+      <Spacer key={1} />,
+    ]),
+  'header-two': (children, { keys }) =>
+    children.map((child, i) => <h2 key={keys[i]}>{child}</h2>),
   'header-three': (children, { keys }) =>
     children.map((child, i) => <h3 key={keys[i]}>{child}</h3>),
-  'header-four': (children, { keys }) => children.map((child, i) => <h4 key={keys[i]}>{child}</h4>),
-  'header-five': (children, { keys }) => children.map((child, i) => <h5 key={keys[i]}>{child}</h5>),
-  'header-six': (children, { keys }) => children.map((child, i) => <h6 key={keys[i]}>{child}</h6>),
-}
-
-/* Pasted links are automatically made into Link entities, but we do not
- * allow active links offiste at this time.
- */
-const entities = {
-  LINK: (children, entity, { key }) => <StyledStrong key={key}>{children}</StyledStrong>,
+  'header-four': (children, { keys }) =>
+    children.map((child, i) => <h4 key={keys[i]}>{child}</h4>),
+  'header-five': (children, { keys }) =>
+    children.map((child, i) => <h5 key={keys[i]}>{child}</h5>),
+  'header-six': (children, { keys }) =>
+    children.map((child, i) => <h6 key={keys[i]}>{child}</h6>),
 }
 
 const options = {
@@ -134,7 +154,27 @@ const options = {
 export default class StoryContentRenderer extends React.Component {
   static propTypes = {
     story: PropTypes.object,
+    author: PropTypes.object,
   }
+
+  /* Pasted links are automatically made into Link entities, but we do not
+   * allow active links offiste except for certain user types
+   */
+  getEntities = () => ({
+    LINK: (children, entity, { key }) =>
+      LINK_ROLES.includes(_.get(this.props, 'author.role', '')) ? (
+        <StyledLink
+          key={key}
+          href={entity.url}
+          target='_blank'
+          rel="noopener noreferrer"
+        >
+          {children}
+        </StyledLink>
+      ) : (
+        <StyledStrong key={key}>{children}</StyledStrong>
+      ),
+  })
 
   trimSpacers = contentSections => {
     if (!contentSections) return null
@@ -155,9 +195,7 @@ export default class StoryContentRenderer extends React.Component {
       ...contentSections.slice(0, lastIdx),
       [
         ...lastSection.slice(0, lastSectionLastIdx),
-        lastBlock.filter(
-          (part, idx) => idx === 0 || !_.get(part, 'props.spacer'),
-        ),
+        lastBlock.filter((part, idx) => idx === 0 || !_.get(part, 'props.spacer')),
       ],
     ]
   }
@@ -166,6 +204,7 @@ export default class StoryContentRenderer extends React.Component {
     const { story } = this.props
     if (!story.draftjsContent) return null
 
+    const entities = this.getEntities()
     const contentBlocks = this.trimSpacers(
       redraft(story.draftjsContent, { inline, blocks, entities }, options),
     )

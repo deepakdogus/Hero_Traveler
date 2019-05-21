@@ -70,15 +70,14 @@ class CategoryAndUserFeedScreen extends React.Component {
   }
 
   loadStories() {
-    let storyType = this.state.selectedTab
     this.props.isCategory ? 
-      (this.props.loadUserStories(this.props.categoryId))
-      :
-      (this.props.loadCategoryStories(this.props.categoryId, storyType))
+    // (this.props.loadUserStories(this.props.categoryId))
+    (this.props.loadUserStories(this.props.categoryId))
+    :
+    (this.props.loadCategoryStories(this.props.categoryId))
   }
 
   loadGuides() {
-    console.log('activated')
     this.props.isCategory ? 
       (this.props.loadUserGuides(this.props.categoryId))
       :
@@ -255,6 +254,7 @@ class CategoryAndUserFeedScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   console.log(props.categoryId, state, 'state')
+  console.log(getByCategory(state.entities.stories, props.categoryId), 'function')
   const categoryGuidesSearchCriteria = props.isCategory ? `entities.guides.guideIdsByUserId[${props.categoryId}]` : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
   return {
     user: state.entities.users.entities[state.session.userId], 

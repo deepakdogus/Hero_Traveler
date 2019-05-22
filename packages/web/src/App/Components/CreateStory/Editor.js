@@ -121,7 +121,7 @@ export default class BodyEditor extends React.Component {
   }
 
   myBlockStyleFn = contentBlock => {
-    const currBlockType = contentBlock.getType()
+    const currBlockType = contentBlock ? contentBlock.getType() : ''
     const contentState = this.state.editorState.getCurrentContent()
     const nextBlockKey = contentState.getKeyAfter(contentBlock.getKey())
     const nextBlock = contentState.getBlockForKey(nextBlockKey)
@@ -133,7 +133,14 @@ export default class BodyEditor extends React.Component {
     if (currBlockType === 'header-one') className = 'editorHeaderOne'
     if (currBlockType === 'blockquote') className = 'editorBlockquote'
     if (currBlockType === 'unordered-list-item') className = 'editorUnorderedListItem'
-    if (nextBlockType && nextBlockType === 'atomic' && currBlockType !== 'atomic') {
+
+    // remove unnecessary extra space between p and ul
+    if (currBlockType === 'unstyled' && nextBlockType === 'unordered-list-item') {
+      className += ' editorNoPadding'
+    }
+
+    // add exra space surroundying media
+    if (nextBlockType === 'atomic' && currBlockType !== 'atomic') {
       className += ' editorSpacer'
     }
     return className

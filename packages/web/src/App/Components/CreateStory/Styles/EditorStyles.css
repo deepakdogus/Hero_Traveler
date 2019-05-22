@@ -21,6 +21,10 @@
   padding-bottom: 60px;
 }
 
+.editorNoPadding {
+  padding-bottom: 0;
+}
+
 .editorBlockquote {
   font-family: 'Source Sans Pro';
   font-style: italic;

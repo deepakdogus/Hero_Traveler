@@ -5,21 +5,25 @@ import Editor from 'draft-js-plugins-editor'
 import 'draft-js/dist/Draft.css'
 import {
   ItalicButton,
+  BlockquoteButton,
   BoldButton,
   HeadlineOneButton,
-  BlockquoteButton,
+  UnorderedListButton,
 } from 'draft-js-buttons'
 import styled from 'styled-components'
 
 import { convertFromRaw, convertToRaw } from '../../Shared/Lib/draft-js-helpers'
 import { removeMedia, createSelectionWithFocus } from '../../Lib/web-draft-js-helpers'
 
+import createDividerPlugin from 'draft-js-divider-plugin'
 import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-plugin'
 import createSideToolbarPlugin from './SidebarPlugin'
 
+import { AddImageButton, AddVideoButton } from './EditorAddMediaButton'
 import MediaComponent from './EditorMediaComponent'
 
 import colors from '../../Shared/Themes/Colors'
+import './Styles/DividerStyles.css'
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
 
@@ -36,6 +40,9 @@ const { InlineToolbar } = inlineToolbarPlugin
 
 const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin
+
+const dividerPlugin = createDividerPlugin()
+const { DividerButton } = dividerPlugin
 
 const styleMap = {
   BOLD: {
@@ -199,29 +206,36 @@ export default class BodyEditor extends React.Component {
           editorState={this.state.editorState}
           placeholder="Tell your story"
           onChange={this.onChange}
-          plugins={[sideToolbarPlugin, inlineToolbarPlugin]}
+          plugins={[dividerPlugin, inlineToolbarPlugin, sideToolbarPlugin]}
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
           onBlur={this.onBlur}
         />
-        <SideToolbar />
+        <SideToolbar>
+          {externalProps => (
+            <div>
+              <UnorderedListButton {...externalProps} />
+              <AddImageButton {...externalProps} />
+              <DividerButton {...externalProps} />
+              <AddVideoButton {...externalProps} />
+            </div>
+          )}
+        </SideToolbar>
         <InlineToolbar>
-        {
-          (externalProps) => (
-              <div>
-                <BoldButton {...externalProps} />
-                <ItalicButton {...externalProps} />
-                {/* LINK BUTTON HERE */}
-                <Separator {...externalProps} />
-                <HeadlineOneButton {...externalProps} />
-                <BlockquoteButton {...externalProps} />
-                {/* <Separator {...externalProps} /> */}
-                {/* ALIGN LEFT BUTTON HERE */}
-                {/* ALIGN CENTER BUTTON HERE */}
-              </div>
-            )
-          }
+          {externalProps => (
+            <div>
+              <BoldButton {...externalProps} />
+              <ItalicButton {...externalProps} />
+              {/* LINK BUTTON HERE */}
+              <Separator {...externalProps} />
+              <HeadlineOneButton {...externalProps} />
+              <BlockquoteButton {...externalProps} />
+              {/* <Separator {...externalProps} /> */}
+              {/* ALIGN LEFT BUTTON HERE */}
+              {/* ALIGN CENTER BUTTON HERE */}
+            </div>
+          )}
         </InlineToolbar>
       </EditorWrapper>
     )

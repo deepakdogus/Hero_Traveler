@@ -3,13 +3,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey'
 import {
-  HeadlineOneButton,
   UnorderedListButton,
 } from 'draft-js-buttons'
-import {
-  AddImageButton,
-  AddVideoButton,
-} from '../EditorAddMediaButton'
+import { AddImageButton, AddVideoButton } from '../EditorAddMediaButton'
 import BlockTypeSelect from './BlockTypeSelect'
 import styled from 'styled-components'
 
@@ -34,7 +30,6 @@ class Toolbar extends React.Component {
       <div>
         <UnorderedListButton {...externalProps} />
         <AddImageButton {...externalProps} />
-        <HeadlineOneButton {...externalProps} />
         <AddVideoButton {...externalProps} />
       </div>
     ),
@@ -52,9 +47,7 @@ class Toolbar extends React.Component {
     this.props.store.unsubscribeFromItem('editorState', this.onEditorStateChange)
   }
 
-  getNextBlock() {
-
-  }
+  getNextBlock() {}
 
   onEditorStateChange = editorState => {
     const selection = editorState.getSelection()
@@ -74,7 +67,8 @@ class Toolbar extends React.Component {
       if (!node.tagName) {
         const nextKey = currentContent.getKeyAfter(selection.getStartKey())
         const nextBlockOffsetKey = DraftOffsetKey.encode(nextKey, 0, 0)
-        const lastNode = document.querySelectorAll(`[data-offset-key="${nextBlockOffsetKey}"]`)[0] || {}
+        const lastNode
+          = document.querySelectorAll(`[data-offset-key="${nextBlockOffsetKey}"]`)[0] || {}
         node = lastNode
       }
 
@@ -113,7 +107,9 @@ class Toolbar extends React.Component {
 
   render() {
     const { store } = this.props
-    const { position: { top, left, transform } } = this.state
+    const {
+      position: { top, left, transform },
+    } = this.state
 
     return (
       <Wrapper

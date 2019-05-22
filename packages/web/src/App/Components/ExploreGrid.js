@@ -83,6 +83,27 @@ class Tile extends React.Component {
     this.props.onClick(this.props.category.id)
   }
 
+  renderTile = (isCategory, image) => {
+    return isCategory
+    ? <CategoryTile
+      imageSource={
+        getImageUrl(
+          image,
+          'categoryThumbnail',
+          {width: 400, height: 400},
+        )
+      }
+    />
+    : <ChannelTile
+      imageSource={
+        getImageUrl(
+          image,
+          'original',
+        )
+      }
+    />
+  }
+
   render(){
     const {category, isSelected} = this.props
     const image = category.image || category.channelImage || null
@@ -90,25 +111,7 @@ class Tile extends React.Component {
       <Col xs={category.image ? 4 : 2} lg={category.image ? 3 : 2} >
         <Wrapper onClick={this._onClickTile} isCategory={category.image ? true : false}>
           {
-              category.image ? 
-            <CategoryTile
-              imageSource={
-                getImageUrl(
-                  image,
-                  'categoryThumbnail',
-                  {width: 400, height: 400},
-                )
-              }
-            />
-            :
-            <ChannelTile
-              imageSource={
-                getImageUrl(
-                  image,
-                  'original',
-                )
-              }
-            />
+             this.renderTile((category.image ? true : false), image)
           }
           <TitleContainer
             selected={category.selected}

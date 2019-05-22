@@ -76,8 +76,8 @@ class CategoryAndUserFeedScreen extends React.Component {
 
   loadGuides() {
     this.props.isCategory  
-     ? this.props.loadUserGuides(this.props.categoryId)
-     : this.props.loadCategoryGuides(this.props.categoryId)
+    ? this.props.loadUserGuides(this.props.categoryId)
+    : this.props.loadCategoryGuides(this.props.categoryId)
   }
 
   loadData() {
@@ -235,8 +235,8 @@ class CategoryAndUserFeedScreen extends React.Component {
           onRight={this._onRight}
           rightTextStyle={
             isFollowingCategory
-              ? styles.followingTextStyle
-              : styles.followTextStyle
+            ? styles.followingTextStyle
+            : styles.followTextStyle
           }
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
           style={styles.navbarContainer}

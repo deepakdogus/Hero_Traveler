@@ -253,8 +253,6 @@ class CategoryAndUserFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log(props.categoryId, state, 'state')
-  console.log(getByCategory(state.entities.stories, props.categoryId), 'function')
   const categoryGuidesSearchCriteria = props.isCategory ? `entities.guides.guideIdsByUserId[${props.categoryId}]` : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
   return {
     user: state.entities.users.entities[state.session.userId], 

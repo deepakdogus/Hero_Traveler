@@ -94,16 +94,16 @@ export function * deleteUser(api) {
   }
 }
 
-export function * getUsersChannels(api){
+export function * getChannelUsers (api){
   const response = yield call(api.getUsersThatAreChannels)
-  const {entities, result } = response.data
-  if(response.ok){
+  const { entities, result } = response.data
+  if (response.ok){
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUsersChannelsSuccess(result))
     ]
   } else {
-    yield put(UserActions.loadUsersChannelsFailure(new Error('error loading users that are channels')))
+    yield put(UserActions.loadUsersChannelsFailure(new Error('error loading channel users')))
   }
 }
 

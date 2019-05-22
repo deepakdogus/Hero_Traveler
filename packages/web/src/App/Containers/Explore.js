@@ -33,7 +33,7 @@ class Explore extends Component {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
-    loadUsersThatAreChannels: PropTypes.func,
+    loadChannelUsers: PropTypes.func,
     loadUsers: PropTypes.func,
     reroute: PropTypes.func,
     channels: PropTypes.array,
@@ -46,7 +46,7 @@ class Explore extends Component {
 
   componentDidMount() {
     this.props.loadCategories()
-    this.props.loadUsersThatAreChannels()
+    this.props.loadChannelUsers()
     this.props.loadUsers()
   }
 
@@ -60,16 +60,16 @@ class Explore extends Component {
 
   onClickTab = event => {
     let tab = event.target.innerHTML
-    if(this.state.activeTab !== tab) this.setState({activeTab: tab})
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
   }
 
   getEntitiesByType = () => {
     const {activeTab} = this.state
     const {channels, users, categories} = this.props
     const filteredChannelsThatAreUsers = {}
-    if(activeTab === tabTypes.channels){
-      for(let i = 0; i < channels.length; i++){
-        if(users[channels[i]]){
+    if (activeTab === tabTypes.channels){
+      for (let i = 0; i < channels.length; i++){
+        if (users[channels[i]]){
           filteredChannelsThatAreUsers[users[channels[i]].id] = users[channels[i]]
         }
       }
@@ -98,7 +98,9 @@ class Explore extends Component {
         <ContentWrapper>
             <ExploreGrid
               categories={exploreItems}
-              onClickExploreItem={activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
+              onClickExploreItem={activeTab === tabTypes.channels 
+                ? this._navToChannel
+                : this._navToCategory}
             />
           <Footer />
         </ContentWrapper>
@@ -124,7 +126,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadUsers: () => dispatch(UserActions.loadUser()),
-    loadUsersThatAreChannels: () => dispatch(UserActions.loadUsersChannels()),
+    loadChannelUsers: () => dispatch(UserActions.loadUsersChannels()),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     reroute: (path) => dispatch(push(path)),
   }

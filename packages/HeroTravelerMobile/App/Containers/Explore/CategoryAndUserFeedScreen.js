@@ -255,7 +255,9 @@ const mapStateToProps = (state, props) => {
   return {
     user: state.entities.users.entities[state.session.userId], 
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
-    storiesById: props.isCategory ? getByUser(state.entities.stories, props.categoryId) : getByCategory(state.entities.stories, props.categoryId),
+    storiesById: props.isCategory 
+    ? getByUser(state.entities.stories, props.categoryId)
+    : getByCategory(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
       getGuidePath,

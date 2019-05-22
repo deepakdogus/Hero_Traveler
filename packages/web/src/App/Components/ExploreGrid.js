@@ -86,10 +86,8 @@ class Tile extends React.Component {
   render(){
     const {category, isSelected} = this.props
     const image = category.image || category.channelImage || null
-    let row = category.image ? 4 : 2
-    let col = category.image ? 3 : 2
     return (
-      <Col xs={row} lg={col} >
+      <Col xs={category.image ? 4 : 2} lg={category.image ? 3 : 2} >
         <Wrapper onClick={this._onClickTile} isCategory={category.image ? true : false}>
           {
               category.image ? 

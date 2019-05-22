@@ -59,7 +59,7 @@ import { openScreen } from '../../Sagas/OpenScreenSagas'
 import { getCategories } from './CategorySagas'
 import { getHashtags } from './HashtagSagas'
 import {
-  getUsersChannels,
+  getChannelUsers,
   updateUser,
   removeAvatar,
   connectFacebook,

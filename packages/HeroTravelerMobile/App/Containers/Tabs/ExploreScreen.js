@@ -31,8 +31,10 @@ class ExploreScreen extends Component {
     categories: PropTypes.object,
     categoriesFetchStatus: PropTypes.object,
     user: PropTypes.object,
+    users: PropTypes.object,
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
+    channelsByID: PropTypes.string,
   }
 
   constructor(props) {
@@ -72,13 +74,13 @@ class ExploreScreen extends Component {
   }
 
   getEntitiesByType = () => {
-    const {selectedTab} = this.state
-    const {channelsByID, users, categories} = this.props
-    const filteredChannelsThatAreUsers = []
-    if(selectedTab === tabTypes.channels){
-      for(let i = 0; i < channelsByID.length; i++){
-        if(users[channelsByID[i]]){
-          filteredChannelsThatAreUsers.push(users[channelsByID[i]])
+    const { selectedTab } = this.state
+    const { channelsByID, users, categories } = this.props
+    const channels = []
+    if (selectedTab === tabTypes.channels){
+      for (let i = 0; i < channelsByID.length; i++){
+        if (users[channelsByID[i]]){
+          channels.push(users[channelsByID[i]])
         }
       }
     }
@@ -87,7 +89,7 @@ class ExploreScreen extends Component {
       case tabTypes.categories:
         return categories
       case tabTypes.channels:
-        return filteredChannelsThatAreUsers
+        return channels
       default:
         return []
     }

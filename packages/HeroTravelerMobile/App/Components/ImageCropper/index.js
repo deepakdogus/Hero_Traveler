@@ -57,12 +57,14 @@ class ImageCrop extends Component {
       centerY: 0.5,
 
       //Image sizes
-      imageHeight: 300,
+      imageHeight: 345,
       imageWidth: 300,
       imageDimHeight: 0,
       imageDimWidth: 0,
       currentCapture: '',
+      isMounted: true,
     }
+    this.onCrop = _.debounce(this.onCrop, 500)
   }
   componentWillMount(){
     Image.getSize(this.props.image, (width, height) => {
@@ -124,10 +126,6 @@ class ImageCrop extends Component {
             {x: this.offsetX, y: this.offsetY},
             this.state.zoom,
           )
-          console.log('onPanResponderMove movement', movement)
-          console.log('centerX, centerY', movement.x, movement.y)
-          console.log('this.state', this.state)
-          console.log('this.props', this.props)
           this.setState({centerX: movement.x})
           this.setState({centerY: movement.y})
         }
@@ -137,7 +135,6 @@ class ImageCrop extends Component {
             let a = evt.nativeEvent.changedTouches[0].locationX - evt.nativeEvent.changedTouches[1].locationX
             let b = evt.nativeEvent.changedTouches[0].locationY - evt.nativeEvent.changedTouches[1].locationY
             let c = Math.sqrt( a * a + b * b )
-            console.log('zooming', c)
             this.zoomLastDistance = c.toFixed(1)
           }
           else{
@@ -155,7 +152,6 @@ class ImageCrop extends Component {
             this.setState({
               zoom: zoom,
             })
-            console.log('upd state zoom', zoom, this.state)
             //Set last distance..
             this.zoomLastDistance = this.zoomCurrentDistance
           }
@@ -163,6 +159,7 @@ class ImageCrop extends Component {
       },
     })
   }
+
   componentWillReceiveProps(nextProps){
     if (this.props.zoom != nextProps.zoom) {
       var zoom = (100 - nextProps.zoom) / 100
@@ -183,6 +180,12 @@ class ImageCrop extends Component {
       imageDimWidth: this._dimensionAfterZoom.width,
     })
   }
+
+  componentWillUnmount(){
+    this.setState({
+      isMounted: false,
+    })
+  }
   render() {
     return (
       <View {...this._panResponder.panHandlers}>
@@ -197,6 +200,7 @@ class ImageCrop extends Component {
             source={{ uri: this.props.image}}
             imageSize={{height: this.state.imageHeight, width: this.state.imageWidth}}
             resizeMode="cover"
+            isMounted={this.state.isMounted}
             onCrop={this.onCrop}
             zoom={this.state.zoom}
             center={[this.state.centerX, this.state.centerY]}
@@ -207,7 +211,7 @@ class ImageCrop extends Component {
   }
 
   onCrop = (cropParams) => {
-    if (!_.isEqual(this.state.cropParams, cropParams)) {
+    if (!_.isEqual(cropParams, this.state.cropParams)) {
       this.setState({
         cropParams,
       })

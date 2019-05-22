@@ -61,6 +61,12 @@ const StorySchema = new Schema(
         ref: HashtagRef
       }
     ],
+    users: [
+      {
+        type: Schema.ObjectId,
+        ref: UserRef
+      }
+    ],
     content: {
       type: String
     },

@@ -430,7 +430,8 @@ export default class FeedItemPreview extends Component {
       = this.props.height || Metrics.screenHeight - Metrics.navBarHeight - 20
     const playButtonSize = height > 250 ? 'large' : 'small'
     const cover = feedItem.coverImage || feedItem.coverVideo
-    const isReadingScreen = location === 'story' || location === 'guide'
+    const isReadingScreen = location === 'story' || (location === 'guide')
+      || (location === 'slideshow')
     const coverType = feedItem.coverImage ? 'image' : 'video'
     const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
 

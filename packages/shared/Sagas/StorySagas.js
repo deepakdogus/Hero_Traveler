@@ -320,7 +320,6 @@ function* uploadAtomicAssets(draft) {
 }
 
 function * createSlideshow(draft){
-  console.log('createSlideshow', _.cloneDeep(draft))
   if (!draft.slideshow || _.isEmpty(draft.slideshow)) return
 
   const promise = yield Promise.all(draft.slideshow.map((item, index) => {
@@ -328,12 +327,13 @@ function * createSlideshow(draft){
     if (isLocalMediaAsset(uri)) {
       return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
       .then(response => {
-        console.log('cloudinary response', response)
         if (response.error) return response
         const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
-        console.log('responseData', responseData)
         if (responseData.resource_type === 'video' && uri && draft.id && responseData.public_id) {
           moveVideoToPreCache(draft.id, uri, responseData.public_id)
+        }
+        if (responseData.coordinates) {
+          _.set(item, 'original.meta.coordinates', _.get(responseData, 'coordinates.custom'))
         }
         return _.merge(item, responseData)
       })
@@ -440,7 +440,6 @@ export function* saveLocalDraft(api, action) {
   ]
 
   const coverResponse = yield createCover(api, draft)
-  console.log('coverResponse', coverResponse)
   if (coverResponse.error) {
     yield saveDraftErrorHandling(draft, coverResponse.error)
     return
@@ -453,15 +452,12 @@ export function* saveLocalDraft(api, action) {
   }
 
   const slideshowResponse = yield createSlideshow(draft)
-  console.log('slideshowResponse', slideshowResponse)
   if (slideshowResponse && slideshowResponse.error){
     yield saveDraftErrorHandling(draft, slideshowResponse.error)
     return
   }
 
-  console.log('calling createStory', _.cloneDeep(draft))
   const response = yield call(api.createStory, draft)
-  console.log('response', response)
   if (response.ok) {
     moveVideosFromPrecacheToCache(draft.id)
     const stories = {}
@@ -512,21 +508,18 @@ export function* updateDraft(api, action) {
   ]
 
   const coverResponse = yield createCover(api, draft)
-  console.log('coverResponse', coverResponse)
   if (coverResponse.error) {
     yield updateDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
-  console.log('atomicResponse', atomicResponse)
   if (atomicResponse.error){
     yield updateDraftErrorHandling(draft, atomicResponse.error)
     return
   }
 
   const response = yield call(api.updateDraft, draftId, draft)
-  console.log('response', response)
   if (response.ok) {
     const { entities, result } = response.data
     const story = entities.stories[result]

@@ -7,17 +7,8 @@ import {isLocalMediaAsset, getVideoUrlFromString} from '../Shared/Lib/getVideoUr
 
 const VideoManager = NativeModules.VideoManager
 
-function getCloudinaryUploadUrl(resourceType, params){
-  let url = `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
-  if (params && params.crop) {
-    const cropParams = {
-      x: parseInt(params.crop[0]),
-      y: parseInt(params.crop[1]),
-      width: parseInt(params.crop[2]),
-      height: parseInt(params.crop[3]),
-    }
-    url += `/x_${cropParams.x},y_${cropParams.y},w_${cropParams.width},h_${cropParams.height},c_crop`
-  }
+function getCloudinaryUploadUrl(resourceType){
+  const url = `https://api.cloudinary.com/v1_1/${env.cloudName}/${resourceType}/upload`
   return url
 }
 
@@ -36,10 +27,11 @@ this directly uploads the file to Cloudinary
 To modify the presets go to the relevant Cloudinary account
 */
 async function uploadMediaFile(fileData, type, file){
-  console.log('uploadMediaFile fileData', file)
-  const uploadURL = getCloudinaryUploadUrl(type, _.get(file, 'original.meta'))
+  const uploadURL = getCloudinaryUploadUrl(type)
+  const meta = _.get(file, 'original.meta', {})
   const preset = type === 'image' ? env.imagePreset : env.videoPreset
   let dataUri
+  let cropParams
 
   if (_.startsWith(fileData.uri, 'assets-library')) {
     dataUri = fileData.uri
@@ -48,25 +40,41 @@ async function uploadMediaFile(fileData, type, file){
     dataUri = await VideoManager.fixFilePath(fileData.uri)
     if (isLocalMediaAsset(dataUri)) dataUri = decodeURIComponent(dataUri.substr(7))
   }
-  console.log('uploadURL', uploadURL)
+  const parameters = [
+    {
+      name: 'file',
+      filename: fileData.name,
+      type: fileData.type,
+      data: RNFetchBlob.wrap(dataUri),
+    },
+    {
+      name: 'upload_preset',
+      data: preset,
+    },
+  ]
+  if (meta && meta.crop) {
+    cropParams = {
+      x: parseInt(meta.crop[0]),
+      y: parseInt(meta.crop[1]),
+      width: parseInt(meta.crop[2]),
+      height: parseInt(meta.crop[3]),
+    }
+    parameters.push({
+      name: 'custom_coordinates',
+      data: `${cropParams.x},${cropParams.y},${cropParams.width},${cropParams.height}`,
+    })
+  }
+
+
   return RNFetchBlob.fetch(
     'POST',
     uploadURL,
     {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
     },
-    [{
-      name: 'file',
-      filename: fileData.name,
-      type: fileData.type,
-      data: RNFetchBlob.wrap(dataUri)
-    }, {
-      name: 'upload_preset',
-      data: preset,
-    }]
+    parameters,
   )
   .catch(error => {
-    console.log('Cloudinary api error', error)
     return {
       error: {
         status: '',

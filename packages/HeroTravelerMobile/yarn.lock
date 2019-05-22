@@ -6956,6 +6956,11 @@ react-native-image-cropper@^0.4.5:
     rect-clamp "^0.0.0"
     rect-crop "^0.0.0"
 
+react-native-image-pan-zoom@^2.1.11:
+  version "2.1.11"
+  resolved "https://registry.npmjs.org/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.11.tgz#61bcb69219d95e76a9797d23e4a2e8e0bd654ae9"
+  integrity sha512-ZCisGUFpPchHXsjT7ZI0anlSLPgcTmjRKXqpVnPu3RDWFXfKjuL4zpY57DX4Y8YgGZCpbf9fApN7KjVYody2Mw==
+
 react-native-image-picker@^0.26.2:
   version "0.26.7"
   resolved "https://npm.abeck.io:443/react-native-image-picker/-/react-native-image-picker-0.26.7.tgz#ad2ee957f7f6cc01396893ea03d84cb2adb2e376"

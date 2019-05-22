@@ -32,6 +32,7 @@ class CameraRollPicker extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('nextProps seelected', nextProps.selected)
     this.setState({
       selected: nextProps.selected,
     })

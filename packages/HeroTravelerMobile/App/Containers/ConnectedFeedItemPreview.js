@@ -114,15 +114,14 @@ const mapStateToProps = (state, ownProps) => {
   const selectedStories = isStory || !isReadingScreen
     ? []
     : getSelectedStories(
-        entities.stories.entities,
-        feedItem.stories,
-        ownProps.selectedTab,
-      )
+      entities.stories.entities,
+      feedItem.stories,
+      ownProps.selectedTab,
+    )
 
   const accessToken = _.find(state.session.tokens, { type: 'access' })
 
   const location = state.routes.scene.name
-
   return {
     ...storyProps,
     accessToken: accessToken ? accessToken.value : null,

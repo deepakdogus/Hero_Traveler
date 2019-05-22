@@ -53,18 +53,21 @@ export default class SlideshowCover extends Component {
     }
   }
 
-  hasVideo() {
-    return _.get(this.props, 'slideshow.0.purpose') !== 'coverImage' && !!this.props.slideshow
+  hasVideo(index) {
+    return _.get(this.props, ['slideshow', index, 'purpose']) !== 'coverImage' && !!this.props.slideshow
   }
 
-  hasImage() {
-    return _.get(this.props, 'slideshow.0.purpose') === 'coverImage' && !!this.props.slideshow
+  hasImage(index) {
+    return _.get(this.props, ['slideshow', index, 'purpose']) === 'coverImage' && !!this.props.slideshow
   }
 
-  _getWidthHeight(isOverride = false){
-    const {isFeed, slideshow} = this.props
+  _getWidthHeight(isOverride = false, index){
+    const {isFeed, slideshow, isReadingScreen} = this.props
+    const containerWidth = isReadingScreen
+      ? Metrics.screenWidth
+      : Metrics.screenWidth - 27
     if (isFeed && !isOverride) {
-      if (this.hasImage()) {
+      if (this.hasImage(index)) {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
       }
       else {
@@ -74,27 +77,27 @@ export default class SlideshowCover extends Component {
     else {
       let height = Math.min(
         Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(slideshow[0])),
+        getRelativeHeight(containerWidth, extractCoverMetrics(slideshow[index])),
       )
       height = Math.max(282, height)
       return {
-        width: Metrics.screenWidth,
+        width: containerWidth,
         height: height,
       }
     }
   }
 
-  renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
+  renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl, index) {
     const {children, showPlayButton, isFeed, isGuide} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
     return (
       <TouchableWithoutFeedback
-        style={{flex: 1}}
+        style={{flex: 1, overflow: 'hidden'}}
         onPress={this._onPress}
       >
         <View style={{
           ...imageStyle,
-          ...this._getWidthHeight(),
+          ...this._getWidthHeight(false, index),
         }}>
           { imageThumbnailUrl && (
             <ImageWrapper
@@ -132,13 +135,13 @@ export default class SlideshowCover extends Component {
       : 6,
   })
 
-  renderImage(cover) {
+  renderImage(cover, index) {
     let imageUrl = getImageUrl(
       cover,
       'optimized',
-      this._getWidthHeight(true),
+      this._getWidthHeight(true, index),
     )
-    return this.renderImageWithUrl(false, imageUrl)
+    return this.renderImageWithUrl(false, imageUrl, null, index)
   }
 
   _onPress = () => this.props.onPress(this.props.title)
@@ -214,7 +217,7 @@ export default class SlideshowCover extends Component {
   component and a second through the conditional renders we have below. This should be
   refactored
   */
-  renderVideo(cover) {
+  renderVideo(cover, index) {
     const videoThumbnailOptions = {
       video: true,
       width: 'screen',
@@ -224,7 +227,6 @@ export default class SlideshowCover extends Component {
 
     let videoPath = getVideoUrl(cover)
     let nonStreamingVideoPath = getVideoUrl(cover, false)
-
     // If videoPath is a file url, then we do not need preview image or stream url
     if (this.props.isFeed && videoPath.startsWith('file://')) {
       return (
@@ -232,7 +234,7 @@ export default class SlideshowCover extends Component {
           style={{flex: 1}}
           onPress={this._onPress}
         >
-          <View style={this._getWidthHeight()}>
+          <View style={this._getWidthHeight(false, index)}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -257,7 +259,7 @@ export default class SlideshowCover extends Component {
     }
 
     return (
-      <View style={this._getWidthHeight()}>
+      <View style={this._getWidthHeight(false, index)}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
@@ -278,15 +280,14 @@ export default class SlideshowCover extends Component {
     )
   }
 
-  renderItem(s, i) {
+  renderItem(s, index) {
     let coverType
     if (s.purpose === 'coverImage') coverType = 'image'
     else coverType = 'video'
-
     return (
-      <View key={`${i}`} style={[styles.root, this.props.style]}>
-        {this.hasVideo() && coverType === 'video' && this.renderVideo(s)}
-        {coverType === 'image' && this.renderImage(s)}
+      <View key={`${index}`} style={[styles.root, this.props.style]}>
+        {this.hasVideo(index) && coverType === 'video' && this.renderVideo(s, index)}
+        {coverType === 'image' && this.renderImage(s, index)}
         {!coverType && (
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.noCover}>
@@ -305,7 +306,7 @@ export default class SlideshowCover extends Component {
   render() {
     const { slideshow } = this.props
     const { currentIndex } = this.state
-    const { height } = this._getWidthHeight()
+    const { height } = this._getWidthHeight(true, 0)
     return (
       <View style={styles.root}>
         <Swiper
@@ -322,7 +323,7 @@ export default class SlideshowCover extends Component {
             position: 'relative',
           }}
         >
-          {slideshow.map(s => this.renderItem(s))}
+          {slideshow.map((s, index) => this.renderItem(s, index))}
         </Swiper>
         <View style={styles.topPagination}>
           <Text style={styles.paginationText}>{currentIndex} / {slideshow.length}</Text>

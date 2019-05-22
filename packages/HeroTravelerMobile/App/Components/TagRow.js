@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native'
 
-import { TAG_TYPE_HASHTAG } from '../Containers/CreateStory/TagScreen'
+import { TAG_TYPE_HASHTAG, TAG_TYPE_USER } from '../Containers/CreateStory/TagScreen'
 import { Colors, Metrics } from '../Shared/Themes/'
 
 export default class TagRow extends Component {
@@ -31,7 +31,8 @@ export default class TagRow extends Component {
           style={styles.row}
         >
           <Text>
-            {tagType === TAG_TYPE_HASHTAG ? "#" : ""}{tag.title}
+            {tagType === TAG_TYPE_HASHTAG ? "#" : ""}
+            {tagType === TAG_TYPE_USER ? tag.username : tag.title}
           </Text>
         </TouchableOpacity>
       </View>

@@ -37,7 +37,6 @@ const isFieldSame = (field, workingDraft, comparisonDraft) => {
   if (field === 'tripDate' && !workingDraft.tripDate) return true
   if (field === 'draftjsContent')
     return isDraftJSContentSame(workingDraft, comparisonDraft)
-  console.log('isEqual(workingDraft[field], comparisonDraft[field])', field, workingDraft[field], comparisonDraft[field], isEqual(workingDraft[field], comparisonDraft[field]))
   return isEqual(workingDraft[field], comparisonDraft[field])
 }
 

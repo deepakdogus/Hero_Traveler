@@ -126,7 +126,7 @@ class TagScreen extends Component {
 
   _selectTag = (tag) => {
     const isSearchTag = !tag.image
-     if (this._checkExistingTag(tag.title)) {
+    if (this._checkExistingTag(tag.title)) {
       if (isSearchTag) this.setInputBlurred()
       return
     }
@@ -134,7 +134,7 @@ class TagScreen extends Component {
     const updatedState = {
       selectedTags: [
         ...this.state.selectedTags,
-        {_id: tag._id, title: tag.title},
+        {_id: tag._id, title: tag.title, username: tag.username},
       ],
     }
     updatedState.text = ''
@@ -385,35 +385,37 @@ class TagScreen extends Component {
             </View>
           </View>
           <ScrollView style={{flexGrow: 3}}>
-          {/*
-            Render the selected tags
-          */}
-          {_.size(this.state.selectedTags) > 0 && (
-            <View style={styles.selectedTags}>
-              {_.map(this.state.selectedTags, tag => {
-                return (
-                  <SelectedItem
-                    key={tag._id || tag.title}
-                    text={`${this.props.tagType === TAG_TYPE_HASHTAG ? '#' : ''}${tag.title}`}
-                    onPressRemove={this._removeTag}
-                    item={tag}
-                  />
-                )
-              })}
-            </View>
-          )}
+            {/*
+              Render the selected tags
+            */}
+            {_.size(this.state.selectedTags) > 0 && (
+              <View style={styles.selectedTags}>
+                {_.map(this.state.selectedTags, tag => {
+                  const text = `${this.props.tagType === TAG_TYPE_HASHTAG ? '#' : ''}`
+                    + `${this.props.tagType === TAG_TYPE_USER ? tag.username : tag.title}`
+                  return (
+                    <SelectedItem
+                      key={tag._id || tag.title}
+                      text={text}
+                      onPressRemove={this._removeTag}
+                      item={tag}
+                    />
+                  )
+                })}
+              </View>
+            )}
 
-          {this.state.searching && (
-            <Loader
-              style={styles.spinner}
-              spinnerColor={Colors.blackoutTint}
-            />
-          )}
-          {(isShowSearchResults || isShowDefaultResults) && (
-            <View>
-              {_.map(tagsToShow, this.renderTagRow)}
-            </View>
-          )}
+            {this.state.searching && (
+              <Loader
+                style={styles.spinner}
+                spinnerColor={Colors.blackoutTint}
+              />
+            )}
+            {(isShowSearchResults || isShowDefaultResults) && (
+              <View>
+                {_.map(tagsToShow, this.renderTagRow)}
+              </View>
+            )}
           </ScrollView>
         </View>
 
@@ -437,10 +439,10 @@ export default connect(
     user: state.entities.users.entities[state.session.userId],
     defaultCategories: state.entities.categories.entities,
     defaultHashtags: state.entities.hashtags.entities,
-    defaultUsers: state.entities.users.entities,
+    defaultUsers: state.entities.users.adminUsers.byId,
   }),
   dispatch => ({
-    loadDefaultUsers: () => dispatch(UserActions.loadUsersRequest()),
+    loadDefaultUsers: () => dispatch(UserActions.adminGetUsers()),
     loadDefaultHashtags: () => dispatch(HashtagActions.loadHashtagsRequest()),
     loadDefaultCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),

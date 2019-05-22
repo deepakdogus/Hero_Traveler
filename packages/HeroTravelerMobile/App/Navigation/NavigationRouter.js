@@ -425,11 +425,6 @@ export default function NavigationRouter({ openAddStoryModal }) {
           panHandlers={null}
           direction="horizontal"
         />
-        <Scene
-          key='createStory_addButton'
-          panHandlers={null}
-          component={AddButtonScreen}
-        />
       </Scene>
       <Scene
         key='createStory_slideshow'
@@ -442,6 +437,11 @@ export default function NavigationRouter({ openAddStoryModal }) {
         key='createStory_slideshow_details'
         panHandlers={null}
         component={CreateSlideshowDetailsScreen}
+      />
+      <Scene
+        key='createStory_addButton'
+        panHandlers={null}
+        component={AddButtonScreen}
       />
       <Scene
         key='readOnlyProfile'

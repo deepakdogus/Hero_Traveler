@@ -79,7 +79,7 @@ class ReadingScreenOverlap extends React.Component {
     }
 
     const toolbarTranslation = scrollY.interpolate(translations.toolbar)
-
+    
     return (
       <View style={[styles.root]}>
         <Animated.ScrollView

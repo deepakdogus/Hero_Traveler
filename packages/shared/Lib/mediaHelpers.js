@@ -15,7 +15,6 @@ const getMediaType = coverVideo =>
 const isPhotoType = coverVideo => getMediaType(coverVideo) === MediaTypes.photo
 
 async function trimVideo(videoFile, callback, storyId, _this){
-  console.log('videoFile', videoFile)
   try {
     let newSource = videoFile
     const { duration } = await ProcessingManager.getVideoInfo(newSource)

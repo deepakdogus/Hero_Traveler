@@ -36,6 +36,7 @@ const Image = GL.createComponent(
     center,
     zoom,
     onCrop,
+    isMounted,
   }) => {
     if (!imageSize) {
       if (source.width && source.height) {
@@ -48,20 +49,19 @@ const Image = GL.createComponent(
     let crop
     switch (resizeMode) {
       case 'cover': {
-        console.log('imageSize', imageSize)
         if (!center) center = [ 0.5, 0.5 ]
         if (!zoom) zoom = 1
         let rect = rectCrop(zoom, center)({ width, height }, imageSize)
         rect = rectClamp(rect, [ 0, 0, imageSize.width, imageSize.height ])
-        console.log('rect', rect)
-        if (onCrop) onCrop(rect)
+        if (onCrop && isMounted) {
+          onCrop(rect)
+        }
         crop = [
           rect[0] / imageSize.width,
           rect[1] / imageSize.height,
           rect[2] / imageSize.width,
           rect[3] / imageSize.height,
         ]
-        console.log('crop', crop)
         break
       }
       case 'contain': {

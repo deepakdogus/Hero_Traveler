@@ -10,7 +10,7 @@ export default StyleSheet.create({
   imagePreview: {
     backgroundColor: '#efefef',
     position: 'relative',
-    height: 300,
+    height: 345,
     width: Metrics.screenWidth,
   },
   text: {
@@ -24,10 +24,22 @@ export default StyleSheet.create({
   info: {
     fontSize: 12,
   },
+  circle: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: '#efefef',
+    width: 20,
+    height: 20,
+    borderRadius: 20 / 2,
+    borderColor: 'white',
+    borderWidth: 3,
+    opacity: 0.7,
+  },
   addPhotoButton: {
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height: 300,
+    height: 345,
     width: Metrics.screenWidth,
   },
   parallaxStyles: {
@@ -59,9 +71,9 @@ export default StyleSheet.create({
   },
   horizontalGrid: {
     width: Metrics.screenWidth,
-    height: 100,
+    height: 115,
     position: 'absolute',
-    top: 100,
+    top: 115,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.5)',
     borderBottomWidth: 1,
@@ -69,7 +81,7 @@ export default StyleSheet.create({
   },
   verticalGrid: {
     width: Metrics.screenWidth / 3,
-    height: 300,
+    height: 345,
     position: 'absolute',
     left: Metrics.screenWidth / 3,
     borderLeftWidth: 1,

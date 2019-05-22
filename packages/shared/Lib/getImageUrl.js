@@ -21,11 +21,22 @@ function buildParameters(urlParameters) {
   })
 }
 
-function buildUrl(base: string, uri: string, urlParameters: object): string {
+function buildUrl(base: string, uri: string, urlParameters: object, cropParams: array): string {
   const parameters = buildParameters(urlParameters)
 
   if (parameters.length > 0) {
-    const parameterString = parameters.join(',')
+    let parameterString = parameters.join(',')
+    if (cropParams) {
+      const formattedCropParams = buildParameters({
+        c: 'crop',
+        x: cropParams[0],
+        y: cropParams[1],
+        w: cropParams[2],
+        h: cropParams[3]
+      })
+      const cropParamString = formattedCropParams.join(',')
+      parameterString = `${cropParamString}/${parameterString}`
+    }
     return `${base}/${parameterString}/${uri}`
   }
   return `${base}/${uri}`
@@ -197,7 +208,8 @@ export default function getImageUrl(image: object|string, type: string, options:
   }
 
   const base = options.video ? getVideoUrlBase() : getImageUrlBase(image)
+  const cropParams = _.get(image, 'original.meta.coordinates.custom.0')
   const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
-  return buildUrl(base, uri, urlParameters)
+  return buildUrl(base, uri, urlParameters, cropParams)
 }

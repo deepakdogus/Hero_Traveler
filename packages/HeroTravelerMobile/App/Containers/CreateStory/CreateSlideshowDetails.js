@@ -234,7 +234,7 @@ class CreateSlideshowDetails extends React.Component {
   getUsersValue() {
     const { users = [] } = this.props.workingDraft
     if (users.length === 0) return undefined
-    return _.map(users, 'name').join(', ')
+    return _.map(users, 'username').join(', ')
   }
 
   isValid() {

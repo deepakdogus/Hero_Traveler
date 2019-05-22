@@ -48,10 +48,22 @@ class SlideshowCover extends Component{
     }
   }
 
-  getSelectedImages = (image, current) => {
+  componentDidMount = () => {
+    const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
+    this.setState({
+      selected: slideshow,
+    })
+  }
+
+  componentWillUnmount = () => {
+    this.setState({
+      selected: [],
+    })
+  }
+
+  getSelectedImages = (selected, current) => {
     const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
     if (slideshow.length >= 8) return
-    console.log('selected image', image)
     const file = {
       name: current.filename,
       original: {
@@ -74,7 +86,6 @@ class SlideshowCover extends Component{
       slideshow.push(file)
     }
     Image.getSize(galleryImagePath, (width, height) => {
-      console.log('image width, height', width, height)
       this.setState({
         width,
         height,
@@ -82,6 +93,7 @@ class SlideshowCover extends Component{
     })
     this.setState({
       galleryImagePath,
+      selected,
     }, () => {
       this.props.updateWorkingDraft({slideshow})
     })
@@ -186,12 +198,9 @@ class SlideshowCover extends Component{
   cropSelectedImage = (params) => {
     const { slideshow = [] } = Immutable.asMutable(this.props.workingDraft, { deep: true })
     const { galleryImagePath } = this.state
-    console.log('cropSelectedImage crop', galleryImagePath, slideshow, params)
     const imageIndex = _.findIndex(slideshow, { uri: galleryImagePath })
-    console.log('imageIndex', imageIndex)
     if (imageIndex >= 0) {
       _.set(slideshow, [imageIndex, 'original', 'meta', 'crop'], params)
-      console.log('cropSelectedImage', slideshow)
       this.props.updateWorkingDraft({slideshow})
     }
   }
@@ -203,7 +212,7 @@ class SlideshowCover extends Component{
         <ImageCrop 
           ref={'cropper'}
           image={galleryImagePath}
-          cropHeight={300}
+          cropHeight={345}
           cropWidth={Metrics.screenWidth}
           onCrop={this.cropSelectedImage}
           maxZoom={100}
@@ -300,7 +309,7 @@ class SlideshowCover extends Component{
     const uri = _.get(item, 'node.image.uri')
     const existingIndex = _.findIndex(slideshow, { uri })
     const number = existingIndex + 1
-    if (existingIndex < 0) return null
+    if (existingIndex < 0) return (<View style={styles.circle} />)
     return (
       <Fragment>
         <View style={styles.badge}>
@@ -314,6 +323,7 @@ class SlideshowCover extends Component{
   }
 
   render(){
+    const { selected } = this.state
     return(
       <View style={{ flex: 1 }}>
         {this.renderHeader()}
@@ -326,6 +336,7 @@ class SlideshowCover extends Component{
             removeClippedSubviews={true}
             groupTypes='SavedPhotos'
             maximum={8}
+            selected={selected}
             assetType='All'
             selectedMarker={this.renderIcon}
             imagesPerRow={4}

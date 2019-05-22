@@ -30,7 +30,10 @@ export default function formatUploadObject(file, options = {}) {
         width: file.width,
         height: file.height,
         size: file.size,
-        mimeType: file.mimetype
+        mimeType: file.mimetype,
+        playableDuration: file.playableDuration,
+        crop: file.crop,
+        coordinates: file.coordinates
       }
     }
   }, options)

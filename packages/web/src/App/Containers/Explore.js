@@ -85,8 +85,8 @@ class Explore extends Component {
   }
 
   render() {
-    const categoriesArray = this.getEntitiesByType()
-    const {activeTab} = this.state
+    const exploreItems = this.getEntitiesByType()
+    const { activeTab } = this.state
     return (
       <Wrapper>
         <ExploreHeader/>
@@ -97,8 +97,8 @@ class Explore extends Component {
         />
         <ContentWrapper>
             <ExploreGrid
-              categories={categoriesArray}
-              onClickCategory={activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
+              categories={exploreItems}
+              onClickExploreItem={activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory}
             />
           <Footer />
         </ContentWrapper>

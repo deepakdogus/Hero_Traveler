@@ -65,23 +65,19 @@ class CategoryAndUserFeedScreen extends React.Component {
     this.state = {
       refreshing: false,
       selectedTab: restrictedTabTypes.stories,
-      name: '',
     }
   }
 
   loadStories() {
-    this.props.isCategory ? 
-    // (this.props.loadUserStories(this.props.categoryId))
-    (this.props.loadUserStories(this.props.categoryId))
-    :
-    (this.props.loadCategoryStories(this.props.categoryId))
+    this.props.isCategory 
+    ? this.props.loadUserStories(this.props.categoryId)
+    : this.props.loadCategoryStories(this.props.categoryId)
   }
 
   loadGuides() {
-    this.props.isCategory ? 
-      (this.props.loadUserGuides(this.props.categoryId))
-      :
-      (this.props.loadCategoryGuides(this.props.categoryId))
+    this.props.isCategory  
+     ? this.props.loadUserGuides(this.props.categoryId)
+     : this.props.loadCategoryGuides(this.props.categoryId)
   }
 
   loadData() {
@@ -115,8 +111,8 @@ class CategoryAndUserFeedScreen extends React.Component {
   )
 
   _changeTab = selectedTab => {
-    if(selectedTab !== restrictedTabTypes.guides) this.loadStories()  
-    if(selectedTab !== restrictedTabTypes.stories) this.loadGuides()
+    if (selectedTab !== restrictedTabTypes.guides) this.loadStories()  
+    if (selectedTab !== restrictedTabTypes.stories) this.loadGuides()
     this.setState(
       {
         selectedTab,
@@ -180,9 +176,9 @@ class CategoryAndUserFeedScreen extends React.Component {
       error,
       title,
       categoryGuidesById,
-      userChannelName
+      userChannelName,
     } = this.props
-    const { selectedTab, refreshing, name } = this.state
+    const { selectedTab, refreshing } = this.state
     const isFollowingCategory = this.getIsFollowingCategory()
 
     let topContent, bottomContent
@@ -253,14 +249,16 @@ class CategoryAndUserFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const categoryGuidesSearchCriteria = props.isCategory ? `entities.guides.guideIdsByUserId[${props.categoryId}]` : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
+  const getGuidePath = props.isCategory
+  ? `entities.guides.guideIdsByUserId[${props.categoryId}]`
+  : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
   return {
     user: state.entities.users.entities[state.session.userId], 
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: props.isCategory ? getByUser(state.entities.stories, props.categoryId) : getByCategory(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
-      categoryGuidesSearchCriteria,
+      getGuidePath,
       [],
     ),
     error: state.entities.stories.error,

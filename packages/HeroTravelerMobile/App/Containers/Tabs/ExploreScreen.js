@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View} from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 
@@ -27,6 +27,7 @@ class ExploreScreen extends Component {
   static propTypes = {
     stories: PropTypes.object,
     loadCategories: PropTypes.func,
+    loadChannels: PropTypes.func,
     categories: PropTypes.object,
     categoriesFetchStatus: PropTypes.object,
     user: PropTypes.object,
@@ -38,14 +39,12 @@ class ExploreScreen extends Component {
     super(props)
     this.state = {
       selectedTab: tabTypes.categories,
-      channelsSize: false,
     }
   }
 
   componentDidMount() {
     this.props.loadCategories()
     this.props.loadChannels()
-    //load channels here
   }
 
   selectTab = selectedTab => {

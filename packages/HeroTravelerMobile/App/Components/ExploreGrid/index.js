@@ -24,7 +24,7 @@ export default class ExploreGrid extends Component {
   }
 
   renderItem = categoryOrChannel => {
-    const {isChannel} = this.props
+    const { isChannel } = this.props
     const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
     const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
       width: isChannel ? null : Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
@@ -42,12 +42,12 @@ export default class ExploreGrid extends Component {
               style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
               imageStyle={{ borderRadius: 6 }}
             >
-            {categoryOrChannel.selected && (
-              <TabIcon
-                name="redCheckOutlined"
-                style={{ view: styles.selectedIcon }}
-              />
-            )}
+              {categoryOrChannel.selected && (
+                <TabIcon
+                  name="redCheckOutlined"
+                  style={{ view: styles.selectedIcon }}
+                />
+              )}
             </ImageWrapper>
             <Text
               style={styles.gridItemText}

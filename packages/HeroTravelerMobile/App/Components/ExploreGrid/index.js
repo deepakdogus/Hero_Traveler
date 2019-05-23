@@ -25,7 +25,7 @@ export default class ExploreGrid extends Component {
 
   renderItem = categoryOrChannel => {
     const { isChannel } = this.props
-    const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
+    const image = categoryOrChannel.image || categoryOrChannel.channelImage.versions.thumbnail240.path
     const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
       width: isChannel ? null : measurements - 4,
       height: measurements - 4,

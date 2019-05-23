@@ -40,7 +40,7 @@ class ExploreScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedTab: tabTypes.categories,
+      selectedTab: tabTypes.channels,
     }
   }
 

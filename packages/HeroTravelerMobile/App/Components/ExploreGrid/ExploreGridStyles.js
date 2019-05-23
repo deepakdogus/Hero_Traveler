@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import { Metrics, Colors, Fonts } from '../../Shared/Themes/'
 
+export const measurements = Metrics.screenWidth * (Metrics.feedMargin / 100) / 3
+
 export default StyleSheet.create({
   grid: {
     flex: 1,
@@ -12,8 +14,8 @@ export default StyleSheet.create({
     marginVertical: (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
   },
   gridItem: {
-    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16, // 16 = l/r margin
-    height:Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5 + 30, // to achieve 100 x 105 images + 30 height
+    width: measurements - 16, // 16 = l/r margin
+    height: measurements - 16 + 5 + 30, // to achieve 100 x 105 images + 30 height
     margin: 8,
     backgroundColor: Colors.transparent,
   },
@@ -27,12 +29,12 @@ export default StyleSheet.create({
     paddingBottom: 10,
   },
   gridImageForCategories: {
-    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
-    height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5,
+    width: measurements - 16,
+    height: measurements - 16 + 5,
   },
   gridImageForChannels: {
-    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
-    height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 25,
+    width: measurements - 16,
+    height: measurements - 16 + 25,
   },
   selectedIcon: {
     position: 'absolute',

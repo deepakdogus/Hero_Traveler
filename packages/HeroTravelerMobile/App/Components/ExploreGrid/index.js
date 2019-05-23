@@ -9,7 +9,7 @@ import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import { Metrics } from '../../Shared/Themes'
+import { measurements } from './ExploreGridStyles'
 
 export default class ExploreGrid extends Component {
   static propTypes = {
@@ -27,8 +27,8 @@ export default class ExploreGrid extends Component {
     const { isChannel } = this.props
     const image = categoryOrChannel.image || categoryOrChannel.channelImage.original.path
     const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
-      width: isChannel ? null : Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
-      height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 4,
+      width: isChannel ? null : measurements - 4,
+      height: measurements - 4,
     })
 
     return (

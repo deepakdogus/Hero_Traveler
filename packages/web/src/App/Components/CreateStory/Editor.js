@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { EditorState } from 'draft-js'
+import { CompositeDecorator, EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import 'draft-js/dist/Draft.css'
 import {
@@ -8,6 +8,7 @@ import {
   BlockquoteButton,
   BoldButton,
   HeadlineOneButton,
+  UnderlineButton,
   UnorderedListButton,
 } from 'draft-js-buttons'
 import styled from 'styled-components'
@@ -23,7 +24,6 @@ import createSideToolbarPlugin from './SidebarPlugin'
 import { AddImageButton, AddVideoButton } from './EditorAddMediaButton'
 import MediaComponent from './EditorMediaComponent'
 
-import colors from '../../Shared/Themes/Colors'
 import './Styles/AnchorLinkStyles.css'
 import './Styles/DividerStyles.css'
 import './Styles/EditorStyles.css'
@@ -37,13 +37,27 @@ const EditorWrapper = styled.div`
     margin-right: 15px;
   }
 `
+
+const StyledLink = styled.a`
+  font-weight: 600;
+  color: ${props => props.theme.Colors.redHighlights};
+  text-decoration: none;
+  font-style: normal;
+  cursor: pointer;
+  > u,
+  * {
+    text-decoration: none;
+    font-style: normal;
+  }
+`
+
+// DRAFTJS PLUGINS
 const inlineToolbarPlugin = createInlineToolbarPlugin()
 const { InlineToolbar } = inlineToolbarPlugin
 
 const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin
 
-// @TODO pass a custom Button Component to createDividerPlugin with correct icon
 const dividerPlugin = createDividerPlugin()
 const { DividerButton } = dividerPlugin
 
@@ -52,17 +66,40 @@ const linkPlugin = createLinkPlugin({
 })
 const { LinkButton } = linkPlugin
 
-const styleMap = {
-  BOLD: {
-    fontWeight: 600,
-  },
-  UNDERLINE: {
-    color: colors.redHighlights, // temporary hack to display links with correct styles
-  },
-  LINK: {
-    color: colors.redHighlights,
-  },
+// CUSTOM ENTITIES
+const LinkEntity = props => {
+  const { url } = props.contentState.getEntity(props.entityKey).getData()
+  return (
+    <StyledLink
+      rel="nofollow noreferrer"
+      href={url}
+      target="_blank"
+    >
+      {props.children}
+    </StyledLink>
+  )
 }
+
+LinkEntity.propTypes = {
+  children: PropTypes.array,
+  contentState: PropTypes.object,
+  entityKey: PropTypes.string,
+}
+
+function findLinkEntities(contentBlock, callback, contentState) {
+  contentBlock.findEntityRanges(character => {
+    const entityKey = character.getEntity()
+    return entityKey !== null && contentState.getEntity(entityKey).getType() === 'LINK'
+  }, callback)
+}
+
+// DRAFTJS EDITOR DECORATOR
+const decorator = new CompositeDecorator([
+  {
+    strategy: findLinkEntities,
+    component: LinkEntity,
+  },
+])
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
@@ -77,7 +114,7 @@ export default class BodyEditor extends React.Component {
     let editorState
 
     if (props.value)
-      editorState = EditorState.createWithContent(convertFromRaw(props.value))
+      editorState = EditorState.createWithContent(convertFromRaw(props.value), decorator)
     else editorState = EditorState.createEmpty()
     this.state = {
       editorState,
@@ -116,9 +153,9 @@ export default class BodyEditor extends React.Component {
 
   _onResizeWindow = () => {
     this.editor.blur()
-    // no 'onDoneResizing' event in JS, can be emulated with reasonable timeout
+    // no 'onDoneResizing' event in JS, can be emulated with timeout
     clearTimeout(resizeTimer)
-    const resizeTimer = setTimeout(() => this.editor.focus(), 250)
+    const resizeTimer = setTimeout(() => this.editor.focus(), 0)
   }
 
   getEditorStateAsObject = () => {
@@ -206,14 +243,12 @@ export default class BodyEditor extends React.Component {
     })
   }
 
-  focus = () => this.editor.focus()
   setEditorRef = ref => (this.editor = ref)
 
   render() {
     return (
       <EditorWrapper>
         <Editor
-          customStyleMap={styleMap}
           editorState={this.state.editorState}
           placeholder="Tell your story"
           onChange={this.onChange}
@@ -226,10 +261,12 @@ export default class BodyEditor extends React.Component {
         <SideToolbar>
           {externalProps => (
             <div>
-              <UnorderedListButton {...externalProps} />
-              <AddImageButton {...externalProps} />
-              <DividerButton {...externalProps} />
               <AddVideoButton {...externalProps} />
+              <AddImageButton {...externalProps} />
+              <HeadlineOneButton {...externalProps} />
+              <BlockquoteButton {...externalProps} />
+              <UnorderedListButton {...externalProps} />
+              <DividerButton {...externalProps} />
             </div>
           )}
         </SideToolbar>
@@ -238,9 +275,8 @@ export default class BodyEditor extends React.Component {
             <div>
               <BoldButton {...externalProps} />
               <ItalicButton {...externalProps} />
+              <UnderlineButton {...externalProps} />
               <LinkButton {...externalProps} />
-              <HeadlineOneButton {...externalProps} />
-              <BlockquoteButton {...externalProps} />
             </div>
           )}
         </InlineToolbar>

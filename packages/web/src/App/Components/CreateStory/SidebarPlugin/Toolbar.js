@@ -9,6 +9,7 @@ import { AddImageButton, AddVideoButton } from '../EditorAddMediaButton'
 import BlockTypeSelect from './BlockTypeSelect'
 import styled from 'styled-components'
 
+/* styles derived from 'draft-js-side-toolbar-plugin/lib/plugin.css' */
 const Wrapper = styled.div`
   position: absolute;
   top: ${({ top }) => `${top}px` || 'unset'};

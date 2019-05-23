@@ -1,23 +1,13 @@
 .draftJsDividerPlugin__dividerBlock__4VxnL {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
+  margin: 38px auto;
   width: 80px;
   height: 12px;
-  margin: 38px auto;
   border: none;
   border-top: 1px solid #bdbdbd;
   border-bottom: 1px solid #bdbdbd;
-  text-align: center;
 }
 
 .draftJsDividerPlugin__dividerBlock__4VxnL::after {
-  margin-left: 48px;
   color: #bdbdbd; /* pick a color */
-  font-size: 2.125rem;
-  letter-spacing: 48px; /* increase space between dots */
   content: '';
 }

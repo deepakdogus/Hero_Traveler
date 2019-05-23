@@ -16,13 +16,15 @@ import { convertFromRaw, convertToRaw } from '../../Shared/Lib/draft-js-helpers'
 import { removeMedia, createSelectionWithFocus } from '../../Lib/web-draft-js-helpers'
 
 import createDividerPlugin from 'draft-js-divider-plugin'
-import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-plugin'
+import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
+import createLinkPlugin from 'draft-js-anchor-plugin'
 import createSideToolbarPlugin from './SidebarPlugin'
 
 import { AddImageButton, AddVideoButton } from './EditorAddMediaButton'
 import MediaComponent from './EditorMediaComponent'
 
 import colors from '../../Shared/Themes/Colors'
+import './Styles/AnchorLinkStyles.css'
 import './Styles/DividerStyles.css'
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
@@ -41,8 +43,14 @@ const { InlineToolbar } = inlineToolbarPlugin
 const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin
 
+// @TODO pass a custom Button Component to createDividerPlugin with correct icon
 const dividerPlugin = createDividerPlugin()
 const { DividerButton } = dividerPlugin
+
+const linkPlugin = createLinkPlugin({
+  placeholder: 'Enter a URL and press enter',
+})
+const { LinkButton } = linkPlugin
 
 const styleMap = {
   BOLD: {
@@ -50,6 +58,9 @@ const styleMap = {
   },
   UNDERLINE: {
     color: colors.redHighlights, // temporary hack to display links with correct styles
+  },
+  LINK: {
+    color: colors.redHighlights,
   },
 }
 
@@ -79,6 +90,26 @@ export default class BodyEditor extends React.Component {
     this.setupWindowResizeListener()
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.value && this.props.storyId !== prevProps.storyId) {
+      this.setState({
+        editorState: EditorState.createWithContent(this.props.value),
+      })
+    }
+    else if (this.shouldRefocusPlaceholder()) {
+      this.setState({
+        editorState: EditorState.forceSelection(
+          this.state.editorState,
+          createSelectionWithFocus(this.getFocusKey()),
+        ),
+      })
+    }
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this._onResizeWindow)
+  }
+
   setupWindowResizeListener = () => {
     window.addEventListener('resize', this._onResizeWindow)
   }
@@ -88,10 +119,6 @@ export default class BodyEditor extends React.Component {
     // no 'onDoneResizing' event in JS, can be emulated with reasonable timeout
     clearTimeout(resizeTimer)
     const resizeTimer = setTimeout(() => this.editor.focus(), 250)
-  }
-
-  componentWillUnmount = () => {
-    window.removeEventListener('resize', this._onResizeWindow)
   }
 
   getEditorStateAsObject = () => {
@@ -169,22 +196,6 @@ export default class BodyEditor extends React.Component {
     return blockType === 'atomic' && !text && selectionState.getFocusOffset() !== 0
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.value && this.props.storyId !== prevProps.storyId) {
-      this.setState({
-        editorState: EditorState.createWithContent(this.props.value),
-      })
-    }
-    else if (this.shouldRefocusPlaceholder()) {
-      this.setState({
-        editorState: EditorState.forceSelection(
-          this.state.editorState,
-          createSelectionWithFocus(this.getFocusKey()),
-        ),
-      })
-    }
-  }
-
   onChange = editorState => {
     this.setState({ editorState })
   }
@@ -206,7 +217,7 @@ export default class BodyEditor extends React.Component {
           editorState={this.state.editorState}
           placeholder="Tell your story"
           onChange={this.onChange}
-          plugins={[dividerPlugin, inlineToolbarPlugin, sideToolbarPlugin]}
+          plugins={[dividerPlugin, inlineToolbarPlugin, linkPlugin, sideToolbarPlugin]}
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
@@ -227,13 +238,9 @@ export default class BodyEditor extends React.Component {
             <div>
               <BoldButton {...externalProps} />
               <ItalicButton {...externalProps} />
-              {/* LINK BUTTON HERE */}
-              <Separator {...externalProps} />
+              <LinkButton {...externalProps} />
               <HeadlineOneButton {...externalProps} />
               <BlockquoteButton {...externalProps} />
-              {/* <Separator {...externalProps} /> */}
-              {/* ALIGN LEFT BUTTON HERE */}
-              {/* ALIGN CENTER BUTTON HERE */}
             </div>
           )}
         </InlineToolbar>

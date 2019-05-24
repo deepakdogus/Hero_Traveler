@@ -8,6 +8,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
+import getCatagoriesOrChannels from '../../Shared/Lib/channelAndCategoryRender'
 
 import styles, {
   CategoryFeedNavActionStyles,
@@ -76,23 +77,7 @@ class ExploreScreen extends Component {
   getEntitiesByType = () => {
     const { selectedTab } = this.state
     const { channelsByID, users, categories } = this.props
-    const channels = []
-    if (selectedTab === tabTypes.channels){
-      for (let i = 0; i < channelsByID.length; i++){
-        if (users[channelsByID[i]]){
-          channels.push(users[channelsByID[i]])
-        }
-      }
-    }
-
-    switch(selectedTab){
-      case tabTypes.categories:
-        return categories
-      case tabTypes.channels:
-        return channels
-      default:
-        return []
-    }
+    return getCatagoriesOrChannels(selectedTab, channelsByID, users, categories, tabTypes)
   }
 
   render() {

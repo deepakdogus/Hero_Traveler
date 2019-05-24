@@ -66,11 +66,12 @@ class Explore extends Component {
   getEntitiesByType = () => {
     const {activeTab} = this.state
     const {channels, users, categories} = this.props
-    const filteredChannelsThatAreUsers = {}
+    const filteredChannelsThatAreUsers = []
+
     if (activeTab === tabTypes.channels){
       for (let i = 0; i < channels.length; i++){
         if (users[channels[i]]){
-          filteredChannelsThatAreUsers[users[channels[i]].id] = users[channels[i]]
+          filteredChannelsThatAreUsers.push(users[channels[i]])
         }
       }
     }

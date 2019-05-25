@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {push} from 'react-router-redux'
@@ -10,6 +11,7 @@ import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import TabBar from '../Components/TabBar'
+import getCatagoriesOrChannels from '../Shared/Lib/channelAndCategoryRender'
 
 const Wrapper = styled.div``
 
@@ -66,27 +68,12 @@ class Explore extends Component {
   getEntitiesByType = () => {
     const {activeTab} = this.state
     const {channels, users, categories} = this.props
-    const filteredChannelsThatAreUsers = []
 
-    if (activeTab === tabTypes.channels){
-      for (let i = 0; i < channels.length; i++){
-        if (users[channels[i]]){
-          filteredChannelsThatAreUsers.push(users[channels[i]])
-        }
-      }
-    }
-    switch(activeTab){
-      case tabTypes.categories:
-        return categories
-      case tabTypes.channels:
-        return filteredChannelsThatAreUsers
-      default:
-        return []
-    }
+    return getCatagoriesOrChannels(activeTab, channels, users, categories, tabTypes)
   }
 
   render() {
-    const exploreItems = this.getEntitiesByType()
+    const exploreItems = _.values(this.getEntitiesByType())
     const { activeTab } = this.state
     return (
       <Wrapper>

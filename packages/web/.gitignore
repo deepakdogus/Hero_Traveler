@@ -21,6 +21,5 @@ yarn-debug.log*
 yarn-error.log*
 
 src/App/shared
-src/App/Config/Env/dev.js
-src/App/Config/Env/prod.js
+src/App/Config/Env
 

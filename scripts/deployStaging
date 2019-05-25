@@ -29,7 +29,8 @@ npm run share --prefix packages/web
 
 # "force" add the otherwise gitignored shared files
 # git add -f public/bundle.js public/bundle.js.map
-git add -f packages/web/src/App/Shared
+git add -f packages/web/src/App/Shared packages/web/src/App/Config/Env
+
 
 # create a commit, even if nothing changed
 git commit --allow-empty -m 'Adding Shared'

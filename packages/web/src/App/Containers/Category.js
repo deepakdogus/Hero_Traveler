@@ -47,7 +47,7 @@ class Category extends ContainerWithFeedList {
     const {category, loadCategories} = this.props
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
-    console.log(values, 'values')
+    console.log(this.props,'this is the category')
     this.getTabInfo()
     if (!category) loadCategories()
   }

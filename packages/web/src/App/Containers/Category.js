@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 
 import StoryActions, { getByCategory, getFetchStatus } from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
@@ -44,6 +45,9 @@ class Category extends ContainerWithFeedList {
 
   componentDidMount() {
     const {category, loadCategories} = this.props
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    console.log(values, 'values')
     this.getTabInfo()
     if (!category) loadCategories()
   }

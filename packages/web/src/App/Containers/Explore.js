@@ -53,7 +53,7 @@ class Explore extends Component {
   }
 
   _navToCategory = (categoryId) => {
-    this.props.reroute(`/category/${categoryId}`)
+    this.props.reroute(`/category/${categoryId}/?type=category`)
   }
 
   _navToChannel = (userId) => {

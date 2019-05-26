@@ -57,7 +57,7 @@ class Explore extends Component {
   }
 
   _navToChannel = (userId) => {
-    this.props.reroute(`/profile/${userId}/view`)
+    this.props.reroute(/*`/profile/${userId}/view`*/`/category/${userId}`)
   }
 
   onClickTab = event => {

@@ -15,11 +15,11 @@ function cleanup_at_exit {
   git checkout @{-1}
 
   # remove the deploy branch
-  git branch -D deploy/staging
+  git branch -D deploy/production
 }
 trap cleanup_at_exit EXIT
 
-git checkout -b deploy/staging
+git checkout -b deploy/production
 
 # add shared files
 npm run share --prefix packages/web
@@ -31,4 +31,4 @@ git add -f packages/web/src/App/Shared packages/web/src/App/Config/Env
 git commit --allow-empty -m 'Adding Shared'
 
 # push your local deploy branch's packages/web to the master branch on heroku
-git push staging `git subtree split --prefix packages/web deploy/staging`:master --force
+git push heroku `git subtree split --prefix packages/web deploy/production`:master --force

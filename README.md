@@ -173,7 +173,7 @@ npm run dev
 
 _Note:_
 
-- _if you've made changes to `ht-core`, you need to run `npm run dev` in the `packages/ht-core` in order to see those changes when you start a build_
+- _if you've made changes to `ht-core`, you need to run `npm run dev` in the `packages/ht-core` in order to see those changes when you start the `express-api` server_
 - _similarly, if you've made changes to `ht-util`, you need to run `npm run dev` in both `packages/ht-util` **and** `packages/ht-core` (in that order), as `ht-core` also uses `ht-util`_
 
 ### Create Seed Data
@@ -224,7 +224,7 @@ npm run start
 
 ### Web Shortcut
 
-If you're doing your development on a macOS device, you can use the root-level AppleScript to run everything you may need to get the development server running with all your latest code changes:
+If you're doing your development on a macOS device, you can use the root-level AppleScript to run everything you may need to get the development server and web app running with all your latest code changes:
 
 ```bash
 scripts/start-dev

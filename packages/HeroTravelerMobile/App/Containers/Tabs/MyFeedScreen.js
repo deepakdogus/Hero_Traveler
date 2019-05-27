@@ -80,6 +80,7 @@ class MyFeedScreen extends React.Component {
       permissionStatus: undefined,
       needToUpdateApp: false,
       needToUpdateIOS: false,
+      needToUpdateIOSAlertOnce: false,
     }
   }
 
@@ -95,7 +96,7 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
 
     // check app store version
-    if (!__DEV__) {
+    // if (!__DEV__) {
       getAppstoreAppVersion('1288145566') //put any apps id here
         .then(versionOnAppStore => {
           const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
@@ -106,12 +107,13 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
 
-      const {needToUpdateIOS} = this.state
-      if(!needToUpdateIOS){
+      const { needToUpdateIOS, needToUpdateIOSAlertOnce } = this.state
+      if(!needToUpdateIOS && !needToUpdateIOSAlertOnce){
         const systemVersion = DeviceInfo.getSystemVersion().split('.');
-        const newestIOS = 12
-        if(newestIOS - Number(systemVersion[0]) >= 1) this.setState({needToUpdateIOS: true})
-      }
+        const newestIOS = 12 //manually add the latest iOS version here
+        if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
+        console.log(systemVersion[0], 'ios version')
+      // }
     }
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
@@ -353,11 +355,11 @@ class MyFeedScreen extends React.Component {
 
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateApp, needToUpdateIOS, needToUpdateIOSAlertOnce} = this.state
+    const { needToUpdateIOSAlertOnce, needToUpdateIOS} = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-
+    console.log('this is', needToUpdateIOS)
     let bottomContent
     bottomContent = (
       <ConnectedFeedList
@@ -377,7 +379,6 @@ class MyFeedScreen extends React.Component {
 
     return (
       <View style={styles.statusBarAvoider}>
-        {needToUpdateApp ? this.updateAppNotice() : null}
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -393,7 +394,7 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
-        {!needToUpdateIOS && this.updateIOSNotice()}
+        { !needToUpdateIOSAlertOnce && needToUpdateIOS && this.updateIOSNotice() }
       </View>
     )
   }

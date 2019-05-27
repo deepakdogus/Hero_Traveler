@@ -262,7 +262,7 @@ Very soon, you should be able to run the app on Xcode version 10.2 and onwards. 
 4. Window > Organizer
 5. Click Distribute App and follow the prompts (choose automatic signing)
 
-    _Note: if the need is out of available certificates, you may need to use someone else's in order to have the app signed. Just ask another dev to walk you through this process._
+    _Note: if the team is out of available certificates, you may need to use an existing cert in order to have the app signed. Just ask another dev to walk you through this process._
 
 ## Docker, express-api and deployment
 

@@ -80,7 +80,6 @@ class MyFeedScreen extends React.Component {
       permissionStatus: undefined,
       needToUpdateApp: false,
       needToUpdateIOS: false,
-      needToUpdateIOSAlertOnce: false,
     }
   }
 
@@ -107,8 +106,8 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
 
-      const { needToUpdateIOS, needToUpdateIOSAlertOnce } = this.state
-      if(!needToUpdateIOS && !needToUpdateIOSAlertOnce){
+      const { needToUpdateIOS } = this.state
+      if(!needToUpdateIOS){
         const systemVersion = DeviceInfo.getSystemVersion().split('.');
         const newestIOS = 12 //manually add the latest iOS version here
         if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
@@ -342,20 +341,23 @@ class MyFeedScreen extends React.Component {
 
   updateIOSNotice(){
     const systemVersion = DeviceInfo.getSystemVersion()
-    Alert.alert(
-        'Update Available',
-        `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
-        [
-          {text: 'Continue',
-            onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
-          }
-        ]
-    )
+    if (!this.alertPresent){
+      this.alertPresent = true
+      Alert.alert(
+          'Update Available',
+          `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
+          [
+            {text: 'Continue',
+              onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
+            }
+          ]
+      )
+    }
   }
 
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateIOSAlertOnce, needToUpdateIOS} = this.state
+    const { needToUpdateIOS } = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
@@ -394,7 +396,7 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
-        { !needToUpdateIOSAlertOnce && needToUpdateIOS && this.updateIOSNotice() }
+        { needToUpdateIOS && this.updateIOSNotice() }
       </View>
     )
   }

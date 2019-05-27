@@ -13,7 +13,7 @@ const devSettings = {
   SEARCH_HASHTAGS_INDEX: '',
   SEARCH_GUIDE_INDEX: '',
 
-  GOOGLE_API_KEY: '-',
+  GOOGLE_API_KEY: '',
 }
 
 const prodSettings = {

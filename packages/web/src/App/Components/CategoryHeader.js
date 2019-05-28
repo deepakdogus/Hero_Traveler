@@ -101,9 +101,10 @@ export default class CategoryHeader extends React.Component {
 
   render () {
     const {category, isFollowingCategory} = this.props
+    console.log(category, 'this is a user in the header')
 
     if (!category) return null
-    const categoryImageUrl = getImageUrl(category.image, 'image')
+    const categoryImageUrl = getImageUrl((category.image || category.channelSponsorLogo), 'image')
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}
@@ -111,7 +112,7 @@ export default class CategoryHeader extends React.Component {
       >
         <HeaderTopGradient/>
         <Centered>
-          <CategoryTitle>{category.title}</CategoryTitle>
+          <CategoryTitle>{category.title || category.username}</CategoryTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton

@@ -5,10 +5,11 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
-import StoryActions, { getByCategory, getFetchStatus } from '../Shared/Redux/Entities/Stories'
+import StoryActions, { getByCategory, getFetchStatus, categorySuccess } from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
+import UserActions from '../Shared/Redux/Entities/Users'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
 import CategoryHeader from '../Components/CategoryHeader'
@@ -44,12 +45,15 @@ class Category extends ContainerWithFeedList {
   state = { activeTab: 'ALL' }
 
   componentDidMount() {
-    const {category, loadCategories} = this.props
+    const {category, loadCategories, user, loadUsers} = this.props
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
-    console.log(this.props,'this is the category')
     this.getTabInfo()
-    if (!category) loadCategories()
+    if(values.type === category){
+      if (!category) loadCategories()
+    } else {
+      if(!user) this.loadUsers()
+    }              
   }
 
   _followCategory = (categoryId) => {
@@ -64,13 +68,13 @@ class Category extends ContainerWithFeedList {
     const {
       category,
       isFollowingCategory,
+      user
     } = this.props
     const {selectedFeedItems} = this.getSelectedFeedItems()
-
     return (
       <ContentWrapper>
         <CategoryHeader
-          category={category}
+          category={category || user}
           followCategory={this._followCategory}
           unfollowCategory={this._unfollowCategory}
           isFollowingCategory={isFollowingCategory}
@@ -104,6 +108,7 @@ function mapStateToProps(state, ownProps) {
     sessionUserId,
     categoryId,
     category: state.entities.categories.entities[categoryId],
+    user: state.entities.users.entities[categoryId],
     fetchStatus: getFetchStatus(state.entities.stories, categoryId),
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
@@ -122,6 +127,7 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadUsers: () => dispatch(UserActions.loadUser()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
     followCategory: (sessionUserId, categoryId) =>
       dispatch(runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId])),

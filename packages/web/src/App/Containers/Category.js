@@ -51,8 +51,6 @@ class Category extends ContainerWithFeedList {
     this.getTabInfo()
     if(values.type === category){
       if (!category) loadCategories()
-    } else {
-      if(!user) this.loadUsers()
     }              
   }
 
@@ -68,9 +66,10 @@ class Category extends ContainerWithFeedList {
     const {
       category,
       isFollowingCategory,
-      user
+      user,
     } = this.props
     const {selectedFeedItems} = this.getSelectedFeedItems()
+    // console.log(selectedFeedItems, 'these are the selected feed items')
     return (
       <ContentWrapper>
         <CategoryHeader

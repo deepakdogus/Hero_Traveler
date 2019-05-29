@@ -177,6 +177,7 @@ StorySchema.statics = {
   },
 
   list(/* args */) {
+    console.log(...arguments, 'these are args')
     return this.find(...arguments)
       .populate({
         path: 'author',
@@ -257,8 +258,9 @@ StorySchema.statics = {
     })
   },
 
-  getUserStories(userId) {
-    return this.list({ author: userId, draft: false }).exec()
+  getUserStories({userId, type}) {
+    console.log({userId, type})
+    return this.list({ author: userId, draft: false, type }).exec()
   },
 
   getCountUserStories(userId) {

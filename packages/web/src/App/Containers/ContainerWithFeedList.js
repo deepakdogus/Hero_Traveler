@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
+import queryString from 'query-string'
 
 import env from '../Config/Env'
 
@@ -145,6 +146,10 @@ export default class ContainerWithFeedList extends React.Component {
     } = this.props
 
     // will use fetchStatus to show loading/error
+    console.log(this.props, 'these are the props in the container with feedlist')
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    console.log(values, 'these are the values')
     switch (this.state.activeTab) {
       case 'DRAFTS':
         return {

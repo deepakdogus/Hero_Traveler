@@ -39,7 +39,6 @@ import uploadDraftCoverVideoWebhook from './draft/upload_video_webhook'
 import uploadDraftImage from './draft/upload_story_image'
 import uploadDraftVideo from './draft/upload_story_video'
 
-
 const router = express.Router()
 
 router.get('/user/:userId', getUserStories)

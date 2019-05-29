@@ -101,8 +101,6 @@ export default class CategoryHeader extends React.Component {
 
   render () {
     const {category, isFollowingCategory} = this.props
-    console.log(category, 'this is a user in the header')
-
     if (!category) return null
     const categoryImageUrl = getImageUrl((category.image || category.channelSponsorLogo), 'image')
     return (

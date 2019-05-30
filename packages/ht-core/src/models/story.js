@@ -258,9 +258,11 @@ StorySchema.statics = {
     })
   },
 
-  getUserStories({userId, type}) {
-    console.log({userId, type})
-    return this.list({ author: userId, draft: false, type }).exec()
+  getUserStories(query) {
+    if (!query.type) delete query.type
+    if (query.type === 'all') delete query.type
+    console.log({query})
+    return this.list({ ...query, draft: false }).exec()
   },
 
   getCountUserStories(userId) {

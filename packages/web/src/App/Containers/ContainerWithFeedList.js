@@ -96,6 +96,9 @@ export default class ContainerWithFeedList extends React.Component {
   }
 
   getTabInfo = page => {
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    console.log(this.props.match.params.categoryId, 'id')
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
@@ -116,14 +119,22 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        return this.props.getStories(
-          this.props.sessionUserId,
-          {
-            perPage: itemsPerQuery,
-            page,
-          },
-          this.state.activeTab,
-        )
+        values.type === 'channel' ?
+          (this.props.getUserStories(
+            this.props.match.params.categoryId,
+            this.state.activeTab
+          )
+          )
+          :
+          (this.props.getStories(
+            this.props.sessionUserId,
+            {
+              perPage: itemsPerQuery,
+              page,
+            },
+            this.state.activeTab,
+          )
+          )
     }
   }
 
@@ -145,11 +156,13 @@ export default class ContainerWithFeedList extends React.Component {
       storiesById, // for category screen
     } = this.props
 
+    console.log({storiesById, userFeedById})
+
     // will use fetchStatus to show loading/error
-    console.log(this.props, 'these are the props in the container with feedlist')
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
-    console.log(values, 'these are the values')
+    // console.log(this.props, 'these are the props in the container with feedlist')
+    // const queryReqest = this.props.location.search
+    // const values = queryString.parse(queryReqest)
+    // console.log(values, 'these are the values')
     switch (this.state.activeTab) {
       case 'DRAFTS':
         return {

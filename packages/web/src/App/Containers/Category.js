@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
-import StoryActions, { getByCategory, getFetchStatus, categorySuccess } from '../Shared/Redux/Entities/Stories'
+import StoryActions, { getByCategory, getFetchStatus, categorySuccess, fromUserRequest, getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
@@ -99,6 +99,9 @@ function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
   const sessionUserId = state.session.userId
   let isFollowingCategory = false
+  const queryReqest = ownProps.location.search
+  const values = queryString.parse(queryReqest)
+  console.log(queryReqest, values, 'heres the request and values')
   if (state.session.userId) {
     isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
   }
@@ -109,7 +112,9 @@ function mapStateToProps(state, ownProps) {
     category: state.entities.categories.entities[categoryId],
     user: state.entities.users.entities[categoryId],
     fetchStatus: getFetchStatus(state.entities.stories, categoryId),
-    storiesById: getByCategory(state.entities.stories, categoryId),
+    // GET THE TYPED USER STORIES BELOW
+    storiesById: values && values.type === 'channel' ? getByUser(state.entities.stories, categoryId) : getByCategory(state.entities.stories, categoryId),
+    // storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
     guides: state.entities.guides.entities,
     guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}]`, []),
@@ -125,6 +130,7 @@ function mapDispatchToProps(dispatch, ownProps) {
       if (storyType === 'all') storyType = null
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
+    getUserStories: (categoryId, storyType) => dispatch(StoryActions.fromUserRequest(categoryId, storyType)),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     loadUsers: () => dispatch(UserActions.loadUser()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),

@@ -345,7 +345,8 @@ class MyFeedScreen extends React.Component {
       this.alertPresent = true
       Alert.alert(
           'Update Available',
-          `Your iOS version ${systemVersion} is outdated. For optimal performance, we recommend that you update to the latest version.`,
+          `Your iOS version ${systemVersion} is outdated. For optimal performance, 
+          we recommend that you update to the latest version.`,
           [
             {text: 'Continue',
               onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})

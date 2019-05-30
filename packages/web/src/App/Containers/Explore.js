@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -52,12 +52,12 @@ class Explore extends Component {
     this.props.loadUsers()
   }
 
-  _navToCategory = (categoryId) => {
+  _navToCategory = categoryId => {
     this.props.reroute(`/category/${categoryId}/?type=category`)
   }
 
-  _navToChannel = (userId) => {
-    this.props.reroute(/*`/profile/${userId}/view`*/`/category/${userId}/?type=channel`)
+  _navToChannel = userId => {
+    this.props.reroute(/*`/profile/${userId}/view`*/ `/category/${userId}/?type=channel`)
   }
 
   onClickTab = event => {
@@ -66,8 +66,8 @@ class Explore extends Component {
   }
 
   getEntitiesByType = () => {
-    const {activeTab} = this.state
-    const {channels, users, categories} = this.props
+    const { activeTab } = this.state
+    const { channels, users, categories } = this.props
 
     return getCatagoriesOrChannels(activeTab, channels, users, categories, tabTypes)
   }
@@ -77,19 +77,20 @@ class Explore extends Component {
     const { activeTab } = this.state
     return (
       <Wrapper>
-        <ExploreHeader/>
+        <ExploreHeader />
         <TabBar
           tabs={tabBarTabs}
           activeTab={activeTab}
           onClickTab={this.onClickTab}
         />
         <ContentWrapper>
-            <ExploreGrid
-              categories={exploreItems}
-              onClickExploreItem={activeTab === tabTypes.channels 
-                ? this._navToChannel
-                : this._navToCategory}
-            />
+          <ExploreGrid
+            categories={exploreItems}
+            isChannel={activeTab === tabTypes.channels}
+            onClickExploreItem={
+              activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory
+            }
+          />
           <Footer />
         </ContentWrapper>
       </Wrapper>
@@ -116,8 +117,11 @@ function mapDispatchToProps(dispatch) {
     loadUsers: () => dispatch(UserActions.loadUser()),
     loadChannelUsers: () => dispatch(UserActions.loadUsersChannels()),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    reroute: (path) => dispatch(push(path)),
+    reroute: path => dispatch(push(path)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Explore)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Explore)

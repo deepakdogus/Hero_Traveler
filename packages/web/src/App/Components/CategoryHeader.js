@@ -102,7 +102,7 @@ export default class CategoryHeader extends React.Component {
   render () {
     const {category, isFollowingCategory} = this.props
     if (!category) return null
-    const categoryImageUrl = getImageUrl((category.image || category.channelSponsorLogo), 'image')
+    const categoryImageUrl = getImageUrl((category.image || category.channelImage), 'image')
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}

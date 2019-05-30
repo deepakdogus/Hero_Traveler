@@ -35,7 +35,7 @@ class ExploreScreen extends Component {
     users: PropTypes.object,
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
-    channelsByID: PropTypes.string,
+    channelsByID: PropTypes.array,
   }
 
   constructor(props) {
@@ -90,12 +90,11 @@ class ExploreScreen extends Component {
     } = this.props
 
     const {selectedTab} = this.state
-
     const categoriesArray = _.values(this.getEntitiesByType())
 
     const content = (
       categoriesFetchStatus.fetching && !categoriesArray.length
-      ) ? (
+    ) ? (
         <Loader style={styles.loader} />
       ) : (
         <ScrollView>
@@ -106,7 +105,7 @@ class ExploreScreen extends Component {
           />
         </ScrollView>
       )
-      
+
     return (
       <View style={styles.root}>
         <SearchPlacesPeople

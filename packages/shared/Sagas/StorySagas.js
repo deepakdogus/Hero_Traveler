@@ -126,8 +126,8 @@ export function* getLikesAndBookmarks(api, { userId }) {
   yield getInitalData(api, userId)
 }
 
-export function* getUserStories(api, { userId }) {
-  const response = yield call(api.getUserStories, userId)
+export function* getUserStories(api, { userId, storyType }) {
+  const response = yield call(api.getUserStories, userId, {type: storyType})
   if (response.ok) {
     const { entities, result } = response.data
     yield [

@@ -25,6 +25,7 @@ export default class ContainerWithFeedList extends React.Component {
     getGuides: PropTypes.func,
     getStories: PropTypes.func,
     getNearbyStories: PropTypes.func,
+    getUserStories: PropTypes.func,
     getBadgeUserStories: PropTypes.func,
     draftsById: PropTypes.objectOf(PropTypes.object),
     userBookmarksById: PropTypes.objectOf(PropTypes.object),
@@ -119,22 +120,19 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        values.type === 'channel' ?
-          (this.props.getUserStories(
-            this.props.match.params.categoryId,
-            this.state.activeTab
-          )
-          )
-          :
-          (this.props.getStories(
-            this.props.sessionUserId,
+        values.type === 'channel'
+          ? this.props.getUserStories(
+              this.props.match.params.categoryId,
+              this.state.activeTab.toLowerCase(),
+            )
+          : this.props.getStories(
+              this.props.sessionUserId,
             {
               perPage: itemsPerQuery,
               page,
             },
-            this.state.activeTab,
-          )
-          )
+              this.state.activeTab,
+            )
     }
   }
 
@@ -155,8 +153,6 @@ export default class ContainerWithFeedList extends React.Component {
       guidesById,
       storiesById, // for category screen
     } = this.props
-
-    console.log({storiesById, userFeedById})
 
     // will use fetchStatus to show loading/error
     // console.log(this.props, 'these are the props in the container with feedlist')

@@ -201,7 +201,7 @@ StorySchema.statics = {
 
     if (search !== '') {
       queryToApply['$text'] = { $search: search }
-    } 
+    }
 
     let sortToApply = {createdAt: -1}
     if (sort) {
@@ -261,7 +261,6 @@ StorySchema.statics = {
   getUserStories(query) {
     if (!query.type) delete query.type
     if (query.type === 'all') delete query.type
-    console.log({query})
     return this.list({ ...query, draft: false }).exec()
   },
 

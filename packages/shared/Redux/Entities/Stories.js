@@ -18,7 +18,7 @@ const { Types, Creators } = createActions({
   nearbyFeedFailure: ['error'],
   badgeUserFeedFailure: ['error'],
   likesAndBookmarksRequest: ['userId'],
-  fromUserRequest: ['userId'],
+  fromUserRequest: ['userId', 'storyType'],
   fromUserSuccess: ['userId', 'userStoriesById'],
   fromUserFailure: ['userId', 'error'],
   fromCategoryRequest: ['categoryId', 'storyType'],

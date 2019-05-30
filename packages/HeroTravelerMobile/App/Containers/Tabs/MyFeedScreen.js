@@ -95,7 +95,7 @@ class MyFeedScreen extends React.Component {
     SplashScreen.hide()
 
     // check app store version
-    // if (!__DEV__) {
+    if (!__DEV__) {
       getAppstoreAppVersion('1288145566') //put any apps id here
         .then(versionOnAppStore => {
           const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
@@ -110,9 +110,9 @@ class MyFeedScreen extends React.Component {
       if(!needToUpdateIOS){
         const systemVersion = DeviceInfo.getSystemVersion().split('.');
         const newestIOS = 12 //manually add the latest iOS version here
-        if(newestIOS - Number(systemVersion[0]) >= 0) this.setState({needToUpdateIOS: true})
+        if(newestIOS - Number(systemVersion[0]) >= 1) this.setState({needToUpdateIOS: true})
         console.log(systemVersion[0], 'ios version')
-      // }
+      }
     }
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)

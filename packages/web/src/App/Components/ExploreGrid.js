@@ -17,8 +17,15 @@ const ChannelGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
-  max-width: 950px;
+  max-width: 1000px;
   margin: 20px auto 0;
+  padding: 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `
 
 const Wrapper = styled.div`

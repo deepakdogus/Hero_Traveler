@@ -1,6 +1,7 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, StatusBar, Linking } from 'react-native'
+import { View, StatusBar, Linking, Alert } from 'react-native'
 import HockeyApp from 'react-native-hockeyapp'
 import { connect } from 'react-redux'
 import {
@@ -9,6 +10,7 @@ import {
   ActionConst as NavActionConst,
 } from 'react-native-router-flux'
 import branch from 'react-native-branch'
+import DeviceInfo from 'react-native-device-info'
 
 // import PerfMonitor from 'react-native/Libraries/Performance/RCTRenderingPerf'
 
@@ -36,6 +38,7 @@ class RootContainer extends Component {
     super(props)
     this.state = {
       initialUrl: null,
+      needToUpdateIOS: false,
     }
   }
 
@@ -51,6 +54,14 @@ class RootContainer extends Component {
         //     PerfMonitor.stop();
         //   }, 14000);
         // }, 5000);
+        if (!__DEV__) {
+          const { needToUpdateIOS } = this.state
+          if(!needToUpdateIOS){
+            const systemVersion = DeviceInfo.getSystemVersion().split('.');
+            const newestIOS = 12 //manually add the latest iOS version here
+            if(newestIOS - Number(systemVersion[0]) >= 1) this.setState({needToUpdateIOS: true})
+          }
+        }
 
     this._initializeDeepLinking()
 
@@ -59,6 +70,7 @@ class RootContainer extends Component {
     return Linking.getInitialURL().then((url) => {
       this.setState({initialUrl: url})
     })
+
   }
 
   componentWillReceiveProps(newProps) {
@@ -69,6 +81,23 @@ class RootContainer extends Component {
 
   componentWillUnmount() {
     Linking.removeEventListener('url', this._handleOpenURL)
+  }
+
+  updateIOSNotice(){
+    const systemVersion = DeviceInfo.getSystemVersion()
+    if (!this.alertPresent){
+      this.alertPresent = true
+      Alert.alert(
+          'Update Available',
+          `Your iOS version ${systemVersion} is outdated. For optimal performance, 
+          we recommend that you update to the latest version.`,
+          [
+            {text: 'Continue',
+              onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
+            }
+          ]
+      )
+    }
   }
 
   _handleOpenURL = (event) => {
@@ -140,8 +169,10 @@ class RootContainer extends Component {
   }
 
   render () {
+    const { needToUpdateIOS } = this.state
     return (
       <View style={styles.applicationView}>
+        { needToUpdateIOS && this.updateIOSNotice() }
         <StatusBar barStyle={
           this.isLightStatusBarText()
             ? 'light-content'

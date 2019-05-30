@@ -7,7 +7,6 @@ import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { getAppstoreAppVersion } from 'react-native-appstore-version-checker'
 import VersionNumber from 'react-native-version-number'
-import DeviceInfo from 'react-native-device-info'
 
 import algoliasearchModule from 'algoliasearch/reactnative'
 import AlgoliaSearchHelper from 'algoliasearch-helper'
@@ -79,7 +78,6 @@ class MyFeedScreen extends React.Component {
       hasSearchText: false,
       permissionStatus: undefined,
       needToUpdateApp: false,
-      needToUpdateIOS: false,
     }
   }
 
@@ -105,14 +103,6 @@ class MyFeedScreen extends React.Component {
         .catch(err => {
           console.log('error occurred', err)
         })
-
-      const { needToUpdateIOS } = this.state
-      if(!needToUpdateIOS){
-        const systemVersion = DeviceInfo.getSystemVersion().split('.');
-        const newestIOS = 12 //manually add the latest iOS version here
-        if(newestIOS - Number(systemVersion[0]) >= 1) this.setState({needToUpdateIOS: true})
-        console.log(systemVersion[0], 'ios version')
-      }
     }
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
@@ -339,30 +329,12 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  updateIOSNotice(){
-    const systemVersion = DeviceInfo.getSystemVersion()
-    if (!this.alertPresent){
-      this.alertPresent = true
-      Alert.alert(
-          'Update Available',
-          `Your iOS version ${systemVersion} is outdated. For optimal performance, 
-          we recommend that you update to the latest version.`,
-          [
-            {text: 'Continue',
-              onPress: () => this.setState({needToUpdateIOS: false, needToUpdateIOSAlertOnce: true})
-            }
-          ]
-      )
-    }
-  }
-
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateIOS } = this.state
+    const { needToUpdateApp } = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-    console.log('this is', needToUpdateIOS)
     let bottomContent
     bottomContent = (
       <ConnectedFeedList
@@ -382,6 +354,7 @@ class MyFeedScreen extends React.Component {
 
     return (
       <View style={styles.statusBarAvoider}>
+        {needToUpdateApp ? this.updateAppNotice() : null}
         <BackgroundPublishingBars
           sync={sync}
           failure={failure}
@@ -397,7 +370,6 @@ class MyFeedScreen extends React.Component {
         >
           {bottomContent}
         </SearchPlacesPeople>
-        { needToUpdateIOS && this.updateIOSNotice() }
       </View>
     )
   }

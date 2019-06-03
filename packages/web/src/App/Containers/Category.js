@@ -101,6 +101,10 @@ function mapStateToProps(state, ownProps) {
   let isFollowingCategory = false
   const queryReqest = ownProps.location.search
   const values = queryString.parse(queryReqest)
+  const categoryOrChannelSearch = values.type === 'channel' 
+    ? `entities.guides.guideIdsByUserId[${userOrCategoryId}]`
+    : `entities.guides.guideIdsByCategoryId[${userOrCategoryId}]`
+
   if (state.session.userId) {
     isFollowingCategory = _.includes(state.signup.selectedCategories, userOrCategoryId)
   }
@@ -117,7 +121,7 @@ function mapStateToProps(state, ownProps) {
         : getByCategory(state.entities.stories, userOrCategoryId),
     stories: state.entities.stories.entities,
     guides: state.entities.guides.entities,
-    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${userOrCategoryId}]`, []),
+    guidesById: _.get(state, (categoryOrChannelSearch), []),
     isFollowingCategory,
   }
 }
@@ -135,6 +139,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     loadUsers: () => dispatch(UserActions.loadUser()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(userOrCategoryId)),
+    getUserGuides: () => dispatch(GuideActions.getUserGuides(userOrCategoryId)),
     followCategory: (sessionUserId, userOrCategoryId) =>
       dispatch(
         runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [userOrCategoryId]),

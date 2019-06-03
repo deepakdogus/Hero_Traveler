@@ -23,6 +23,7 @@ export default class ContainerWithFeedList extends React.Component {
     loadDrafts: PropTypes.func,
     loadBookmarks: PropTypes.func,
     getGuides: PropTypes.func,
+    getUserGuides: PropTypes.func,
     getStories: PropTypes.func,
     getNearbyStories: PropTypes.func,
     getUserStories: PropTypes.func,
@@ -106,13 +107,13 @@ export default class ContainerWithFeedList extends React.Component {
         this.props.getDeletedStories()
         return this.props.loadDrafts()
       case 'BOOKMARKS':
-        return this.props.loadBookmarks(userOrCategoryId)
+        return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return this.props.getGuides(userOrCategoryId)
+        return (values.type === 'category' ? this.props.getGuides(userOrCategoryId) : this.props.getUserGuides(userOrCategoryId)) 
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':
-        return this.props.getBadgeUserStories(userOrCategoryId)
+        return this.props.getBadgeUserStories(this.props.sessionUserId)
       case 'STORIES':
       case 'ALL':
       case 'SEE':
@@ -126,7 +127,7 @@ export default class ContainerWithFeedList extends React.Component {
               this.state.activeTab.toLowerCase(),
             )
           : this.props.getStories(
-            userOrCategoryId,
+              this.props.sessionUserId,
             {
               perPage: itemsPerQuery,
               page,

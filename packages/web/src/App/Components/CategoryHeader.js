@@ -92,14 +92,14 @@ export default class CategoryHeader extends React.Component {
     isFollowingCategory: PropTypes.bool,
   }
 
-  _followCategory = () => {
+  _followItem = () => {
     const { user, category } = this.props
-    this.props.followCategory((category && category.id) || (user && user.id))
+    this.props.followItem((category && category.id) || (user && user.id))
   }
 
-  _unfollowCategory = () => {
+  _unfollowItem = () => {
     const { user, category } = this.props
-    this.props.unfollowCategory((category && category.id) || (user && user.id))
+    this.props.unfollowItem((category && category.id) || (user && user.id))
   }
 
   render () {
@@ -119,7 +119,7 @@ export default class CategoryHeader extends React.Component {
             <StyledRoundedButton
               type={isFollowingCategory ? '' : 'exploreCategoryFollow'}
               text={isFollowingCategory ? 'Following' : '+ Follow'}
-              onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}
+              onClick={isFollowingCategory ? this._unfollowItem : this._followItem}
               textProps={textProps}
               responsiveTextProps={responsiveFollowButtonTextStyles}
               responsiveButtonProps={responsiveFollowButtonStyles}

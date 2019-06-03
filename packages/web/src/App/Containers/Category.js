@@ -58,11 +58,11 @@ class Category extends ContainerWithFeedList {
     }
   }
 
-  _followCategory = categoryOrUserId => {
+  _followItem = categoryOrUserId => {
     this.props.followCategory(this.props.sessionUserId, categoryOrUserId)
   }
 
-  _unfollowCategory = categoryOrUserId => {
+  _unfollowItem = categoryOrUserId => {
     this.props.unfollowCategory(this.props.sessionUserId, categoryOrUserId)
   }
 
@@ -74,8 +74,8 @@ class Category extends ContainerWithFeedList {
         <CategoryHeader
           category={category}
           user={user}
-          followCategory={this._followCategory}
-          unfollowCategory={this._unfollowCategory}
+          followItem={this._followItem}
+          unfollowItem={this._unfollowItem}
           isFollowingCategory={isFollowingCategory}
         />
         <TabBar

@@ -119,6 +119,11 @@ class AppRoot extends Component {
           path="/category/:categoryId"
           component={Category}
         />
+        <Route
+          exact
+          path="/channel/:userId"
+          component={Category}
+        />
         <AuthRoute
           exact
           path="/feed"

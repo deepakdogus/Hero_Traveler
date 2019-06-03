@@ -86,23 +86,26 @@ const responsiveFollowButtonTextStyles = `
 export default class CategoryHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
+    user: PropTypes.object,
     followCategory: PropTypes.func,
     unfollowCategory: PropTypes.func,
     isFollowingCategory: PropTypes.bool,
   }
 
   _followCategory = () => {
-    this.props.followCategory(this.props.category.id)
+    const { user, category } = this.props
+    this.props.followCategory(category.id || user.id)
   }
 
   _unfollowCategory = () => {
-    this.props.unfollowCategory(this.props.category.id)
+    const { user, category } = this.props
+    this.props.unfollowCategory(category.id || user.id)
   }
 
   render () {
-    const {category, isFollowingCategory} = this.props
-    if (!category) return null
-    const categoryImageUrl = getImageUrl((category.image || category.channelImage), 'image')
+    const { user, category, isFollowingCategory } = this.props
+    if (!category && !user) return null
+    const categoryImageUrl = getImageUrl((( category && category.image) || (user && user.channelImage)), 'image')
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}
@@ -110,7 +113,7 @@ export default class CategoryHeader extends React.Component {
       >
         <HeaderTopGradient/>
         <Centered>
-          <CategoryTitle>{category.title || category.username}</CategoryTitle>
+          <CategoryTitle>{(category && category.title) || (user && user.username)}</CategoryTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton

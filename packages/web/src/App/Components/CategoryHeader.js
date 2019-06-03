@@ -94,12 +94,12 @@ export default class CategoryHeader extends React.Component {
 
   _followCategory = () => {
     const { user, category } = this.props
-    this.props.followCategory(category.id || user.id)
+    this.props.followCategory((category && category.id) || (user && user.id))
   }
 
   _unfollowCategory = () => {
     const { user, category } = this.props
-    this.props.unfollowCategory(category.id || user.id)
+    this.props.unfollowCategory((category && category.id) || (user && user.id))
   }
 
   render () {

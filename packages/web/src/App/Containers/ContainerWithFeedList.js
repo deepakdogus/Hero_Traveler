@@ -99,20 +99,20 @@ export default class ContainerWithFeedList extends React.Component {
   getTabInfo = page => {
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
-    console.log(this.props.match.params.categoryId, 'id')
+    const userOrCategoryId = this.props.match.params.categoryId || this.props.match.params.userId
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
         this.props.getDeletedStories()
         return this.props.loadDrafts()
       case 'BOOKMARKS':
-        return this.props.loadBookmarks(this.props.sessionUserId)
+        return this.props.loadBookmarks(userOrCategoryId)
       case 'GUIDES':
-        return this.props.getGuides(this.props.sessionUserId)
+        return this.props.getGuides(userOrCategoryId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':
-        return this.props.getBadgeUserStories(this.props.sessionUserId)
+        return this.props.getBadgeUserStories(userOrCategoryId)
       case 'STORIES':
       case 'ALL':
       case 'SEE':
@@ -122,11 +122,11 @@ export default class ContainerWithFeedList extends React.Component {
       default:
         values.type === 'channel'
           ? this.props.getUserStories(
-              this.props.match.params.categoryId,
+              (userOrCategoryId),
               this.state.activeTab.toLowerCase(),
             )
           : this.props.getStories(
-              this.props.sessionUserId,
+            userOrCategoryId,
             {
               perPage: itemsPerQuery,
               page,

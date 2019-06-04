@@ -4,13 +4,13 @@ Welcome to our project! This is a monorepo containing all HERO Traveler project 
 
 ## Project structure
 
-A monorepo is a code structure that places all of code belonging to a project ([or even an entire company](https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext)) in a single source-controlled repository.
+A monorepo is a code structure that places all of the code belonging to a project ([or even an entire company](https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext)) in a single source-controlled repository.
 
 Each subdirectory of `packages/` is an application or contains a bundle of code that is used by one of those applications.
 
 Applications:
 
-- `cms` [Deprecated]
+- ~~`cms`~~ [Deprecated]
 - `cms-web`
 - `express-api` (backend server)
 - `HeroTravelerMobile` (the React Native app)
@@ -26,18 +26,17 @@ Code Bundles:
   - `shared`: code that can be shared by all frontend applications in the above list, including mobile
   - `sharedWeb`: code shared between `web` and `cms-web`
 
-### Node and NPM
+### Node and npm
 
-The first step is to install necessary global packages and install/link all projects modules. We have mostly automated this processs, however we are also hosting several dependencies on our own private npm server, located at https://npm.abeck.io.
+The first step is to install necessary global packages and install/link all project modules. We have mostly automated this processs, however we are also hosting several dependencies on our own npm server (located at [https://npm.abeck.io](https://npm.abeck.io)), which involves some configuration:
 
-1. Create a user with `npm adduser --registry  https://npm.abeck.io`
+1. Create a user with `npm adduser --registry https://npm.abeck.io`
 
     _Note: the idea from earlier team was to make this private, but it is currently effectively public, any credentials you use will work_
 
-2. [Install `n` node version manager](https://github.com/tj/n#installation) if you don't have it alread
+2. [Install `n` node version manager](https://github.com/tj/n#installation) if you don't have it already
 
 3. Run the below commands to install dependencies across all the different apps in `packages/` via [lerna](https://github.com/lerna/lerna/tree/master/commands/bootstrap#usage)
-
 
     ```bash
     n 7.7.2
@@ -55,15 +54,15 @@ The first step is to install necessary global packages and install/link all proj
 
 ## Setting up various 3rd parties
 
-### 1. M Lab (Set up a dev database)
+### 1. mLab (Set up a dev database)
 
-- Make an account on [mlab](https://mlab.com) and verify email address
+- Make an account on [mLab](https://mlab.com) and verify email address
 - Set up a MongoDB deployment
-  - Click 'Create new'
+  - Click "Create new"
   - Follow the steps, choosing "Sandbox" and appropriate settings
 - Click on your newly created database to open Settings
 - Click on the `Users` tabs and `Add database user` (this will be the DB owner)
-- Copy the MongoDB uri, (looks something like `mongodb://<dbuser>:<dbpassword>@ds033186.mlab.com:33186/ahj_herotraveler`) and set aside you will use it later in [ENV set-up](#setting-up-your-env)
+- Copy the MongoDB uri, (looks something like `mongodb://<dbuser>:<dbpassword>@ds033186.mlab.com:33186/ahj_herotraveler`) and set aside for use later during the [ENV set-up](#setting-up-your-env) step
 
 ### 2. Cloudinary (Image + video storage + management)
 
@@ -127,11 +126,11 @@ The first step is to install necessary global packages and install/link all proj
 
 ### 1. Shell profile
 
-- First, get your NPM auth token, which you will have after logging into NPM registry, by opening up `~/.npmrc` and copying whatever follows authToken=
-- Add `export NPM_TOKEN="{YOUR_COPIED_AUTH_TOKEN}"` to your `.bash_profile`, `.zshrc`, or equivalent for you shell.
+- First, get your npm auth token, which you will have after logging into npm registry, by opening up `~/.npmrc` and copying whatever follows authToken=
+- Add `export NPM_TOKEN="{YOUR_COPIED_AUTH_TOKEN}"` to your `.bash_profile`, `.zshrc`, or equivalent for your shell.
 - Close and reopen your shell to allow this change to take effect
 
-### 2. `packages/express-api` .env
+### 2. `packages/express-api`
 
 - Add a `.env` file to root of `packages/express-api` and copy over the contents of `.env.example`
 - Fill in `MONGODB_URL` with the uri we set up earlier
@@ -173,8 +172,8 @@ npm run dev
 
 _Note:_
 
-- _if you've made changes to `ht-core`, you need to run `npm run dev` in the `packages/ht-core` in order to see those changes when you start the `express-api` server_
-- _similarly, if you've made changes to `ht-util`, you need to run `npm run dev` in both `packages/ht-util` **and** `packages/ht-core` (in that order), as `ht-core` also uses `ht-util`_
+- _If you've made changes to `ht-core`, you need to run `npm run dev` in the `packages/ht-core` in order to see those changes when you start the `express-api` server_
+- _Similarly, if you've made changes to `ht-util`, you need to run `npm run dev` in both `packages/ht-util` **and** `packages/ht-core` **(in that order)**, as `ht-core` also uses `ht-util`_
 
 ### Create Seed Data
 
@@ -185,14 +184,14 @@ npm run seed
 
 ### Mobile
 
-To run the app, we must copy the most recent files in `packages/shared` to the `pakckages/HeroTravelerMobile`...
+To run the app, we must copy the most recent files in `packages/shared` to `packages/HeroTravelerMobile`...
 
 ```bash
 cd packages/HeroTravelerMobile
 npm run share:watch
 ```
 
-...then run the app in the simulator:
+...then in a separate terminal tab run the app in the iOS simulator:
 
 ```bash
 cd packages/HeroTravelerMobile
@@ -207,6 +206,8 @@ open packages/HeroTravelerMobile/ios/HeroTravelerMobile.xcworkspace
 
 _Note: Android has been neglected for the v1, and does not work yet._
 
+_Note: `share:watch` command will copy file changes from `shared` to `App/Shared` so long as it is running_
+
 ### Web
 
 To run the web app, we must first copy over the latest changes to `packages/shared` and `packages/sharedWeb`...
@@ -216,11 +217,13 @@ cd packages/web
 npm run share:watch
 ```
 
-...then a separate terminal tab, run
+...then in a separate terminal tab, run
 
 ```bash
 npm run start
 ```
+
+_Note: `share:watch` command will copy file changes from `shared` to `App/Shared` so long as it is running_
 
 ### Web Shortcut
 
@@ -229,6 +232,8 @@ If you're doing your development on a macOS device, you can use the root-level A
 ```bash
 scripts/start-dev
 ```
+
+_Note: shortcuts for `cms-web` and `HeroTravelerMobile` coming soon_
 
 ## Building app on device
 
@@ -241,6 +246,8 @@ scripts/start-dev
 2. Make sure using `ngrok` if testing on device because `localhost` is disabled.  And make sure you use the `https` version of the `ngrok` url
 
 ### Building on Mojave with Xcode 10.1, RN version 0.53
+
+For now, due to our RN version, you need to build on XCode 10.1, which must be [downloaded from Apple's site](https://developer.apple.com/download/more/?=xcode). You **do not** need to replace your more current version of XCode with 10.1. You can have multiple versions installed at the same time.
 
 Very soon, you should be able to run the app on Xcode version 10.2 and onwards. In the meantime, you should use version 10.1 (confirm with a dev). You may run into some of the problems below:
 
@@ -268,14 +275,14 @@ Very soon, you should be able to run the app on Xcode version 10.2 and onwards. 
 
 Make sure to set env var `NPM_TOKEN` to the _authToken value you find in `~/.npmrc` after running `npm adduser --registry https://npm.abeck.io` before running `docker-compose build`
 
-We currently use docker swarm on AWS with 3 workers running t3.medium and 1 controller running on t3.micro
+We currently use docker swarm on AWS with 4 workers running t3.medium and 1 swarm manager running on t3.micro
 
 New devs on the project will typically not be asked to manage deployments. If you should need to, see a dev for `docker-deploy.rtf` and `deployment-process.rtf` and store them on your computer in a directory outside of this repo.
 
 ## Tips and Tricks and Miscellaneous Bits
 
 - Always get buy-in from the rest of the dev team before adding or removing packages and pods
-- If you **_do_** need to uninstall a package with native components, make sure you do `react-native unlink {packageName}` and _then_ `yarn remove {packageName}`
+- If you **_do_** need to uninstall a package with native components, make sure you run `react-native unlink {packageName}` and _then_ `yarn remove {packageName}`
 - Always keep the React Native **debug browser window visible and in its own tab**. Otherwise, the application will sometimes not start up properly and hang on the splash screen or the launch screen picture
   - If this happens, bring the window into focus and try `Cmd + R` in the simulator 1-3 times
   - As a last resort, close the simulator and refresh the window after moving the debug window to the foreground, then build again

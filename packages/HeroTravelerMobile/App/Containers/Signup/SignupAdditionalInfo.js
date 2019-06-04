@@ -85,7 +85,7 @@ class SignupAdditionalInfo extends Component {
     if (birthday) attrs.birthday = birthday
     if (gender) attrs.gender = gender.toLowerCase()
 
-    if (Object.keys(attrs).length) this.props.updateUser(attrs)
+    if (Object.keys(attrs).length >= 0) this.props.updateUser(attrs)
   }
 
   render = () => {

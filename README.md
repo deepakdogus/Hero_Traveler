@@ -247,7 +247,7 @@ Very soon, you should be able to run the app on Xcode version 10.2 and onwards. 
 - Targeting simulator will throw this error: `Build input file cannot be found: '.../node_modules/react-native/Libraries/WebSocket/libfishhook.a'`
   - To Fix: copy libfishhook.a from my ios/build/Build/Products/Debug-iphonesimulator/ and paste it into ../node_modules/react-native/Libraries/WebSocket/
 - If `AVUtilities.swift` is missing, you will need to create the file with that name at the specified path and then copy over the [old file from Github](https://raw.githubusercontent.com/shahen94/react-native-video-processing/224f63cc18baf67d6d5d37e46ec9da16821ea76d/ios/RNVideoProcessing/RNVideoTrimmer/AVUtilities.swift)
-- If when targeting a physical device you get the error `No member named '__rip' in '__darwin_arm_thread_state64'` follow the steps [here](https://github.com/facebook/react-native/issues/20774)
+- If when targeting a physical device you get the error `No member named '__rip' in '__darwin_arm_thread_state64'` or `'config.h' file not found` follow the steps [here](https://github.com/facebook/react-native/issues/20774)
 - Archiving for deployment may also fail. If so:
   - Go to Prefences > Locations > Derived Data (click arrow) and then delete the Derived Data folder
   - Clean the project (`Cmd + Shift + K` on macOS)

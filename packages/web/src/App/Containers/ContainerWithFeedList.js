@@ -109,7 +109,9 @@ export default class ContainerWithFeedList extends React.Component {
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return (values.type === 'category' ? this.props.getGuides(userOrCategoryId) : this.props.getUserGuides(userOrCategoryId)) 
+        return (values.type === 'channel'
+          ? (this.props.getUserGuides && this.props.getUserGuides(userOrCategoryId))
+          : (this.props.getGuides && this.props.getGuides(userOrCategoryId)))
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':

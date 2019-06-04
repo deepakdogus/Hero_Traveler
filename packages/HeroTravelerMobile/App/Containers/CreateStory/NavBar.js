@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    flex: 2 / 5,
+    flex: 8 / 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: isIPhoneX() ? 15 : 0,
@@ -149,7 +149,7 @@ export default class NavBar extends Component {
         {title && (
           <View style={styles.title}>
             {!onTitle && (
-              <Text style={[styles.text, styles.titleText, titleStyle || {}]}>
+              <Text style={[styles.text, styles.titleText, titleStyle || {}]} numberOfLines={1}>
                 {title}
               </Text>
             )}

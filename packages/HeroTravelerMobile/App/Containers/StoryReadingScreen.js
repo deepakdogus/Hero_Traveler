@@ -4,7 +4,7 @@ import { Text, View, Animated, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import MapView from 'react-native-maps'
-import RNDraftJSRender from 'react-native-draftjs-render'
+import RNDraftJSRender from 'react-natsive-draftjs-render'
 import { compose, withHandlers } from 'recompose'
 import _ from 'lodash'
 
@@ -240,25 +240,10 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
-  stripLinks = draftjsContent => {
-    const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
-    const entityMap = renderContent ? renderContent.entityMap : null
-    if (renderContent && entityMap) {
-      Object.keys(renderContent.blocks).forEach(key => {
-        const block = renderContent.blocks[key]
-        if (block.entityRanges) {
-          block.entityRanges = block.entityRanges.filter(
-            entityRange => !entityMap[entityRange.key] === 'LINK',
-          )
-        }
-      })
-    }
-    return renderContent
-  }
-
   renderBody = () => {
     const { story } = this.props
-    const draftjsContent = this.stripLinks(story.draftjsContent)
+    const draftjsContent = Immutable.asMutable(story.draftjsContent, {deep: true})
+
     return (
       <Fragment>
         <View style={styles.divider} />

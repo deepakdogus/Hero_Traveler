@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
   tabText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.navBarText,
-    fontSize: 11,
-    letterSpacing: 1.0,
+    fontSize: 12,
+    letterSpacing: 1.2,
     textAlign: 'center',
     fontWeight: '600',
   },

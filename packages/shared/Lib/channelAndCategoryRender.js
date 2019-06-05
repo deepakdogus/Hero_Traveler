@@ -6,7 +6,7 @@ const getCategoriesOrChannels = (
   tabTypes
 ) => {
   const channels = []
-  if (selectedTab === tabTypes.channels && !!channels) {
+  if (selectedTab === tabTypes.channels && !!channelsByID) {
     for (let i = 0; i < channelsByID.length; i++) {
       if (users[channelsByID[i]]) {
         channels.push(users[channelsByID[i]])

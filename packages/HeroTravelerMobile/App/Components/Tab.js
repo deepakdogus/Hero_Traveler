@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     borderBottomWidth: 3,
     borderBottomColor: Colors.snow,
+    padding: 0,
   },
   tabSelected: {
     borderBottomColor: Colors.red,

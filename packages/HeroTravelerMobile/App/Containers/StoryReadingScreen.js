@@ -4,7 +4,7 @@ import { Text, View, Animated, TouchableOpacity, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import MapView from 'react-native-maps'
-import RNDraftJSRender from 'react-natsive-draftjs-render'
+import RNDraftJSRender from 'react-native-draftjs-render'
 import { compose, withHandlers } from 'recompose'
 import _ from 'lodash'
 

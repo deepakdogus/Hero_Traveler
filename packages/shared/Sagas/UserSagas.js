@@ -94,7 +94,7 @@ export function * deleteUser(api) {
   }
 }
 
-export function * getChannelUsers (api){
+export function * getChannelUsers (api) {
   const response = yield call(api.getUsersThatAreChannels)
   const { entities, result } = response.data
   if (response.ok){

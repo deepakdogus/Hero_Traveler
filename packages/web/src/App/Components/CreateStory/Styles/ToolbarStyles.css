@@ -16,7 +16,6 @@ class names derived from draft-js-inline-toolbar-plugin/lib/plugin.css
 */
 .draftJsToolbar__buttonWrapper__1Dmqh {
   display: inline-block;
-  border-radius: 6px;
 }
 
 .draftJsToolbar__button__qi1gf {
@@ -24,11 +23,21 @@ class names derived from draft-js-inline-toolbar-plugin/lib/plugin.css
   color: #1a1c21;
   font-size: 18px;
   border: 0;
+  border-top: 1px solid #ddd;
   padding-top: 5px;
   vertical-align: bottom;
   height: 44px;
   width: 36px;
-  border-radius: 6px;
+}
+
+.draftJsToolbar__buttonWrapper__1Dmqh:first-child > button {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.draftJsToolbar__buttonWrapper__1Dmqh:last-child > button {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .draftJsToolbar__button__qi1gf svg {

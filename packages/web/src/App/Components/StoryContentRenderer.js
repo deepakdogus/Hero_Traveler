@@ -11,8 +11,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getBodyVideoUrls } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
-const LINK_ROLES = ['user', 'admin', 'brand', 'contributor', 'founding Member', 'fellow']
-
+const LINK_ROLES = ['admin', 'brand', 'founding Member']
 const ContentContainer = styled.div``
 
 const StyledImage = styled(Image)`
@@ -197,12 +196,18 @@ export default class StoryContentRenderer extends React.Component {
     author: PropTypes.object,
   }
 
+  isPrivilegedUser = () => {
+    const role = _.get(this.props, 'author.role', '')
+    const isChannel = _.get(this.props, 'author.isChannel', false)
+    return LINK_ROLES.includes(role) || isChannel
+  }
+
   /* Pasted links are automatically made into Link entities, but we do not
    * allow active links offiste except for certain user types
    */
   getEntities = () => ({
     LINK: (children, entity, { key }) =>
-      LINK_ROLES.includes(_.get(this.props, 'author.role', '')) ? (
+      this.isPrivilegedUser() ? (
         <StyledLink
           key={key}
           href={entity.url}
@@ -226,20 +231,21 @@ export default class StoryContentRenderer extends React.Component {
     const lastBlock = lastSection[lastSectionLastIdx]
 
     // remove gap between paragraph text and start of an unordered list
-    contentSections.forEach((section, idx) => {
-      if (
-        idx > 0
-        && section[0]
-        && section[0].type === 'ul'
-        && contentSections[idx - 1]
-        && _.get(
-          contentSections[idx - 1],
-          `[${contentSections[idx - 1].length - 1}][1].props.spacer`,
-        )
-      ) {
-        contentSections[idx - 1][1].pop()
-      }
-    })
+    // FIXME: Currently buggy -- will crash on view when ul is the last block
+    // contentSections.forEach((section, idx) => {
+    //   if (
+    //     idx > 0
+    //     && section[0]
+    //     && section[0].type === 'ul'
+    //     && contentSections[idx - 1]
+    //     && _.get(
+    //       contentSections[idx - 1],
+    //       `[${contentSections[idx - 1].length - 1}][1].props.spacer`,
+    //     )
+    //   ) {
+    //     contentSections[idx - 1][1].pop()
+    //   }
+    // })
 
     // sections [array] contain blocks [array], which contain block parts [objects]
     // e.g. [ [[{text}, {spacer}], [{text}, {spacer}]], [[{spacer}, {image}, {spacer}, {spacer}]] ]

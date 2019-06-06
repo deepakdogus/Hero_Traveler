@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import styled from 'styled-components'
@@ -7,15 +7,15 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-import RoundedButton from '../../Shared/Web/Components/RoundedButton'
-import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
-import { Title, Subtitle } from './SignupSocial'
-import HorizontalDivider from '../../Components/HorizontalDivider'
-import DropdownDatePicker from '../../Components/DropdownDatePicker'
-import GoogleLocator from '../../Components/GoogleLocator'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import { WrappedNavLink } from '../Shared/Web/Components/NavLinkStyled'
+import { Title, Subtitle } from '../Containers/Signup/SignupSocial'
+import HorizontalDivider from './HorizontalDivider'
+import DropdownDatePicker from './DropdownDatePicker'
+import GoogleLocator from './GoogleLocator'
 
-import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
-import '../../Components/CreateStory/Styles/GoogleLocatorStyles.css'
+import { formatLocationWeb } from '../Shared/Lib/formatLocation'
+import './CreateStory/Styles/GoogleLocatorStyles.css'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;

@@ -23,6 +23,8 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 import '../../Components/CreateStory/Styles/GoogleLocatorStyles.css'
 
+import AdditionalInformationForm from '../../Components/AdditionalInformationForm'
+
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
 `
@@ -309,102 +311,7 @@ class SignupAdditionalInfo extends Component {
             />
           </WrappedNavLink>
         </NavLinkContainer>
-        <Container>
-          <SizedDiv>
-            <Title>WELCOME!</Title>
-            <DescriptionTitle>
-              Tell us about yourself so we can better customize your experience.
-            </DescriptionTitle>
-            <Subtitle>
-              (This is optional info that is not visible to other users)
-            </Subtitle>
-            <AddInfoContainer>
-              <Section>
-                <GoogleLocator
-                  value={address}
-                  searchOptions={{ types: ['(regions)'] }}
-                  onChange={this.handleHometownChange}
-                  onSelect={this.handleHometownSelect}
-                  renderChildren={this.renderHometownInput}
-                />
-              </Section>
-              <Section>
-                <SectionLabel>Birthday</SectionLabel>
-                <SectionContent>
-                  <DropdownDatePicker
-                    name="birthday"
-                    startRange={startRange}
-                    endRange={endRange}
-                    onChange={this.handleBirthdaySelect}
-                  />
-                </SectionContent>
-              </Section>
-              <Section>
-                <SectionLabel>Gender</SectionLabel>
-                <SectionContent>
-                  <GenderRow>
-                    <RadioButtonGroup
-                      valueSelected={this.state.gender}
-                      name="gender"
-                      style={styles.radioButtonGroup}
-                      onChange={this.selectGenderOption}
-                      row
-                    >
-                      <RadioButton
-                        value={'male'}
-                        label={'Male'}
-                        style={styles.radioButton}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                      <RadioButton
-                        value={'female'}
-                        label={'Female'}
-                        style={styles.radioButton}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                      <RadioButton
-                        value={'other'}
-                        label={'Other:'}
-                        style={styles.radioButton}
-                        inputStyle={{ backgroundColor: 'green' }}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                    </RadioButtonGroup>
-                    <Input
-                      width={'200px'}
-                      placeholder="Self Describe"
-                      value={
-                        !['male', 'female', 'other'].includes(genderSelfDescribed)
-                          ? genderSelfDescribed
-                          : ''
-                      }
-                      disabled={['male', 'female'].includes(gender) || gender !== 'other'}
-                      onChange={this.onGenderTextChange}
-                    />
-                  </GenderRow>
-                </SectionContent>
-              </Section>
-            </AddInfoContainer>
-          </SizedDiv>
-        </Container>
+        <AdditionalInformationForm />
       </TopicsContainer>
     )
   }

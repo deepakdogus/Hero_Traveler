@@ -115,7 +115,7 @@ export default class BodyEditor extends React.Component {
 
     if (props.value)
       editorState = EditorState.createWithContent(convertFromRaw(props.value), decorator)
-    else editorState = EditorState.createEmpty()
+    else editorState = EditorState.createEmpty(decorator)
     this.state = {
       editorState,
     }
@@ -265,8 +265,8 @@ export default class BodyEditor extends React.Component {
               <AddImageButton {...externalProps} />
               <HeadlineOneButton {...externalProps} />
               <BlockquoteButton {...externalProps} />
-              <UnorderedListButton {...externalProps} />
-              <DividerButton {...externalProps} />
+              {/* <UnorderedListButton {...externalProps} /> */}
+              {/* <DividerButton {...externalProps} /> */}
             </div>
           )}
         </SideToolbar>

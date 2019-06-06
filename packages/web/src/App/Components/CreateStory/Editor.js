@@ -9,14 +9,17 @@ import {
   BoldButton,
   HeadlineOneButton,
   UnderlineButton,
-  UnorderedListButton,
+  // temporarily hidden
+  // UnorderedListButton,
 } from 'draft-js-buttons'
 import styled from 'styled-components'
+import _ from 'lodash'
 
 import { convertFromRaw, convertToRaw } from '../../Shared/Lib/draft-js-helpers'
 import { removeMedia, createSelectionWithFocus } from '../../Lib/web-draft-js-helpers'
 
-import createDividerPlugin from 'draft-js-divider-plugin'
+// temporarily hidden
+// import createDividerPlugin from 'draft-js-divider-plugin'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 import createLinkPlugin from 'draft-js-anchor-plugin'
 import createSideToolbarPlugin from './SidebarPlugin'
@@ -28,6 +31,8 @@ import './Styles/AnchorLinkStyles.css'
 import './Styles/DividerStyles.css'
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
+
+const LINK_ROLES = ['admin', 'brand', 'founding Member']
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;
@@ -58,8 +63,9 @@ const { InlineToolbar } = inlineToolbarPlugin
 const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin
 
-const dividerPlugin = createDividerPlugin()
-const { DividerButton } = dividerPlugin
+// temporarily hidden
+// const dividerPlugin = createDividerPlugin()
+// const { DividerButton } = dividerPlugin
 
 const linkPlugin = createLinkPlugin({
   placeholder: 'Enter a URL and press enter',
@@ -103,6 +109,7 @@ const decorator = new CompositeDecorator([
 
 export default class BodyEditor extends React.Component {
   static propTypes = {
+    author: PropTypes.object,
     onInputChange: PropTypes.func,
     setGetEditorState: PropTypes.func,
     storyId: PropTypes.string,
@@ -233,6 +240,12 @@ export default class BodyEditor extends React.Component {
     return blockType === 'atomic' && !text && selectionState.getFocusOffset() !== 0
   }
 
+  isPrivilegedUser = () => {
+    const role = _.get(this.props, 'author.role', '')
+    const isChannel = _.get(this.props, 'author.isChannel', false)
+    return LINK_ROLES.includes(role) || isChannel
+  }
+
   onChange = editorState => {
     this.setState({ editorState })
   }
@@ -252,7 +265,9 @@ export default class BodyEditor extends React.Component {
           editorState={this.state.editorState}
           placeholder="Tell your story"
           onChange={this.onChange}
-          plugins={[dividerPlugin, inlineToolbarPlugin, linkPlugin, sideToolbarPlugin]}
+          // dividerPlugin hidden from this version
+          // plugins={[dividerPlugin, inlineToolbarPlugin, linkPlugin, sideToolbarPlugin]}
+          plugins={[inlineToolbarPlugin, linkPlugin, sideToolbarPlugin]}
           ref={this.setEditorRef}
           blockRendererFn={this.myBlockRenderer}
           blockStyleFn={this.myBlockStyleFn}
@@ -276,7 +291,7 @@ export default class BodyEditor extends React.Component {
               <BoldButton {...externalProps} />
               <ItalicButton {...externalProps} />
               <UnderlineButton {...externalProps} />
-              <LinkButton {...externalProps} />
+              {this.isPrivilegedUser() && <LinkButton {...externalProps} />}
             </div>
           )}
         </InlineToolbar>

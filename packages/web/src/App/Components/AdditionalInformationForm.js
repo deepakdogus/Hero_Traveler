@@ -36,7 +36,7 @@ const Container = styled.div`
 `
 
 const SizedDiv = styled.div`
- ${props => !props.welcomeDisplay && 'max-width: 540px;'}
+ ${props => props.welcomeDisplay && 'max-width: 540px;'}
   margin: 0 auto;
 `
 
@@ -52,6 +52,9 @@ const DescriptionTitle = styled.p`
 const AddInfoContainer = styled.div`
   margin-top: 50px;
   text-align: left;
+  ${props => props.welcomeDisplay && 'max-width: 540px;'}
+  ${props => props.welcomeDisplay && `margin: 100px 7.5%;`}
+  margin: 0 auto;
 `
 
 const Section = styled.div`
@@ -292,13 +295,13 @@ class AdditionalInformationForm extends Component {
     const endRange = moment()
       .subtract(13, 'years')
       .format('YYYY-MM-DD')
-
+    console.log(welcomeDisplay, 'this is the welcome display')
     return (
       <TopicsContainer>
-        <Container welcomeDisplay={true}>
+        <Container welcomeDisplay={welcomeDisplay}>
           <SizedDiv>
            { welcomeDisplay &&
-            <SizedDiv welcomeDisplay={true}>
+            <SizedDiv welcomeDisplay={welcomeDisplay}>
               <Title>WELCOME!</Title>
               <DescriptionTitle>
                 Tell us about yourself so we can better customize your experience.
@@ -308,7 +311,7 @@ class AdditionalInformationForm extends Component {
               </Subtitle>
             </SizedDiv>
            }
-            <AddInfoContainer>
+            <AddInfoContainer welcomeDisplay={welcomeDisplay}>
               <Section>
                 <GoogleLocator
                   value={address}

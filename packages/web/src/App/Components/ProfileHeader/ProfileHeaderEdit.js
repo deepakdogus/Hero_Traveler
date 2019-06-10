@@ -421,6 +421,7 @@ export default class ProfileHeaderEdit extends React.Component {
             />
           </TextareaWrapper>
 
+          <Label>Home</Label>
           <AdditionalInformationForm welcomeDisplay={false} />
 
           <Label>Bio</Label>

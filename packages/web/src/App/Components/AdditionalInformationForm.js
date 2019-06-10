@@ -50,15 +50,14 @@ const DescriptionTitle = styled.p`
 `
 
 const AddInfoContainer = styled.div`
-  margin-top: 50px;
   text-align: left;
   ${props => props.welcomeDisplay && 'max-width: 540px;'}
-  ${props => props.welcomeDisplay && `margin: 100px 7.5%;`}
-  margin: 0 auto;
+  margin: 10 auto;
+  ${props => props.welcomeDisplay && `margin: 0 auto;`}
 `
 
 const Section = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: ${props => props.welcomeDisplay ? '50px;' : '0px;'}
 `
 
 const SectionLabel = styled.p`
@@ -157,6 +156,16 @@ const Input = styled.input`
     padding: 15px 0;
     width: 100%;
   }
+`
+
+const Label = styled.label`
+  display: block;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  font-weight: 600;
+  letter-spacing: .2px;
+  font-size: 16px;
+  color: ${props => props.theme.Colors.background};
+  margin: 16px 0 8px;
 `
 
 // radio button Styles
@@ -295,7 +304,6 @@ class AdditionalInformationForm extends Component {
     const endRange = moment()
       .subtract(13, 'years')
       .format('YYYY-MM-DD')
-    console.log(welcomeDisplay, 'this is the welcome display')
     return (
       <TopicsContainer>
         <Container welcomeDisplay={welcomeDisplay}>
@@ -312,7 +320,7 @@ class AdditionalInformationForm extends Component {
             </SizedDiv>
            }
             <AddInfoContainer welcomeDisplay={welcomeDisplay}>
-              <Section>
+              <Section welcomeDisplay={welcomeDisplay}>
                 <GoogleLocator
                   value={address}
                   searchOptions={{ types: ['(regions)'] }}
@@ -321,8 +329,11 @@ class AdditionalInformationForm extends Component {
                   renderChildren={this.renderHometownInput}
                 />
               </Section>
-              <Section>
-                <SectionLabel>Birthday</SectionLabel>
+              <Section welcomeDisplay={welcomeDisplay}>
+                { welcomeDisplay 
+                  ? <SectionLabel>Birthday</SectionLabel>
+                  : <Label>Birthday</Label>
+                }
                 <SectionContent center={!welcomeDisplay}>
                   <DropdownDatePicker
                     name="birthday"
@@ -332,8 +343,11 @@ class AdditionalInformationForm extends Component {
                   />
                 </SectionContent>
               </Section>
-              <Section>
-                <SectionLabel>Gender</SectionLabel>
+              <Section welcomeDisplay={welcomeDisplay}>
+                { welcomeDisplay
+                  ? <SectionLabel>Gender</SectionLabel>
+                  : <Label>Gender</Label>
+                }
                 <SectionContent>
                   <GenderRow>
                     <RadioButtonGroup

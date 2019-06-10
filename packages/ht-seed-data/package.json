@@ -28,6 +28,10 @@
     "string": "^3.3.3"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@hero/ht-core": "0.1.1"
+=======
+    "@hero/ht-core": "0.0.96"
+>>>>>>> master
   }
 }

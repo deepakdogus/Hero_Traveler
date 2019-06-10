@@ -18,6 +18,8 @@ import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import _ from 'lodash'
 
+import AdditionalInformationForm from '../AdditionalInformationForm'
+
 const customModalStyles = {
   content: {
     border: '0',
@@ -419,6 +421,9 @@ export default class ProfileHeaderEdit extends React.Component {
               maxLength={63}
             />
           </TextareaWrapper>
+
+          <AdditionalInformationForm welcomeDisplay={false} />
+
           <Label>Bio</Label>
           <TextareaWrapper>
             <ResizableTextarea

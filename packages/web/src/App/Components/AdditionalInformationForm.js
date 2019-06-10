@@ -31,12 +31,12 @@ const NavLinkContainer = styled(TopicsContainer)`
 `
 
 const Container = styled.div`
-  margin: 100px 7.5%;
+  margin: ${props => props.welcomeDisplay ? '100px 7.5%;' : 'null;'}
   text-align: center;
 `
 
 const SizedDiv = styled.div`
-  max-width: 540px;
+  max-width: ${props => props.welcomeDisplay ? '540px;' : 'null;'}
   margin: 0 auto;
 `
 
@@ -285,6 +285,7 @@ class AdditionalInformationForm extends Component {
 
   render() {
     const { address, gender, genderSelfDescribed } = this.state
+    const { welcomeDisplay } = this.props
     const startRange = moment()
       .subtract(100, 'years')
       .format('YYYY-MM-DD')
@@ -294,15 +295,19 @@ class AdditionalInformationForm extends Component {
 
     return (
       <TopicsContainer>
-        <Container>
+        <Container welcomeDisplay={welcomeDisplay}>
           <SizedDiv>
-            <Title>WELCOME!</Title>
-            <DescriptionTitle>
-              Tell us about yourself so we can better customize your experience.
-            </DescriptionTitle>
-            <Subtitle>
-              (This is optional info that is not visible to other users)
-            </Subtitle>
+           { !!welcomeDisplay &&
+            <SizedDiv welcomeDisplay={welcomeDisplay}>
+              <Title>WELCOME!</Title>
+              <DescriptionTitle>
+                Tell us about yourself so we can better customize your experience.
+              </DescriptionTitle>
+              <Subtitle>
+                (This is optional info that is not visible to other users)
+              </Subtitle>
+            </SizedDiv>
+           }
             <AddInfoContainer>
               <Section>
                 <GoogleLocator

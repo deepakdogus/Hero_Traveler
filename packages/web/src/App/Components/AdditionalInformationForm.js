@@ -31,12 +31,12 @@ const NavLinkContainer = styled(TopicsContainer)`
 `
 
 const Container = styled.div`
-  margin: ${props => props.welcomeDisplay ? '100px 7.5%;' : 'null;'}
+  ${props => props.welcomeDisplay && `margin: 100px 7.5%;`}
   text-align: center;
 `
 
 const SizedDiv = styled.div`
-  max-width: ${props => props.welcomeDisplay ? '540px;' : 'null;'}
+ ${props => !props.welcomeDisplay && 'max-width: 540px;'}
   margin: 0 auto;
 `
 
@@ -295,10 +295,10 @@ class AdditionalInformationForm extends Component {
 
     return (
       <TopicsContainer>
-        <Container welcomeDisplay={!!welcomeDisplay}>
+        <Container welcomeDisplay={true}>
           <SizedDiv>
-           { !!welcomeDisplay &&
-            <SizedDiv welcomeDisplay={!!welcomeDisplay}>
+           { welcomeDisplay &&
+            <SizedDiv welcomeDisplay={true}>
               <Title>WELCOME!</Title>
               <DescriptionTitle>
                 Tell us about yourself so we can better customize your experience.

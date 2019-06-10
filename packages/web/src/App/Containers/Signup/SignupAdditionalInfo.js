@@ -311,7 +311,7 @@ class SignupAdditionalInfo extends Component {
             />
           </WrappedNavLink>
         </NavLinkContainer>
-        <AdditionalInformationForm />
+        <AdditionalInformationForm welcomeDisplay={true} />
       </TopicsContainer>
     )
   }

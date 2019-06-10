@@ -295,10 +295,10 @@ class AdditionalInformationForm extends Component {
 
     return (
       <TopicsContainer>
-        <Container welcomeDisplay={welcomeDisplay}>
+        <Container welcomeDisplay={!!welcomeDisplay}>
           <SizedDiv>
            { !!welcomeDisplay &&
-            <SizedDiv welcomeDisplay={welcomeDisplay}>
+            <SizedDiv welcomeDisplay={!!welcomeDisplay}>
               <Title>WELCOME!</Title>
               <DescriptionTitle>
                 Tell us about yourself so we can better customize your experience.
@@ -320,7 +320,7 @@ class AdditionalInformationForm extends Component {
               </Section>
               <Section>
                 <SectionLabel>Birthday</SectionLabel>
-                <SectionContent>
+                <SectionContent center={!welcomeDisplay}>
                   <DropdownDatePicker
                     name="birthday"
                     startRange={startRange}

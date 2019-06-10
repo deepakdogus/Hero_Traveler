@@ -292,14 +292,6 @@ class SignupAdditionalInfo extends Component {
   )
 
   render() {
-    const { address, gender, genderSelfDescribed } = this.state
-    const startRange = moment()
-      .subtract(100, 'years')
-      .format('YYYY-MM-DD')
-    const endRange = moment()
-      .subtract(13, 'years')
-      .format('YYYY-MM-DD')
-
     return (
       <TopicsContainer>
         <NavLinkContainer>
@@ -311,7 +303,15 @@ class SignupAdditionalInfo extends Component {
             />
           </WrappedNavLink>
         </NavLinkContainer>
-        <AdditionalInformationForm welcomeDisplay={true} />
+        <AdditionalInformationForm 
+          welcomeDisplay={true}
+          handleHometownChange={this.handleHometownChange}
+          handleHometownSelect={this.handleHometownSelect}
+          handleBirthdaySelect={this.handleBirthdaySelect}
+          selectGenderOption={this.selectGenderOption}
+          onGenderTextChange={this.onGenderTextChange}
+          {...this.state} 
+        />
       </TopicsContainer>
     )
   }

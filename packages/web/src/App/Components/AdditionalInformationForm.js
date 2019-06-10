@@ -7,8 +7,6 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
-import RoundedButton from '../Shared/Web/Components/RoundedButton'
-import { WrappedNavLink } from '../Shared/Web/Components/NavLinkStyled'
 import { Title, Subtitle } from '../Containers/Signup/SignupSocial'
 import HorizontalDivider from './HorizontalDivider'
 import DropdownDatePicker from './DropdownDatePicker'
@@ -19,15 +17,6 @@ import './CreateStory/Styles/GoogleLocatorStyles.css'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
-`
-
-const NavLinkContainer = styled(TopicsContainer)`
-  width: 100%;
-  position: fixed;
-  top: 85px;
-  display: flex;
-  justify-content: flex-end;
-  z-index: 1;
 `
 
 const Container = styled.div`
@@ -201,63 +190,6 @@ class AdditionalInformationForm extends Component {
     updateUser: PropTypes.func,
   }
 
-  state = {
-    address: '',
-    locationInfo: null,
-    birthday: null,
-    gender: '',
-    genderSelfDescribed: '',
-    modalVisible: false,
-    submitted: false,
-  }
-
-  handleHometownChange = address => this.setState({ address })
-
-  handleHometownSelect = async (address, placeId) => {
-    this.setState({ address })
-    let locationInfo = await formatLocationWeb(
-      address,
-      placeId,
-      geocodeByPlaceId,
-      getLatLng,
-    )
-    this.setState({ locationInfo, location: locationInfo.name })
-  }
-
-  handleBirthdaySelect = momentDate => {
-    const birthday = momentDate.toDate()
-    if (birthday instanceof Date && !isNaN(birthday)) {
-      this.setState({ birthday })
-    }
-  }
-
-  selectGenderOption = (event, gender) => {
-    this.setState({ gender, genderSelfDescribed: '' })
-  }
-
-  onGenderTextChange = event => {
-    const genderSelfDescribed = event.target.value
-    if (!genderSelfDescribed) this.setState({ gender: 'other' })
-    this.setState({ genderSelfDescribed })
-  }
-
-  onClickNext = () => {
-    const { locationInfo, birthday, gender, genderSelfDescribed } = this.state
-
-    // data prep
-    const attrs = {}
-    if (locationInfo) attrs.locationInfo = locationInfo
-    if (birthday) attrs.birthday = birthday
-    if (genderSelfDescribed) attrs.gender = genderSelfDescribed.toLowerCase()
-    else if (gender) attrs.gender = gender.toLowerCase()
-
-    // update user
-    if (Object.keys(attrs).length) this.props.updateUser(attrs)
-
-    // induce navigation
-    this.setState({ submitted: true })
-  }
-
   renderHometownInput = ({ getInputProps, suggestions, getSuggestionItemProps }) => (
     <InputRow>
       <Input
@@ -296,14 +228,24 @@ class AdditionalInformationForm extends Component {
   )
 
   render() {
-    const { address, gender, genderSelfDescribed } = this.state
-    const { welcomeDisplay } = this.props
+    const { 
+      address,
+      gender, 
+      genderSelfDescribed,
+      welcomeDisplay,
+      onGenderTextChange,
+      selectGenderOption,
+      handleHometownChange,
+      handleHometownSelect,
+      handleBirthdaySelect,
+    } = this.props
     const startRange = moment()
       .subtract(100, 'years')
       .format('YYYY-MM-DD')
     const endRange = moment()
       .subtract(13, 'years')
       .format('YYYY-MM-DD')
+      console.log
     return (
       <TopicsContainer>
         <Container welcomeDisplay={welcomeDisplay}>
@@ -324,8 +266,8 @@ class AdditionalInformationForm extends Component {
                 <GoogleLocator
                   value={address}
                   searchOptions={{ types: ['(regions)'] }}
-                  onChange={this.handleHometownChange}
-                  onSelect={this.handleHometownSelect}
+                  onChange={handleHometownChange}
+                  onSelect={handleHometownSelect}
                   renderChildren={this.renderHometownInput}
                 />
               </Section>
@@ -339,7 +281,7 @@ class AdditionalInformationForm extends Component {
                     name="birthday"
                     startRange={startRange}
                     endRange={endRange}
-                    onChange={this.handleBirthdaySelect}
+                    onChange={handleBirthdaySelect}
                   />
                 </SectionContent>
               </Section>
@@ -351,10 +293,10 @@ class AdditionalInformationForm extends Component {
                 <SectionContent>
                   <GenderRow>
                     <RadioButtonGroup
-                      valueSelected={this.state.gender}
+                      valueSelected={gender}
                       name="gender"
                       style={styles.radioButtonGroup}
-                      onChange={this.selectGenderOption}
+                      onChange={selectGenderOption}
                       row
                     >
                       <RadioButton
@@ -404,7 +346,7 @@ class AdditionalInformationForm extends Component {
                           : ''
                       }
                       disabled={['male', 'female'].includes(gender) || gender !== 'other'}
-                      onChange={this.onGenderTextChange}
+                      onChange={onGenderTextChange}
                     />
                   </GenderRow>
                 </SectionContent>

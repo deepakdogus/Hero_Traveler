@@ -465,7 +465,6 @@ export default class ProfileHeaderEdit extends React.Component {
             />
           </TextareaWrapper>
 
-          <Label>Home</Label>
           <AdditionalInformationForm 
             welcomeDisplay={false}
             handleHometownChange={this.handleHometownChange}

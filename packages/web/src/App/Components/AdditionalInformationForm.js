@@ -46,6 +46,7 @@ const AddInfoContainer = styled.div`
 `
 
 const Section = styled.div`
+  ${props => !props.welcomeDisplay && 'margin-top: 0px;'}
   margin-bottom: ${props => props.welcomeDisplay ? '50px;' : '0px;'}
 `
 
@@ -57,7 +58,7 @@ const SectionLabel = styled.p`
 `
 
 const SectionContent = styled.div`
-  margin-top: 15px;
+  margin-top: 0px;
 `
 
 const GenderRow = styled.div`
@@ -154,7 +155,7 @@ const Label = styled.label`
   letter-spacing: .2px;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
-  margin: 16px 0 8px;
+  margin: 15px 0 0px;
 `
 
 // radio button Styles
@@ -262,6 +263,7 @@ class AdditionalInformationForm extends Component {
             </SizedDiv>
            }
             <AddInfoContainer welcomeDisplay={welcomeDisplay}>
+              {!welcomeDisplay && <Label>Home</Label>}
               <Section welcomeDisplay={welcomeDisplay}>
                 <GoogleLocator
                   value={address}

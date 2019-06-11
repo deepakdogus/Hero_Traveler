@@ -245,6 +245,7 @@ class AdditionalInformationForm extends Component {
     const endRange = moment()
       .subtract(13, 'years')
       .format('YYYY-MM-DD')
+
     return (
       <TopicsContainer>
         <Container welcomeDisplay={welcomeDisplay}>

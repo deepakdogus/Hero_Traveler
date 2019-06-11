@@ -121,11 +121,10 @@ class DateSelect extends Component {
     const dayOfMonth = this.state.selectedDayOfMonth
 
     if (!year || !month) return
-    const formattedValue = moment(`${year}-${2}-${dayOfMonth}`,
+    const formattedValue = moment(`${year}-${month}-${dayOfMonth}`,
       this.props.format || 'YYYY-MM-DD',
     )
-    const value = moment(formattedValue)
-    this.props.onChange(value, formattedValue)
+    this.props.onChange(formattedValue)
   }
 
   findNumberOfDaysInMonth(noCallbackNeeded) {
@@ -203,6 +202,7 @@ class DateSelect extends Component {
   }
 
   render() {
+    console.log(this.state, 'this is the state in drop')
     return (
       <div className={'select-datepicker'}>
         {this.state.selectedMonth ? (

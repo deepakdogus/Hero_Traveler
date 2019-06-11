@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
 import PhotoEditor from '../Modals/PhotoEditor'
 import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import { Row } from '../../Shared/Web/Components/FlexboxGrid'
@@ -17,6 +18,8 @@ import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormVa
 import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import _ from 'lodash'
+
+import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 
 import AdditionalInformationForm from '../AdditionalInformationForm'
 
@@ -208,6 +211,13 @@ function getInitialState(user = {}) {
     modal: undefined,
     photoType: undefined,
     loadedImage: undefined,
+    address: '',
+    locationInfo: null,
+    birthday: null,
+    gender: '',
+    genderSelfDescribed: '',
+    modalVisible: false,
+    submitted: false,
   }
 }
 
@@ -319,6 +329,36 @@ export default class ProfileHeaderEdit extends React.Component {
     })
   }
 
+  handleHometownChange = address => this.setState({ address })
+
+  handleHometownSelect = async (address, placeId) => {
+    this.setState({ address })
+    let locationInfo = await formatLocationWeb(
+      address,
+      placeId,
+      geocodeByPlaceId,
+      getLatLng,
+    )
+    this.setState({ locationInfo, location: locationInfo.name })
+  }
+
+  handleBirthdaySelect = momentDate => {
+    const birthday = momentDate.toDate()
+    if (birthday instanceof Date && !isNaN(birthday)) {
+      this.setState({ birthday })
+    }
+  }
+
+  selectGenderOption = (event, gender) => {
+    this.setState({ gender, genderSelfDescribed: '' })
+  }
+
+  onGenderTextChange = event => {
+    const genderSelfDescribed = event.target.value
+    if (!genderSelfDescribed) this.setState({ gender: 'other' })
+    this.setState({ genderSelfDescribed })
+  }
+
   render () {
     const {user, error} = this.props
     const {
@@ -347,6 +387,7 @@ export default class ProfileHeaderEdit extends React.Component {
       || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
+
     return (
       <Container>
         <RelativeWrapper>
@@ -422,7 +463,15 @@ export default class ProfileHeaderEdit extends React.Component {
           </TextareaWrapper>
 
           <Label>Home</Label>
-          <AdditionalInformationForm welcomeDisplay={false} />
+          <AdditionalInformationForm 
+            welcomeDisplay={false}
+            handleHometownChange={this.handleHometownChange}
+            handleHometownSelect={this.handleHometownSelect}
+            handleBirthdaySelect={this.handleBirthdaySelect}
+            selectGenderOption={this.selectGenderOption}
+            onGenderTextChange={this.onGenderTextChange}
+            {...this.state} 
+          />
 
           <Label>Bio</Label>
           <TextareaWrapper>

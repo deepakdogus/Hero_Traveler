@@ -25,7 +25,7 @@ export const BodyText = styled.p`
   font-size: 18px;
   color: ${props => props.theme.Colors.grey};
   letter-spacing: 0.6px;
-  word-break: break-all;
+  word-break: break-word;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 20px;
     padding-right: 20px;
@@ -100,7 +100,7 @@ const StyledUnorderedListItem = styled.li`
   color: ${props => props.theme.Colors.grey};
   letter-spacing: 0.6px;
   line-height: 30px;
-  word-break: break-all;
+  word-break: break-word;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     padding-left: 20px;
     padding-right: 20px;

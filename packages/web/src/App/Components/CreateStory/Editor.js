@@ -32,7 +32,7 @@ import './Styles/DividerStyles.css'
 import './Styles/EditorStyles.css'
 import './Styles/ToolbarStyles.css'
 
-const LINK_ROLES = ['admin', 'brand', 'founding Member']
+const LINK_ROLES = ['admin', 'brand', 'founding member']
 
 const EditorWrapper = styled.div`
   margin-bottom: 95px;

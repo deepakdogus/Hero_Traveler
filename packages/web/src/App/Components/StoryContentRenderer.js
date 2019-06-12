@@ -11,7 +11,7 @@ import getImageUrl from '../Shared/Lib/getImageUrl'
 import { getBodyVideoUrls } from '../Shared/Lib/getVideoUrl'
 import Caption from './MediaCaption'
 
-const LINK_ROLES = ['admin', 'brand', 'founding Member']
+const LINK_ROLES = ['admin', 'brand', 'founding member']
 const ContentContainer = styled.div``
 
 const StyledImage = styled(Image)`

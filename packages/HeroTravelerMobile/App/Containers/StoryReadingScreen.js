@@ -31,7 +31,7 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import { createShareDialog } from '../Lib/sharingMobile'
 import StoryActionButton from '../Components/StoryActionButton'
 
-const LINK_ROLES = ['admin', 'brand', 'founding Member']
+const LINK_ROLES = ['admin', 'brand', 'founding member']
 
 const enhanceStoryVideo = compose(
   withHandlers(() => {

@@ -31,9 +31,7 @@ class CameraRollPicker extends Component {
     this.fetch()
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('nextProps seelected', nextProps.selected)
-    this.setState({
+  compone) {({
       selected: nextProps.selected,
     })
   }
@@ -64,9 +62,7 @@ class CameraRollPicker extends Component {
       fetchParams.after = this.state.lastCursor
     }
 
-    CameraRoll.getPhotos(fetchParams)
-      .then((data) => this._appendImages(data), (e) => console.log(e))
-  }
+    Cams) }
 
   _appendImages(data) {
     var assets = data.edges
@@ -311,10 +307,7 @@ CameraRollPicker.defaultProps = {
   assetType: 'Photos',
   backgroundColor: 'white',
   selected: [],
-  callback: function(selectedImages, currentImage) {
-    console.log(currentImage)
-    console.log(selectedImages)
-  },
+  callback: function() {},
   emptyText: 'No photos.',
 }
 

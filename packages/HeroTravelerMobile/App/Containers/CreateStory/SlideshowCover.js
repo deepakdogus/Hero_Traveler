@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
 } from 'react-native'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -85,12 +84,6 @@ class SlideshowCover extends Component{
     else {
       slideshow.push(file)
     }
-    Image.getSize(galleryImagePath, (width, height) => {
-      this.setState({
-        width,
-        height,
-      })
-    })
     this.setState({
       galleryImagePath,
       selected,

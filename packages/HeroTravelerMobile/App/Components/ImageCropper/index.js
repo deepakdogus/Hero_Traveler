@@ -161,7 +161,7 @@ class ImageCrop extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (this.props.zoom != nextProps.zoom) {
+    if (this.props.zoom !== nextProps.zoom) {
       var zoom = (100 - nextProps.zoom) / 100
       this.setState({ zoom: zoom })
     }
@@ -174,7 +174,6 @@ class ImageCrop extends Component {
       {height: this.state.imageHeight, width: this.state.imageWidth},
       this.state.zoom,
     )
-
     this.setState({
       imageDimHeight: this._dimensionAfterZoom.height,
       imageDimWidth: this._dimensionAfterZoom.width,
@@ -198,6 +197,7 @@ class ImageCrop extends Component {
         >
           <GLImage
             source={{ uri: this.props.image}}
+            dimSize={{height: this.state.imageDimHeight, width: this.state.imageDimWidth}}
             imageSize={{height: this.state.imageHeight, width: this.state.imageWidth}}
             resizeMode="cover"
             isMounted={this.state.isMounted}

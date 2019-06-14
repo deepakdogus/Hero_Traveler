@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@hero/ht-core@0.0.94":
-  version "0.0.94"
-  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.94.tgz#3c12d572e666ff120963a2c7a39c6aa9ff333658"
-  integrity sha1-PBLVcuZm/xIJY6LHo5xqqf8zNlg=
+"@hero/ht-core@0.0.96":
+  version "0.0.96"
+  resolved "https://npm.abeck.io:443/@hero%2fht-core/-/ht-core-0.0.96.tgz#c7359b42c36b9729bed9259906b53b69f89f00cd"
+  integrity sha1-xzWbQsNrlym+2SWZBrU7afifAM0=
   dependencies:
     "@hero/ht-util" "^0.0.68"
     algoliasearch "^3.22.1"

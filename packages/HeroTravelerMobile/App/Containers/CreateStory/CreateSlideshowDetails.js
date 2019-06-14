@@ -365,12 +365,12 @@ class CreateSlideshowDetails extends React.Component {
             value={this.getHashtagsValue()}
             placeholder='Add hashtags'
           />
-          <FormInput
+          {/*<FormInput
             onPress={this.navToTagUsers}
             iconName='profile'
             value={this.getUsersValue()}
             placeholder='Tag users'
-          />
+          />*/}
           {user && user.role !== 'user' && (
             <FormInput
               onPress={this.navToAddButton}

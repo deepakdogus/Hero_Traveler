@@ -140,7 +140,7 @@ class Footer extends Component {
                 Terms of Service
               </StyledPseudoLink>
               <StyledOffsiteLink
-                href='mailto:info@herotraveler.com'
+                href='mailto:herotraveler@herotraveler.com'
               >
                 Contact Us
               </StyledOffsiteLink>

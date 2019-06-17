@@ -248,6 +248,24 @@ export default class ProfileHeaderEdit extends React.Component {
       })
     }
 
+    if (prevProps.user.gender !== this.state.gender) {
+      this.setState({
+        gender: this.props.user.gender
+      })
+    }
+
+    if (prevProps.user.locationInfo !== this.state.locationInfo) {
+      this.setState({
+        locationInfo: this.props.user.locationInfo
+      })
+    }
+
+    if (prevProps.user.birthday !== this.state.birthday) {
+      this.setState({
+        birthday: this.props.user.birthday
+      })
+    }
+
     const didSave =
       !!prevProps.updating
       && !this.props.updating

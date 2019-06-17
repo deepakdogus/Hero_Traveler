@@ -246,7 +246,6 @@ class AdditionalInformationForm extends Component {
     const endRange = moment()
       .subtract(13, 'years')
       .format('YYYY-MM-DD')
-
     return (
       <TopicsContainer>
         <Container welcomeDisplay={welcomeDisplay}>
@@ -266,7 +265,7 @@ class AdditionalInformationForm extends Component {
               {!welcomeDisplay && <Label>Home</Label>}
               <Section welcomeDisplay={welcomeDisplay}>
                 <GoogleLocator
-                  value={address}
+                  value={(this.props.locationInfo && this.props.locationInfo[0].name) || address}
                   searchOptions={{ types: ['(regions)'] }}
                   onChange={handleHometownChange}
                   onSelect={handleHometownSelect}

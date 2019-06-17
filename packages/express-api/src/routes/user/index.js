@@ -1,5 +1,5 @@
 import express from 'express'
-import {hasValidOauth, hasClientId} from '../../middleware'
+import {hasValidOauth, hasClientId, populatesUser} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
 import getUser from './getUser'
@@ -151,6 +151,7 @@ router.post('/threads/:id',
 )
 
 router.get('/:id',
+  populatesUser,
   endpointWrapper(getUser)
 )
 

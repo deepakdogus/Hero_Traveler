@@ -201,6 +201,20 @@ class DateSelect extends Component {
     this.init()
   }
 
+  componentDidUpdate(prevProps){
+    if(this.props.birthday !== prevProps.birthday){
+      const year = Number(this.props.birthday.slice(0, 4))
+      const month = Number(this.props.birthday.slice(5, 7))
+      const day = Number(this.props.birthday.slice(8, 10))
+
+      this.setState({
+        selectedYear: year,
+        selectedMonth: month,
+        selectedDayOfMonth: day,
+      })
+    }
+  }
+  
   render() {
     return (
       <div className={'select-datepicker'}>

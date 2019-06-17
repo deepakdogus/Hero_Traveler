@@ -260,7 +260,7 @@ export default class ProfileHeaderEdit extends React.Component {
       })
     }
 
-    if (prevProps.user.birthday !== this.state.birthday) {
+    if (prevProps.user.birthday !== this.props.user.birthday) {
       this.setState({
         birthday: this.props.user.birthday
       })

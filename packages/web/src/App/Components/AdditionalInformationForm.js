@@ -283,6 +283,7 @@ class AdditionalInformationForm extends Component {
                     startRange={startRange}
                     endRange={endRange}
                     onChange={handleBirthdaySelect}
+                    birthday={this.props.birthday}
                   />
                 </SectionContent>
               </Section>

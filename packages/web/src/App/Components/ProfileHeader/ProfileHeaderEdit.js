@@ -390,7 +390,6 @@ export default class ProfileHeaderEdit extends React.Component {
       || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
-
     return (
       <Container>
         <RelativeWrapper>

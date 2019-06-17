@@ -202,7 +202,6 @@ class DateSelect extends Component {
   }
 
   render() {
-    console.log(this.state, 'this is the state in drop')
     return (
       <div className={'select-datepicker'}>
         {this.state.selectedMonth ? (

@@ -6,7 +6,7 @@ export default StyleSheet.create({
   contentContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: Colors.snow,
   },
   cardView: {
     width: `${Metrics.feedMargin}%`,

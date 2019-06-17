@@ -328,12 +328,19 @@ function * createSlideshow(draft){
       return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
       .then(response => {
         if (response.error) return response
-        const responseData = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
-        if (responseData.resource_type === 'video' && uri && draft.id && responseData.public_id) {
+        const responseData = typeof response.data === 'string'
+          ? JSON.parse(response.data)
+          : response.data
+        if (responseData.resource_type === 'video' &&
+          uri &&
+          draft.id && responseData.public_id
+        ) {
           moveVideoToPreCache(draft.id, uri, responseData.public_id)
         }
         if (responseData.coordinates) {
-          _.set(item, 'original.meta.coordinates', _.get(responseData, 'coordinates.custom'))
+          _.set(item, 'original.meta.coordinates',
+            _.get(responseData, 'coordinates.custom'),
+          )
         }
         return _.merge(item, responseData)
       })

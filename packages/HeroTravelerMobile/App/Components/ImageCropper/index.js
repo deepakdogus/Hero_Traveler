@@ -30,13 +30,11 @@ const imageDimensionsAfterZoom = (viewport, dimensions, zoom) => {
 const movementFromZoom = (gestureState, viewport, dimensions, offsets, zoom) =>{
   let newPosX, newPosY
   // X-axis
-  let widthOffset = dimensions.width - viewport.width
   let pxVsMovX = (1 / dimensions.width)
   let moveX = (gestureState.dx * pxVsMovX) * zoom
   newPosX = (parseFloat(offsets.x) - parseFloat(moveX))
 
   // Y-axis
-  let heightOffset = dimensions.height - viewport.height
   let pxVsMovY = (1 / dimensions.height)
   let moveY = (gestureState.dy * pxVsMovY) * zoom
   newPosY = (parseFloat(offsets.y) - parseFloat(moveY))
@@ -66,6 +64,7 @@ class ImageCrop extends Component {
     }
     this.onCrop = _.debounce(this.onCrop, 500)
   }
+
   componentWillMount(){
     Image.getSize(this.props.image, (width, height) => {
       //update state
@@ -131,16 +130,13 @@ class ImageCrop extends Component {
         }
         else{
         //We are zooming the image
+          let a = evt.nativeEvent.changedTouches[0].locationX - evt.nativeEvent.changedTouches[1].locationX
+          let b = evt.nativeEvent.changedTouches[0].locationY - evt.nativeEvent.changedTouches[1].locationY
+          let c = Math.sqrt( a * a + b * b )
           if (this.zoomLastDistance == 0){
-            let a = evt.nativeEvent.changedTouches[0].locationX - evt.nativeEvent.changedTouches[1].locationX
-            let b = evt.nativeEvent.changedTouches[0].locationY - evt.nativeEvent.changedTouches[1].locationY
-            let c = Math.sqrt( a * a + b * b )
             this.zoomLastDistance = c.toFixed(1)
           }
           else{
-            let a = evt.nativeEvent.changedTouches[0].locationX - evt.nativeEvent.changedTouches[1].locationX
-            let b = evt.nativeEvent.changedTouches[0].locationY - evt.nativeEvent.changedTouches[1].locationY
-            let c = Math.sqrt( a * a + b * b )
             this.zoomCurrentDistance = c.toFixed(1)
 
             //what is the zoom level
@@ -161,16 +157,16 @@ class ImageCrop extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (this.props.zoom !== nextProps.zoom) {
-      var zoom = (100 - nextProps.zoom) / 100
-      this.setState({ zoom: zoom })
-    }
+    // if (this.props.zoom !== nextProps.zoom) {
+    //   var zoom = (100 - nextProps.zoom) / 100
+    //   this.setState({ zoom: zoom })
+    // }
 
     //
     //get dimensions after crop
     //
     this._dimensionAfterZoom = imageDimensionsAfterZoom(
-      {height: this.props.cropHeight, width: this.props.cropWidth},
+      {height: nextProps.cropHeight, width: nextProps.cropWidth},
       {height: this.state.imageHeight, width: this.state.imageWidth},
       this.state.zoom,
     )
@@ -185,6 +181,22 @@ class ImageCrop extends Component {
       isMounted: false,
     })
   }
+
+  onCrop = (cropParams) => {
+    if (!_.isEqual(cropParams, this.state.cropParams)) {
+      this.setState({
+        cropParams,
+      })
+      this.props.onCrop(cropParams)
+    }
+  }
+
+  crop(){
+    return this.refs.cropit.captureFrame({quality: this.props.quality, type: this.props.type, format: this.props.format, filePath: this.props.filePath})
+  }
+
+  _makeRef = (i) => this.cropit = i
+
   render() {
     return (
       <View {...this._panResponder.panHandlers}>
@@ -193,7 +205,7 @@ class ImageCrop extends Component {
           height={this.props.cropHeight}
           pixelRatio={this.props.pixelRatio}
           backgroundColor="transparent"
-          ref="cropit"
+          ref={this._makeRef}
         >
           <GLImage
             source={{ uri: this.props.image}}
@@ -209,20 +221,8 @@ class ImageCrop extends Component {
       </View>
     )
   }
-
-  onCrop = (cropParams) => {
-    if (!_.isEqual(cropParams, this.state.cropParams)) {
-      this.setState({
-        cropParams,
-      })
-      this.props.onCrop(cropParams)
-    }
-  }
-
-  crop(){
-    return this.refs.cropit.captureFrame({quality: this.props.quality, type: this.props.type, format: this.props.format, filePath: this.props.filePath})
-  }
 }
+
 ImageCrop.defaultProps = {
   image: '',
   cropWidth: 300,
@@ -236,6 +236,7 @@ ImageCrop.defaultProps = {
   format: 'base64',
   filePath: '',
 }
+
 ImageCrop.propTypes = {
   image: PropTypes.string.isRequired,
   cropWidth: PropTypes.number.isRequired,

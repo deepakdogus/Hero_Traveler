@@ -30,7 +30,6 @@ const Image = GL.createComponent(
   ({
     width,
     height,
-    dimSize,
     source,
     imageSize,
     resizeMode = 'cover',

@@ -14,6 +14,8 @@ import GuideActions from '../Shared/Redux/Entities/Guides'
 import { navToProfile } from '../Navigation/NavigationRouter'
 import { tabTypes } from './GuideReadingScreen'
 
+const isSlideshow = (feedItem) => feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
+
 function getAreInRenderLocation(state, ownProps) {
   if (
     !ownProps.renderLocation
@@ -21,7 +23,7 @@ function getAreInRenderLocation(state, ownProps) {
   ) {
     return true
   }
- else if (
+  else if (
     ownProps.renderLocation === 'myFeed'
     || ownProps.renderLocation === 'tabbar'
   ) {
@@ -32,12 +34,12 @@ function getAreInRenderLocation(state, ownProps) {
         && state.routes.scene.name === 'myFeed')
     )
   }
- else if (ownProps.renderLocation === 'explore_categoryFeed') {
+  else if (ownProps.renderLocation === 'explore_categoryFeed') {
     return (
       state.routes.scene.name === 'tabbar' && state.routes.scene.index === 1
     )
   }
- else if (ownProps.renderLocation === 'profile') {
+  else if (ownProps.renderLocation === 'profile') {
     return (
       state.routes.scene.name === 'tabbar' && state.routes.scene.index === 4
     )
@@ -64,7 +66,7 @@ function onPressUser(sessionUserId, sceneName, profileId) {
     if (sessionUserId === userId) {
       navToProfile()
     }
- else {
+    else {
       NavActions.readOnlyProfile({ userId })
     }
   }
@@ -140,8 +142,7 @@ const mapDispatchToProps = (dispatch, props) => {
   const feedItemId = feedItem && feedItem.id
   return {
     onPressStory: (title) => {
-      const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
-      if (isSlideshow) {
+      if (isSlideshow(feedItem)) {
         NavActions.slideshow({ storyId: feedItemId, title })
       }
       else {

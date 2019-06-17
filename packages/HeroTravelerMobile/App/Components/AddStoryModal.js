@@ -2,9 +2,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity, Text, Animated } from 'react-native'
-import { Colors, Metrics } from '../Shared/Themes/'
+import { Metrics } from '../Shared/Themes/'
 import { isIPhoneX } from '../Themes/Metrics'
 import TabIcon from './TabIcon'
+import styles from './Styles/AddStoryModalStyles'
 
 const visibleButtonHeight = 60
 const marginBottom = 0
@@ -103,39 +104,4 @@ export default class AddStoryModal extends Component {
       </TouchableOpacity>
     )
   }
-}
-
-const styles = {
-  background: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,.4)',
-    flex: 1,
-    alignItems: 'center',
-    zIndex: 100,
-  },
-  button: {
-    height: visibleButtonHeight,
-    width: Metrics.screenWidth,
-    marginBottom,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconImage: {
-    height: 25,
-    width: 25,
-    marginRight: 20,
-  },
-  text: {
-    width: 120,
-    textAlign: 'left',
-    color: Colors.background,
-    fontWeight: '600',
-    fontSize: 16,
-  },
 }

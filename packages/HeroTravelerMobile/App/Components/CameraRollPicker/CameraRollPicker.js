@@ -8,6 +8,7 @@ import {
   ListView,
   ActivityIndicator,
 } from 'react-native'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 
 import ImageItem from './ImageItem'
@@ -31,7 +32,8 @@ class CameraRollPicker extends Component {
     this.fetch()
   }
 
-  compone) {({
+  componentWillReceiveProps(nextProps) {
+    this.setState({
       selected: nextProps.selected,
     })
   }
@@ -62,7 +64,9 @@ class CameraRollPicker extends Component {
       fetchParams.after = this.state.lastCursor
     }
 
-    Cams) }
+    CameraRoll.getPhotos(fetchParams)
+      .then((data) => this._appendImages(data), (e) => console.log(e))
+  }
 
   _appendImages(data) {
     var assets = data.edges
@@ -79,16 +83,120 @@ class CameraRollPicker extends Component {
       newState.lastCursor = data.page_info.end_cursor
       newState.images = this.state.images.concat(assets)
       newState.dataSource = this.state.dataSource.cloneWithRows(
-        this._nEveryRow(newState.images, this.props.imagesPerRow),
+        this._nImagesPerRow(newState.images, this.props.imagesPerRow),
       )
     }
 
     this.setState(newState)
   }
 
+  _renderImage(item) {
+    const {selected} = this.state
+    const {
+      imageMargin,
+      selectedMarker,
+      imagesPerRow,
+      containerWidth,
+    } = this.props
+
+    const uri = item.node.image.uri
+    const isSelected = _.findIndex(selected, { uri }) >= 0
+
+    return (
+      <ImageItem
+        key={uri}
+        item={item}
+        selected={isSelected}
+        imageMargin={imageMargin}
+        selectedMarker={selectedMarker}
+        imagesPerRow={imagesPerRow}
+        containerWidth={containerWidth}
+        onClick={this._selectImage}
+      />
+    )
+  }
+
+  _renderRow(rowData) {
+    const items = rowData.map((item) => {
+      if (item === null) {
+        return null
+      }
+      return this._renderImage(item)
+    })
+
+    return (
+      <View style={styles.row}>
+        {items}
+      </View>
+    )
+  }
+
+  _renderFooterSpinner = () => {
+    if (!this.state.noMore) {
+      return <ActivityIndicator style={styles.spinner} />
+    }
+    return null
+  }
+
+  _onEndReached = () => {
+    if (!this.state.noMore) {
+      this.fetch()
+    }
+  }
+
+  _selectImage = (image) => {
+    const {maximum, imagesPerRow, callback, selectSingleItem} = this.props
+
+    const selected = this.state.selected,
+      index = _.findIndex(selected, { uri: image.uri })
+
+    if (index >= 0) {
+      selected.splice(index, 1)
+    }
+    else {
+      if (selectSingleItem) {
+        selected.splice(0,selected.length)
+      }
+      if (selected.length < maximum) {
+        selected.push(image)
+      }
+    }
+
+    this.setState({
+      selected: selected,
+      dataSource: this.state.dataSource.cloneWithRows(
+        this._nImagesPerRow(this.state.images, imagesPerRow),
+      ),
+    })
+
+    callback(selected, image)
+  }
+
+  _nImagesPerRow(data, n) {
+    const result = []
+    let temp = []
+
+    for (let i = 0; i < data.length; ++i) {
+      if (i > 0 && i % n === 0) {
+        result.push(temp)
+        temp = []
+      }
+      temp.push(data[i])
+    }
+
+    if (temp.length > 0) {
+      while (temp.length !== n) {
+        temp.push(null)
+      }
+      result.push(temp)
+    }
+
+    return result
+  }
+
   render() {
-    var {dataSource} = this.state
-    var {
+    const {dataSource} = this.state
+    const {
       scrollRenderAheadDistance,
       initialListSize,
       pageSize,
@@ -108,142 +216,34 @@ class CameraRollPicker extends Component {
       )
     }
 
-    var listViewOrEmptyText = dataSource.getRowCount() > 0 ? (
-      <ListView
-        style={{flex: 1}}
-        scrollRenderAheadDistance={scrollRenderAheadDistance}
-        initialListSize={initialListSize}
-        pageSize={pageSize}
-        removeClippedSubviews={removeClippedSubviews}
-        renderFooter={this._renderFooterSpinner.bind(this)}
-        onEndReached={this._onEndReached.bind(this)}
-        dataSource={dataSource}
-        renderRow={rowData => this._renderRow(rowData)} />
-    ) : (
-      <Text style={[{textAlign: 'center'}, emptyTextStyle]}>{emptyText}</Text>
-    )
-
     return (
       <View
         style={[styles.wrapper, {padding: imageMargin, paddingRight: 0, backgroundColor: backgroundColor}]}>
-        {listViewOrEmptyText}
+        {dataSource.getRowCount() > 0 ? (
+          <ListView
+            style={styles.list}
+            scrollRenderAheadDistance={scrollRenderAheadDistance}
+            initialListSize={initialListSize}
+            pageSize={pageSize}
+            removeClippedSubviews={removeClippedSubviews}
+            renderFooter={this._renderFooterSpinner}
+            onEndReached={this._onEndReached}
+            dataSource={dataSource}
+            renderRow={this._renderRow} />
+        ) : (
+          <Text style={[{textAlign: 'center'}, emptyTextStyle]}>{emptyText}</Text>
+        )}
       </View>
     )
-  }
-
-  _renderImage(item) {
-    var {selected} = this.state
-    var {
-      imageMargin,
-      selectedMarker,
-      imagesPerRow,
-      containerWidth,
-    } = this.props
-
-    var uri = item.node.image.uri
-    var isSelected = (this._arrayObjectIndexOf(selected, 'uri', uri) >= 0) ? true : false
-
-    return (
-      <ImageItem
-        key={uri}
-        item={item}
-        selected={isSelected}
-        imageMargin={imageMargin}
-        selectedMarker={selectedMarker}
-        imagesPerRow={imagesPerRow}
-        containerWidth={containerWidth}
-        onClick={this._selectImage}
-      />
-    )
-  }
-
-  _renderRow(rowData) {
-    var items = rowData.map((item) => {
-      if (item === null) {
-        return null
-      }
-      return this._renderImage(item)
-    })
-
-    return (
-      <View style={styles.row}>
-        {items}
-      </View>
-    )
-  }
-
-  _renderFooterSpinner() {
-    if (!this.state.noMore) {
-      return <ActivityIndicator style={styles.spinner} />
-    }
-    return null
-  }
-
-  _onEndReached() {
-    if (!this.state.noMore) {
-      this.fetch()
-    }
-  }
-
-  _selectImage = (image) => {
-    var {maximum, imagesPerRow, callback, selectSingleItem} = this.props
-
-    var selected = this.state.selected,
-      index = this._arrayObjectIndexOf(selected, 'uri', image.uri)
-
-    if (index >= 0) {
-      selected.splice(index, 1)
-    }
-    else {
-      if (selectSingleItem) {
-        selected.splice(0,selected.length)
-      }
-      if (selected.length < maximum) {
-        selected.push(image)
-      }
-    }
-
-    this.setState({
-      selected: selected,
-      dataSource: this.state.dataSource.cloneWithRows(
-        this._nEveryRow(this.state.images, imagesPerRow),
-      ),
-    })
-
-    callback(selected, image)
-  }
-
-  _nEveryRow(data, n) {
-    var result = [], temp = []
-
-    for (var i = 0; i < data.length; ++i) {
-      if (i > 0 && i % n === 0) {
-        result.push(temp)
-        temp = []
-      }
-      temp.push(data[i])
-    }
-
-    if (temp.length > 0) {
-      while (temp.length !== n) {
-        temp.push(null)
-      }
-      result.push(temp)
-    }
-
-    return result
-  }
-
-  _arrayObjectIndexOf(array, property, value) {
-    return array.map((o) => {
-      return o[property] 
-    }).indexOf(value)
   }
 }
 
 const styles = StyleSheet.create({
   wrapper:{
     flexGrow: 1,
+  },
+  list: {
+    flex: 1,
   },
   loader: {
     flexGrow: 1,

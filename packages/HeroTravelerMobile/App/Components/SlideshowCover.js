@@ -234,7 +234,7 @@ export default class SlideshowCover extends Component {
           style={{flex: 1}}
           onPress={this._onPress}
         >
-          <View style={this._getWidthHeight(false, index)}>
+          <View style={this._getWidthHeight(true, index, true)}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -259,7 +259,7 @@ export default class SlideshowCover extends Component {
     }
 
     return (
-      <View style={this._getWidthHeight(false, index)}>
+      <View style={this._getWidthHeight(true, index, true)}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}

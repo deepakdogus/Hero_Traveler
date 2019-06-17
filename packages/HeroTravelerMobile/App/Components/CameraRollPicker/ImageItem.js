@@ -11,6 +11,12 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import moment from 'moment'
 
+const formatVideoTime = (item) => {
+  return moment.utc(
+    _.get(item, 'node.image.playableDuration', 0) * 1000,
+  ).format('mm:ss')
+}
+
 class ImageItem extends Component {
   constructor(props) {
     super(props)
@@ -41,22 +47,23 @@ class ImageItem extends Component {
     return (
       <TouchableOpacity
         style={{ marginBottom: imageMargin, marginRight: imageMargin }}
-        onPress={() => this._handleClick(image)}>
+        onPress={this._handleClick}>
         <Image
           source={{ uri: image.uri }}
           style={{ height: this._imageSize, width: this._imageSize }} />
         {(selected) ? selectedMarker(item) : this.renderDefaultMarker()}
         {isVideo && (
           <Text style={styles.duration}>
-            {moment.utc(_.get(item, 'node.image.playableDuration', 0) * 1000).format('mm:ss')}
+            {formatVideoTime(item)}
           </Text>
         )}
       </TouchableOpacity>
     )
   }
 
-  _handleClick(item) {
-    this.props.onClick(item)
+  _handleClick = () => {
+    const image = _.get(this.props, 'item.node.image')
+    this.props.onClick(image)
   }
 }
 
@@ -98,6 +105,7 @@ ImageItem.propTypes = {
   selectedMarker: PropTypes.func,
   imageMargin: PropTypes.number,
   imagesPerRow: PropTypes.number,
+  containerWidth: PropTypes.number,
   onClick: PropTypes.func,
 }
 

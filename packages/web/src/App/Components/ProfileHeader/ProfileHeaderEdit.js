@@ -489,7 +489,8 @@ export default class ProfileHeaderEdit extends React.Component {
             handleBirthdaySelect={this.handleBirthdaySelect}
             selectGenderOption={this.selectGenderOption}
             onGenderTextChange={this.onGenderTextChange}
-            {...this.state} 
+            {...this.state}
+            user={this.props.user}
           />
 
           <Label>Bio</Label>

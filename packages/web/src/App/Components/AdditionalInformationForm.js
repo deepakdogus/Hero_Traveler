@@ -189,6 +189,7 @@ const styles = {
 class AdditionalInformationForm extends Component {
   static propTypes = {
     updateUser: PropTypes.func,
+    locationInfo: PropTypes.array,
   }
 
   renderHometownInput = ({ getInputProps, suggestions, getSuggestionItemProps }) => (

@@ -240,23 +240,20 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
+  componentDidMount(){
+    if(this.props.user){
+      this.setState({
+        gender: this.props.user.gender,
+        locationInfo: this.props.user.locationInfo,
+      })
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.user.id !== this.props.user.id) {
       this.setState({
         bio: this.props.user.bio,
         username: this.props.user.username,
-      })
-    }
-
-    if (prevProps.user.gender !== this.state.gender) {
-      this.setState({
-        gender: this.props.user.gender
-      })
-    }
-
-    if (prevProps.user.locationInfo !== this.state.locationInfo) {
-      this.setState({
-        locationInfo: this.props.user.locationInfo
       })
     }
 

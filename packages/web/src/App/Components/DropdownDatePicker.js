@@ -200,15 +200,17 @@ class DateSelect extends Component {
   componentWillMount() {
     this.init()
     const {user} = this.props
-    const year = Number(user.birthday.slice(0, 4))
-    const month = Number(user.birthday.slice(5, 7))
-    const day = Number(user.birthday.slice(8, 10))
+    if(user.birthday){
+      const year = Number(user.birthday.slice(0, 4))
+      const month = Number(user.birthday.slice(5, 7))
+      const day = Number(user.birthday.slice(8, 10))
 
-    this.setState({
-      selectedYear: year,
-      selectedMonth: month,
-      selectedDayOfMonth: day,
-    })
+      this.setState({
+        selectedYear: year,
+        selectedMonth: month,
+        selectedDayOfMonth: day,
+      })
+    }
   }
   
   render() {

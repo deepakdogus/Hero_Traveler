@@ -21,8 +21,33 @@
   padding-bottom: 60px;
 }
 
+.editorNoPadding {
+  padding-bottom: 0;
+}
+
+.editorBlockquote {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  line-height: 34px;
+  font-size: 23px;
+  color: #1a1c21;
+  margin: 0 70px;
+  padding-bottom: 30px;
+}
+
 .editorHeaderOne::first-letter {
   text-transform: uppercase;
+}
+
+.editorUnorderedListItem {
+  font-family: "Source Sans Pro";
+	font-weight: 400;
+	letter-spacing: .2px;
+	font-size: 18px;
+  color: #757575;
+  line-height: 30px;
 }
 
 .DraftEditor-root figure {

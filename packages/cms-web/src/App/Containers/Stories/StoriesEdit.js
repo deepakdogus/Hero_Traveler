@@ -69,8 +69,8 @@ class EditStory extends React.Component {
           {
             title: 'Link',
             render: () => (
-              <a href={`https://herotraveler.com/stories/${record.id}`}>
-                {truncate(`herotraveler.com/stories/${record.id}`, 20)}
+              <a href={`https://herotraveler.com/story/${record.id}`}>
+                {truncate(`herotraveler.com/story/${record.id}`, 20)}
               </a>),
           },
           {

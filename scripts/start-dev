@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# This bash script runs the start-dev AppleScript, feeding it the present
+# working directory
+
+# The AppleScript opens 6 terminal tabs and runs the associated start scripts
+# for each
+
+# Tab 1: packages/ht-util: npm run dev
+# Tab 2: packages/ht-core: npm run dev
+# Tab 3: packages/HeroTravelerMobile: npm run share:watch
+# Tab 4: packages/web: npm run share:watch
+# Tab 5: packages/express-api: npm run dev
+# Tab 6: packages/web: npm run start
+
+# Run AppleScript
+osascript scripts/start-dev.scpt "$PWD"
+

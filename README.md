@@ -39,7 +39,7 @@ The first step is to install necessary global packages and install/link all proj
 3. Run the below commands to install dependencies across all the different apps in `packages/` via [lerna](https://github.com/lerna/lerna/tree/master/commands/bootstrap#usage)
 
     ```bash
-    n 7.7.2
+    n 8
     npm i -g react-native-cli
     npm set registry https://npm.abeck.io/
     npm login
@@ -167,6 +167,7 @@ For development purposes:
 
 ```bash
 cd packages/express-api
+yarn
 npm run dev
 ```
 
@@ -179,6 +180,7 @@ _Note:_
 
 ```bash
 cd packages/ht-seed-data
+yarn
 npm run seed
 ```
 
@@ -188,6 +190,7 @@ To run the app, we must copy the most recent files in `packages/shared` to `pack
 
 ```bash
 cd packages/HeroTravelerMobile
+yarn
 npm run share:watch
 ```
 
@@ -224,6 +227,8 @@ npm run start
 ```
 
 _Note: `share:watch` command will copy file changes from `shared` to `App/Shared` so long as it is running_
+
+_Note: you may need to run `npm run watchShared` and `npm run watchSharedWeb` one time each before `npm run share:watch` will run without failing_
 
 ### Web Shortcut
 

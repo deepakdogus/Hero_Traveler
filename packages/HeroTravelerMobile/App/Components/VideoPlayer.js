@@ -326,7 +326,7 @@ export default class VideoPlayer extends React.Component {
           />
 
         {(hasError || this.state.isStalled || isNotReadyForDisplay) &&
-         <ActivityIndicator size="small" color="#ffffff" />
+         <ActivityIndicator size="small" color={Colors.snow} />
         }
         {
           this.props.showChangeBtn &&
@@ -355,14 +355,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   full: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   buttons: {
     width: 100,
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   fullButtons: {
     width: 100,
@@ -410,11 +410,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   videoBtnImgIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   playButtonContainer: {
     backgroundColor: 'rgba(0,0,0,.6)',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 })

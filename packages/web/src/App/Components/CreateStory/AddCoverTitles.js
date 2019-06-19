@@ -2,21 +2,21 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 import {
   SubTitle,
   Input,
   CloseXContainer,
 } from './Shared'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import getVideoUrl from '../../Shared/Lib/getVideoUrl'
+import getVideoUrl, { getVideoUrls } from '../../Shared/Lib/getVideoUrl'
 import uploadFile, {
   getAcceptedFormats,
 } from '../../Utils/uploadFile'
-import { VerticalCenterStyles } from '../VerticalCenter'
+import { VerticalCenterStyles } from '../../Shared/Web/Components/VerticalCenter'
 import Video from '../Video'
-import Loader from '../Loader'
-import { Row } from '../FlexboxGrid'
+import Loader from '../../Shared/Web/Components/Loader'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 
 const coverHeight = 350
 
@@ -176,16 +176,17 @@ const StyledRow = styled(Row)`
 `
 
 function isNewStory(props, nextProps) {
-  return (!props.workingDraft && nextProps.workingDraft) ||
-  (props.workingDraft.id !== nextProps.workingDraft.id)
+  return (!props.workingDraft && nextProps.workingDraft)
+  || (props.workingDraft.id !== nextProps.workingDraft.id)
 }
 
 export default class AddCoverTitles extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
     workingDraft: PropTypes.object,
     isGuide: PropTypes.bool,
+    isPendingUpdateOverride: PropTypes.bool,
   }
 
   constructor(props) {
@@ -196,6 +197,7 @@ export default class AddCoverTitles extends React.Component {
       coverCaption: props.workingDraft.coverCaption || '',
       textAreaHeight: { height: '50px'},
       textAreaBreakCharIdx: 0,
+      isUploading: false,
     }
 
     this.textAreaRef = null
@@ -203,26 +205,25 @@ export default class AddCoverTitles extends React.Component {
 
   _setTextAreaRef = (ref) => this.textAreaRef = ref
 
+  getOnSuccess = coverType => {
+    const isVideo = coverType === 'video'
+    return cloudinaryFile => {
+      this.setState({ isUploading: false })
+      this.props.onInputChange({
+        coverVideo: isVideo ? cloudinaryFile : null,
+        coverImage: isVideo ? null : cloudinaryFile,
+        coverType,
+      })
+    }
+  }
+
   _onCoverChange = (event) => {
+    this.setState({ isUploading: true })
     uploadFile(event, this, (file) => {
-      if (!file) return
-      if (file.type.includes('video')) {
-        this.props.onInputChange({
-          'coverVideo': file,
-          'coverImage': null,
-          'coverType': 'video',
-        })
-      }
-      else {
-        const onSuccess = (cloudinaryFile) => {
-          this.props.onInputChange({
-            'coverVideo': null,
-            'coverImage': cloudinaryFile,
-            'coverType': 'image',
-          })
-        }
-        this.props.uploadImage(file.uri, onSuccess)
-      }
+      if (!file) return this.setState({ isUploading: false })
+      const coverType = file.type.includes('video') ? 'video' : 'image'
+      const onSuccess = this.getOnSuccess(coverType)
+      this.props.uploadMedia(file.uri, onSuccess, coverType)
     })
   }
 
@@ -256,14 +257,12 @@ export default class AddCoverTitles extends React.Component {
     }
 
     // set line break index so deleting first char of a newline reduces height
-    const textAreaBreakCharIdx =
-      this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
+    const textAreaBreakCharIdx = this.state.textAreaHeight.height !== `${this.textAreaRef.scrollHeight}px`
         ? this.state.title.length + 1
         : this.state.textAreaBreakCharIdx
 
-    const textAreaHeight =
-      event.target.value.length >= this.state.title.length ||
-      event.target.value.length >= this.state.textAreaBreakCharIdx
+    const textAreaHeight = event.target.value.length >= this.state.title.length
+      || event.target.value.length >= this.state.textAreaBreakCharIdx
         ? { height: `${this.textAreaRef.scrollHeight}px` }
         : { height: `${this.textAreaRef.scrollHeight - 50 || 50}px` }
 
@@ -275,19 +274,21 @@ export default class AddCoverTitles extends React.Component {
     this._onTextChange(event)
   }
 
-  // add this to properly set the value of the titleInput
   componentWillReceiveProps(nextProps) {
-    const workingDraft = {nextProps}
-    if (isNewStory(this.props, nextProps)){
+    const { workingDraft, isPendingUpdateOverride } = nextProps
+    if (
+      isNewStory(this.props, nextProps)
+      || (!this.props.isPendingUpdateOverride && isPendingUpdateOverride)
+    ) {
       this.setState({
         title: workingDraft.title,
-        description: workingDraft.title,
+        description: workingDraft.description,
       })
     }
   }
 
   renderUploadButton() {
-    const {isGuide} = this.props
+    const { isGuide } = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
 
@@ -343,10 +344,19 @@ export default class AddCoverTitles extends React.Component {
     : getVideoUrl(workingDraft.coverVideo, false)
   }
 
+  getVideoSrcs() {
+    const { workingDraft } = this.props
+    if (workingDraft.coverVideo && workingDraft.coverVideo.uri) {
+      return { src: workingDraft.coverVideo.uri }
+    }
+    return getVideoUrls(workingDraft.coverVideo, false)
+  }
+
   render() {
     const {isGuide} = this.props
     const coverImage = this.getCoverImage()
     const coverVideo = this.getCoverVideo()
+
     const hasMediaAsset = !!coverImage || !!coverVideo
 
     return (
@@ -354,25 +364,27 @@ export default class AddCoverTitles extends React.Component {
         <StyledRow center="xs">
           <Loader />
         </StyledRow>
-        {!coverVideo &&
+        {!coverVideo && (
           <ImageWrapper image={coverImage}/>
-        }
-        {coverVideo &&
+        )}
+        {coverVideo && (
           <LimitedWidthContainer>
             <Video
-              src={coverVideo}
+              {...this.getVideoSrcs()}
               type={'cover'}
               onError={this.removeCover}
               withPrettyControls
             />
           </LimitedWidthContainer>
-          }
+        )}
         <Wrapper hasMediaAsset={hasMediaAsset}>
-          <ButtonsHorizontalCenter>
-            {this.renderUploadButton()}
-          </ButtonsHorizontalCenter>
+          {!this.state.isUploading && (
+            <ButtonsHorizontalCenter>
+              {this.renderUploadButton()}
+            </ButtonsHorizontalCenter>
+          )}
         </Wrapper>
-        {hasMediaAsset && !isGuide &&
+        {hasMediaAsset && !isGuide && (
           <StyledCoverCaptionInput
             type='text'
             placeholder='Add a caption'
@@ -381,9 +393,9 @@ export default class AddCoverTitles extends React.Component {
             value={this.state.coverCaption}
             maxLength={100}
           />
-        }
+        )}
         {!hasMediaAsset && !isGuide && <CoverCaptionSpacer />}
-        {!isGuide &&
+        {!isGuide && (
           <TitleInputsWrapper>
             <StyledTitleTextArea
               type='text'
@@ -407,7 +419,7 @@ export default class AddCoverTitles extends React.Component {
               hasMediaAsset={hasMediaAsset}
             />
           </TitleInputsWrapper>
-        }
+        )}
       </RelativeWrapper>
     )
   }

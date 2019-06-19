@@ -13,13 +13,14 @@ import {Metrics} from '../Shared/Themes'
 import Colors from '../Shared/Themes/Colors'
 import getVideoUrl from '../Shared/Lib/getVideoUrl'
 import getRelativeHeight, {extractCoverMetrics} from '../Shared/Lib/getRelativeHeight'
+import TabIcon from './TabIcon'
 
 export default class FeedItemCover extends Component {
   static propTypes = {
     coverType: PropTypes.oneOf(['image', 'video']).isRequired,
     cover: PropTypes.object,
     onPress: PropTypes.func,
-    style: PropTypes.object,
+    style: PropTypes.number,
     children: PropTypes.object,
     playButtonSize: PropTypes.string,
     autoPlayVideo: PropTypes.bool.isRequired,
@@ -27,8 +28,10 @@ export default class FeedItemCover extends Component {
     showPlayButton: PropTypes.bool,
     shouldEnableAutoplay: PropTypes.bool,
     areInRenderLocation: PropTypes.bool,
-    locationText: PropTypes.string,
+    title: PropTypes.string,
     isFeed: PropTypes.bool,
+    isReadingScreen: PropTypes.bool,
+    isGuide: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -73,13 +76,13 @@ export default class FeedItemCover extends Component {
       height = Math.max(282, height)
       return {
         width: Metrics.screenWidth,
-        height,
+        height: height,
       }
     }
   }
 
   renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl) {
-    const {children, showPlayButton} = this.props
+    const {children, showPlayButton, isFeed, isGuide} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
 
     return (
@@ -91,30 +94,41 @@ export default class FeedItemCover extends Component {
           ...imageStyle,
           ...this._getWidthHeight(),
         }}>
-        { imageThumbnailUrl &&
+        { imageThumbnailUrl && (
           <ImageWrapper
             cached={true}
             resizeMode='cover'
             source={{uri: imageThumbnailUrl}}
-            style={embeddedImageStyle}
+            style={this.getEmbeddedImageStyle()}
           />
-        }
+         )}
           <ImageWrapper
             cached={true}
             resizeMode='cover'
             source={{uri: imageUrl}}
-            style={embeddedImageStyle}
+            style={this.getEmbeddedImageStyle()}
           />
           <View style={styles.gradient}>
             {children}
           </View>
-        {showPlayButton && isVideo &&
-          this.renderPlayButton()
-        }
+          {showPlayButton && isVideo && (
+            this.renderPlayButton()
+          )}
+          {isFeed && isGuide && this.renderGuideIcon()}
         </View>
       </TouchableWithoutFeedback>
     )
   }
+
+  getEmbeddedImageStyle = () => ({
+    ...embeddedImageStyle,
+    width: this.props.isReadingScreen
+      ? Metrics.screenWidth
+      : '100%',
+    borderRadius: this.props.isReadingScreen
+      ? 0
+      : 6,
+  })
 
   renderImage() {
     let imageUrl = getImageUrl(
@@ -126,9 +140,7 @@ export default class FeedItemCover extends Component {
     return this.renderImageWithUrl(false, imageUrl)
   }
 
-  _onPress = () => {
-    return this.props.onPress(this.props.locationText)
-  }
+  _onPress = () => this.props.onPress(this.props.title)
 
   _tapVideoWrapper() {
     const {onPress, isFeed} = this.props
@@ -158,10 +170,10 @@ export default class FeedItemCover extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.autoPlayVideo !== this.props.autoPlayVideo ||
-    nextState.isPlaying !== this.state.isPlaying ||
-    nextState.isMuted !== this.state.isMuted ||
-    nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
+    return nextProps.autoPlayVideo !== this.props.autoPlayVideo
+      || nextState.isPlaying !== this.state.isPlaying
+      || nextState.isMuted !== this.state.isMuted
+      || nextState.shouldEnableAutoplay !== this.props.shouldEnableAutoplay
   }
 
   renderPlayButton() {
@@ -174,6 +186,18 @@ export default class FeedItemCover extends Component {
           playButtonSize === 'small' ? styles.smallPlayButton : {},
         ]}
         size={playButtonSize || 'small'}
+      />
+    )
+  }
+
+  renderGuideIcon() {
+    return (
+      <TabIcon
+        name='guide-alt'
+        style={{
+          image: styles.guideIcon,
+          view: styles.guideIconContainer,
+        }}
       />
     )
   }
@@ -260,7 +284,7 @@ export default class FeedItemCover extends Component {
       <View style={[styles.root, this.props.style]}>
         {this.hasVideo() && coverType === 'video' && this.renderVideo()}
         {coverType === 'image' && this.renderImage()}
-        {!coverType &&
+        {!coverType && (
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.noCover}>
               <Icon
@@ -270,7 +294,7 @@ export default class FeedItemCover extends Component {
               />
             </View>
           </TouchableWithoutFeedback>
-        }
+        )}
       </View>
     )
   }
@@ -278,7 +302,6 @@ export default class FeedItemCover extends Component {
 
 // Image needs to be able to mutate it so we need to give it the raw object
 const imageStyle = {
-  width: Metrics.screenWidth,
   flexDirection: 'column',
   justifyContent: 'flex-end',
   position: 'relative',
@@ -295,7 +318,7 @@ const embeddedImageStyle = {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.clear,
+    backgroundColor: Colors.feedDividerGrey,
   },
   videoWrapper: {
     flex: 1,
@@ -347,5 +370,14 @@ const styles = StyleSheet.create({
   },
   noCoverIcon: {
     color: Colors.lightGreyAreas,
+  },
+  guideIcon: {
+    height: 45,
+    width: 38,
+  },
+  guideIconContainer: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
   },
 })

@@ -39,6 +39,7 @@ import TagScreen from '../Containers/CreateStory/TagScreen'
 import TextInputScreen from '../Containers/CreateStory/TextInputScreen'
 import LocationScreen from '../Containers/CreateStory/LocationScreen'
 import MediaSelectorScreen from '../Containers/MediaSelectorScreen'
+import AddButtonScreen from '../Containers/CreateStory/AddButtonScreen'
 
 import ActivityScreen from '../Containers/Tabs/ActivityScreen'
 
@@ -49,6 +50,7 @@ import ResetPasswordScreen from '../Containers/ResetPasswordScreen'
 import SignupScreen from '../Containers/Signup/SignupScreen'
 import SignupChangeUsername from '../Containers/Signup/SignupChangeUsername'
 import SignupChangeEmail from '../Containers/Signup/SignupChangeEmail'
+import SignupAdditionalInfo from '../Containers/Signup/SignupAdditionalInfo'
 import SignupTopics from '../Containers/Signup/SignupTopics'
 import SignupSocial from '../Containers/Signup/SignupSocial'
 import NavButton from './NavButton'
@@ -59,41 +61,30 @@ import CreateGuideScreen from '../Containers/Guides/CreateGuide'
 import EditGuideStories from '../Containers/Guides/EditGuideStories'
 import GuideReadingScreen from '../Containers/GuideReadingScreen'
 
-import {Images} from '../Shared/Themes'
+// Search
+import SearchResultsScreen from '../Containers/SearchResultsScreen'
+import SearchResultsSeeAllScreen from '../Components/SearchResultsSeeAllScreen'
 
-const darkNavBarProps = {
+import { Images } from '../Shared/Themes'
+
+const navBarProps = {
   navigationBarStyle: Styles.navBar,
   titleStyle: [Styles.navText, Styles.navTitle],
-  backButtonTextStyle: Styles.navText,
-  leftButtonTextStyle: Styles.navText,
+  backButtonTextStyle: Styles.buttonGreyText,
+  leftButtonTextStyle: Styles.buttonGreyText,
   rightButtonTextStyle: Styles.navText,
   leftButtonIconStyle: Styles.navBarBack,
   rightButtonIconStyle: Styles.navBarBack,
 }
 
-const extraPaddingDarkNavBarProps = {
-  ...Styles.navBar,
-  paddingTop: 5,
-}
-
-const clearNavBarProps = {
-  navigationBarStyle: Styles.navBarClear,
-  titleStyle: [Styles.navText, Styles.navTitle],
-  backButtonTextStyle: Styles.navText,
-  leftButtonTextStyle: Styles.navText,
-  rightButtonTextStyle: Styles.navText,
-  leftButtonIconStyle: Styles.navBarBack,
-  rightButtonIconStyle: Styles.navBarBack,
-}
-
-const redBack = {
-  leftButtonIconStyle: Styles.buttonRed,
+const backButtonWithText = {
+  leftButtonIconStyle: Styles.backButtonWithText,
 }
 
 const tabBarProps = {
   tabs: true,
   tabBarStyle: Styles.tabBar,
-  tabBarSelectedItemStyle: Styles.tabBarActive,
+  tabBarIconContainerStyle: Styles.tabBarItemContainer,
 }
 
 // const launchNavButton = (props) => {
@@ -113,19 +104,20 @@ const tabBarProps = {
 
 // const launchOnRight = () => __DEV__ ? NavActions.guestExplore() : alert('Browse as guest')
 
-const topicsRightBtn = (props) => {
-  return (<NavButton
-    onRight={props.onRight}
+const topicsRightBtn = ({ onRight }) => (
+  <NavButton
+    onRight={onRight}
     text='Next'
-    iconName='arrowRightRed'/>)
-}
+    iconName='arrowRightRed'
+  />
+)
 
-const socialRightBtn = (props) => {
-  return (<NavButton
-    onRight={props.onRight}
+const socialRightBtn = ({ onRight }) => (
+  <NavButton
+    onRight={onRight}
     text='Done'
-    iconName='arrowRightRed'/>)
-}
+  />
+)
 
 const alwaysNull = () => null
 
@@ -136,6 +128,11 @@ const navToCreateFlow = () => {
     type: 'reset',
     shouldLoadStory: true,
   })
+}
+
+const navToActivity = () => {
+  NavActions.tabbar({type: 'reset'})
+  NavActions.activity()
 }
 
 const navToMyFeed = () => {
@@ -154,6 +151,7 @@ const navToExplore = () => {
 }
 
 const navToSignupTopics = () => NavActions.signupFlow_topics()
+const navtoSignupAdditionalInfo = () => NavActions.signupFlow_additionalInfo()
 const navToSignupChangeEmail = () => NavActions.signupFlow_changeEmail()
 const navToSignupSocial = () => NavActions.signupFlow_social()
 
@@ -166,7 +164,7 @@ const noop = () => {}
 export default NavActions.create(
     <Scene
       key='root'
-      {...clearNavBarProps}
+      {...navBarProps}
     >
         {/* Add this back when we have "Browse as a guest" functionality
             renderRightButton={launchNavButton}.
@@ -186,14 +184,14 @@ export default NavActions.create(
       />
       <Scene
         key='signupFlow'
-        {...darkNavBarProps}
+        {...navBarProps}
       >
         <Scene
           initial
           key='signupFlow_changeUsername'
           hideNavBar={true}
           component={SignupChangeUsername}
-          onRight={navToSignupChangeEmail}
+          onRight={navtoSignupAdditionalInfo}
           renderRightButton={socialRightBtn}
         />
         <Scene
@@ -201,6 +199,13 @@ export default NavActions.create(
           hideNavBar={true}
           component={SignupChangeEmail}
           onRight={navToSignupTopics}
+          renderRightButton={socialRightBtn}
+        />
+        <Scene
+          key='signupFlow_additionalInfo'
+          hideNavBar={true}
+          component={SignupAdditionalInfo}
+          onRight={navToSignupChangeEmail}
           renderRightButton={socialRightBtn}
         />
         <Scene
@@ -218,9 +223,10 @@ export default NavActions.create(
           hideNavBar={false}
           component={SignupSocial}
           renderRightButton={socialRightBtn}
-          leftButtonIconStyle={Styles.buttonGrey}
           backTitle='Back'
+          {..._.merge({}, navBarProps, backButtonWithText)}
           backButtonImage={Images.iconArrowLeft}
+          backButtonTextStyle={Styles.buttonGreyText}
           onRight={navToTabbar}
         />
       </Scene>
@@ -240,8 +246,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Change Password'
-        {...darkNavBarProps}
+        title='CHANGE PASSWORD'
       />
       <Scene
         key='changeEmail'
@@ -249,8 +254,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Change Email'
-        {...darkNavBarProps}
+        title='CHANGE EMAIL'
       />
       <Scene
         key='settings'
@@ -258,9 +262,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Settings'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
+        title='SETTINGS'
       />
       <Scene
         key='settings_notification'
@@ -268,9 +270,8 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Notifications'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
+        title='NOTIFICATIONS'
+
       />
       <Scene
         key='terms'
@@ -278,9 +279,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        title='Terms & Conditions'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
+        title={'TERMS & CONDITIONS'}
       />
       <Scene
         key='FAQ'
@@ -289,22 +288,19 @@ export default NavActions.create(
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
         title='FAQ'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='privacy'
         component={PrivacyScreen}
         direction='horizontal'
         onLeft={NavActions.pop}
-        title='Privacy Policy'
-        {...darkNavBarProps}
+        title='PRIVACY POLICY'
       />
       <Scene
         key='resetPassword'
         component={ResetPasswordScreen}
         onLeft={NavActions.pop}
-        title='Reset Password'
+        title='RESET PASSWORD'
       />
       <Scene
         key='story'
@@ -312,7 +308,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -321,7 +316,6 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        {..._.merge({}, clearNavBarProps, redBack)}
         titleStyle={Styles.storyTitle}
       />
       <Scene
@@ -330,9 +324,7 @@ export default NavActions.create(
         direction='horizontal'
         onLeft={NavActions.pop}
         backButtonImage={Images.iconClose}
-        title='Comments'
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
+        title='COMMENTS'
       />
       <Scene
         key='tabbar'
@@ -359,7 +351,6 @@ export default NavActions.create(
             key='explore_grid'
             initial
             component={ExploreScreen}
-            {...darkNavBarProps}
             hideNavBar={true}
           />
           <Scene
@@ -367,9 +358,7 @@ export default NavActions.create(
             component={CategoryFeedScreen}
             onLeft={NavActions.pop}
             backButtonImage={Images.iconArrowLeft}
-            title='Category Feed'
             hideNavBar={true}
-            {...darkNavBarProps}
           />
         </Scene>
         <Scene
@@ -383,9 +372,9 @@ export default NavActions.create(
           key='activity'
           icon={TabIcon}
           component={ActivityScreen}
-          title='Notifications'
-          {...darkNavBarProps}
-          navigationBarStyle={extraPaddingDarkNavBarProps}
+          title='NOTIFICATIONS'
+          {...navBarProps}
+          onPress={navToActivity}
         />
         <Scene
           key='profile'
@@ -424,14 +413,18 @@ export default NavActions.create(
           panHandlers={null}
           component={LocationScreen}
         />
+        <Scene
+          key='createStory_addButton'
+          panHandlers={null}
+          component={AddButtonScreen}
+        />
       </Scene>
       <Scene
         key='readOnlyProfile'
         component={ReadOnlyProfileScreen}
-        leftButtonIconStyle={Styles.redHighlightTint}
         onLeft={NavActions.pop}
         backButtonImage={Images.iconArrowLeft}
-        navigationBarStyle={Styles.navBarWhite}
+        navigationBarStyle={Styles.navBarFixedHeight}
       />
       <Scene
         key='guestExplore'
@@ -442,12 +435,10 @@ export default NavActions.create(
       <Scene
         key='followersScreen'
         component={FollowersScreen}
-        title='Followers'
+        title='FOLLOWERS'
         direction='horizontal'
         onLeft={popVertical}
         backButtonImage={Images.iconArrowLeft}
-        {...darkNavBarProps}
-        navigationBarStyle={extraPaddingDarkNavBarProps}
       />
       <Scene
         key='mediaSelectorScreen'
@@ -489,6 +480,22 @@ export default NavActions.create(
         key='editGuideStories'
         component={EditGuideStories}
         hideNavBar
+      />
+      <Scene
+        key='searchResults'
+        component={SearchResultsScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        titleStyle={Styles.storyTitle}
+      />
+      <Scene
+        key='searchResultsSeeAll'
+        component={SearchResultsSeeAllScreen}
+        direction='horizontal'
+        onLeft={NavActions.pop}
+        backButtonImage={Images.iconArrowLeft}
+        titleStyle={Styles.storyTitle}
       />
     </Scene>,
 )

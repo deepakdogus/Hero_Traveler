@@ -20,14 +20,16 @@ const StyledVideo = styled.video`
 
 class Video extends React.Component {
   static propTypes = {
+    mp4Src: PropTypes.string,
+    noControls: PropTypes.bool,
+    onError: PropTypes.func,
     src: PropTypes.string,
     type: PropTypes.oneOf(['cover', 'preview']),
-    noControls: PropTypes.bool,
-    withPrettyControls: PropTypes.bool,
-    onError: PropTypes.func,
     width: PropTypes.string,
     video: PropTypes.object,
     videoEl: PropTypes.object,
+    webmSrc: PropTypes.string,
+    withPrettyControls: PropTypes.bool,
   }
 
   componentDidUpdate = (prevProps) => {
@@ -48,28 +50,60 @@ class Video extends React.Component {
   setRef = (ref) => this.videoRef = ref
 
   render() {
-    const {src, type, withPrettyControls } = this.props
+    const {src, mp4Src, webmSrc, type, withPrettyControls } = this.props
     const usingChrome = browserIs('Chrome')
 
+    if (withPrettyControls && usingChrome) {
+      return (
+        <VideoWithControls
+          ref={this.setRef}
+          onError={this.showErrorAlert}
+          autoPlay={type === 'cover'}
+          controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+        >
+          {webmSrc && (
+            <source
+              src={webmSrc}
+              type='video/webm'
+            />
+          )}
+          {mp4Src && (
+            <source
+              src={mp4Src}
+              type='video/mp4'
+            />
+          )}
+          <source
+            src={src}
+            type='video/mp4'
+          />
+        </VideoWithControls>
+      )
+    }
+
     return (
-      withPrettyControls && usingChrome
-      ?
-      <VideoWithControls
-        ref={this.setRef}
-        onError={this.showErrorAlert}
-        autoPlay={type === 'cover'}
-        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-      >
-        <source src={src} type='video/webm' />
-      </VideoWithControls>
-    :
       <VideoWrapper>
         <StyledVideo
           autoplay
-          src={src}
-          type={type}
           controls={!this.props.noControls}
-        />
+        >
+         {webmSrc && (
+            <source
+              src={webmSrc}
+              type='video/webm'
+            />
+          )}
+          {mp4Src && (
+            <source
+              src={mp4Src}
+              type='video/mp4'
+            />
+          )}
+          <source
+            src={src}
+            type='video/mp4'
+          />
+        </StyledVideo>
       </VideoWrapper>
     )
   }

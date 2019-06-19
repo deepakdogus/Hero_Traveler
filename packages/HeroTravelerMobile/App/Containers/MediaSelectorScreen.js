@@ -242,10 +242,10 @@ class MediaSelectorScreen extends React.Component {
           title={this.props.title}
           titleStyle={this.props.titleStyle}
           onRight={this._onNext}
-          isRightValid={this.state.media}
+          isRightValid={!!this.state.media}
           rightIcon={this.props.rightIcon || 'arrowRightRed'}
           rightTitle={this.props.rightTitle}
-          rightTextStyle={{paddingRight: this.props.rightIcon === 'none' ? 20 : 10}}
+          rightTextStyle={this.props.rightIcon === 'none' ? styles.rightTextNoIcon : styles.rightTextWithIcon}
         />
         <View style={styles.root}>
           {error &&

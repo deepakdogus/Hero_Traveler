@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Text, TouchableOpacity, ProgressViewIOS, View} from 'react-native'
+import {Text, TouchableOpacity, View} from 'react-native'
 import Immutable from 'seamless-immutable'
 
 import styles from './Styles/BackgroundPublishingBarsStyles'
-import {Colors} from '../Shared/Themes'
 import TabIcon from './TabIcon'
 
 const RetryButton = ({text, onPress}) => (
@@ -19,17 +18,19 @@ class FailureBar extends Component {
   static propTypes = {
     failure: PropTypes.object,
     updateDraft: PropTypes.func,
-    publishLocalDraft: PropTypes.func,
+    saveLocalDraft: PropTypes.func,
+    resetFailCount: PropTypes.func,
     discardUpdate: PropTypes.func,
   }
 
   retry = () => {
     const {story, failedMethod} = this.props.failure
     this.props[failedMethod](Immutable.asMutable(story, {deep: true}))
+    this.props.resetFailCount(story.id)
   }
 
   discard = () => {
-    const {story, failedMethod} = this.props.failure
+    const {story} = this.props.failure
     this.props.discardUpdate(story.id)
   }
 
@@ -39,7 +40,7 @@ class FailureBar extends Component {
     return (
       <View style={[
         styles.container,
-        styles.error
+        styles.error,
       ]}>
         <View style={[
           styles.textWrapper,

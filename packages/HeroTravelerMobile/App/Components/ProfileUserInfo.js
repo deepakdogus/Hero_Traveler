@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
+import _ from 'lodash'
 
 import styles from './Styles/ProfileViewStyles'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -40,7 +41,7 @@ export default class ProfileUserInfo extends Component {
 
   _navToFollowers = () => {
     NavActions.followersScreen({
-      title: 'Followers',
+      title: 'FOLLOWERS',
       followersType: 'followers',
       userId: this.props.user.id,
     })
@@ -48,14 +49,14 @@ export default class ProfileUserInfo extends Component {
 
   _navToFollowing = () => {
     NavActions.followersScreen({
-      title: 'Following',
+      title: 'FOLLOWING',
       followersType: 'following',
       userId: this.props.user.id,
     })
   }
 
   renderTop() {
-    const {editable} = this.props
+    const { editable } = this.props
     if (editable) return (
       <View style={styles.topRightContainer}>
         <TouchableOpacity onPress={this._navToEditProfile} style={styles.editButton}>
@@ -72,16 +73,17 @@ export default class ProfileUserInfo extends Component {
         </TouchableOpacity>
       </View>
     )
-    else return (<View style={styles.readingViewTop}></View>)
+    return <View/>
   }
 
   renderUserInfo() {
-    const {user} = this.props
+    const { user } = this.props
+    const userFullName = _.get(user, 'profile.fullName')
     return (
       <View style={styles.userInfoWrapper}>
         <Text style={styles.titleText}>{user.username}</Text>
-        <Text style={styles.italicText}>{user.profile.fullName}</Text>
-        {!!(user.about) &&
+        <Text style={styles.italicText}>{userFullName}</Text>
+        {!!(user.about) && (
           <Text
             style={styles.aboutText}
             numberOfLines={3}
@@ -89,10 +91,7 @@ export default class ProfileUserInfo extends Component {
           >
             {user.about}
           </Text>
-        }
-        <TouchableOpacity onPress={this._navToViewBio}>
-          <Text style={styles.readBioText}>Read Bio</Text>
-        </TouchableOpacity>
+        )}
       </View>
     )
   }
@@ -121,9 +120,8 @@ export default class ProfileUserInfo extends Component {
 
   renderFirstRow() {
     const {user} = this.props
-
-    const avatarUrl = getImageUrl(user.profile.avatar, 'avatar')
-
+    const userAvatar = _.get(user, 'profile.avatar')
+    const avatarUrl = getImageUrl(userAvatar, 'avatarLarge')
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>
@@ -140,9 +138,33 @@ export default class ProfileUserInfo extends Component {
   }
 
   renderSecondRow(){
-    const {user} = this.props
+    const { user } = this.props
     return (
       <View style={[styles.profileWrapper, styles.secondRow]}>
+        {hasBadge(user.role) && (
+          <View style={styles.secondRowSection}>
+            <TabIcon
+              name={roleToIconName[user.role]}
+              style={{ image: styles.badgeImage }}
+            />
+            <Text style={styles.badgeText}>
+              {user.role.toUpperCase()}
+            </Text>
+          </View>
+        )}
+        <View style={[styles.secondRowSection, styles.readBioSection]}>
+          <TouchableOpacity onPress={this._navToViewBio} >
+            <Text style={styles.readBioText}>Read Bio</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
+  renderThirdRow(){
+    const {user} = this.props
+    return (
+      <View style={[styles.profileWrapper, styles.thirdRow]}>
         <View style={styles.followersWrapper}>
           <View>
             <TouchableOpacity onPress={this._navToFollowers}>
@@ -164,29 +186,13 @@ export default class ProfileUserInfo extends Component {
     )
   }
 
-  renderBadgeRow(){
-    const {user} = this.props
-    return (
-      <View style={[styles.profileWrapper, styles.badgeRow]}>
-        <TabIcon
-          name={roleToIconName[user.role]}
-          style={{ image: styles.badgeImage }}
-        />
-        <Text style={styles.badgeText}>
-          {user.role.toUpperCase()}
-        </Text>
-      </View>
-    )
-  }
-
   render() {
-    const {user} = this.props
     return (
-      <View style={styles.profileInfoContainer}>
+      <View>
         {this.renderTop()}
         {this.renderFirstRow()}
-        {hasBadge(user.role) && this.renderBadgeRow()}
         {this.renderSecondRow()}
+        {this.renderThirdRow()}
       </View>
     )
   }

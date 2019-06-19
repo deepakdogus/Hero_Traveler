@@ -4,6 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  startInitializeSession: null,
   initializeSession: ['userId', 'tokens'],
   logout: ['tokens', 'deviceType'],
   logoutSuccess: ['deviceType'],
@@ -24,6 +25,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   tokens: null,
   userId: null,
+  isSessionLoading: false,
   isLoggingOut: false,
   isLoggedOut: true,
   isResumingSession: true,
@@ -31,7 +33,12 @@ export const INITIAL_STATE = Immutable({
 })
 
 /* ------------- Reducers ------------- */
-
+export const startInitializeSession = (state) => {
+  return state.merge({
+    isSessionLoading: true,
+    error: null
+  })
+}
 // we're attempting to login
 export const initializeSession = (state, {userId, tokens}) => {
 
@@ -39,7 +46,16 @@ export const initializeSession = (state, {userId, tokens}) => {
     userId,
     tokens,
     isLoggedOut: false,
-    isResumingSession: false
+    isResumingSession: false,
+    isSessionLoading: false,
+    error: null
+  })
+}
+
+export const resumeSessionFailure = (state, { error }) => {
+  return state.merge({
+    isSessionLoading: false,
+    error
   })
 }
 
@@ -83,6 +99,7 @@ export const refreshSessionSuccess = (state, {tokens}) => {
 
 export const resumeError = (state, {error}) => state.merge({
   isResumingSession: false,
+  isSessionLoading: false,
   error
 })
 
@@ -91,6 +108,7 @@ export const clearError = (state) => state.merge({ error: null })
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.START_INITIALIZE_SESSION]: startInitializeSession,
   [Types.INITIALIZE_SESSION]: initializeSession,
   [Types.LOGOUT]: logout,
   [Types.LOGOUT_SUCCESS]: logoutSuccess,

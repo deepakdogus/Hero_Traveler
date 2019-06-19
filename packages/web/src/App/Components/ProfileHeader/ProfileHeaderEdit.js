@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import PhotoEditor from '../Modals/PhotoEditor'
-import VerticalCenter from '../VerticalCenter'
-import { Row } from '../FlexboxGrid'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 import {
   StyledAvatar,
   ButtonWrapper,
 } from './ProfileHeaderShared'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
 import ResizableTextarea from '../ResizableTextarea'
 
 import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormValidation'
@@ -46,14 +46,15 @@ const CameraIcon = styled(Icon)`
 
 const EditAvatarWrapper = styled(VerticalCenter)`
   position: absolute;
-  align-items: center;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
   z-index: 1;
-  left: 54.5px;
+
   cursor: pointer;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    left 33.5px;
-  }
 `
 
 const HiddenInput = styled.input`
@@ -105,7 +106,7 @@ const UpdateAvatarText = styled.span`
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-   width: 100%;
+    width: 100%;
   }
 `
 
@@ -117,6 +118,15 @@ const Label = styled.label`
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   margin: 16px 0 8px;
+`
+
+const AvatarLabel = styled.label`
+  position: relative;
+  left: 6px;
+  height: 140px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 100px;
+  }
 `
 
 const BaseInputStyles = `
@@ -207,9 +217,9 @@ export default class ProfileHeaderEdit extends React.Component {
     error: PropTypes.object,
     updateUser: PropTypes.func,
     removeAvatar: PropTypes.func,
-    uploadMedia: PropTypes.func,
-    uploadImage: PropTypes.func,
     toProfileView: PropTypes.func,
+    uploadMediaAsset: PropTypes.func,
+    uploadMedia: PropTypes.func,
     updating: PropTypes.bool,
   }
 
@@ -262,7 +272,7 @@ export default class ProfileHeaderEdit extends React.Component {
   saveCroppedImage = async (croppedImageUrl) => {
     // formatting into blob for upload
     const res = await fetch(croppedImageUrl)
-    this.props.uploadMedia(
+    this.props.uploadMediaAsset(
       this.props.user.id,
       res,
       this.state.photoType,
@@ -279,14 +289,16 @@ export default class ProfileHeaderEdit extends React.Component {
   uploadImageToBrowser = (event) => {
     uploadFile(event, this, (file) => {
       if (!file) return
-      const onSuccess = (cloudinaryFile) => {
-        this.setState({
-          loadedImage: cloudinaryFile,
-          photoType: 'avatar',
-          modal: 'photoEditor',
-        })
+      const callback = cloudinaryFile => {
+        if (cloudinaryFile) {
+          return this.setState({
+            loadedImage: cloudinaryFile,
+            photoType: 'avatar',
+            modal: 'photoEditor',
+          })
+        }
       }
-      this.props.uploadImage(file.uri, onSuccess)
+      this.props.uploadMedia(file.uri, callback)
     })
   }
 
@@ -318,8 +330,7 @@ export default class ProfileHeaderEdit extends React.Component {
     } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     const minRows = 7
-    const bioLines =
-      (bio && typeof bio === 'string')
+    const bioLines = (bio && typeof bio === 'string')
       ? (bio.match(/\r?\n/g) || '').length + 1
       : minRows
     let targetedImage
@@ -329,27 +340,31 @@ export default class ProfileHeaderEdit extends React.Component {
     }
     else if (photoType === 'avatar') targetedImage = avatarUrl
 
+    const isUsernameError = _.get(error, 'message', '').includes('username')
+    const isBioError = _.get(error, 'message', '').includes('Bio')
+      || (bio && bio.length > 500)
+
     const avatarIsClickable = () => true
 
     return (
       <Container>
         <RelativeWrapper>
-          <label htmlFor='image_upload'>
-            <EditAvatarWrapper>
-            <CameraIcon
-              type='avatar'
-              name='camera'
-            />
-            </EditAvatarWrapper>
+          <AvatarLabel htmlFor='image_upload'>
             <StyledAvatar
               avatarUrl={avatarUrl}
               type='profile'
               size='x-large'
-              isProfileHeader={false}
               responsiveProps={responsiveAvatarStyles}
               onClick={avatarIsClickable}
-            />
-            </label>
+            >
+            </StyledAvatar>
+              <EditAvatarWrapper>
+              <CameraIcon
+                type='avatar'
+                name='camera'
+              />
+            </EditAvatarWrapper>
+            </AvatarLabel>
           <VerticalCenter>
             <UpdateAvatarRow>
             <label htmlFor='image_upload'>
@@ -390,7 +405,7 @@ export default class ProfileHeaderEdit extends React.Component {
           { !!username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
             <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
           }
-          { !!error &&
+          { !!isUsernameError &&
             <ErrorText>Sorry, that username is already in use</ErrorText>
           }
           <Label>About</Label>
@@ -412,11 +427,15 @@ export default class ProfileHeaderEdit extends React.Component {
               placeholder='Enter your bio'
               onChange={this.onChangeText}
               rows={bioLines > minRows ? bioLines : minRows}
-              minRows={7}
+              minRows={5}
               maxRows={500}
+              maxLength={500}
               textProps={ResizableTextareaStyles}
             />
           </TextareaWrapper>
+          { !!isBioError &&
+            <ErrorText>Sorry, you‘ve exceeded the 500 character limit</ErrorText>
+          }
         </InputsWrapper>
 
         <SaveCancelButtonWrapper>

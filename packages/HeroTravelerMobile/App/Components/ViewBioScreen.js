@@ -21,7 +21,7 @@ const viewBioScreen = (props) => {
             style={{
               image: {
                 tintColor: 'black',
-              }
+              },
             }}
           />
         </TouchableOpacity>

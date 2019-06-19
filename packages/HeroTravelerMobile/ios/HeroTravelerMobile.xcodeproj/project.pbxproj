@@ -34,6 +34,7 @@
 		5CADE360C1014D30965F6E69 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3BEA3920CDD45E787E601C0 /* Foundation.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		61F7FBCB75814782822FFDA6 /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCD6AF1710BD47EDB3C343D7 /* SourceSansPro-Italic.ttf */; };
+		654E80CE22959B26009F4F37 /* AVUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E80CD22959B26009F4F37 /* AVUtilities.swift */; };
 		6DDD8F3D9D3C4798A2A63CD8 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5530D24D35DF4E9C98520270 /* Montserrat-Bold.ttf */; };
 		7014F18B00ED4573A547BD0D /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D90F19694EC4CB9AE99B71C /* SourceSansPro-Regular.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -321,13 +322,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		913DF57F203388B40023A82B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3DBE0D001F3B181A0099AA32;
-			remoteInfo = fishhook;
-		};
 		913DF581203388B40023A82B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
@@ -425,13 +419,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A69F52F4B835A53D4D3A50AD6A1A4713;
 			remoteInfo = "react-native-maps";
-		};
-		916DBF2A203C89F60097DE98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 09155546907045CEBA7956601D321EA0;
-			remoteInfo = yoga;
 		};
 		916DBF60203C8A1B0097DE98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -594,6 +581,13 @@
 			remoteGlobalIDString = D834CED81CC64F2400FA5668;
 			remoteInfo = KeyboardTrackingView;
 		};
+		EF3CF668227B8B1200C81303 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 66AEC2FF18407696BB68FE8175EFECDD;
+			remoteInfo = "Google-Maps-iOS-Utils";
+		};
 		EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
@@ -651,7 +645,9 @@
 		5530D24D35DF4E9C98520270 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../App/Fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		5FF632B0EE214A62918492B6 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		654E80CD22959B26009F4F37 /* AVUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVUtilities.swift; sourceTree = "<group>"; };
 		656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		65839C92228C95940054E7B2 /* AVUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVUtilities.swift; sourceTree = "<group>"; };
 		6D90F19694EC4CB9AE99B71C /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../App/Fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		72700E4DD3BB45C692CE36B1 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		74190A2AFF2947748D244D76 /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBold.ttf"; path = "../App/Fonts/SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -983,7 +979,6 @@
 			children = (
 				139FDEF41B06529B00C62182 /* libRCTWebSocket.a */,
 				3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */,
-				913DF580203388B40023A82B /* libfishhook.a */,
 				913DF582203388B40023A82B /* libfishhook-tvOS.a */,
 			);
 			name = Products;
@@ -1300,7 +1295,9 @@
 			children = (
 				91F1994F204F29C700EC7125 /* RNVideoTrimmer-Bridging-Header.h */,
 				91F19950204F29C700EC7125 /* SDAVAssetExportSession.m */,
+				654E80CD22959B26009F4F37 /* AVUtilities.swift */,
 				91F19951204F29C700EC7125 /* RNVideoTrimmerBridge.m */,
+				65C320AC228C726300E7F601 /* AVUtilities.swift */,
 				91F19952204F29C700EC7125 /* RNVideoTrimmer.swift */,
 				91F19953204F29C700EC7125 /* SDAVAssetExportSession.h */,
 			);
@@ -1400,6 +1397,7 @@
 			isa = PBXGroup;
 			children = (
 				9162A1BD2044D39B005BA024 /* libFLAnimatedImage.a */,
+				EF3CF669227B8B1200C81303 /* libGoogle-Maps-iOS-Utils.a */,
 				942D12201EB3956400A0CFE5 /* HockeySDKResources.bundle */,
 				91AC58CC1FD83CFD0017B1E8 /* libiOS-MagnifyingGlass.a */,
 				EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */,
@@ -1407,7 +1405,6 @@
 				916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */,
 				916DBF29203C89F60097DE98 /* libreact-native-maps.a */,
 				9162A0E220448F09005BA024 /* libSDWebImage.a */,
-				916DBF2B203C89F60097DE98 /* libyoga.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1590,6 +1587,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1911,13 +1909,6 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		913DF580203388B40023A82B /* libfishhook.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libfishhook.a;
-			remoteRef = 913DF57F203388B40023A82B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		913DF582203388B40023A82B /* libfishhook-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2014,13 +2005,6 @@
 			fileType = archive.ar;
 			path = "libreact-native-maps.a";
 			remoteRef = 916DBF28203C89F60097DE98 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		916DBF2B203C89F60097DE98 /* libyoga.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libyoga.a;
-			remoteRef = 916DBF2A203C89F60097DE98 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		916DBF61203C8A1B0097DE98 /* libAutoGrowTextInput.a */ = {
@@ -2156,6 +2140,13 @@
 			remoteRef = EF21696C1F4E0111008B3B0A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		EF3CF669227B8B1200C81303 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = EF3CF668227B8B1200C81303 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		EFE44EEA1F3CF4BF00003CBA /* libIQKeyboardManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2241,7 +2232,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
@@ -2262,7 +2253,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HeroTravelerMobile/Pods-HeroTravelerMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9150BC42201AC4CC00697D90 /* ShellScript */ = {
@@ -2314,6 +2305,7 @@
 				91F19958204F29C700EC7125 /* RNVideoProcessingManager.swift in Sources */,
 				916D5B39204DC82300FB09DF /* RHNativeFeedItem.m in Sources */,
 				91973CB01FA39B64006DE932 /* RNDJEntityRangeModel.m in Sources */,
+				654E80CE22959B26009F4F37 /* AVUtilities.swift in Sources */,
 				91FB939420D10BC400B16CD2 /* UIViewController+WatchFullscreenChanges.m in Sources */,
 				91F19960204F29C700EC7125 /* SDAVAssetExportSession.m in Sources */,
 				91973CB11FA39B64006DE932 /* RNDJInlineStyleRangeModel.m in Sources */,
@@ -2544,6 +2536,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "HeroTravelerMobile-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -2579,6 +2572,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "HeroTravelerMobile-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

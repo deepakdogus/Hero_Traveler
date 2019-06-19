@@ -28,6 +28,8 @@ const whitelist = [
   process.env.CORS_ORIGIN,
   process.env.CORS_ORIGIN2,
   process.env.CORS_ORIGIN3,
+  process.env.CORS_ORIGIN4,
+  process.env.CORS_ORIGIN5,
 ]
 
 app.use(cors({
@@ -49,7 +51,7 @@ app.use((err, req, res, next) => {
   console.log(err)
 
   // @TODO implement standard-error
-  res.statusCode = 500;
+  res.statusCode = 500
 
   return res.json({
     message: err.message || 'There was an error processing your request.'

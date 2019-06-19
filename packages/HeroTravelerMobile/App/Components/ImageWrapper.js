@@ -16,12 +16,12 @@ export default class ImageWrapper extends Component {
 
   componentDidMount(){
     // Kind of an antipattern but we have an async call below.
-    this._mounted = true;
+    this._mounted = true
     if (!this.hasStyleMetrics()) this._setImageSize(this.props.source.uri)
   }
 
   componentWillUnmount(){
-    this._mounted = false;
+    this._mounted = false
   }
 
   componentWillReceiveProps(nextProps){
@@ -42,7 +42,7 @@ export default class ImageWrapper extends Component {
         this.setState({
           width,
           height,
-          imageUrl
+          imageUrl,
         })
       }
     })
@@ -67,12 +67,12 @@ export default class ImageWrapper extends Component {
 
     if (this.props.resizeMode) {
       imageProps.resizeMode = this.props.resizeMode
-    } else {
+    }
+    else {
       imageProps.resizeMode = getResizeMode(this.state)
     }
 
-    if (cached)
-    {
+    if (cached){
       imageProps.cache = 'force-cache'
     }
 
@@ -84,8 +84,9 @@ export default class ImageWrapper extends Component {
     if (setCoverHeight && this.state.width && this.state.width) setCoverHeight(this.state)
     if (limitedHeight) imageProps.style.height = Metrics.maxContentHeight
 
+    imageProps.style = imageProps.style || {}
     return cached
-        ? (<FastImage {...imageProps}/>)
-        : (<BaseComponent {...imageProps} />)
+      ? (<FastImage {...imageProps}/>)
+      : (<BaseComponent {...imageProps} />)
   }
 }

@@ -6,9 +6,9 @@ import _ from 'lodash'
 import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 
-import StoryActions from '../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../Shared/Lib/createLocalDraft'
+import isLocalDraft from '../Shared/Lib/isLocalDraft'
 import AuthRoute from './AuthRoute'
 import UXActions from '../Redux/UXRedux'
 import CreateStoryCoverContent from './CreateStory/1_CoverContent'
@@ -22,6 +22,7 @@ import {
   haveFieldsChanged,
   isFieldSame,
 } from '../Shared/Lib/draftChangedHelpers'
+import { getPendingDraftById } from '../Shared/Lib/getPendingDrafts'
 
 export const Container = styled.div`
   display: flex;
@@ -69,24 +70,22 @@ class EditStory extends Component {
   static propTypes = {
     match: PropTypes.object,
     // mapped from state
-    isPublished: PropTypes.bool,
-    isRepublished: PropTypes.bool,
     subPath: PropTypes.string,
     accessToken: PropTypes.string,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
-    cachedStory: PropTypes.object,
+    hasPendingUpdate: PropTypes.bool,
+    story: PropTypes.object,
     userId: PropTypes.string,
     storyId: PropTypes.string,
     // dispatch methods
-    registerDraft: PropTypes.func,
+    addLocalDraft: PropTypes.func,
     loadDraft: PropTypes.func,
     setWorkingDraft: PropTypes.func,
     discardDraft: PropTypes.func,
-    saveDraftToCache: PropTypes.func,
     updateDraft: PropTypes.func,
     updateWorkingDraft: PropTypes.func,
-    publish: PropTypes.func,
+    saveDraft: PropTypes.func,
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
     updateGlobalModalParams: PropTypes.func,
@@ -95,6 +94,8 @@ class EditStory extends Component {
     syncProgressMessage: PropTypes.string,
     syncProgress: PropTypes.number,
     openGlobalModal: PropTypes.func,
+    draftIdToDBId: PropTypes.object,
+    pendingMediaUploads: PropTypes.number,
   }
 
   constructor(props){
@@ -102,71 +103,86 @@ class EditStory extends Component {
     this.state = {
       error: {},
     }
+    if (props.hasPendingUpdate && !this.isLocalStory()) {
+      props.openGlobalModal(
+        'existingUpdateWarning',
+        { storyId: props.storyId },
+      )
+    }
   }
 
   componentWillMount() {
     const {
-      userId, cachedStory, storyId,
-      registerDraft, loadDraft, setWorkingDraft,
+      userId, story, storyId,
+      addLocalDraft, loadDraft, setWorkingDraft,
     } = this.props
 
     if (!storyId || storyId === 'new') {
-      registerDraft(createLocalDraft(userId))
+      addLocalDraft(createLocalDraft(userId))
     }
-    // should only load publish stories since locals do not exist in DB
+    // should only load saved stories since locals do not exist in DB
     else if (!this.isLocalStory()){
-      loadDraft(storyId, cachedStory)
+      loadDraft(storyId, story)
     }
     else {
-      setWorkingDraft(cachedStory)
+      setWorkingDraft(story)
     }
   }
 
   componentDidMount() {
     const {
       userId,
-      registerDraft,
-      workingDraft,
+      addLocalDraft,
+      story,
     } = this.props
 
-    if (workingDraft === null && this.isLocalStory()) {
-      registerDraft(createLocalDraft(userId))
+    if (!story && this.isLocalStory()) {
+      addLocalDraft(createLocalDraft(userId))
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {match, reroute, originalDraft} = nextProps
-    if (this.hasPublished(nextProps)){
-      this.next()
-      return
+  componentDidUpdate(prevProps) {
+    const {
+      reroute,
+      match,
+      originalDraft,
+      workingDraft,
+      userId,
+    } = this.props
+
+    const hasCompletedSave = this.props.syncProgress > 0
+      && this.props.syncProgressSteps === this.props.syncProgress
+      && prevProps.syncProgress !== this.props.syncProgress
+
+    // you should not be able to edit a story if you are not the author
+    if (_.get(workingDraft, 'author') !== userId) {
+      return reroute('/feed')
     }
-    // once our draft is loaded be sure to reroute
+
     if (originalDraft && originalDraft.id && match.isExact) {
-      reroute(`/editStory/${originalDraft.id}/cover`)
+      return reroute(`/editStory/${originalDraft.id}/cover`)
     }
+    // this check is for navbar's conditional links
+    // do not set values when isPending so we do not
+    // override params set internally from saveCover call
     if (
-      this.props.globalModal.modalName !== 'saveEdits'
-      && nextProps.globalModal.modalName === 'saveEdits'
+      prevProps.globalModal.modalName !== 'saveEdits'
+      && this.props.globalModal.modalName === 'saveEdits'
+      && !this.props.isPending
     ) {
-      this.props.updateGlobalModalParams({
+      return this.props.updateGlobalModalParams({
         resetCreateStore: this.props.resetCreateStore,
         updateDraft: this._updateDraft,
       })
     }
-  }
 
-  componentDidUpdate(prevProps){
-    if (
-      this.props.syncProgress > 0
-      && this.props.syncProgressSteps === this.props.syncProgress
-      && prevProps.syncProgress !== this.props.syncProgress
-      && this.props.subPath === 'details'
-    ) {
-      this.props.reroute('/feed')
-      this.props.resetCreateStore()
+    if (hasCompletedSave) {
+      if (this.state.saveAction === 'publish') {
+        this.props.reroute('/feed')
+        this.props.resetCreateStore()
+      }
     }
 
-    const { workingDraft, originalDraft } = this.props
     if (haveFieldsChanged(workingDraft, originalDraft)) {
       window.onbeforeunload = (e) => {
         e.preventDefault()
@@ -177,40 +193,35 @@ class EditStory extends Component {
 
   componentWillUnmount(){
     window.onbeforeunload = () => null
+    this.props.resetCreateStore()
   }
 
   isLocalStory() {
-    return this.props.storyId.substring(0,6) === 'local-'
+    return isLocalDraft(this.props.storyId)
   }
 
-  hasPublished(nextProps){
-    return (!this.props.isPublished && nextProps.isPublished) ||
-    (!this.props.isRepublished && nextProps.isRepublished)
-  }
-
-  next() {
-    this.props.resetCreateStore()
-    this.props.reroute('/')
-  }
-
-  _updateDraft = () => {
+  _updateDraft = (publish) => {
     const {
-      originalDraft,
       workingDraft,
       subPath,
-      saveDraftToCache,
+      saveDraft,
     } = this.props
 
-    if (workingDraft.draft) {
-      saveDraftToCache(this.cleanDraft(workingDraft))
-      this.setState({draftSaveMessage: 'Saving Draft'})
-      setTimeout(() => this.setState({draftSaveMessage: ''}), 1000)
+    // publish is sometimes an event so we need to expressly check if true
+    const saveAsPublished = publish === true
+    this.setState({ saveAction: saveAsPublished ? 'publish' : 'update' })
+
+    const cleanedDraft = this.cleanDraft(workingDraft)
+
+    if (isLocalDraft(cleanedDraft.id)) {
+      saveDraft(cleanedDraft, !saveAsPublished)
     }
     else {
+      if (saveAsPublished && cleanedDraft.draft) cleanedDraft.draft = false
       const isRepublishing = !workingDraft.draft && subPath === 'details'
       this.props.updateDraft(
-        originalDraft.id,
-        this.cleanDraft(workingDraft),
+        cleanedDraft.id,
+        cleanedDraft,
         null,
         isRepublishing,
       )
@@ -255,21 +266,33 @@ class EditStory extends Component {
     })
   }
 
-  cleanDraft(draft){
-    const {workingDraft, originalDraft} = this.props
+  cleanDraft = (draft) => {
+    const {workingDraft, originalDraft, draftIdToDBId} = this.props
     const cleanedDraft = _.merge({}, draft)
     if (!isFieldSame('title', workingDraft, originalDraft)) {
       cleanedDraft.title = _.trim(cleanedDraft.title)
     }
     if (!isFieldSame('description', workingDraft, originalDraft)) {
-     cleanedDraft.description = _.trim(cleanedDraft.description)
+      cleanedDraft.description = _.trim(cleanedDraft.description)
     }
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) {
       cleanedDraft.coverCaption = _.trim(cleanedDraft.coverCaption)
     }
     if (!cleanedDraft.tripDate) cleanedDraft.tripDate = Date.now()
-    cleanedDraft.draftjsContent = this.getEditorState()
+    // undefined if user navs directly to editStory URI
+    if (this.getEditorState) {
+      cleanedDraft.draftjsContent = this.removeLoaders(this.getEditorState())
+    }
+    if (draftIdToDBId[workingDraft.id]) cleanedDraft.id = draftIdToDBId[workingDraft.id]
     return cleanedDraft
+  }
+
+  removeLoaders(draftjsContent) {
+    draftjsContent.blocks = draftjsContent.blocks.filter(block => {
+      return block.type !== 'atomic'
+        || (block.type === 'atomic' && _.get(block, 'data.type') !== 'loader')
+    })
+    return draftjsContent
   }
 
   // this only saves it at the redux level
@@ -283,7 +306,21 @@ class EditStory extends Component {
   }
 
   saveCover = () => {
-    const {workingDraft, originalDraft} = this.props
+    const {
+      openGlobalModal,
+      originalDraft,
+      pendingMediaUploads,
+      workingDraft,
+    } = this.props
+    if (pendingMediaUploads) {
+      return openGlobalModal(
+        'saveEdits',
+        {
+          updateDraft: this.saveCover,
+          isPending: true,
+        },
+      )
+    }
     const hasVideoSelected = !!this.state.coverVideo
     const hasImageSelected = !!this.state.coverImage
     const isImageSame = isFieldSame('coverImage', workingDraft, originalDraft)
@@ -321,7 +358,7 @@ class EditStory extends Component {
   }
 
   saveDetails = () => {
-    const {workingDraft, publish} = this.props
+    const {workingDraft, saveDraft} = this.props
     if (!workingDraft.type) {
       this.setValidationErrorState('Please include an activity')
     }
@@ -329,10 +366,11 @@ class EditStory extends Component {
       this.setValidationErrorState('Please include a location')
     }
     else if (workingDraft.draft) {
-      publish(this.cleanDraft(workingDraft))
+      this.setState({ saveAction: 'publish' })
+      saveDraft(this.cleanDraft(workingDraft), false)
     }
     else {
-      this._updateDraft()
+      this._updateDraft(true)
     }
   }
 
@@ -359,7 +397,7 @@ class EditStory extends Component {
     return (
       <Container>
         <ContentWrapper>
-          { workingDraft &&
+          { workingDraft && (
             <ItemContainer>
               <AuthRoute
                 path={`${match.url}/cover`}
@@ -371,7 +409,7 @@ class EditStory extends Component {
                 component={CreateStoryDetails}
               />
             </ItemContainer>
-          }
+          )}
         </ContentWrapper>
         <FooterToolbar
           discardDraft={this._discardDraft}
@@ -379,11 +417,11 @@ class EditStory extends Component {
           isDetailsView={subPath === 'details'}
           onRight={this.onRight}
           onLeft={this.onLeft}
-          syncProgressMessage={this.state.draftSaveMessage || syncProgressMessage}
+          syncProgressMessage={syncProgressMessage}
         />
         <Modal
           isOpen={!!error.title}
-          contentLabel="Signup Modal"
+          contentLabel="Error Modal"
           onRequestClose={this.closeModal}
           style={customModalStyles}
         >
@@ -403,38 +441,53 @@ function getSubPath(location) {
 function mapStateToProps(state, props) {
   const accessToken = _.find(state.session.tokens, {type: 'access'})
   const storyId = _.get(props, 'match.params.storyId')
+  const {
+    syncProgress,
+    syncProgressSteps,
+    message,
+  } = state.storyCreate.sync
+  const {
+    backgroundFailures,
+    entities: stories,
+  } = state.entities.stories
+
+  const syncProgressMessage = syncProgress === syncProgressSteps
+    ? ''
+    : message
+  const pendingDraft = getPendingDraftById(state, storyId)
 
   return {
     userId: state.session.userId,
     storyId,
-    cachedStory: state.entities.stories.entities[storyId],
+    story: stories[storyId] || pendingDraft,
+    hasPendingUpdate: !!pendingDraft,
     accessToken: accessToken.value,
     subPath: getSubPath(state.routes.location),
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
-    syncProgress: state.storyCreate.sync.syncProgress,
-    syncProgressSteps: state.storyCreate.sync.syncProgressSteps,
-    syncProgressMessage: state.storyCreate.sync.message,
-    backgroundFailures: state.entities.stories.backgroundFailures,
+    syncProgress,
+    syncProgressSteps,
+    syncProgressMessage,
+    backgroundFailures,
     globalModal: state.ux,
+    draftIdToDBId: state.storyCreate.draftIdToDBId,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
+    isPending: state.ux.params.isPending,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerDraft: (draft) => dispatch(StoryCreateActions.registerDraftSuccess(draft)),
-    loadDraft: (draftId, cachedStory) => dispatch(StoryCreateActions.editStory(draftId, cachedStory)),
+    addLocalDraft: (draft) => dispatch(StoryCreateActions.addLocalDraft(draft)),
+    loadDraft: (draftId, story) => dispatch(StoryCreateActions.editStory(draftId, story)),
     discardDraft: (draftId) => dispatch(StoryCreateActions.discardDraft(draftId)),
-    saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
     updateDraft: (draftId, attrs, doReset, isRepublishing) =>
       dispatch(StoryCreateActions.updateDraft(draftId, attrs, doReset, isRepublishing)),
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    // Emre when you refactor this you should be able to remove publishDraft function and
-    // reducer from StoryCreateRedux
-    publish: (draft) => dispatch(StoryCreateActions.publishLocalDraft(draft)),
+    saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
     reroute: (path) => dispatch(push(path)),
-    setWorkingDraft: (cachedStory) => dispatch(StoryCreateActions.editStorySuccess(cachedStory)),
+    setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
     updateGlobalModalParams: (params) => dispatch(UXActions.updateGlobalModalParams(params)),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
   }

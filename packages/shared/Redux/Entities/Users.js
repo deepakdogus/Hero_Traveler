@@ -38,8 +38,10 @@ const { Types, Creators } = createActions({
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'likes'],
   receiveBookmarks: ['userId', 'storyIds'],
-  userToggleLike: ['userId', 'storyId'],
-  userToggleBookmark: ['userId', 'storyId'],
+  addBookmark: ['userId', 'storyId'],
+  removeBookmark: ['userId', 'storyId'],
+  userStoryLike: ['userId', 'storyId'],
+  userStoryUnlike: ['userId', 'storyId'],
   userGuideLike: ['userId', 'guideId'],
   userGuideUnlike: ['userId', 'guideId'],
   fetchActivities: null,
@@ -53,6 +55,18 @@ const { Types, Creators } = createActions({
   removeAvatar: ['userId'],
   removeAvatarSuccess: ['user'],
   removeAvatarFailure: ['error'],
+  adminGetUsers: ['params'],
+  adminGetUsersSuccess: ['res'],
+  adminGetUsersFailure: ['error'],
+  adminGetUser: ['id'],
+  adminGetUserSuccess: ['res'],
+  adminGetUserFailure: ['error'],
+  adminPutUser: ['payload'],
+  adminPutUserFailure: null,
+  adminDeleteUser: ['payload'],
+  adminDeleteUserSuccess: ['id'],
+  adminDeleteUserFailure: ['error'],
+  adminRestoreUsers: ['payload'],
 })
 
 export const UserTypes = Types
@@ -60,12 +74,14 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
+const initialFetchStatus = () => ({
+  fetching: false,
+  loaded: false,
+})
+
 export const INITIAL_STATE = Immutable({
   entities: {},
-  fetchStatus: {
-    fetching: false,
-    loaded: false,
-  },
+  fetchStatus: initialFetchStatus(),
   activities: {},
   activitiesById: [],
   usersLikesById: {},
@@ -74,6 +90,19 @@ export const INITIAL_STATE = Immutable({
   userFollowersByUserIdAndId: {},
   userFollowingByUserIdAndId: {},
   error: null,
+  adminUsers: {
+    fetchStatus: initialFetchStatus(),
+    byId: [],
+    total: 0,
+    error: null,
+    isDeleting: false,
+    isUpdating: false,
+    isRestoring: false,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  }
 })
 
 /* ------------- Reducers ------------- */
@@ -129,7 +158,7 @@ export const suggestionsFailure = (state, {error}) => {
   })
 }
 
-export const receive = (state, {users = {}}) => {
+export const receive = (state, { users = {} }) => {
   return state.merge({entities: users}, {deep: true})
 }
 
@@ -295,20 +324,46 @@ export const toggleLike = (state, {userId, storyId}) => {
   }
 }
 
-export const toggleBookmark = (state, {userId, storyId}) => {
+export const addBookmark = (state, {userId, storyId}) => {
   const likes = _.get(state, `usersBookmarksById.${userId}`, [])
-  if (_.includes(likes, storyId)) {
-    return state.setIn(
-      ['usersBookmarksById', userId],
-      _.without(likes, storyId)
-    )
-  } else {
-    return state.setIn(
-      ['usersBookmarksById', userId],
-      [storyId, ...likes]
+  if (_.includes(likes, storyId)) return state
+  return state.setIn(
+    ['usersBookmarksById', userId],
+    [storyId, ...likes]
+  )
+}
+
+export const removeBookmark = (state, {userId, storyId}) => {
+  const likes = _.get(state, `usersBookmarksById.${userId}`, [])
+  if (!_.includes(likes, storyId)) return state
+  return state.setIn(
+    ['usersBookmarksById', userId],
+    _.without(likes, storyId)
+  )
+}
+
+export const addStoryLike = (state, {userId, storyId}) => {
+  const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
+  if (!_.includes(storyLikes, storyId)) {
+    return  state.setIn(
+      ['usersLikesById', userId],
+      storyLikes.concat(storyId)
     )
   }
+  return state
 }
+
+export const removeStoryLike = (state, {userId, storyId}) => {
+  const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
+  if (_.includes(storyLikes, storyId)) {
+    return  state.setIn(
+      ['usersLikesById', userId],
+      _.without(storyLikes, storyId),
+    )
+  }
+  return state
+}
+
 
 export const addGuideLike = (state, {userId, guideId}) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
@@ -422,7 +477,7 @@ export const fetchActivitiesFailure = (state, {error}) => {
   return state.merge({fetchStatus: fetchingError(), error})
 }
 
-export const receiveActivities = (state, {activities}) => {
+export const receiveActivities = (state, { activities = {} }) => {
   return state.merge({activities}, {deep: true})
 }
 
@@ -434,7 +489,133 @@ export const activitySeenFailure = (state, {activityId}) => {
   return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
 }
 
+export const adminGetUsers = (state, { params = {} }) => {
+  return state
+    .setIn(
+      ['adminUsers', 'fetchStatus'],
+      {
+        fetching: true,
+        loaded: false
+      })
+    .setIn(
+      ['adminUsers', 'params'],
+      {
+        ...state.adminUsers.params,
+        ...params
+      })
+}
 
+export const adminGetUsersFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminUsers', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminUsers', 'error'],
+      error)
+}
+
+export const adminGetUsersSuccess = (state, { res }) => {
+  return state
+    .setIn(
+      ['adminUsers', 'byId'],
+      res.data)
+    .setIn(
+      ['adminUsers', 'total'],
+      res.count)
+    .setIn(
+      ['adminUsers', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminUsers', 'error'],
+      null)
+}
+
+export const adminGetUser = (state, { params = {} }) => {
+  return state.setIn(['adminUsers', 'fetchStatus', 'fetching'], true)
+}
+
+export const adminGetUserFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminUsers', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminUsers', 'error'],
+      error)
+    .setIn(['adminUsers', 'isRestoring'], false)
+}
+
+
+export const adminGetUserSuccess = (state, { res }) => {
+  let list = [...state.getIn(['adminUsers', 'byId'])]
+  let total = state.getIn(['adminUsers', 'total'])
+  const { record = {} } = res
+  const userIndex = _.findIndex(list, { id: record.id })
+  if (userIndex >= 0) {
+    list[userIndex] = record
+  } else {
+    list.push(record)
+    total = total + 1
+  }
+  return state
+    .setIn(
+      ['adminUsers', 'byId'],
+      list)
+    .setIn(
+      ['adminUsers', 'total'],
+      total)
+    .setIn(
+      ['adminUsers', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminUsers', 'error'],
+      null)
+    .setIn(
+      ['adminUsers', 'isUpdating'],
+      false)
+    .setIn(['adminUsers', 'isRestoring'], false)
+}
+
+export const adminDeleteUser = (state) => {
+  return state.setIn(['adminUsers', 'isDeleting'], true)
+}
+
+export const adminDeleteUserFailure = (state) => {
+  return state.setIn(['adminUsers', 'isDeleting'], false)
+}
+
+export const adminDeleteUserSuccess = (state, { id }) => {
+  const list = [...state.getIn(['adminUsers', 'byId'])]
+  const recordIndex = _.findIndex(list, { id })
+    
+  return state.setIn(['adminUsers', 'byId', recordIndex, 'deleted'], true)
+    .setIn(['adminUsers', 'isDeleting'], false)
+}
+
+export const adminPutUser = (state) => {
+  return state.setIn(['adminUsers', 'isUpdating'], true)
+}
+
+export const adminPutUserFailure = (state) => {
+  return state.setIn(['adminUsers', 'isUpdating'], false)
+}
+
+export const adminRestoreUsers = (state) => {
+  return state.setIn(['adminUsers', 'isRestoring'], true)
+}
 
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
@@ -510,8 +691,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RECEIVE_USERS]: receive,
   [Types.RECEIVE_LIKES]: receiveLikes,
   [Types.RECEIVE_BOOKMARKS]: receiveBookmarks,
+  [Types.ADD_BOOKMARK]: addBookmark,
+  [Types.REMOVE_BOOKMARK]: removeBookmark,
   [Types.USER_TOGGLE_LIKE]: toggleLike,
-  [Types.USER_TOGGLE_BOOKMARK]: toggleBookmark,
+  [Types.USER_STORY_LIKE]: addStoryLike,
+  [Types.USER_STORY_UNLIKE]: removeStoryLike,
   [Types.USER_GUIDE_LIKE]: addGuideLike,
   [Types.USER_GUIDE_UNLIKE]: removeGuideLike,
   [Types.FETCH_ACTIVITIES]: fetchActivities,
@@ -526,4 +710,16 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REMOVE_AVATAR]: removeAvatar,
   [Types.REMOVE_AVATAR_SUCCESS]: removeAvatarSuccess,
   [Types.REMOVE_AVATAR_FAILURE]: removeAvatarFailure,
+  [Types.ADMIN_GET_USERS]: adminGetUsers,
+  [Types.ADMIN_GET_USERS_FAILURE]: adminGetUsersFailure,
+  [Types.ADMIN_GET_USERS_SUCCESS]: adminGetUsersSuccess,
+  [Types.ADMIN_GET_USER]: adminGetUser,
+  [Types.ADMIN_GET_USER_FAILURE]: adminGetUserFailure,
+  [Types.ADMIN_GET_USER_SUCCESS]: adminGetUserSuccess,
+  [Types.ADMIN_DELETE_USER]: adminDeleteUser,
+  [Types.ADMIN_DELETE_USER_FAILURE]: adminDeleteUserFailure,
+  [Types.ADMIN_DELETE_USER_SUCCESS]: adminDeleteUserSuccess,
+  [Types.ADMIN_PUT_USER]: adminPutUser,
+  [Types.ADMIN_PUT_USER_FAILURE]: adminPutUserFailure,
+  [Types.ADMIN_RESTORE_USERS]: adminRestoreUsers,
 })

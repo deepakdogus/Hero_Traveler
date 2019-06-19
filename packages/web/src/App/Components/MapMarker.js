@@ -6,8 +6,8 @@ import {
 } from "react-google-maps";
 import styled from 'styled-components'
 
-import { Row } from './FlexboxGrid'
-import VerticalCenter from './VerticalCenter'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const CoverImage = styled.img`
   width: 140px;

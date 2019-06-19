@@ -23,7 +23,6 @@ export default function likeGuide(guideId, userId) {
       })
     })
     .then((guide) => {
-      // add ActivityGuideLike
       return ActivityGuideLike.add(
         guide.author,
         userId,

@@ -19,6 +19,7 @@
     "plugin:react/recommended"
   ],
   "rules": {
+    "indent": [2,2, { "SwitchCase": 1 }],
     "no-console": 1,
     "react/jsx-no-bind": 2,
     "react/prop-types": 1,
@@ -46,6 +47,7 @@
     "no-useless-escape": "error",
     "no-whitespace-before-property": "error",
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
+    "operator-linebreak": ["error", "before"],
     "padded-blocks": ["error", { "blocks": "never", "switches": "never", "classes": "never" }],
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "semi": ["error", "never"],

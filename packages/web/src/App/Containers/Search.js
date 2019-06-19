@@ -2,25 +2,47 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 import env from '../Config/Env'
 
 import UserActions from '../Shared/Redux/Entities/Users'
-import UXActions from '../Redux/UXRedux'
+import HistoryActions from '../Shared/Redux/HistoryRedux'
+import { runIfAuthed } from '../Lib/authHelpers'
+
+import GoogleLocator from '../Components/GoogleLocator'
 import SearchResultsPeople from '../Components/SearchResultsPeople'
-import SearchResultsStories from '../Components/SearchResultsStories'
+import SearchAutocompleteList from '../Components/SearchAutocompleteList'
 import TabBar from '../Components/TabBar'
-import {Row} from '../Components/FlexboxGrid'
-//seach
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
+
+// search
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
+import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete'
+import { formatLocationWeb } from '../Shared/Lib/formatLocation'
+
+const MAX_RESULTS = 10
+
+const getCalculatedHeight = (responsive = false) => {
+  const headerHeight = 65
+  const searchBarHeight = responsive ? 67 : 122
+  const tabBarHeight = responsive ? 50 : 73
+  const extraMargins = 30
+  return !responsive
+    ? `calc(100vh - ${headerHeight + searchBarHeight + tabBarHeight + extraMargins}px)`
+    : `calc(100vh - ${headerHeight + searchBarHeight + tabBarHeight}px)`
+}
 
 const Container = styled.div``
 
 const HeaderInputContainer = styled(Row)`
   background-color: ${props => props.theme.Colors.lightGreyAreas};
   padding: 0 30px;
+  flex-wrap: nowrap;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding: 0 15px;
+  }
 `
 
 const HeaderInput = styled.input`
@@ -32,25 +54,58 @@ const HeaderInput = styled.input`
   font-size: 30px;
   border: none;
   outline: none;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: ${props => props.theme.Colors.signupGrey};
-  &::placeholder{
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: 65px;
+    font-size: 16px; /* <16px and iOS Safari will zoom on input (bad) */
+  }
+  &::placeholder {
     color: ${props => props.theme.Colors.signupGrey};
-  };
-  &::-moz-placeholder{
+  }
+  &::-moz-placeholder {
     color: ${props => props.theme.Colors.signupGrey};
-  };
-  &:-ms-input-placeholder{
+  }
+  &:-ms-input-placeholder {
     color: ${props => props.theme.Colors.signupGrey};
-  };
-  &:-moz-placeholder{
+  }
+  &:-moz-placeholder {
     color: ${props => props.theme.Colors.signupGrey};
-  };
+  }
 `
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div``
+
+const ScrollingListContainer = styled.div`
+  height: ${getCalculatedHeight()};
+  overflow-y: scroll;
+  margin: 30px auto 0;
+  max-width: 900px;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    height: ${getCalculatedHeight(true)};
+    margin: 0 auto;
+  }
+`
+
+export const ItemContainer = styled.div`
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 50px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 12px 0;
+    padding: 0 15px;
+  }
+`
+
+export const ListTitle = styled.p`
+  font-weight: 600;
+  font-size: 20px;
+  font-family: ${props => props.theme.Fonts.type.sourceSansPro};
+  color: ${props => props.theme.Colors.background};
+  letter-spacing: 0.7px;
 `
 
 const Text = styled.p`
@@ -62,14 +117,17 @@ const Text = styled.p`
   font-size: 18px;
   font-weight: 400;
   line-height: 122px;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 15px;
+    line-height: 66px;
+  }
 `
 
-const tabBarTabs = ['STORIES', 'PEOPLE']
+const tabBarTabs = ['PLACES', 'PEOPLE']
 
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
-const STORY_INDEX = env.SEARCH_STORY_INDEX
 const USERS_INDEX = env.SEARCH_USER_INDEX
 
 class Search extends Component {
@@ -87,14 +145,14 @@ class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 'STORIES',
-      lastSearchResults: {},
+      activeTab: 'PLACES',
+      algoliaResults: {},
       inputText: '',
     }
   }
 
   componentWillMount() {
-    this.helper = algoliaSearchHelper(algoliasearch, STORY_INDEX)
+    this.helper = algoliaSearchHelper(algoliasearch, USERS_INDEX)
     this.setupSearchListeners(this.helper)
     this.reinitializeQuery()
   }
@@ -104,8 +162,8 @@ class Search extends Component {
   }
 
   //loads user following if user log's in on the search page
-  componentDidUpdate(prevProps){
-    if(this.props.userId !== prevProps.userId){
+  componentDidUpdate(prevProps) {
+    if (this.props.userId !== prevProps.userId) {
       this.props.loadUserFollowing(this.props.userId)
     }
   }
@@ -114,11 +172,11 @@ class Search extends Component {
     helper.on('result', res => {
       this.setState({
         search: false,
-        lastSearchResults: res,
+        algoliaResults: res,
       })
     })
     helper.on('search', () => {
-      this.setState({searching: true})
+      this.setState({ searching: true })
     })
   }
 
@@ -127,179 +185,309 @@ class Search extends Component {
     helper.removeAllListeners('search')
   }
 
-  inputFieldChange = (event) => {
-    this.setState({inputText: event.target.value})
-    this._changeQuery(event.target.value)
+  inputFieldChange = inputText => {
+    this.setState({ inputText })
+    this.changeQuery(inputText)
   }
 
-  _changeQuery = (queryText) => {
-    const helper = this.helper
+  changeQuery = queryText => {
+    // changeQuery function only pertains to algolia searchs
+    if (this.state.activeTab !== 'PEOPLE') return
+
     const hasSearchText = queryText.length > 0
-    if (_.isString(queryText) && queryText.length === 0) {
-      this.setState({
-        lastSearchResults: {},
+    const isEmpty = _.isString(queryText) && queryText.length === 0
+    const hasUnderThreeChars = _.isString(queryText) && queryText.length < 3
+
+    // do not search when the search query is empty
+    if (isEmpty)
+      return this.setState({
+        algoliaResults: {},
         searching: false,
         hasSearchText,
       })
-      return
-    }
-    else if (_.isString(queryText) && queryText.length < 3) {
-      if (hasSearchText && !this.state.hasSearchText) {
-        this.setState({
-          lastSearchResults: {},
-          hasSearchText,
-        })
-      }
-      return
-    }
+
+    // do not search when under 3 characters query length
+    if (hasUnderThreeChars) return
 
     _.debounce(() => {
-      helper
+      this.helper
         .setQuery(queryText)
+        .setQueryParameter('hitsPerPage', MAX_RESULTS)
         .search()
     }, 300)()
   }
 
-  resetSearchText = () => {
-    if(!this.state.lastSearchResults.hits) return
-    else{
-      this.setState({
-        inputText: '',
-        lastSearchResults: {},
-      })
-    }
-  }
-
-  getSearchIndex(activeTab) {
-    return activeTab === 'STORIES' ? STORY_INDEX : USERS_INDEX
-  }
-
-  changeIndex(newIndex) {
-    this.removeSearchListeners(this.helper)
-    this.helper = this.helper.setIndex(newIndex)
-    this.setupSearchListeners(this.helper)
-    return this.helper
-  }
+  resetSearchText = () =>
+    this.setState({
+      inputText: '',
+      algoliaResults: {},
+    })
 
   reinitializeQuery() {
-    const {searchHistory} = this.props
+    const { searchHistory } = this.props
     const lastSearchType = searchHistory.lastSearchType
-    const inputText = _.get(searchHistory, `${lastSearchType}[0]`)
+    const inputText = _.get(searchHistory, `${lastSearchType}[0].searchText`)
     if (inputText) {
-      const activeTab = searchHistory.lastSearchType === 'story' ? 'STORIES' : 'PEOPLE'
-      this.changeIndex(this.getSearchIndex(activeTab))
-      this.setState({
-        inputText,
-        activeTab,
-      }, () => this._changeQuery(inputText))
+      const activeTab = searchHistory.lastSearchType === 'places' ? 'PLACES' : 'PEOPLE'
+      this.setState(
+        {
+          inputText,
+          activeTab,
+        },
+        () => this.changeQuery(inputText),
+      )
     }
   }
 
-  _changeTab = (activeTab) => {
-    this.changeIndex(this.getSearchIndex(activeTab))
+  changeTab = activeTab => {
     const textValue = this.state.inputText
-    if (textValue && textValue.length >= 3) {
+    if (activeTab === 'PEOPLE' && textValue && textValue.length >= 3) {
       this.setState({
         searching: true,
         activeTab,
-        lastSearchResults: {},
+        algoliaResults: {},
       })
-      this.helper.setQuery(textValue).search()
+      return this.helper.setQuery(textValue).search()
     }
     else {
-      this.setState({activeTab, lastSearchResults: {}})
+      this.setState({ activeTab, algoliaResults: {} })
     }
   }
 
-  onClickTab = (event) => {
+  onClickTab = event => {
     let tab = event.target.innerHTML
-    this._changeTab(tab)
+    this.changeTab(tab)
   }
 
-  _followUser = (userIdToFollow) => {
-    this.props.followUser(this.props.userId, userIdToFollow)
-  }
+  followUser = userIdToFollow => this.props.followUser(this.props.userId, userIdToFollow)
 
-  _unfollowUser = (userIdToUnfollow) => {
+  unfollowUser = userIdToUnfollow => {
     this.props.unfollowUser(this.props.userId, userIdToUnfollow)
   }
 
-  _navToUserProfile = (userId) => {
-    this.props.addRecentSearch('user', this.state.inputText, userId)
+  navToUserProfile = (userId, user) => {
+    this.props.addRecentSearch({
+      searchType: 'people',
+      searchText: this.state.inputText,
+      id: userId,
+      ...user,
+    })
     this.props.reroute(`/profile/${userId}/view`)
   }
 
-  _navToStory = (storyId) => {
-    this.props.addRecentSearch('story', this.state.inputText, storyId)
-    this.props.reroute(`/story/${storyId}`)
-  }
-
-  renderActiveTab = () => {
-    if (this.state.activeTab === 'PEOPLE') {
-      return (
-        <SearchResultsPeople
-          userSearchResults={this.state.lastSearchResults}
-          userFollowing={this.props.userFollowing}
-          userId={this.props.userId}
-          followUser={this._followUser}
-          unfollowUser={this._unfollowUser}
-          navToUserProfile={this._navToUserProfile}
-        />
-      )
+  navToLocationResults = async item => {
+    if (item.searchText && item.searchType) {
+      this.navToCachedLocation(item)
     }
     else {
-      return (
-        <SearchResultsStories
-          storySearchResults={this.state.lastSearchResults}
-          navToStory={this._navToStory}
-          navToUserProfile={this._navToUserProfile}
-        />
-      )
+      this.navToNewLocation(item)
     }
   }
 
-  render() {
+  navToCachedLocation = item => {
+    const { reroute, addRecentSearch } = this.props
+    addRecentSearch({ ...item, searchText: this.state.inputText })
+
+    const { country, lat, lng, title, secondaryText } = item
+    return reroute({
+      pathname: `/results/${country}/${lat}/${lng}`,
+      search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
+    })
+  }
+
+  navToNewLocation = async ({ description, placeId, secondaryText }) => {
+    const { reroute, addRecentSearch } = this.props
+    try {
+      const {
+        name: title,
+        country,
+        latitude: lat,
+        longitude: lng,
+      } = await formatLocationWeb(description, placeId, geocodeByPlaceId, getLatLng)
+
+      if (lat && lng) {
+        addRecentSearch({
+          searchType: 'places',
+          searchText: this.state.inputText,
+          contentType: 'location',
+          id: placeId,
+          title,
+          lat,
+          lng,
+          country,
+          description,
+          secondaryText,
+        })
+        reroute({
+          pathname: `/results/${country}/${lat}/${lng}`,
+          search: `?t=${title}${secondaryText ? `, ${secondaryText}` : ''}`,
+        })
+      }
+    }
+    catch (e) {
+      console.error(e)
+    }
+  }
+
+  renderActiveTab = suggestions => {
+    const { activeTab } = this.state
     return (
-      <Container>
-        <HeaderInputContainer between='xs'>
-          <HeaderInput
-            value={this.state.inputText}
-            onChange={this.inputFieldChange}
-            placeholder='Type to search' />
-          <Text
-            onClick={this.resetSearchText}
-          >Cancel</Text>
-        </HeaderInputContainer>
-        <ContentWrapper>
-          <TabBar
-            tabs={tabBarTabs}
-            activeTab={this.state.activeTab}
-            onClickTab={this.onClickTab}
-            whiteBG
-          />
-          {this.renderActiveTab()}
-        </ContentWrapper>
-      </Container>
+      <ScrollingListContainer>
+        {activeTab === 'PLACES' && this.renderPlacesTab(suggestions)}
+        {activeTab === 'PEOPLE' && this.renderPeopleTab()}
+      </ScrollingListContainer>
+    )
+  }
+
+  // @TODO: Add back 'LOCATIONS' label if you have >1 AutocompleteList on the page
+  renderPlacesTab = suggestions => {
+    const { inputText } = this.state
+    const {
+      searchHistory: { places },
+    } = this.props
+    if (!inputText) {
+      return (
+        <SearchAutocompleteList
+          label="RECENT SEARCHES"
+          autocompleteItems={places}
+          navigate={this.navToLocationResults}
+        />
+      )
+    }
+
+    const formattedLocations = suggestions.map(suggestion => ({
+      id: suggestion.id,
+      placeId: suggestion.placeId,
+      title: suggestion.formattedSuggestion.mainText,
+      secondaryText: suggestion.formattedSuggestion.secondaryText,
+      description: suggestion.description,
+    }))
+    if (formattedLocations.length)
+      return (
+        <SearchAutocompleteList
+          // label="LOCATIONS"
+          autocompleteItems={formattedLocations}
+          navigate={this.navToLocationResults}
+        />
+      )
+    return null
+  }
+
+  // @TODO: Add back 'PEOPLE' label if you have >1 AutocompleteList on the page
+  renderPeopleTab = () => {
+    const {
+      searchHistory,
+      searchHistory: { people },
+      userFollowing,
+      userId,
+    } = this.props
+
+    if (!this.state.inputText && people && !!people.length)
+      return (
+        <SearchResultsPeople
+          label="RECENT SEARCHES"
+          userSearchResults={searchHistory}
+          userFollowing={userFollowing}
+          userId={userId}
+          followUser={this.followUser}
+          unfollowUser={this.unfollowUser}
+          navToUserProfile={this.navToUserProfile}
+        />
+      )
+
+    return (
+      <SearchResultsPeople
+        // label="PEOPLE"
+        userSearchResults={this.state.algoliaResults}
+        userFollowing={userFollowing}
+        userId={userId}
+        followUser={this.followUser}
+        unfollowUser={this.unfollowUser}
+        navToUserProfile={this.navToUserProfile}
+      />
+    )
+  }
+
+  renderTab = suggestions => {
+    return (
+      <ContentWrapper>
+        <TabBar
+          tabs={tabBarTabs}
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
+          whiteBG
+        />
+        {this.renderActiveTab(suggestions)}
+      </ContentWrapper>
+    )
+  }
+
+  renderChildren = ({ getInputProps, suggestions }) => (
+    <Container>
+      <HeaderInputContainer between="xs">
+        <HeaderInput
+          {...getInputProps({
+            placeholder: 'Type to search',
+          })}
+        />
+        <Text onClick={this.resetSearchText}>{'Cancel'}</Text>
+      </HeaderInputContainer>
+      {this.renderTab(suggestions)}
+    </Container>
+  )
+
+  /* The `react-places-autocomplete` package rerenders the child based on the search
+   * input. We pass all search components through GoogleLocator so we don't have to
+   * duplicate the Header Input; props to its children will only change as a result of
+   * modified entry on the Places tab due to shouldFetchSuggestions conditional
+   */
+  render = () => {
+    const { inputText, activeTab } = this.state
+    return (
+      <GoogleLocator
+        value={inputText}
+        onChange={this.inputFieldChange}
+        shouldFetchSuggestions={activeTab === 'PLACES'}
+        renderChildren={this.renderChildren}
+        searchOptions={{ types: ['geocode'] }}
+        isSearch
+      />
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     userFollowing: state.entities.users.userFollowingByUserIdAndId,
     userId: state.session.userId,
-    searchHistory: state.ux.searchHistory,
+    searchHistory: state.history.searchHistory,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    followUser: (sessionUserID, userIdToFollow) => dispatch(UserActions.followUser(sessionUserID, userIdToFollow)),
-    unfollowUser: (sessionUserID, userIdToUnfollow) => dispatch(UserActions.unfollowUser(sessionUserID, userIdToUnfollow)),
-    loadUserFollowing: (sessionUserID) => dispatch(UserActions.loadUserFollowing(sessionUserID)),
-    reroute: (path) => dispatch(push(path)),
-    addRecentSearch: (type, text, id) => dispatch(UXActions.addRecentSearch(type, text, id)),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
+    loadUserFollowing: sessionUserID =>
+      dispatch(UserActions.loadUserFollowing(sessionUserID)),
+    reroute: path => dispatch(push(path)),
+    addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Search)

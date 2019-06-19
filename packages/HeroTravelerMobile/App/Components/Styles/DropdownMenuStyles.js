@@ -52,11 +52,11 @@ const formInputStyles = StyleSheet.create({
     padding: 10,
   },
   modalCloseButtonText: {
-    color: Colors.white,
+    color: Colors.snow,
     fontSize: 16,
     fontFamily: Fonts.type.sourceSansPro,
     textAlign: 'center',
-  }
+  },
 })
 
 export default formInputStyles

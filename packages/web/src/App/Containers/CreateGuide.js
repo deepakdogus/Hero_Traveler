@@ -13,7 +13,7 @@ import AddCoverTitles from '../Components/CreateStory/AddCoverTitles'
 import FeedItemDetails from '../Components/CreateStory/FeedItemDetails'
 import { TrashButton } from '../Components/CreateStory/FooterToolbar'
 import CenteredButtons from '../Components/CenteredButtons'
-import RoundedButton from '../Components/RoundedButton'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 import {
   SharedCreateGuide,
   mapStateToProps,
@@ -25,8 +25,8 @@ import {
   customModalStyles,
 } from './EditStory'
 import { Title, Text } from '../Components/Modals/Shared'
-import { Row } from '../Components/FlexboxGrid'
-import VerticalCenter from '../Components/VerticalCenter'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const StyledTitle = styled(Title)`
   margin: 20px 0px 0px 0px;
@@ -166,9 +166,19 @@ class CreateGuide extends SharedCreateGuide {
     else this.rerouteAway()
   }
 
+  checkAuthor() {
+    const { reroute, sessionUserId } = this.props
+
+    // you should not be able to edit a guide if you are not the author
+    if (_.get(this.state.guide, 'author') !== sessionUserId) {
+      return reroute('/feed')
+    }
+  }
   render() {
     const errorMessage = _.get(this, 'props.error.message')
     const actionVerb = this.isExistingGuide() ? 'Saving' : 'Creating'
+
+    this.checkAuthor()
 
     return (
       <Container>
@@ -177,7 +187,7 @@ class CreateGuide extends SharedCreateGuide {
           <AddCoverTitles
             onInputChange={this.updateGuide}
             workingDraft={this.state.guide}
-            uploadImage={this.props.uploadImage}
+            uploadMedia={this.props.uploadMedia}
             isGuide
           />
           <FeedItemDetails
@@ -239,8 +249,8 @@ function extendedMapDispatchToProps(dispatch, ownProps) {
   }
   dispatchMapping.dismissError = () => dispatch(GuideActions.dismissError())
   dispatchMapping.getGuide = (guideId) => dispatch(GuideActions.getGuideRequest(guideId))
-  dispatchMapping.uploadImage = (file, callback) => {
-    dispatch(StoryCreateActions.uploadImage(file, callback))
+  dispatchMapping.uploadMedia = (file, callback) => {
+    dispatch(StoryCreateActions.uploadMedia(file, callback, 'image'))
   }
   return dispatchMapping
 }

@@ -1,46 +1,44 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  TextInput
-} from 'react-native'
-import {connect} from 'react-redux'
+import { View, Text, TextInput } from 'react-native'
+import { connect } from 'react-redux'
 
 import { Actions as NavActions } from 'react-native-router-flux'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import { Images } from '../../Shared/Themes'
 import ImageWrapper from '../../Components/ImageWrapper'
 import NavButton from '../../Navigation/NavButton'
-import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../../Shared/Lib/userFormValidation'
+import {
+  validate as validateOriginal,
+  asyncValidate as asyncValidateOriginal,
+} from '../../Shared/Lib/userFormValidation'
 
 import styles from './SignupChangeUsernameStyles'
 
-const asyncValidate = (values) => {
+const asyncValidate = values => {
   return asyncValidateOriginal(values)
 }
 
-const validate = (values) => {
-  return validateOriginal(values, null, ["email"])
+const validate = values => {
+  return validateOriginal(values, null, ['email'])
 }
 
 class SignupChangeEmail extends React.Component {
-
   validationTimeout = null
 
   constructor(props) {
     super(props)
     this.state = {
       newEmail: '',
-      error: null
+      error: null,
     }
   }
 
   componentDidMount() {
     if (
-      this.props.user.email &&
-      !this.props.user.email.endsWith('herotraveler')
+      this.props.user.email
+      && !this.props.user.email.endsWith('herotraveler')
     ) {
-      NavActions.signupFlow_topics()
+      NavActions.signupFlow_additionalInfo()
     }
   }
 
@@ -49,26 +47,29 @@ class SignupChangeEmail extends React.Component {
       let validationError = validate(values)
       if (Object.keys(validationError).length > 0) {
         reject(validationError[Object.keys(validationError)[0]])
-      } else {
-        asyncValidate(values).then(() => {
-          resolve()
-        }).catch((err) =>  {
-          reject(err[Object.keys(err)[0]])
-        })
+      }
+      else {
+        asyncValidate(values)
+          .then(() => {
+            resolve()
+          })
+          .catch(err => {
+            reject(err[Object.keys(err)[0]])
+          })
       }
     })
   }
 
-  onChangeText = (email) => {
+  onChangeText = email => {
     this.setState({
       newEmail: email,
-      error: null
+      error: null,
     })
   }
 
   onBlur = () => {
-    this.runValidations({email: this.state.newEmail}).catch((e) => {
-      this.setState({error: e})
+    this.runValidations({ email: this.state.newEmail }).catch(e => {
+      this.setState({ error: e })
     })
   }
 
@@ -80,20 +81,23 @@ class SignupChangeEmail extends React.Component {
 
   onRight = () => {
     if (!this.state.error && !this.state.submitting) {
-      this.setState({submitting: true}, () => {
-        this.runValidations({email: this.state.newEmail}).then(() => {
-          this.updateUser()
-          NavActions.signupFlow_topics()
-        }).catch((e) => {
-          this.setState({error: e})
-        }).finally(() => {
-          this.setState({submitting: false});
-        });
+      this.setState({ submitting: true }, () => {
+        this.runValidations({ email: this.state.newEmail })
+          .then(() => {
+            this.updateUser()
+            NavActions.signupFlow_topics()
+          })
+          .catch(e => {
+            this.setState({ error: e })
+          })
+          .finally(() => {
+            this.setState({ submitting: false })
+          })
       })
     }
   }
 
-  render () {
+  render() {
     return (
       <ImageWrapper
         background={true}
@@ -105,8 +109,8 @@ class SignupChangeEmail extends React.Component {
           <View style={styles.navButton}>
             <NavButton
               onRight={this.onRight}
-              text='Next'
-              iconName='arrowRightRed'
+              text="Next"
+              iconName="arrowRightRed"
             />
           </View>
         </View>
@@ -123,34 +127,36 @@ class SignupChangeEmail extends React.Component {
                 onChangeText={this.onChangeText}
                 onBlur={this.onBlur}
                 value={this.state.newEmail}
-                placeholderTextColor='white'
+                placeholderTextColor="white"
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              {this.state.error &&
+              {this.state.error && (
                 <View style={styles.errorView}>
                   <Text style={styles.error}>{this.state.error}</Text>
                 </View>
-              }
+              )}
             </View>
           </View>
         </View>
       </ImageWrapper>
     )
   }
-
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     user: state.entities.users.entities[state.session.userId],
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
+    updateUser: attrs => dispatch(UserActions.updateUser(attrs)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupChangeEmail)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignupChangeEmail)

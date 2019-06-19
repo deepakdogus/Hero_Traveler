@@ -37,6 +37,11 @@ function putMediaResponse(api, url, response, timeout){
 
 function safeNormalize(response, schema, path = 'data'){
   if (!response.ok) return response
+  if (!_.get(response, path)) {
+    response.ok = false
+    response.problem = 'No data'
+    return response
+  }
   return Object.assign({}, response, {
     data: normalize(_.get(response, path), schema)
   })
@@ -131,6 +136,15 @@ const create = () => {
     })
   }
 
+  const loginAdmin = (username, password) => {
+    return api.post('admin/auth', {}, {
+      auth: {
+        username,
+        password
+      }
+    })
+  }
+
   const logout = (tokens) => {
     return api.post('auth/revoke', {
       tokens: tokens
@@ -186,7 +200,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/user/${userId}/feed/v2`, params)
+    return api.get(`story/feed/userfeed/${userId}`, params)
     .then(response => {
       if (!response.ok) return response
       return {
@@ -196,16 +210,38 @@ const create = () => {
     })
   }
 
-  const getUserFeedOld = (userId, params) => {
-    return api.get(`story/user/${userId}/feed`, {
-      params
+  const getNearbyFeed = (nearbyStoryIds) => {
+    return api
+      .get(`story/feed/nearby`, {
+        nearbyStoryIds: JSON.stringify(nearbyStoryIds)
+      })
+      .then(response => {
+        if (!response.ok) return response
+        return {
+          count: response.data.count,
+          ...safeNormalize(response, [Story], 'data.feed')
+        }
+      })
+  }
+
+  const getBadgeUserFeed = () => {
+    return api.get(`story/feed/badgeUsers`)
+    .then(response => {
+      if (!response.ok) return response
+      return {
+        count: response.data.count,
+        ...safeNormalize(response, [Story], 'data.feed'),
+      }
     })
-    .then(response => safeNormalize(response, [Story]))
   }
 
   const getUserStories = (userId, params) => {
     return api.get(`story/user/${userId}`, params)
     .then(response => safeNormalize(response, [Story]))
+  }
+
+  const getUsersDeletedStories = (userId) => {
+    return api.get(`story/user/${userId}/deleted`)
   }
 
   const getCategoryStories = (categoryId, params = {}) => {
@@ -215,7 +251,7 @@ const create = () => {
 
   // publishes a draft
   const createStory = (story) => {
-    return api.post('story', {story})
+    return api.post('story/v2', {story})
   }
 
   const createDraft = () => {
@@ -310,7 +346,11 @@ const create = () => {
   }
 
   const likeStory = (storyId) => {
-    return api.get(`story/${storyId}/like`)
+    return api.put(`story/${storyId}/like`)
+  }
+
+  const unlikeStory = (storyId) => {
+    return api.put(`story/${storyId}/unlike`)
   }
 
   const flagStory = (storyId) => {
@@ -318,7 +358,11 @@ const create = () => {
   }
 
   const bookmarkStory = (storyId) => {
-    return api.get(`story/${storyId}/bookmark`)
+    return api.post(`story/${storyId}/bookmark`)
+  }
+
+  const removeStoryBookmark = (storyId) => {
+    return api.delete(`story/${storyId}/bookmark`)
   }
 
   const getBookmarks = (userId) => {
@@ -450,6 +494,52 @@ const create = () => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
+  const adminGetUsers = (params) => api.get(`admin/users`, params)
+
+  const adminGetUser = (id) => api.get(`admin/users/${id}`)
+
+  const adminPutUser = ({ id, values }) => api.put(`admin/users/${id}`, values)
+
+  const adminDeleteUser = (id) => api.delete(`admin/users/${id}`)
+
+  const adminRestoreUsers = (ids) => api.post('admin/users/restore', { ids })
+
+  const adminGetCategories = (params) => api.get('admin/categories', params)
+
+  const adminGetCategory = (id) => api.get(`admin/categories/${id}`)
+
+  const adminPutCategory = ({ id, values }) => api.put(`admin/categories/${id}`, values)
+
+  const adminPostCategory = ({ values }) => api.post(`admin/categories`, values)
+
+  const adminDeleteCategory = (id) => api.delete(`admin/categories/${id}`)
+
+  const adminRestoreCategories = (ids) => api.post('admin/categories/restore', { ids })
+
+  const adminGetStories = (params) => api.get('admin/stories', params)
+
+  const adminGetStory = (id) => api.get(`admin/stories/${id}`)
+
+  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, { story: values })
+
+  const adminDeleteStory = (id) => api.delete(`admin/stories/${id}`)
+
+  const adminRestoreStories = (ids) => api.post('admin/stories/restore', { ids })
+
+  const adminGetGuides = (params) => api.get('admin/guides', params)
+
+  const adminGetGuide = (id) => api.get(`admin/guides/${id}`)
+
+  const adminPutGuide = ({ id, values }) => api.put(`admin/guides/${id}`, values)
+
+  const adminDeleteGuide = (id) => api.delete(`admin/guides/${id}`)
+
+  const adminRestoreGuides = (ids) => api.post('admin/guides/restore', { ids })
+
+  const adminGetTotalStats = () => api.get('admin/stats/total')
+
+  const adminGetNewStats = (params) => api.get('admin/stats/new', params)
+
   // ------
   // STEP 3
   // ------
@@ -466,6 +556,7 @@ const create = () => {
     setAuth,
     unsetAuth,
     login,
+    loginAdmin,
     logout,
     refreshTokens,
     getMe,
@@ -478,11 +569,13 @@ const create = () => {
     signupFacebook,
     connectFacebook,
     getUserFeed,
-    getUserFeedOld,
+    getNearbyFeed,
+    getBadgeUserFeed,
     createStory,
     getCategories,
     getHashtags,
     getUserStories,
+    getUsersDeletedStories,
     getCategoryStories,
     getSuggestedUsers,
     getUserFollowers,
@@ -494,7 +587,9 @@ const create = () => {
     unfollowCategory,
     getUserLikes,
     likeStory,
+    unlikeStory,
     bookmarkStory,
+    removeStoryBookmark,
     getStory,
     getDrafts,
     getGuideStories,
@@ -532,6 +627,29 @@ const create = () => {
     getCategoryGuides,
     likeGuide,
     unlikeGuide,
+    adminGetUsers,
+    adminGetUser,
+    adminPutUser,
+    adminDeleteUser,
+    adminRestoreUsers,
+    adminGetStories,
+    adminGetStory,
+    adminPutStory,
+    adminDeleteStory,
+    adminRestoreStories,
+    adminGetGuides,
+    adminGetGuide,
+    adminPutGuide,
+    adminDeleteGuide,
+    adminRestoreGuides,
+    adminGetCategories,
+    adminGetCategory,
+    adminPutCategory,
+    adminPostCategory,
+    adminDeleteCategory,
+    adminRestoreCategories,
+    adminGetTotalStats,
+    adminGetNewStats
   }
 }
 

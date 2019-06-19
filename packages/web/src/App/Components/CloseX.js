@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from './Icon'
-import RoundedButton from './RoundedButton'
+import Icon from '../Shared/Web/Components/Icon'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
 
 const Container = styled.div``
 

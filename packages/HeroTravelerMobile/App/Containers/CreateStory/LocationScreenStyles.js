@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   root: {
@@ -7,14 +8,14 @@ export default StyleSheet.create({
     flexDirection: 'column',
   },
   topWrapper: {
-    marginTop: Metrics.baseMargin,
+    marginTop: isIPhoneX() ? Metrics.baseMargin * 4 : Metrics.baseMargin,
     height: 40,
   },
   content: {
     flex: 1,
     justifyContent: 'flex-start',
     marginHorizontal: Metrics.doubleBaseMargin,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   cancelBtn: {
     flex: 1,
@@ -22,13 +23,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: Metrics.doubleBaseMargin,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   cancelBtnText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.red,
     fontWeight: '600',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
   },
   rowWrapper: {
     borderBottomWidth: 1,
@@ -43,12 +44,12 @@ export default StyleSheet.create({
   boldText: {
     fontFamily: Fonts.type.sourceSansPro,
     fontWeight: '400',
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontSize: 16,
     color: Colors.background,
   },
   formWrapper: {
-    flex: .2,
+    flex: 0.2,
     flexDirection: 'row',
     position: 'relative',
   },
@@ -58,14 +59,14 @@ export default StyleSheet.create({
     color: Colors.navBarText,
   },
   textInputWrapper: {
-    flexGrow: .7,
+    flexGrow: 0.7,
     height: 35,
     borderBottomWidth: 1,
     borderBottomColor: Colors.navBarText,
-    marginVertical: Metrics.baseMargin / 2
+    marginVertical: Metrics.baseMargin / 2,
   },
   spinner: {
-    margin: Metrics.section
+    margin: Metrics.section,
   },
   scrollView: {
     flexGrow: 3,

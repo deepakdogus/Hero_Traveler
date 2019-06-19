@@ -1,14 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles, Colors, Fonts } from '../../Shared/Themes/'
+import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Shared/Themes/'
+import { isIPhoneX } from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
     flex: 1,
     backgroundColor: Colors.background,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   tabbar: {
-    height: 55,
+    height: Metrics.tabBarHeight,
     flex: 1,
     position: 'absolute',
     bottom: 0,
@@ -16,41 +19,44 @@ export default StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: Colors.background
+    alignItems: isIPhoneX() ? 'flex-start' : 'center',
+    backgroundColor: Colors.snow,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   tabbarButton: {
     height: 55,
-    flex: .5,
+    flex: 0.5,
   },
   tabbarText: {
     flex: 1,
     height: 55,
     lineHeight: 55,
     letterSpacing: 1.5,
-    color: Colors.snow,
+    color: Colors.background,
     textAlign: 'center',
     fontSize: 15,
     fontFamily: Fonts.type.montserrat,
+    fontWeight: '500',
   },
   tabbarTextNotSelected: {
-    color: Colors.grey
+    color: Colors.signupGrey,
   },
   imageWrapper: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   retakeButtonText: {
-    color: Colors.white,
+    color: Colors.snow,
     fontSize: 13,
     fontFamily: Fonts.type.montserrat,
   },
@@ -67,12 +73,18 @@ export default StyleSheet.create({
   notAuthorizedWrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   notAuthorizedText: {
     ...ApplicationStyles.screen.titleText,
     color: Colors.navBarText,
-    textAlign: "center",
+    textAlign: 'center',
     padding: 20,
-  }  
+  },
+  rightTextNoIcon: {
+    paddingRight: 20,
+  },
+  rightTextWithIcon: {
+    paddingRight: 5,
+  },
 })

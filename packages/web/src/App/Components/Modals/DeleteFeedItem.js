@@ -5,21 +5,22 @@ import { push } from 'react-router-redux'
 
 import StoryActions from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
+import PendingUpdatesActions from '../../Shared/Redux/PendingUpdatesRedux'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   Container,
   Title,
   Text,
 } from './Shared'
-import {Row} from '../FlexboxGrid'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
 
 class DeleteFeedItem extends React.Component {
-
   static propTypes = {
     reroute: PropTypes.func,
     closeModal: PropTypes.func,
     deleteStory: PropTypes.func,
+    discardPendingUpdate: PropTypes.func,
     deleteGuide: PropTypes.func,
     resetCreateStore: PropTypes.func,
     userId: PropTypes.string,
@@ -27,11 +28,13 @@ class DeleteFeedItem extends React.Component {
   }
 
   storyDeleteAndReroute = () => {
-    const { reroute, closeModal, resetCreateStore } = this.props
+    const { reroute, closeModal, resetCreateStore, discardPendingUpdate } = this.props
     const { feedItemId } = this.props.globalModalParams
     if (feedItemId.includes('local')) {
       resetCreateStore()
-    } else {
+      discardPendingUpdate(feedItemId)
+    }
+    else {
       this._deleteStory()
     }
     reroute('/')
@@ -93,6 +96,7 @@ function mapDispatchToProps(dispatch) {
   return {
     reroute: (route) => dispatch(push(route)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
+    discardPendingUpdate: (storyId) => dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
     deleteGuide: (guideId, userId) => dispatch(GuideActions.deleteGuideRequest(guideId, userId)),
     resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
   }

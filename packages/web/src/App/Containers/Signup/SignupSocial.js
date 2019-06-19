@@ -6,10 +6,9 @@ import _ from 'lodash'
 
 import UserActions, {getFollowers} from '../../Shared/Redux/Entities/Users'
 
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
-import RoundedButton from '../../Components/RoundedButton'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import HorizontalDivider from '../../Components/HorizontalDivider'
-// import SocialMediaRow from '../../Components/Signup/SocialMediaRow'
 import FollowFollowingRow from '../../Components/FollowFollowingRow'
 
 const Container = styled.div`
@@ -28,17 +27,17 @@ const NavLinkContainer = styled(SocialContainer)`
 `
 
 /*
-Title and Subtitle are indentical in SignupSocial and SignupTopics
-Possibly refactor into separate file or add styles to themes
+Title and Subtitle are also used in SignupTopics
+Take note when you make changes
 */
 export const Title = styled.p`
-  margin-top:0;
-  font-weight: 400;
+  margin-top: 0;
+  font-weight: 600;
   font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-size: 35px;
+  font-size: 30px;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .6px;
-  margin-bottom: 15px;
+  letter-spacing: 1.2px;
+  margin-bottom: 30px;
 `
 
 export const Subtitle = styled.p`
@@ -46,7 +45,7 @@ export const Subtitle = styled.p`
   font-size: 16px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .2px;
+  letter-spacing: .7px;
   margin-bottom: 30px;
 `
 
@@ -157,7 +156,7 @@ class SignupSocial extends Component {
           <WrappedNavLink
             to='/feed'
             styles={RightButtonStyleOverride}
-            >
+          >
             <RoundedButton
               text='Finish'
               margin='none'

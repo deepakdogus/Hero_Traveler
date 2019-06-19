@@ -8,9 +8,9 @@ import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import SignupActions from '../../Shared/Redux/SignupRedux'
 import UXActions from '../../Redux/UXRedux'
 
-import RoundedButton from '../../Components/RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import ExploreGrid from '../../Components/ExploreGrid'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
 import {
   Title,
   Subtitle,
@@ -56,9 +56,6 @@ class SignupTopics extends Component {
   componentDidMount() {
     this.props.loadCategories()
     this.props.getSelectedCategories()
-    if (this.props.user.usernameIsTemporary) {
-      this._openChangeTempUsernameModal()
-    }
   }
 
   getIsSelected = (categoryId) => {
@@ -88,7 +85,7 @@ class SignupTopics extends Component {
           </NavLinkContainer>
           <Container>
             <SizedDiv>
-              <Title>WELCOME!</Title>
+              <Title>FOLLOW TOPICS</Title>
               <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
               <ExploreGrid
                 categories={this.props.categories}

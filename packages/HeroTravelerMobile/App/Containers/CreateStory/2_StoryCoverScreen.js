@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 import Immutable from 'seamless-immutable'
 
 import {styles as StoryReadingScreenStyles} from '../Styles/StoryReadingScreenStyles'
-import StoryActions from '../../Shared/Redux/Entities/Stories'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import ShadowButton from '../../Components/ShadowButton'
 import Loader from '../../Components/Loader'
@@ -23,6 +22,8 @@ import styles, {customStyles, modalWrapperStyles} from './2_StoryCoverScreenStyl
 import NavBar from './NavBar'
 import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelativeHeight'
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import { getPendingDraftById } from '../../Shared/Lib/getPendingDrafts'
+import isLocalDraft from '../../Shared/Lib/isLocalDraft'
 import {trimVideo} from '../../Shared/Lib/mediaHelpers'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import Modal from '../../Components/Modal'
@@ -36,6 +37,7 @@ import {KeyboardTrackingView} from 'react-native-keyboard-tracking-view'
 import {
   isFieldSame,
   haveFieldsChanged,
+  hasChangedSinceSave,
 } from '../../Shared/Lib/draftChangedHelpers'
 
 const MediaTypes = {
@@ -44,18 +46,16 @@ const MediaTypes = {
 }
 
 /*
-
 Utility functions
-
 */
 
 class StoryCoverScreen extends Component {
-
   static propTypes = {
     mediaType: PropTypes.oneOf([MediaTypes.video, MediaTypes.photo]),
     user: PropTypes.object,
     story: PropTypes.object,
     storyId: PropTypes.string,
+    pendingUpdate: PropTypes.object,
     navigatedFromProfile: PropTypes.bool,
     shouldLoadStory: PropTypes.bool,
     update: PropTypes.func,
@@ -65,8 +65,11 @@ class StoryCoverScreen extends Component {
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
-    saveDraftToCache: PropTypes.func,
+    saveDraft: PropTypes.func,
     error: PropTypes.string,
+    draftToBeSaved: PropTypes.object,
+    setWorkingDraft: PropTypes.func,
+    draftIdToDBId: PropTypes.object,
   }
 
   static defaultProps = {
@@ -79,6 +82,8 @@ class StoryCoverScreen extends Component {
     super(props)
     this.timeout = null
 
+    const hasPendingUpdate = props.pendingUpdate && !isLocalDraft(props.storyId)
+
     this.state = {
       file: null,
       updating: false,
@@ -87,7 +92,7 @@ class StoryCoverScreen extends Component {
       videoUploading: false,
       isScrollDown: !!props.workingDraft.coverImage | !!props.workingDraft.coverVideo,
       titleHeight: 37,
-      activeModal: undefined,
+      activeModal: hasPendingUpdate ? 'existingUpdateWarning' : undefined,
       toolbarDisplay: false,
       contentTouched: false,
       coverMetrics: {},
@@ -103,7 +108,8 @@ class StoryCoverScreen extends Component {
       const content = Immutable.asMutable(this.props.workingDraft.draftjsContent, {deep: true})
       if (!content.entityMap) content.entityMap = {}
       return {value: content}
-    } else {
+    }
+    else {
       return {}
     }
   }
@@ -121,7 +127,7 @@ class StoryCoverScreen extends Component {
 
   onTrimError = () => {
     this.setState({
-      error: 'There\'s an issue with the video you selected. Please try another.'
+      error: 'There\'s an issue with the video you selected. Please try another.',
     })
   }
 
@@ -132,9 +138,9 @@ class StoryCoverScreen extends Component {
   merely revert the values
   */
   isSavedDraft = () => {
-    return this.props.originalDraft &&
-      this.props.originalDraft.id &&
-      this.props.originalDraft.id === this.props.workingDraft.id
+    return this.props.originalDraft
+      && this.props.originalDraft.id
+      && this.props.originalDraft.id === this.props.workingDraft.id
   }
 
   _onLeftYes = () => {
@@ -143,7 +149,8 @@ class StoryCoverScreen extends Component {
         validationError: 'Please add a cover and title to continue',
         activeModal: undefined,
       })
-    } else {
+    }
+    else {
       this.saveStory().then(() => {
         this.navBack()
       })
@@ -153,17 +160,23 @@ class StoryCoverScreen extends Component {
   _onLeftNo = () => {
     if (!this.isSavedDraft()) {
       this.props.discardDraft(this.props.workingDraft.id)
-    } else {
+    }
+    else {
       this.props.resetCreateStore()
     }
     this.navBack()
   }
 
   _onLeft = () => {
-    const {workingDraft, originalDraft} = this.props
-    if (haveFieldsChanged(workingDraft, originalDraft)) {
+    const {workingDraft, originalDraft, draftToBeSaved} = this.props
+    const cleanedDraft = this.cleanDraft(workingDraft)
+    if (
+      haveFieldsChanged(cleanedDraft, originalDraft)
+      || hasChangedSinceSave(cleanedDraft, draftToBeSaved)
+    ) {
       this.setState({ activeModal: 'cancel' })
-    } else {
+    }
+    else {
       // If there are no changes, just close without opening the modal
       this._onLeftNo()
     }
@@ -174,7 +187,6 @@ class StoryCoverScreen extends Component {
   }
 
   renderCancel = () => {
-
     const isDraft = this.props.workingDraft.draft === true
     const title = isDraft ? 'Save Draft' : 'Save Edits'
     const message = this.isSavedDraft() ? 'Do you want to save these edits before you go?' : 'Do you want to save this story draft before you go?'
@@ -203,36 +215,54 @@ class StoryCoverScreen extends Component {
     )
   }
 
+  renderExistingUpdateModal = () => {
+    const customizedModalWrapperStyles = {
+      ...modalWrapperStyles,
+      height: 165,
+    }
+    return (
+      <Modal
+        closeModal={this.closeModal}
+        modalStyle={customizedModalWrapperStyles}
+      >
+        <Text style={styles.modalTitle}>You have an existing edit to this story.</Text>
+        <Text style={styles.modalMessage}>Do you want to discard these changes or continue from your last edit?</Text>
+        <View style={styles.modalBtnWrapper}>
+          <TouchableOpacity
+            style={[styles.modalBtn, styles.modalBtnLeft]}
+            onPress={this.closeModal}
+          >
+            <Text style={styles.modalBtnText}>Discard</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalBtn}
+            onPress={this._setWorkingDraft}
+          >
+            <Text style={styles.modalBtnText}>Continue</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  _setWorkingDraft = () => {
+    this.props.setWorkingDraft(this.props.pendingUpdate)
+    this.closeModal()
+  }
+
   _onTitle = () => {
-    const title = 'Save Progess'
-    const message = 'Do you want to save your progress?'
     if (!this.isValid()) {
       this.setState({validationError: 'Please add a cover and title to continue'})
       return
     }
-    Alert.alert(
-      title,
-      message,
-      [{
-        text: 'Yes',
-        onPress: () => {
-          if (!this.isValid()) {
-            this.setState({validationError: 'Please add a cover and title to save'})
-          } else {
-            this.saveStory()
-          }
-        }
-      }, {
-        text: 'Cancel',
-        onPress: () => null
-      }]
-    )
+    this.saveStory()
   }
 
   isValid() {
+    const {coverImage, coverVideo, title} = this.props.workingDraft
     return _.every([
-      !!this.props.workingDraft.coverImage || !!this.props.workingDraft.coverVideo,
-      !!_.trim(this.props.workingDraft.title)
+      !!coverImage || !!coverVideo,
+      !!_.trim(title),
     ])
   }
 
@@ -241,11 +271,11 @@ class StoryCoverScreen extends Component {
     if (this.props.navigatedFromProfile) {
       NavActions.tabbar({type: 'reset'})
       NavActions.profile()
-    } else {
+    }
+    else {
       NavActions.tabbar({type: 'reset'})
     }
   }
-
 
   _onRight = () => {
     const {workingDraft, originalDraft} = this.props
@@ -262,7 +292,7 @@ class StoryCoverScreen extends Component {
       isVideoSame,
       isTitleSame,
       isDescriptionSame,
-      isCoverCaptionSame
+      isCoverCaptionSame,
     ])
     // If nothing has changed, let the user go forward if they navigated back
     if (nothingHasChanged) {
@@ -293,33 +323,37 @@ class StoryCoverScreen extends Component {
     NavActions.createStory_details()
   }
 
-  cleanDraft(draft){
-    const {workingDraft, originalDraft} = this.props
+  cleanDraft(){
+    const {workingDraft, originalDraft, draftIdToDBId} = this.props
+    const draft = _.merge({}, workingDraft)
     if (!isFieldSame('title', workingDraft, originalDraft)) draft.title = _.trim(draft.title)
     if (!isFieldSame('description', workingDraft, originalDraft)) draft.description = _.trim(draft.description)
     if (!isFieldSame('coverCaption', workingDraft, originalDraft)) draft.coverCaption = _.trim(draft.coverCaption)
+    if (draftIdToDBId[workingDraft.id]) draft.id = draftIdToDBId[workingDraft.id]
     draft.draftjsContent = this.editor.getEditorStateAsObject()
+    return draft
   }
 
   // this only saves it at the redux level
   softSaveDraft() {
-    const copy = _.merge({}, this.props.workingDraft)
-    this.cleanDraft(copy)
-    return Promise.resolve(this.props.updateWorkingDraft(copy))
+    const cleanedDraft = this.cleanDraft()
+    return Promise.resolve(this.props.updateWorkingDraft(cleanedDraft))
   }
 
-  // this does a hard save to the DB (if published) or to cache (if draft)
+  // this does a create or update depending on whether it is a local draft
   saveStory() {
-    const draft = this.props.workingDraft
-    this.cleanDraft(draft)
-    if (draft.draft) this.props.saveDraftToCache(draft)
-    else this.props.update(draft.id, draft)
+    const cleanedDraft = this.cleanDraft()
+
+    if (isLocalDraft(cleanedDraft.id)) {
+      this.props.saveDraft(cleanedDraft, true)
+    }
+    else this.props.update(cleanedDraft.id, cleanedDraft)
     return Promise.resolve({})
   }
 
   renderFailModal = () => {
     const {activeModal} = this.state
-    let renderProps;
+    let renderProps
     if (activeModal === 'saveFail') {
       renderProps = {
         closeModal: this.closeModal,
@@ -350,14 +384,14 @@ class StoryCoverScreen extends Component {
         ]}>
           {renderProps.message}
         </Text>
-        { renderProps.renderButtton &&
+        { renderProps.renderButtton && (
           <TouchableOpacity
             style={styles.modalBtn}
             onPress={renderProps.closeModal}
           >
             <Text style={styles.modalBtnText}>Close</Text>
           </TouchableOpacity>
-        }
+        )}
       </Modal>
     )
   }
@@ -385,7 +419,6 @@ class StoryCoverScreen extends Component {
   setTitle = (title) => {
     this.props.updateWorkingDraft({title})
   }
-
 
   setTitleAndFocus = (title) => {
     this.setTitle(title)
@@ -431,7 +464,7 @@ class StoryCoverScreen extends Component {
         NavActions.pop()
       },
       rightTitle: 'Next',
-      onSelectMedia: this.handleAddImage
+      onSelectMedia: this.handleAddImage,
     })
   }
 
@@ -445,7 +478,7 @@ class StoryCoverScreen extends Component {
         NavActions.pop()
       },
       rightTitle: 'Next',
-      onSelectMedia: this.handleAddVideo
+      onSelectMedia: this.handleAddVideo,
     })
   }
 
@@ -471,14 +504,14 @@ class StoryCoverScreen extends Component {
   }
 
   setBlockType = (blockType) => {
-    if (this.toolbar) {
+    if (this.toolbar && blockType) {
       this.toolbar.setBlockType(blockType)
     }
   }
 
   reportContentTouched = () => {
     this.setState({
-      contentTouched: true
+      contentTouched: true,
     })
   }
 
@@ -494,7 +527,7 @@ class StoryCoverScreen extends Component {
             ref={this.setEditorRef}
             style={{
               flex: 1,
-              minWidth: Metrics.screenWidth
+              minWidth: Metrics.screenWidth,
             }}
             customStyleMap={customStyles}
             onPressImage={this.handlePressAddImage}
@@ -514,7 +547,7 @@ class StoryCoverScreen extends Component {
   // getting rough YOffset
   onScroll = (event) => {
     // rounding offset to within 10
-    const newYOffset = (event.nativeEvent.contentOffset.y/10).toFixed()*10
+    const newYOffset = (event.nativeEvent.contentOffset.y / 10).toFixed() * 10
     if (newYOffset !== this.YOffset) {
       this.YOffset = event.nativeEvent.contentOffset.y
     }
@@ -526,7 +559,11 @@ class StoryCoverScreen extends Component {
     if (this.scrollViewRef) {
       // adding the math.max to account for sizeChange when we add a coverPhoto that is less
       // tall than default size. This prevents scrolling to negative and displaying white
-      this.scrollViewRef.scrollTo({x:0, y: Math.max(this.YOffset + diff, 5), amimated: true})
+      this.scrollViewRef.scrollTo({
+        x:0,
+        y: Math.max(this.YOffset + diff, 5),
+        amimated: true,
+      })
     }
     this.contentHeight = contentHeight
   }
@@ -542,7 +579,7 @@ class StoryCoverScreen extends Component {
     if (cover) {
       return Math.min(
         Metrics.storyCover.fullScreen.height,
-        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover))
+        getRelativeHeight(Metrics.screenWidth, extractCoverMetrics(cover)),
       )
     }
 
@@ -563,15 +600,15 @@ class StoryCoverScreen extends Component {
     const {error, validationError} = this.state
     const {
       title, coverCaption, description,
-      coverImage, coverVideo, id
+      coverImage, coverVideo, id,
     } = this.props.workingDraft
     const {updateWorkingDraft} = this.props
 
-    let showIntroTooltip = false;
+    let showIntroTooltip = false
     if (this.props.user && (coverImage || coverVideo)) {
       showIntroTooltip = !isTooltipComplete(
         TooltipTypes.STORY_PHOTO_EDIT,
-        this.props.user.introTooltips
+        this.props.user.introTooltips,
       )
     }
 
@@ -587,7 +624,7 @@ class StoryCoverScreen extends Component {
           bounces={false}
         >
           <NavBar
-            title='Save'
+            title='SAVE'
             onTitle={this._onTitle}
             onLeft={this._onLeft}
             leftTitle='Close'
@@ -599,132 +636,140 @@ class StoryCoverScreen extends Component {
             style={styles.navBarStyle}
           />
           <View style={this._getCoverStyle()}>
-              {error &&
-                <ShadowButton
-                  style={styles.errorButton}
-                  onPress={this.clearError}
-                  text={error} />
-              }
-              <EditableCoverMedia
-                isPhoto={this.isPhotoType()}
-                media={coverImage || coverVideo}
-                clearError={this.clearError}
-                targetId={id}
-                onUpdate={updateWorkingDraft}
-                onTrimError={this.onTrimError}
-                jumpToTop={this.jumpToTop}
+            {error && (
+              <ShadowButton
+                style={styles.errorButton}
+                onPress={this.clearError}
+                text={error}
               />
-            </View>
-            <View style={styles.titlesWrapper}>
-              {!this.hasNoCover() &&
-                <TextInput
-                  style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
-                  placeholder='Add a caption...'
-                  value={coverCaption}
-                  onChangeText={this.setCoverCaption}
-                  returnKeyType='done'
-                  blurOnSubmit
-                />
-              }
+            )}
+            <EditableCoverMedia
+              isPhoto={this.isPhotoType()}
+              media={coverImage || coverVideo}
+              clearError={this.clearError}
+              targetId={id}
+              onUpdate={updateWorkingDraft}
+              onTrimError={this.onTrimError}
+              jumpToTop={this.jumpToTop}
+            />
+          </View>
+          <View style={styles.titlesWrapper}>
+            {!this.hasNoCover() && (
               <TextInput
-                style={[
-                  styles.titleInput,
-                  {height: this.state.titleHeight},
-                ]}
-                placeholder='Add a title'
-                placeholderTextColor={Colors.background}
-                value={title}
-                onChangeText={this.setTitleAndFocus}
-                onFocus={this.jumpToTitle}
+                style={[StoryReadingScreenStyles.caption, styles.coverCaption]}
+                placeholder='Add a caption...'
+                value={coverCaption}
+                onChangeText={this.setCoverCaption}
                 returnKeyType='done'
-                maxLength={40}
-                multiline={true}
-                blurOnSubmit
-                onContentSizeChange={this.setTitleHeight}
-              />
-              <TextInput
-                style={styles.description}
-                placeholder='Add a subtitle'
-                placeholderTextColor={Colors.grey}
-                value={description}
-                onChangeText={this.setDescriptionAndFocus}
-                onFocus={this.jumpToTitle}
-                returnKeyType='done'
-                maxLength={50}
                 blurOnSubmit
               />
-              <View style={styles.divider}/>
-            </View>
-            <View style={styles.editorWrapper}>
-              {this.renderEditor()}
-            </View>
-          {showIntroTooltip &&
+            )}
+            <TextInput
+              style={[
+                styles.titleInput,
+                {height: this.state.titleHeight},
+              ]}
+              placeholder='Add a title'
+              placeholderTextColor={Colors.background}
+              value={title}
+              onChangeText={this.setTitleAndFocus}
+              onFocus={this.jumpToTitle}
+              returnKeyType='done'
+              maxLength={40}
+              multiline={true}
+              blurOnSubmit
+              onContentSizeChange={this.setTitleHeight}
+            />
+            <TextInput
+              style={styles.description}
+              placeholder='Add a subtitle'
+              placeholderTextColor={Colors.grey}
+              value={description}
+              onChangeText={this.setDescriptionAndFocus}
+              onFocus={this.jumpToTitle}
+              returnKeyType='done'
+              maxLength={50}
+              blurOnSubmit
+            />
+            <View style={styles.divider}/>
+          </View>
+          <View style={styles.editorWrapper}>
+            {this.renderEditor()}
+          </View>
+          {<View style={styles.toolbarAvoiding}></View>}
+        </ScrollView>
+        {showIntroTooltip && (
           <Tooltip
             type='image-edit'
             onDismiss={this._completeIntroTooltip}
             dimBackground={true}
           />
-        }
-          {<View style={styles.toolbarAvoiding}></View>}
-        </ScrollView>
-        {this.editor &&
+        )}
+        {this.editor && (
           <KeyboardTrackingView
             style={styles.trackingToolbarContainer}
             trackInteractive={true}
           >
             {
-            <Toolbar
-              ref={this.setToolbarRef}
-              display={this.state.toolbarDisplay}
-              onPress={this.editor.onToolbarPress}
-            />
+              <Toolbar
+                ref={this.setToolbarRef}
+                display={this.state.toolbarDisplay}
+                onPress={this.editor.onToolbarPress}
+              />
             }
           </KeyboardTrackingView>
-        }
+        )}
         {this.state.activeModal === 'cancel' && this.renderCancel()}
-        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && this.props.error)
+        {this.state.activeModal === 'saveFail' || (this.hasNoDraft() && !!this.props.error)
           && this.renderFailModal()
         }
-        {this.isUploading() &&
+        {this.state.activeModal === 'existingUpdateWarning' && (
+          this.renderExistingUpdateModal()
+        )}
+        {this.isUploading() && (
           <Loader
             style={styles.loading}
             text={this.state.imageUploading ? 'Saving image...' : 'Saving video...'}
             textStyle={styles.loadingText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {this.state.updating &&
+        )}
+        {this.state.updating && (
           <Loader
             style={styles.loading}
             text='Saving progress...'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {this.hasNoDraft() && !this.props.error &&
+        )}
+        {this.hasNoDraft() && !this.props.error && (
           <Loader
             style={styles.loading}
             text='Initializing Draft'
             textStyle={styles.loaderText}
             tintColor='rgba(0,0,0,.9)' />
-        }
-        {validationError &&
+        )}
+        {validationError && (
           <Tooltip
             onPress={this.clearError}
-            position={"title"}
+            position='title'
             text={validationError}
             onDismiss={this._dismissTooltip}
           />
-        }
+        )}
       </View>
     )
   }
 }
 
 export default connect((state) => {
+  const originalDraft = {...state.storyCreate.draft}
   return {
     user: state.entities.users.entities[state.session.userId],
-    originalDraft: {...state.storyCreate.draft},
+    originalDraft,
     workingDraft: {...state.storyCreate.workingDraft},
-    error: state.storyCreate.error
+    pendingUpdate: getPendingDraftById(state, originalDraft.id),
+    draftToBeSaved: {...state.storyCreate.draftToBeSaved},
+    error: state.storyCreate.error || '',
+    draftIdToDBId: state.storyCreate.draftIdToDBId,
   }
 }, dispatch => ({
   updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
@@ -735,6 +780,7 @@ export default connect((state) => {
   completeTooltip: (introTooltips) =>
     dispatch(UserActions.updateUser({introTooltips})),
   resetCreateStore: () => dispatch(StoryCreateActions.resetCreateStore()),
-  saveDraftToCache: (draft) => dispatch(StoryActions.addDraft(draft)),
-})
+  saveDraft: (draft, saveAsDraft) => dispatch(StoryCreateActions.saveLocalDraft(draft, saveAsDraft)),
+  setWorkingDraft: (story) => dispatch(StoryCreateActions.editStorySuccess(story)),
+}),
 )(StoryCoverScreen)

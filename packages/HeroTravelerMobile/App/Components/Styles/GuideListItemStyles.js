@@ -1,9 +1,5 @@
 import { StyleSheet } from 'react-native'
-import {
-  Colors,
-  Metrics,
-  Fonts,
-} from '../../Shared/Themes'
+import { Colors, Metrics, Fonts } from '../../Shared/Themes'
 
 export const imageWidth = 65
 export const imageHeight = 50
@@ -16,7 +12,7 @@ export default StyleSheet.create({
     borderBottomColor: Colors.grey,
   },
   checkbox: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.snow,
     borderRadius: 18,
     height: 36,
     width: 36,
@@ -32,7 +28,7 @@ export default StyleSheet.create({
   },
   placeholderImage: {
     width: 30,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   imageContainer: {
     backgroundColor: Colors.errorPink,
@@ -51,5 +47,5 @@ export default StyleSheet.create({
   createLabel: {
     color: Colors.redHighlights,
     fontWeight: '600',
-  }
+  },
 })

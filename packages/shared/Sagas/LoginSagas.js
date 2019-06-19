@@ -7,14 +7,14 @@ import UserActions from '../Redux/Entities/Users'
 import errorFormatter from '../Lib/errorFormatter'
 
 // attempts to login
-export function * login (api, { userIdentifier, password }) {
+export function * login (api, { userIdentifier, password, requestType = 'default' }) {
   try {
+    const method = requestType === 'admin' ? api.loginAdmin : api.login
     const response = yield call(
-      api.login,
+      method,
       userIdentifier,
       password
     )
-
     if (response.ok) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})

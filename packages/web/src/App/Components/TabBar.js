@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import {Row} from './FlexboxGrid'
+import {Row} from '../Shared/Web/Components/FlexboxGrid'
 import {Text} from './Modals/Shared'
-import VerticalCenter from './VerticalCenter'
+import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 
 const Container = styled.div`
   background-color: ${props => props.whiteBG ? props.theme.Colors.snow : props.theme.Colors.lightGreyAreas};

@@ -5,7 +5,11 @@ const coverInnerHeight = 370
 const tabNavEditHeight = 50
 const profileEditHeight = 150
 
-export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
+export const storyPreviewHeight
+  = Metrics.screenHeight
+  - coverInnerHeight
+  - tabNavEditHeight
+  - Metrics.tabBarHeight
 
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
@@ -13,13 +17,12 @@ export const storyPreviewHeight = Metrics.screenHeight - coverInnerHeight - tabN
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   root: {
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
-
 
   gradientWrapper: {
     flex: 1,
-    backgroundColor: Colors.clear
+    backgroundColor: Colors.clear,
   },
 
   // Profile Bar
@@ -46,8 +49,8 @@ export default StyleSheet.create({
     backgroundColor: 'transparent',
   },
   avatarEditTextWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     flexGrow: 1,
   },
   avatarEditText: {
@@ -95,18 +98,21 @@ export default StyleSheet.create({
     paddingRight: Metrics.baseMargin,
     color: Colors.errorRed,
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   errorView: {
     position: 'absolute',
     right: 0,
-    bottom: 55
+    bottom: 55,
   },
-
   flexOne: {
     flex: 1,
   },
   navbarStyle: {
     paddingTop: 15,
+  },
+  topBorder: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
 })

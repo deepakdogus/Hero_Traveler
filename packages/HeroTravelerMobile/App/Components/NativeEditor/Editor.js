@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Dimensions,
   StyleSheet,
@@ -53,11 +53,12 @@ const getScaledWidthHeight = (blockData) => {
 
 export default class RNDraftJs extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     let editorState
     if (props.value) {
       editorState = EditorState.createWithContent(convertFromRaw(props.value))
-    } else {
+    }
+    else {
       editorState = EditorState.createEmpty()
     }
 
@@ -73,11 +74,11 @@ export default class RNDraftJs extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if ((!this.props.value && nextProps.value) ||
-      (nextProps.value && nextProps.storyId !== this.props.storyId)
+    if ((!this.props.value && nextProps.value)
+      || (nextProps.value && nextProps.storyId !== this.props.storyId)
     ){
       this.setState({
-        editorState: EditorState.createWithContent(convertFromRaw(nextProps.value))
+        editorState: EditorState.createWithContent(convertFromRaw(nextProps.value)),
       })
     }
   }
@@ -87,7 +88,13 @@ export default class RNDraftJs extends Component {
     const selectionState = editorState.getSelection()
 
     const hasFocus = selectionState.getHasFocus()
-    const blockType = contentState.getBlockForKey(selectionState.getAnchorKey()).getType()
+
+    let blockType = null
+    let anchorKey = selectionState ? selectionState.getAnchorKey() : null
+    if (anchorKey) {
+      let block = contentState ? contentState.getBlockForKey(anchorKey) : null
+      if (block) blockType = block.getType()
+    }
 
     return {hasFocus, blockType}
   }
@@ -120,7 +127,8 @@ export default class RNDraftJs extends Component {
 
     if (position) {
       this.onChange(insertTextAtPosition(editorState, text, position))
-    } else {
+    }
+    else {
       const currentEditorState = insertText(editorState, text)
 
       const currentSelectionState = currentEditorState.getSelection()
@@ -207,15 +215,15 @@ export default class RNDraftJs extends Component {
 
   // will refactor later - for now mirroring NewEditor flow
   insertImage = (url, height, width) => {
-    this.insertAtomicBlock('image', url, height, width)
+    this.insertAtomicBlock({type: 'image', url, height, width})
   }
 
   insertVideo = (url, height, width) => {
-    this.insertAtomicBlock('video', url, height, width)
+    this.insertAtomicBlock({type: 'video', url, height, width})
   }
 
-  insertAtomicBlock = (type, url, height, width) => {
-    this.onChange(insertAtomicBlock(this.state.editorState, type, url, height, width))
+  insertAtomicBlock = (options) => {
+    this.onChange(insertAtomicBlock(this.state.editorState, options))
   }
 
   toggleHeader = () => {
@@ -261,8 +269,8 @@ export default class RNDraftJs extends Component {
             isSelected={isSelected}
             onPress={()=>this.updateSelectionState({startKey: block.key, endKey: block.key, startOffset: 0, endOffset: 0})}
             onDelete={()=>this.deleteAtomicBlock(block.key)}
-            />
-          )
+          />
+        )
       case 'video':
         return (
           <DraftJsVideo
@@ -292,7 +300,6 @@ export default class RNDraftJs extends Component {
     }
   }
 
-
   getEditorStateAsObject() {
     return convertToRaw(this.state.editorState.getCurrentContent())
   }
@@ -313,40 +320,40 @@ export default class RNDraftJs extends Component {
     let content = convertToRaw(contentState)
     let blocks = content.blocks || []
     let blockViews = blocks
-              .filter(block => block.type == 'atomic')
-              .map(block => this.atomicHandler(block))
+      .filter(block => block.type == 'atomic')
+      .map(block => this.atomicHandler(block))
 
     return (
       <View style={[styles.root, this.props.style]}>
         <View style={styles.innerScroll}>
           <NativeEditor
-          style={styles.draftTest}
-          content={content}
-          selection={selection}
-          blockFontTypes={blockFontTypes}
-          inlineStyleFontTypes={inlineStyleFontTypes}
-          onInsertTextRequest={this._onInsertTextRequest}
-          onBackspaceRequest={this._onBackspaceRequest}
-          onNewlineRequest={this._onNewlineRequest}
-          onSelectionChangeRequest={this._onSelectionChangeRequest}
-          onReplaceRangeRequest={this._onReplaceRangeRequest}
-          placeholderText="Tap here to start telling your story..."
-          selectionColor={'#007AFF'}
-          selectionOpacity={0.4}
-          cursorColor={'#007AFF'}
-          cursorOpacity={1}
-          defaultAtomicWidth={Metrics.screenWidth}
-          defaultAtomicHeight={200}
-          paragraphSpacing={25}
-          autocomplete={autocompleteInfo}
+            style={styles.draftTest}
+            content={content}
+            selection={selection}
+            blockFontTypes={blockFontTypes}
+            inlineStyleFontTypes={inlineStyleFontTypes}
+            onInsertTextRequest={this._onInsertTextRequest}
+            onBackspaceRequest={this._onBackspaceRequest}
+            onNewlineRequest={this._onNewlineRequest}
+            onSelectionChangeRequest={this._onSelectionChangeRequest}
+            onReplaceRangeRequest={this._onReplaceRangeRequest}
+            placeholderText="Tap here to start telling your story..."
+            selectionColor={'#007AFF'}
+            selectionOpacity={0.4}
+            cursorColor={'#007AFF'}
+            cursorOpacity={1}
+            defaultAtomicWidth={Metrics.screenWidth}
+            defaultAtomicHeight={200}
+            paragraphSpacing={25}
+            autocomplete={autocompleteInfo}
           >
-          {
-            blockViews
-          }
+            {
+              blockViews
+            }
           </NativeEditor>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -361,28 +368,28 @@ const blockFontTypes = {
     color: Colors.grey,
   },
   placeholder: {
-   color: processColor(Colors.redHighlights),
-   opacity: 0.8,
+    color: processColor(Colors.redHighlights),
+    opacity: 0.8,
   },
   headerOne: {
     fontSize: 21,
     fontWeight: '600',
-    color: processColor('#1a1c21'),
+    color: processColor(Colors.background),
   },
   headerTwo: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerThree: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerFour: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerFive: {
-    fontSize: 22
+    fontSize: 22,
   },
   headerSix: {
-    fontSize: 22
+    fontSize: 22,
   },
   blockquote: {
   },
@@ -418,7 +425,7 @@ const inlineStyleFontTypes = {
   },
   STRIKETHROUGH: {
     textDecoration: 'line-through',
-  }
+  },
 }
 
 const styles = StyleSheet.create({
@@ -451,7 +458,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: Colors.steel,
     marginBottom: 5,
   },
   draftTest: {
@@ -472,5 +479,5 @@ const styles = StyleSheet.create({
   videoView: {
     width: Metrics.screenWidth,
     height: 200,
-  }
-});
+  },
+})

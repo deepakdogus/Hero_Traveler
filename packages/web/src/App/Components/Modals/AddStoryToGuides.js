@@ -10,18 +10,18 @@ import {
   mapDispatchToProps,
   SharedComponent,
 } from '../../Shared/Lib/AddStoryToGuidesHelpers'
-import FeedItemSelectRow, { DefaultContainer } from '../FeedItemSelectRow'
+import GuideSelectRow, { DefaultContainer } from '../GuideSelectRow'
 import SpaceBetweenRow from '../SpaceBetweenRow'
-import VerticalCenter from '../VerticalCenter'
+import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import CenteredButtons from '../CenteredButtons'
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   RightTitle,
   RightModalCloseX,
   StyledVerticalCenter,
 } from './Shared'
 
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 const Container = styled.div`
   min-height: 100vh;
@@ -94,7 +94,7 @@ const FixedCloseBar = styled(VerticalCenter)`
 `
 
 const Spacer = styled.div`
-  height: 80px
+  height: 80px;
 `
 
 const ResponsiveRightModalCloseX = styled(RightModalCloseX)`
@@ -138,13 +138,12 @@ class AddStoryToGuides extends SharedComponent {
 
     return this.props.guides.map((guide, index) => {
       return (
-        <FeedItemSelectRow
+        <GuideSelectRow
           key={guide.id}
           index={index}
-          story={guide}
+          guide={guide}
           isSelected={isInGuideById[guide.id]}
           onSelect={this.toggleGuide}
-          isVertical={false}
           ReplacementContainer={ReplacementContainer}
         />
       )

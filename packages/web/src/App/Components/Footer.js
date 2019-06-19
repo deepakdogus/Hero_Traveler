@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
-import Icon from './Icon'
-import { Row } from './FlexboxGrid'
+import Icon from '../Shared/Web/Components/Icon'
+import { Row } from '../Shared/Web/Components/FlexboxGrid'
 
 import UXActions from '../Redux/UXRedux'
 
@@ -21,6 +21,9 @@ const LinkStyles = `
 const Container = styled.div`
   width: 100%;
   margin: 80px 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 40px 0 25px;
+  }
 `
 
 const SizedRow = styled(Row)`
@@ -29,6 +32,16 @@ const SizedRow = styled(Row)`
   padding-right: 16px;
   height: 35px;
   border-top: ${props => `2px solid ${props.theme.Colors.background}`};
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    flex-wrap: nowrap;
+    padding: 0 10px;
+  }
+`
+
+const LinkRow = styled(Row)`
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    align-items: center;
+  }
 `
 
 const StyledLink = styled(NavLink)`
@@ -39,6 +52,7 @@ ${LinkStyles}
   &:visited {
     color: ${props => props.theme.Colors.background};
   }
+
 `
 
 const StyledOffsiteLink = styled.a`
@@ -49,6 +63,9 @@ const StyledOffsiteLink = styled.a`
   &:visited {
     color: ${props => props.theme.Colors.background};
   }
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 10px;
+  }
 `
 
 const StyledPseudoLink = styled.div`
@@ -57,6 +74,9 @@ const StyledPseudoLink = styled.div`
   letter-spacing: .6px;
   color: ${props => props.theme.Colors.background};
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    font-size: 10px;
+  }
 `
 
 const UnstyledLink = styled.a`
@@ -69,6 +89,9 @@ const Divider = styled.div`
   background-color: ${props => props.theme.Colors.background};
   height: 35px;
   margin: 0 16px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0 10px;
+  }
 `
 
 const StyledIcon = styled(Icon)`
@@ -76,6 +99,10 @@ const StyledIcon = styled(Icon)`
   height: 20px;
   align-self: center;
   cursor: pointer;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    width: 15px;
+    height: 15px;
+  }
 `
 
 const ResponsiveContainer = styled.div`
@@ -102,22 +129,22 @@ class Footer extends Component {
       <Container fluid>
         <ResponsiveContainer hideOnTablet={this.props.hideOnTablet}>
           <SizedRow between='xs'>
-            <Row bottom='xs'>
+            <LinkRow bottom='xs'>
               {/* Hidden until after launch*/}
-              {false &&
+              {false && (
                 <StyledLink to='/'>About Us</StyledLink>
-              }
+              )}
               <StyledPseudoLink
                 onClick={this.openTAC}
               >
                 Terms of Service
               </StyledPseudoLink>
               <StyledOffsiteLink
-                href='mailto:info@herotraveler.com'
+                href='mailto:herotraveler@herotraveler.com'
               >
                 Contact Us
               </StyledOffsiteLink>
-            </Row>
+            </LinkRow>
             <Row middle='xs'>
               <UnstyledLink
                 href='https://www.facebook.com/herotraveler/'

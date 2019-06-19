@@ -8,6 +8,7 @@ import {
 import TabIcon from './TabIcon'
 import {styles} from '../Containers/Styles/StoryReadingScreenStyles'
 import {displayLocationDetails} from '../Shared/Lib/locationHelpers'
+import {showTravelDate, getTripDate} from '../Shared/Lib/dateHelpers'
 
 // this is to render all the details rows that have icons associated to them
 class ReadingDetails extends React.Component {
@@ -88,7 +89,8 @@ class ReadingDetails extends React.Component {
   }
 
   render () {
-    const {categories, cost, travelTips, duration} = this.props.targetEntity
+    const { targetEntity } = this.props
+    const {categories, cost, travelTips, duration} = targetEntity
 
     return (
       <Fragment>
@@ -120,6 +122,13 @@ class ReadingDetails extends React.Component {
             'cost',
             'Cost',
             cost + this.getCostType(),
+          )
+        }
+        {showTravelDate(targetEntity) &&
+          this.renderRow(
+            'date',
+            'Travel Date',
+            getTripDate(targetEntity),
           )
         }
         {!!travelTips &&

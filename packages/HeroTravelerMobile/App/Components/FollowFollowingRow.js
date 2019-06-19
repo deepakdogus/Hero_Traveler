@@ -21,13 +21,16 @@ class FollowFollowingRow extends Component {
     isFollowing: PropTypes.bool.isRequired,
     followUser: PropTypes.func.isRequired,
     unfollowUser: PropTypes.func.isRequired,
+    addUserToSearchHistory: PropTypes.func,
+    styledInset: PropTypes.bool,
   }
 
   _navToProfile = () => {
-    const {sessionUserId, user} = this.props
-    const payload = { userId: user.id }
-    if (sessionUserId === user.id) navToProfile(payload)
-    else NavActions.readOnlyProfile(payload)
+    const {sessionUserId, user, addUserToSearchHistory} = this.props
+    const userId = user.id || user._id
+    if (addUserToSearchHistory) addUserToSearchHistory(user)
+    if (sessionUserId === userId) navToProfile({ userId })
+    else NavActions.readOnlyProfile({ userId })
   }
 
   toggleFollow = () => {
@@ -37,38 +40,50 @@ class FollowFollowingRow extends Component {
   }
 
   render() {
-    const {user, isFollowing, navToProfile, sessionUserId, isSignup} = this.props
-    const {_navToProfile, toggleFollow} = this
-
+    const {user, isFollowing, sessionUserId, isSignup, styledInset} = this.props
     const Touchable = isSignup ? View : TouchableOpacity
+
+    const [ userAvatar, userFullName ] = user && user.profile
+      ? [user.profile.avatar, user.profile.fullName]
+      : [undefined, undefined]
+
     let followingText
+
     if (isFollowing) followingText = 'FOLLOWING'
     else if (user.id !== sessionUserId) followingText = 'FOLLOW'
 
     return (
-      <View style={styles.rowWrapper}>
-        <View style={styles.row}>
+      <View style={[
+        styles.rowWrapper,
+        styledInset && styles.rowWrapperInset,
+      ]}>
+        <View style={[
+          styles.row,
+          styledInset && styles.rowWithHorizontalInset,
+        ]}>
           <Touchable
-            onPress={isSignup ? null : _navToProfile}
+            onPress={isSignup ? null : this._navToProfile}
             style={styles.avatarAndName}
           >
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(user.profile.avatar, 'avatar')}
+              avatarUrl={getImageUrl(userAvatar, 'avatar')}
             />
             <View style={styles.nameWrapper}>
-              <Text style={styles.name}>{user.profile.fullName}</Text>
-              <Text style={styles.followerCount}>{user.counts.followers} followers</Text>
+              <Text style={styles.name}>{userFullName}</Text>
+              {!!user.counts && (
+                <Text style={styles.followerCount}>{user.counts.followers} followers</Text>
+              )}
             </View>
           </Touchable>
-          {followingText &&
+          {followingText && (
             <RoundedButton
               style={isFollowing ? styles.selectedFollowersButton : styles.followersButton}
               textStyle={isFollowing ? styles.selectedFollowersButtonText : styles.followersButtonText}
               text={followingText}
-              onPress={toggleFollow}
+              onPress={this.toggleFollow}
             />
-          }
+          )}
         </View>
       </View>
     )

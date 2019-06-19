@@ -1,17 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
-  TextInput
+  TextInput,
 } from 'react-native'
 import {connect} from 'react-redux'
+import _ from 'lodash'
 
 import { Actions as NavActions } from 'react-native-router-flux'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import { Images } from '../../Shared/Themes'
 import ImageWrapper from '../../Components/ImageWrapper'
 import NavButton from '../../Navigation/NavButton'
-import {validate as validateOriginal, asyncValidate as asyncValidateOriginal} from '../../Shared/Lib/userFormValidation'
+import {
+  validate as validateOriginal,
+  asyncValidate as asyncValidateOriginal,
+} from '../../Shared/Lib/userFormValidation'
 
 import styles from './SignupChangeUsernameStyles'
 
@@ -20,25 +25,39 @@ const asyncValidate = (values) => {
 }
 
 const validate = (values) => {
-  return validateOriginal(values, null, ["username"])
+  return validateOriginal(values, null, ['username'])
 }
 
 class SignupChangeUsername extends React.Component {
-
   validationTimeout = null
+
+  static propTypes = {
+    user: PropTypes.object,
+    updateUser: PropTypes.func,
+  }
 
   constructor(props) {
     super(props)
     this.state = {
-      newUsername: "",
-      error: null
+      newUsername: '',
+      error: null,
+      submitted: false,
+    }
+  }
+
+  conditionalNavForward = () => {
+    if (!this.props.user.usernameIsTemporary) {
+      NavActions.signupFlow_changeEmail({type: 'reset'})
+      this.setState({submitted: true})
     }
   }
 
   componentDidMount() {
-    if (!this.props.user.usernameIsTemporary) {
-      NavActions.signupFlow_changeEmail()
-    }
+    this.conditionalNavForward()
+  }
+
+  componentDidUpdate(){
+    this.conditionalNavForward()
   }
 
   runValidations(values) {
@@ -46,10 +65,11 @@ class SignupChangeUsername extends React.Component {
       let validationError = validate(values)
       if (Object.keys(validationError).length > 0) {
         reject(validationError[Object.keys(validationError)[0]])
-      } else {
+      }
+      else {
         asyncValidate(values).then(() => {
           resolve()
-        }).catch((err) =>  {
+        }).catch((err) => {
           reject(err[Object.keys(err)[0]])
         })
       }
@@ -59,7 +79,7 @@ class SignupChangeUsername extends React.Component {
   onChangeText = (username) => {
     this.setState({
       newUsername: username,
-      error: null
+      error: null,
     })
   }
 
@@ -80,17 +100,21 @@ class SignupChangeUsername extends React.Component {
       this.setState({submitting: true}, () => {
         this.runValidations({username: this.state.newUsername}).then(() => {
           this.updateUser()
-          NavActions.signupFlow_changeEmail()
         }).catch((e) => {
           this.setState({error: e})
         }).finally(() => {
-          this.setState({submitting: false});
-        });
+          this.setState({submitting: false})
+        })
       })
     }
   }
 
+  getErrorMessage = () => {
+    return this.state.error || _.get(this, 'props.error.message')
+  }
+
   render () {
+    const error = this.getErrorMessage()
     return (
       <ImageWrapper
         background={true}
@@ -124,23 +148,23 @@ class SignupChangeUsername extends React.Component {
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              {this.state.error &&
+              {error && (
                 <View style={styles.errorView}>
-                  <Text style={styles.error}>{this.state.error}</Text>
+                  <Text style={styles.error}>{error}</Text>
                 </View>
-              }
+              )}
             </View>
           </View>
         </View>
       </ImageWrapper>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
   return {
     user: state.entities.users.entities[state.session.userId],
+    error: state.entities.users.error,
   }
 }
 

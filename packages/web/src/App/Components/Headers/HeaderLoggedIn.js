@@ -3,16 +3,16 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { WrappedNavLink } from '../../Components/NavLinkStyled'
+import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
 import {
   Row,
   Col,
-} from '../FlexboxGrid'
+} from '../../Shared/Web/Components/FlexboxGrid'
 import ProfileMenu from './ProfileMenu'
-import { mediaMax } from '../ContentLayout.component'
-import Avatar from '../Avatar'
-import RoundedButton from '../RoundedButton'
-import Icon from '../Icon'
+import { mediaMax } from '../../Shared/Web/Components/ContentLayout.component'
+import Avatar from '../../Shared/Web/Components/Avatar'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
 import {
   StyledRow,
   StyledRoundedButton,
@@ -20,12 +20,11 @@ import {
   Divider,
   HamburgerIcon,
   SearchNav,
-} from './Shared'
+} from '../../Shared/Web/Components/Headers/Shared'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import NotificationsBadge from '../NotificationsBadge'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
-import ConditionalLink from '../ConditionalLink'
-import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
+import ConditionalLink from '../../Shared/Web/Components/ConditionalLink'
 
 const LoggedInDesktopContainer = styled.div`
   ${mediaMax.desktop`display: none;`}
@@ -66,6 +65,15 @@ const CreateButtonStyleOverride = {
   display: 'inline',
 }
 
+const AvatarImageTextStyles = `
+  right: 6px;
+  bottom: 2px;
+`
+
+const AvatarIconTextStyles = `
+  bottom: 1px;
+`
+
 class HeaderLoggedIn extends React.Component {
   static propTypes = {
     reroute: PropTypes.func,
@@ -81,9 +89,9 @@ class HeaderLoggedIn extends React.Component {
     closeGlobalModal: PropTypes.func,
     activities: PropTypes.objectOf(PropTypes.object),
     activitiesById: PropTypes.arrayOf(PropTypes.string),
-    haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
+    pendingMediaUploads: PropTypes.number,
   }
 
   componentDidMount() {
@@ -153,7 +161,6 @@ class HeaderLoggedIn extends React.Component {
         reroute={reroute}
         attemptLogout={attemptLogout}
         globalModalParams={globalModalParams}
-        haveFieldsChanged={haveFieldsChanged}
         workingDraft={workingDraft}
         originalDraft={originalDraft}
         openSaveEditsModal={openSaveEditsModal}
@@ -170,23 +177,35 @@ class HeaderLoggedIn extends React.Component {
       workingDraft,
       originalDraft,
       openSaveEditsModal,
+      reroute,
+      pendingMediaUploads,
     } = this.props
 
     const notificationsCount = this._getNotificationsCount()
+    const conditionalLinkParams = {
+      pathname,
+      openSaveEditsModal,
+      reroute,
+      workingDraft,
+      originalDraft,
+      pendingMediaUploads,
+    }
 
     return (
-      <StyledRow between="xs" middle="xs">
+      <StyledRow
+        between="xs"
+        middle="xs"
+      >
         <Col>
           <ConditionalLink
             to="/"
-            pathname={pathname}
-            openSaveEditsModal={openSaveEditsModal}
             isMenuLink={false}
-            haveFieldsChanged={haveFieldsChanged}
-            workingDraft={workingDraft}
-            originalDraft={originalDraft}
+            {...conditionalLinkParams}
           >
-            <Logo src={logo} alt={'Hero Traveler Logo'}/>
+            <Logo
+              src={logo}
+              alt={'Hero Traveler Logo'}
+            />
           </ConditionalLink>
         </Col>
         <LoggedInDesktopContainer>
@@ -194,43 +213,37 @@ class HeaderLoggedIn extends React.Component {
             <Row middle="xs">
               <ConditionalLink
                 to='/feed/'
-                pathname={pathname}
-                openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
-                workingDraft={workingDraft}
-                originalDraft={originalDraft}
+                {...conditionalLinkParams}
               >
                 My Feed
               </ConditionalLink>
               <Divider>&nbsp;</Divider>
               <ConditionalLink
                 to='/'
-                pathname={pathname}
-                openSaveEditsModal={openSaveEditsModal}
                 isMenuLink={true}
-                haveFieldsChanged={haveFieldsChanged}
-                workingDraft={workingDraft}
-                originalDraft={originalDraft}
+                {...conditionalLinkParams}
               >
                 Explore
               </ConditionalLink>
             </Row>
           </Col>
         </LoggedInDesktopContainer>
-        <Col smOffset={2} lg={5}>
-          <Row end='xs' middle='xs'>
+        <Col
+          smOffset={2}
+          lg={5}
+        >
+          <Row
+            end='xs'
+            middle='xs'
+          >
             <SearchNav
-              pathname={pathname}
-              openSaveEditsModal={openSaveEditsModal}
               isMenuLink={false}
-              haveFieldsChanged={haveFieldsChanged}
-              workingDraft={workingDraft}
-              originalDraft={originalDraft}
+              {...conditionalLinkParams}
             />
             <Divider>&nbsp;</Divider>
             <LoggedInDesktopContainer>
-              {!this.props.pathname.includes('editStory') &&
+              {!this.props.pathname.includes('editStory') && (
                 // we remove the 'Create' button from the HeaderLoggedIn Nav if we're editting a story
                 <WrappedNavLink
                   to='/editStory/new'
@@ -243,14 +256,14 @@ class HeaderLoggedIn extends React.Component {
                     margin='none'
                   />
                 </WrappedNavLink>
-              }
+              )}
               <NotificationButtonContainer>
-                {notificationsCount > 0 &&
+                {notificationsCount > 0 && (
                   <NotificationsBadge
                     count={notificationsCount}
                     onClick={this.openNotifications}
                   />
-                }
+                )}
                 <StyledRoundedNotificationButton
                   type='headerButton'
                   height='32px'
@@ -259,7 +272,7 @@ class HeaderLoggedIn extends React.Component {
                   profileAvatar={profileAvatar}
                   onClick={this.openNotifications}
                 >
-                  <NotificationsIcon name='navNotifications' />
+                  <NotificationsIcon name='iconHeaderNotifications' />
                 </StyledRoundedNotificationButton>
               </NotificationButtonContainer>
                 <StyledRoundedAvatarButton
@@ -272,21 +285,23 @@ class HeaderLoggedIn extends React.Component {
                   <Avatar
                     type='avatar'
                     size={profileAvatar ? 'avatar' : 'mediumSmall'}
+                    isHeader
                     avatarUrl={getImageUrl(profileAvatar, 'avatar')}
-                    isProfileHeader={true}
+                    iconTextProps={AvatarIconTextStyles}
+                    imageTextProps={AvatarImageTextStyles}
                   />
                 </StyledRoundedAvatarButton>
-                  {globalModal === 'profileMenu' &&
+                  {globalModal === 'profileMenu' && (
                     this.renderProfileMenu()
-                  }
+                  )}
             </LoggedInDesktopContainer>
             <HamburgerIcon
               name='hamburger'
               onClick={this._openHamburgerMenu}
             />
-            {globalModal === 'hamburgerMenu' &&
+            {globalModal === 'hamburgerMenu' && (
               this.renderProfileMenu()
-            }
+            )}
           </Row>
         </Col>
       </StyledRow>
@@ -298,9 +313,10 @@ function mapStateToProps(state, ownProps) {
   let {users} = state.entities
   let profileAvatar = _.get(users, `entities[${ownProps.userId}].profile.avatar`)
   return {
-    profileAvatar,
     globalModal: state.ux.modalName,
     globalModalParams: state.ux.params,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
+    profileAvatar,
   }
 }
 

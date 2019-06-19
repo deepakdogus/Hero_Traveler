@@ -28,6 +28,6 @@
     "string": "^3.3.3"
   },
   "dependencies": {
-    "@hero/ht-core": "0.0.70"
+    "@hero/ht-core": "0.0.96"
   }
 }

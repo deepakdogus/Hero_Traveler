@@ -17,7 +17,7 @@ import {
   modalPadding,
 } from './Shared'
 import HorizontalDivider from '../HorizontalDivider'
-import Icon from '../Icon'
+import Icon from '../../Shared/Web/Components/Icon'
 
 import onClickOutside from 'react-onclickoutside'
 
@@ -58,7 +58,8 @@ export const tabbarObj = {
   Privacy: 'Privacy Policy',
 }
 
-const tabBarTabs = Object.values(tabbarObj)
+// Object.values(tabbarObj) is not supported by firefox
+const tabBarTabs = Object.keys(tabbarObj).map(key => tabbarObj[key])
 
 class Documentation extends Component {
   static propTypes = {

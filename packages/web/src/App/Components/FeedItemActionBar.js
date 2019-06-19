@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Icon from './Icon'
-import {Col} from './FlexboxGrid'
+import Icon from '../Shared/Web/Components/Icon'
+import { Col } from '../Shared/Web/Components/FlexboxGrid'
 import { shareLinkOnTwitter, shareLinkOnEmail } from '../Lib/sharingWeb'
 
 const StyledIcon = styled(Icon)`
@@ -38,7 +38,7 @@ const ActionBarContainer = styled(Col)`
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
-    background-color: ${props => props.theme.Colors.snow}
+    background-color: ${props => props.theme.Colors.snow};
   }
 `
 
@@ -47,7 +47,7 @@ const Count = styled.p`
   font-weight: 400;
   font-size: 14px;
   color: ${props => props.theme.Colors.grey};
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   margin: 0;
   text-align: center;
 `
@@ -56,12 +56,17 @@ const Count = styled.p`
  * At <960px width, the image begins to shrink, invaldating the default
  * (800px / 2) + 80px right offset from center. The desktop breakpoint with
  * percent offset from the right allows for a smooth transition.
+ *
+ * FIXME: smoother transition for guide near the large desktop breakpoint
  */
 const AbsoluteWrapper = styled.div`
   background-color: white;
   position: fixed;
-  top: ${props => props.isStory ? '214px' : '297px' };
+  top: ${props => props.isStory ? '214px' : '297px'};
   right: calc(50vw - ${props => props.wrapperMaxWidth / 2 || 0}px - 80px);
+  @media (max-width: ${props => props.theme.Metrics.sizes.desktopLarge}px) {
+    ${props => !props.isStory && 'right: 1.5%'};
+  }
   @media (max-width: ${props => props.theme.Metrics.sizes.desktop}px) {
     right: 1.5%;
   }
@@ -105,7 +110,7 @@ export default class StoryActionBar extends React.Component {
     wrapperMaxWidth: PropTypes.number,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       showMore: false,
@@ -123,16 +128,16 @@ export default class StoryActionBar extends React.Component {
   }
 
   _onClickEmail = () => {
-    const { feedItem } = this.props
-    shareLinkOnEmail(feedItem, 'story')
+    const { feedItem, isStory } = this.props
+    shareLinkOnEmail(feedItem, isStory ? 'story' : 'guide')
   }
 
   _onClickTwitter = async () => {
-    const { feedItem } = this.props
-    shareLinkOnTwitter(feedItem, 'story') 
+    const { feedItem, isStory } = this.props
+    shareLinkOnTwitter(feedItem, isStory ? 'story' : 'guide')
   }
 
-  render () {
+  render() {
     const {
       feedItem,
       isStory,
@@ -151,12 +156,12 @@ export default class StoryActionBar extends React.Component {
         wrapperMaxWidth={wrapperMaxWidth}
       >
         <ActionBarContainer>
-          {isStory &&
+          {isStory && (
             <BookmarkIcon
               name={isBookmarked ? 'squareBookmarkActive' : 'squareBookmark'}
               onClick={onClickBookmark}
             />
-          }
+          )}
           <ClickableWrapper>
             <Count>{feedItem.counts.likes}</Count>
             <LeftActionBarIcon
@@ -167,29 +172,35 @@ export default class StoryActionBar extends React.Component {
           <ClickableWrapper>
             <Count>{feedItem.counts.comments}</Count>
             <LeftActionBarIcon
-              name='squareComment'
+              name="squareComment"
               onClick={onClickComments}
             />
           </ClickableWrapper>
           <FacebookIcon
-            name='squareFacebookOutline'
+            name="squareFacebookOutline"
             onClick={onClickShare}
           />
           <ClickableWrapper>
-            <TwitterIcon onClick={this._onClickTwitter} name='squareTwitterOutline'/>
+            <TwitterIcon
+              name="squareTwitterOutline"
+              onClick={this._onClickTwitter}
+            />
           </ClickableWrapper>
           <ClickableWrapper>
-            <StyledIcon name='email' onClick={this._onClickEmail} />
+            <StyledIcon
+              name="email"
+              onClick={this._onClickEmail}
+            />
           </ClickableWrapper>
           {/* present at top level until after launch */}
-          {isStory &&
+          {isStory && (
             <ClickableWrapper>
               <StyledIcon
-                name='flag'
+                name="flag"
                 onClick={this._onClickFlag}
               />
             </ClickableWrapper>
-          }
+          )}
         </ActionBarContainer>
       </AbsoluteWrapper>
     )

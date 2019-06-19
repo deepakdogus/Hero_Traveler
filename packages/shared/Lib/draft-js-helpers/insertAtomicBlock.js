@@ -1,6 +1,6 @@
 import insertBlock from './insertBlock'
 
-export default function insertAtomicBlock(editorState, type, url, height, width) {
+export default function insertAtomicBlock(editorState, {type, url, height, width}) {
   const selectionState = editorState.getSelection()
   const selectedBlockKey = selectionState.getAnchorKey()
 
@@ -22,7 +22,7 @@ export default function insertAtomicBlock(editorState, type, url, height, width)
 
   const lastBlock = newEditorState.getCurrentContent().getLastBlock()
 
-  if (lastBlock.getType() == 'atomic') {
+  if (type !== 'loader' && lastBlock.getType() == 'atomic') {
     newEditorState = insertBlock(
       newEditorState,
       lastBlock.getKey(),

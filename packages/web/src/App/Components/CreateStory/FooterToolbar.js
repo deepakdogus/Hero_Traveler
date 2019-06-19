@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import Icon from '../Icon'
-import {Row} from '../FlexboxGrid'
-import RoundedButton from '../RoundedButton'
+import Icon from '../../Shared/Web/Components/Icon'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 
 const Container = styled.div`
   position: fixed;
@@ -14,7 +14,6 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
-  z-index: 1;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     justify-content: space-evenly;
   }
@@ -68,8 +67,8 @@ export default class FooterToolbar extends Component {
       discardDraft,
       updateDraft,
       syncProgressMessage,
-      isDetailsView,
     } = this.props
+
     return (
       <ButtonIconContainer>
         <StyledRow middle='xs'>

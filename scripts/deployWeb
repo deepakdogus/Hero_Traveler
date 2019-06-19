@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# We want this entire script to exit if any single line fails.
+# So we set the `-e` flag.
+set -e
+
+# If our deploy fails partway through we want to clean up after ourselves.
+# This next block is like a try/catch for our entire script.
+
+# We trap any program EXIT and run this function.
+# Whether the deploy succeeds or fails, we'll clean up the deploy branch.
+
+function cleanup_at_exit {
+  # return to branch you called this script from
+  git checkout @{-1}
+
+  # remove the deploy branch
+  git branch -D deploy/production
+}
+trap cleanup_at_exit EXIT
+
+git checkout -b deploy/production
+
+# add shared files
+npm run share --prefix packages/web
+
+# "force" add the otherwise gitignored shared files
+git add -f packages/web/src/App/Shared packages/web/src/App/Config/Env
+
+# create a commit, even if nothing changed
+git commit --allow-empty -m 'Adding Shared'
+
+# push your local deploy branch's packages/web to the master branch on heroku
+git push heroku `git subtree split --prefix packages/web deploy/production`:master --force

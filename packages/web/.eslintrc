@@ -11,7 +11,7 @@
     "node": true
   },
   "plugins": [
-    "react",
+    "react"
   ],
   "extends": [
     "react-app",
@@ -19,6 +19,7 @@
     "plugin:react/recommended"
   ],
   "rules": {
+    "indent": [2,2, { "SwitchCase": 1 }],
     "no-console": 1,
     "react/jsx-no-bind": 2,
     "react/prop-types": 1,
@@ -46,8 +47,14 @@
     "no-useless-escape": "error",
     "no-whitespace-before-property": "error",
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
+    "operator-linebreak": ["error", "before"],
     "padded-blocks": ["error", { "blocks": "never", "switches": "never", "classes": "never" }],
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "react/jsx-closing-bracket-location": [2],
+    "react/jsx-closing-tag-location": [1],
+    "react/jsx-first-prop-new-line": "error",
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-max-props-per-line": [2, { "maximum" : 1 }],
     "semi": ["error", "never"],
     "semi-spacing": ["error", { "before": false, "after": true }],
     "space-infix-ops": "error",

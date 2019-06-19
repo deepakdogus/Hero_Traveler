@@ -13,7 +13,11 @@ export default {
     flexDirection: 'row',
   },
   image: {
-    height: 21, 
+    height: 21,
     width: 13,
-  }
+    transform: [{scaleX: 0.75}, {scaleY: 0.75}],
+  },
+  view: {
+    justifyContent: 'center',
+  },
 }

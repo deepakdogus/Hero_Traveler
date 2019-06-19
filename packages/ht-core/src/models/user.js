@@ -42,6 +42,27 @@ const AccountSchema = Schema({
   uid: String
 })
 
+const LocationInfoSchema = Schema({
+  name: {
+    type: String,
+  },
+  locality: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
+})
+
 export const ModelName = 'User'
 
 const UserSchema = new Schema({
@@ -91,6 +112,84 @@ const UserSchema = new Schema({
     hidden: true,
     type: String
   },
+  sponsorLink: {
+    type: String
+  },
+  channelImage: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
+  interstitialImage: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
+  channelSponsorLogo: {
+    altText: String,
+    original: {
+      filename: String,
+      path: String,
+      folders: Array,
+      width: Number,
+      height: Number,
+      meta: {
+        mimeType: String
+      }
+    },
+    versions: {
+      thumbnail240: {
+        filename: String,
+        path: String,
+        folders: Array,
+        width: Number,
+        height: Number,
+        meta: {
+          mimeType: String
+        }
+      }
+    }
+  },
   counts: {
     followers: {
       type: Number,
@@ -110,6 +209,7 @@ const UserSchema = new Schema({
       Constants.USER_ROLES_CONTRIBUTOR_VALUE,
       Constants.USER_ROLES_FOUNDING_MEMBER_VALUE,
       Constants.USER_ROLES_FELLOW_VALUE,
+      Constants.USER_ROLES_LOCAL_HERO_VALUE,
     ],
     default: Constants.USER_ROLES_USER_VALUE
   },
@@ -125,6 +225,26 @@ const UserSchema = new Schema({
       Constants.USER_NOTIFICATION_FOLLOWER,
     ]
   }],
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  isChannel: {
+    type: Boolean,
+    default: false
+  },
+  birthday: {
+    type: Date,
+    hideJSON: true,
+  },
+  locationInfo: {
+    type: [LocationInfoSchema],
+    hideJSON: true,
+  },
+  gender: {
+    hideJSON: true,
+    type: String
+  }
 }, {
   timestamps: true,
   toObject: {
@@ -134,6 +254,8 @@ const UserSchema = new Schema({
     virtuals: true
   }
 })
+
+UserSchema.index({username: 'text', email: 'text', 'profile.fullName': 'text'})
 
 UserSchema.virtual('isFacebookConnected')
   .get(function() {
@@ -168,7 +290,7 @@ UserSchema.statics = {
       })
     })
   },
-  createFromFacebookData(fbid, email, name, pictureUrl) {
+  createFromFacebookData(fbid, email, name) {
     // trim the name to be 10 characters long max
     const trimmedName = name.slice(0, 9).trim()
     // Make a semi-random username for the user:
@@ -193,11 +315,43 @@ UserSchema.statics = {
       emailConfirmationToken: uuid(),
       notificationTypes: defaultNotificationTypes,
     })
-  }
+  },
+  // includes soft-deleted by default
+  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+    let queryToApply = {}
+
+    if (query) {
+      queryToApply = query
+    }
+
+    if (search !== '') {
+      queryToApply['$text'] = { $search: search }
+    }
+
+    let sortToApply = {createdAt: -1}
+    if (sort) {
+      sortToApply = {
+        [sort.fieldName]: sort.order
+      }
+    }
+    return Promise.props({
+      count: this.countWithDeleted(queryToApply).exec(),
+      data: this.findWithDeleted(queryToApply)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .sort(sortToApply)
+          .exec(),
+    })
+  },
+  getBadgeUsers() {
+    return this.find({
+      role: { $ne: 'user'}
+    })
+    .lean()
+  },
 }
 
 UserSchema.methods = {
-
   async updatePassword(password) {
     const hashedPassword = await encryptPassword(password)
     const internalAccount = _.find(this.accounts, (a) => a.kind === ACCOUNT_TYPE_EMAIL)

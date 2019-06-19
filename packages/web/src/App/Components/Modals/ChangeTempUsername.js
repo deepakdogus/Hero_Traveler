@@ -2,31 +2,33 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import RoundedButton from '../RoundedButton'
+import {
+  Field,
+  reduxForm,
+  formValueSelector,
+} from 'redux-form'
+import _ from 'lodash'
+
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import {
   Container,
   Title,
-  Text
+  Text,
+  ErrorMessage,
 } from './Shared'
-import { Row } from '../FlexboxGrid'
+import { Row } from '../../Shared/Web/Components/FlexboxGrid'
 import FormInput from '../FormInput'
 import {
-  Field,
-  reduxForm,
-  formValueSelector
-} from 'redux-form'
-import {
   validate,
-  asyncValidate
+  asyncValidate,
 } from '../../Shared/Lib/userFormValidation'
 
-const StyledUsernameText = styled(Title)`
-  font-size: 20px;
+const Prompt = styled(Text)`
+  margin: 0 0 25px;
 `
 
 class ChangeTempUsername extends React.Component{
-
   static propTypes = {
     closeModal: PropTypes.func,
     username: PropTypes.string,
@@ -37,10 +39,11 @@ class ChangeTempUsername extends React.Component{
     pristine: PropTypes.bool,
     fetching: PropTypes.bool,
     updateUser: PropTypes.func,
+    error: PropTypes.string,
   }
 
   componentDidUpdate(prevProps) {
-    if (!!prevProps.updating && prevProps.updating && !this.props.updating) {
+    if (!this.props.user.usernameIsTemporary) {
       this.props.closeModal()
     }
   }
@@ -48,7 +51,7 @@ class ChangeTempUsername extends React.Component{
   _handleSubmit = (e) => {
     e.preventDefault()
     const attrs = {
-      username: this.props.username
+      username: this.props.username,
     }
     this.props.updateUser(attrs)
   }
@@ -59,14 +62,13 @@ class ChangeTempUsername extends React.Component{
       submitting,
       pristine,
       updating,
-      user,
+      error,
     } = this.props
 
     return(
       <Container>
-        <Title>Change Temp Username</Title>
-        <Text>Do you want to change your username?</Text>
-        <StyledUsernameText>{user.username}</StyledUsernameText>
+        <Title>Sign Up</Title>
+        <Prompt>Let&#39;s start by choosing your username</Prompt>
         <form onSubmit={this._handleSubmit}>
           <Field
             name={'username'}
@@ -76,22 +78,19 @@ class ChangeTempUsername extends React.Component{
           />
           <Row center='xs'>
             <RoundedButton
-              text="No"
-              margin='small'
-              type='blackWhite'
-              onClick={this.props.closeModal}
-            />
-            <RoundedButton
-              text='Yes'
+              text='Save'
               margin='small'
               type='submit'
-              disabled={invalid|| submitting || pristine}
+              disabled={invalid || submitting || pristine}
             />
           </Row>
         </form>
-        {(!invalid && updating) &&
+        {(!invalid && updating) && (
           <Text>Updating Username...</Text>
-        }
+        )}
+        {error && (
+          <ErrorMessage>{error}</ErrorMessage>
+        )}
       </Container>
     )
   }
@@ -106,6 +105,7 @@ function mapStateToProps(state) {
     user,
     username: selector(state, 'username'),
     updating: state.entities.users.updating,
+    error: _.get(state, 'entities.users.error.message'),
   }
 }
 
@@ -123,5 +123,5 @@ export default reduxForm({
   asyncBlurFields: ['username'],
   initialValues: {
     username: '',
-  }
+  },
 })(connect(mapStateToProps, mapDispatchToProps)(ChangeTempUsername))

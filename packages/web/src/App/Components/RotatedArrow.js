@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Icon from './Icon'
+import Icon from '../Shared/Web/Components/Icon'
 
 export default styled(Icon)`
   text-align: center;

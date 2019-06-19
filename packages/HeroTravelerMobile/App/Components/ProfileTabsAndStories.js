@@ -5,14 +5,13 @@ import {
   Text,
 } from 'react-native'
 
-import styles, { feedItemHeight } from './Styles/ProfileViewStyles'
+import styles, { feedItemHeight } from './Styles/ProfileTabsAndStoriesStyles'
 import { Colors } from '../Shared/Themes'
 import ConnectedFeedList from '../Containers/ConnectedFeedList'
 import Loader from './Loader'
 import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
 import TabBar from './TabBar'
 import _ from 'lodash'
-import { hasBadge } from '../Shared/Lib/badgeHelpers'
 
 export default class ProfileTabsAndStories extends Component {
   static propTypes = {
@@ -42,6 +41,7 @@ export default class ProfileTabsAndStories extends Component {
         activeTab={selectedTab}
         onClickTab={selectTab}
         tabStyle={styles.tabStyle}
+        largeTabBar
       />
     )
   }
@@ -101,9 +101,9 @@ export default class ProfileTabsAndStories extends Component {
     return (
       <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
-        {!!error &&
+        {!!error && (
           <Text style={styles.errorText}>{errorText}</Text>
-        }
+        )}
       </View>
     )
   }
@@ -112,60 +112,66 @@ export default class ProfileTabsAndStories extends Component {
     // This is quite manual but RN currently doesn't give accurate metrics
     // from .measure() or onLayout. So don't forget to update here if styles
     // change.
-    const {user, editable} = this.props
+    const { editable} = this.props
 
-    let height = editable ? 237 : 219
-    height += hasBadge(user.role) ? 21 : 0
+    // half point needed for downsample rounding on iPhone XS Max
+    let height = editable ? 236.5 : 199
     height += this.props.error ? 27 : 0
     return height
   }
 
   render() {
     const {
-      renderProfileInfo, feedItemsById,
-      fetchStatus, editable, isStory, onRefresh,
+      renderProfileInfo,
+      feedItemsById,
+      fetchStatus,
+      editable,
+      isStory,
+      onRefresh,
+      selectedTab,
+      tabTypes,
     } = this.props
 
     const isGettingStories = this.isGettingStories()
+    const hasNoStories = this.areNoStories()
 
     return (
       <View style={[
         styles.profileTabsAndStoriesHeight,
         editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
       ]}>
-        {(this.areNoStories() || this.isFetching()) &&
+        {hasNoStories && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}
             {this.renderTabs()}
           </View>
-        }
-        {feedItemsById.length === 0 && fetchStatus.loaded &&
+        )}
+        {hasNoStories && fetchStatus.loaded && (
           <View style={styles.noStories}>
             <Text style={styles.noStoriesText}>{this.getNoStoriesText()}</Text>
           </View>
-        }
-        {isGettingStories &&
+        )}
+        {hasNoStories && isGettingStories && (
           <View style={styles.spinnerWrapper}>
-            <Loader
-              style={styles.spinner}
-              spinnerColor={Colors.background} />
+            <Loader spinnerColor={Colors.background} />
           </View>
-        }
+        )}
 
-        {feedItemsById.length !== 0 && !isGettingStories &&
+        {!hasNoStories && (
           <ConnectedFeedList
             isStory={isStory}
-            style={styles.feedList}
+            isDraftsTab={selectedTab === tabTypes.drafts}
             entitiesById={feedItemsById}
             refreshing={false}
             headerContentHeight={this.getHeaderHeight()}
             renderHeaderContent={this._renderProfileInfo()}
+            sectionContentHeight={50}
             renderSectionHeader={this.renderTabs()}
             renderFeedItem={this.renderFeedItem}
             pagingIsDisabled
             onRefresh={onRefresh}
           />
-        }
+        )}
       </View>
     )
   }

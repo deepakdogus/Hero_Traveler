@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as _ from 'lodash'
 
-import { Grid } from '../Components/FlexboxGrid'
+import { Grid } from '../Shared/Web/Components/FlexboxGrid'
 import HeaderAnonymous from '../Components/Headers/HeaderAnonymous'
 import HeaderLoggedIn from '../Components/Headers/HeaderLoggedIn'
 import LoginActions from '../Shared/Redux/LoginRedux'
@@ -14,9 +14,13 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import SessionActions from '../Shared/Redux/SessionRedux'
 import UXActions from '../Redux/UXRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import GuideActions from '../Shared/Redux/Entities/Guides'
 import HeaderModals from '../Components/HeaderModals'
-import { sizes } from '../Themes/Metrics'
-import { haveFieldsChanged } from '../Shared/Lib/draftChangedHelpers'
+import { sizes } from '../Shared/Web/Themes/Metrics'
+import {
+  haveFieldsChanged,
+  hasChangedSinceSave,
+} from '../Shared/Lib/draftChangedHelpers'
 import { itemsPerQuery } from './ContainerWithFeedList'
 /*global branch*/
 
@@ -36,12 +40,26 @@ const HeaderSpacer = styled.div`
   height: ${props => props.spacerSize};
 `
 
+/**
+ * This function will log CompletedRegistration App Event
+ * @param {string} registrationMethod
+ * pulled from https://developers.facebook.com/docs/app-events/getting-started-app-events-web#predefined-events
+ * To Generate Code for a Standard Event
+ */
+function logCompletedRegistrationEvent(registrationMethod) {
+    const FB = window.FB
+    var params = {}
+    // params[FB.AppEvents.ParameterNames.REGISTRATION_METHOD] = registrationMethod
+    FB.AppEvents.logEvent(FB.AppEvents.EventNames.COMPLETED_REGISTRATION, null, params)
+}
+
 class Header extends React.Component {
   static propTypes = {
     currentUserId: PropTypes.string,
     currentUserProfile: PropTypes.object,
     currentUserEmail: PropTypes.string,
     currentUserNotificationTypes: PropTypes.arrayOf(PropTypes.string),
+    currentUsernameIsTemporary: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     loginReduxFetching: PropTypes.bool,
     loginReduxError: PropTypes.string,
@@ -49,6 +67,7 @@ class Header extends React.Component {
     attemptLogout: PropTypes.func,
     attemptChangePassword: PropTypes.func,
     attemptGetUserFeed: PropTypes.func,
+    attemptGetUserGuides: PropTypes.func,
     closeGlobalModal: PropTypes.func,
     openGlobalModal: PropTypes.func,
     globalModalThatIsOpen: PropTypes.string,
@@ -61,12 +80,14 @@ class Header extends React.Component {
     activities: PropTypes.object,
     originalDraft: PropTypes.object,
     workingDraft: PropTypes.object,
+    draftToBeSaved: PropTypes.object,
     resetCreateStore: PropTypes.func,
     markSeen: PropTypes.func,
     pathname: PropTypes.string,
     signedUp: PropTypes.bool,
     flagStory: PropTypes.func,
     deleteStory: PropTypes.func,
+    pendingMediaUploads: PropTypes.number,
   }
 
   constructor(props) {
@@ -100,33 +121,57 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentUserId } = this.props
+    const {
+      attemptGetUserFeed,
+      attemptGetUserGuides,
+      currentUserId,
+      currentUsernameIsTemporary,
+      globalModalThatIsOpen,
+      isLoggedIn,
+      openGlobalModal,
+      pathname,
+      reroute,
+      signedUp,
+    } = this.props
 
     if (currentUserId && prevProps.currentUserId !== currentUserId) {
-      this.props.attemptGetUserFeed(
-        currentUserId,
-        {
-          perPage: itemsPerQuery,
-          page: 1,
-        },
-      )
+      attemptGetUserFeed(currentUserId, {
+        perPage: itemsPerQuery,
+        page: 1,
+      })
+      attemptGetUserGuides(currentUserId)
+      if (currentUsernameIsTemporary) {
+        openGlobalModal('changeTempUsername')
+      }
     }
-    if (!prevProps.signedUp && this.props.signedUp) {
-      this.props.reroute('/signup/topics')
+    if (!prevProps.signedUp && signedUp) {
+      logCompletedRegistrationEvent()
+      reroute('/signup/info')
     }
-    if (prevProps.pathname !== this.props.pathname) {
+    if (prevProps.pathname !== pathname) {
       window.scrollTo({
         top: 0,
         behavior: 'instant',
       })
     }
-    if (prevProps.isLoggedIn && !this.props.isLoggedIn) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+    if (prevProps.isLoggedIn && !isLoggedIn) {
+      reroute('/')
+      openGlobalModal('login')
     }
-    if (prevProps.globalModalThatIsOpen === 'documentation' && !this.props.globalModalThatIsOpen && !this.props.isLoggedIn) {
-      this.props.reroute('/')
-      this.props.openGlobalModal('login')
+    if (
+      !prevProps.isLoggedIn && this.props.isLoggedIn
+      && prevProps.globalModalThatIsOpen === 'login'
+    ) {
+      this.closeModal()
+      reroute('/feed')
+    }
+    if (
+      prevProps.globalModalThatIsOpen === 'documentation'
+      && !globalModalThatIsOpen
+      && !isLoggedIn
+    ) {
+      reroute('/')
+      openGlobalModal('login')
     }
   }
 
@@ -164,15 +209,31 @@ class Header extends React.Component {
   }
 
   openSaveEditsModal = path => {
+    const {
+      draftToBeSaved,
+      originalDraft,
+      pathname,
+      pendingMediaUploads,
+      workingDraft,
+    } = this.props
+
     if (
-      this.props.workingDraft
-      && this.props.pathname.includes('editStory')
-      && haveFieldsChanged(this.props.workingDraft, this.props.originalDraft)
+      pendingMediaUploads || (
+        pathname.includes('editStory')
+        && workingDraft
+        && haveFieldsChanged(workingDraft, originalDraft)
+        // extra check to ensure we dont show modal after they click save and nav away
+        // without making further edits to the draft
+        && hasChangedSinceSave(workingDraft, draftToBeSaved)
+      )
     ) {
       this.setState({
         nextPathAfterSave: path,
       })
       this.props.openGlobalModal('saveEdits')
+    }
+    else {
+      this.props.reroute(path)
     }
   }
 
@@ -180,12 +241,8 @@ class Header extends React.Component {
     this.props.resetCreateStore(this.props.originalDraft.id)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isLoggedIn && nextProps.isLoggedIn) this.closeModal()
-  }
-
   // name correspond to icon name and button name
-  openModal = (event) => {
+  openModal = event => {
     const name = event.target.name
     let modalToOpen
     if (name === 'inbox' || name === 'loginEmail') modalToOpen = 'inbox'
@@ -223,6 +280,7 @@ class Header extends React.Component {
       originalDraft,
       flagStory,
       deleteStory,
+      pendingMediaUploads,
     } = this.props
 
     const spacerSize = this.props.blackHeader ? '65px' : '0px'
@@ -230,7 +288,11 @@ class Header extends React.Component {
 
     return (
       <div>
-        <StyledGrid fluid fixed hasBlackBackground={hasBlackBackground}>
+        <StyledGrid
+          fluid
+          fixed
+          hasBlackBackground={hasBlackBackground}
+        >
           {isLoggedIn && (
             <HeaderLoggedIn
               userId={currentUserId}
@@ -278,6 +340,7 @@ class Header extends React.Component {
             activitiesById={activitiesById}
             markSeen={markSeen}
             nextPathAfterSave={this.state.nextPathAfterSave}
+            pendingMediaUploads={pendingMediaUploads}
             reroute={reroute}
             resetCreateStore={this._resetCreateStore}
             flagStory={flagStory}
@@ -310,12 +373,15 @@ function mapStateToProps(state) {
     currentUserProfile: currentUser && currentUser.profile,
     currentUserEmail: currentUser && currentUser.email,
     currentUserNotificationTypes: currentUser && currentUser.notificationTypes,
+    currentUsernameIsTemporary: currentUser && currentUser.usernameIsTemporary,
     activitiesById: state.entities.users.activitiesById,
     activities: state.entities.users.activities,
     originalDraft: state.storyCreate.draft,
     workingDraft: state.storyCreate.workingDraft,
+    draftToBeSaved: state.storyCreate.draftToBeSaved,
     pathname: pathname,
     signedUp: state.signup.signedUp,
+    pendingMediaUploads: state.storyCreate.pendingMediaUploads,
   }
 }
 
@@ -325,6 +391,7 @@ function mapDispatchToProps(dispatch) {
     attemptChangePassword: (userId, oldPassword, newPassword) =>
       dispatch(LoginActions.changePasswordRequest(userId, oldPassword, newPassword)),
     attemptGetUserFeed: (userId, params) => dispatch(StoryActions.feedRequest(userId, params)),
+    attemptGetUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
     closeGlobalModal: () => dispatch(UXActions.closeGlobalModal()),
     openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
     reroute: route => dispatch(push(route)),

@@ -1,0 +1,35 @@
+/* class names derived from 'draft-js-side-toolbar-plugin/lib/plugin.css' */
+
+.draftJsToolbar-buttonWrapper {
+  display: inline-block;
+}
+
+.draftJsToolbar-buttonWrapper:hover, .draftJsToolbar-buttonWrapper:focus {
+  background: #f3f3f3;
+  outline: 0; /* reset for :focus */
+}
+
+.draftJsToolbar-button {
+  background: #fff;
+  color: #757575;
+  font-size: 18px;
+  border: 0;
+  padding-top: 5px;
+  vertical-align: bottom;
+  height: 34px;
+  width: 36px;
+}
+
+.draftJsToolbar-button svg {
+  padding-top: 2px; /* centers Bold svg vertically */
+  fill: #757575;
+}
+
+.draftJsToolbar-button-active {
+  color: #ed1e2e;
+}
+
+.draftJsToolbar-button-active svg {
+  padding-top: 2px; /* centers Bold svg vertically */
+  fill: #ed1e2e;
+}

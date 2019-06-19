@@ -11,7 +11,7 @@ export const ThreadListItemProps = {
   isUnread: PropTypes.bool,
   fromUser: PropTypes.object,
   message: PropTypes.string,
-  createdAt: PropTypes.instanceOf(Date)
+  createdAt: PropTypes.instanceOf(Date),
 }
 
 export default class ThreadListItem extends Component {
@@ -20,10 +20,15 @@ export default class ThreadListItem extends Component {
   render () {
     let {
       isUnread,
-      fromUser,
+      fromUser: user,
       message,
       createdAt,
     } = this.props
+
+    const [ userAvatar, userFullName ] = user && user.profile
+      ? [user.profile.avatar, user.profile.fullName]
+      : [undefined, undefined]
+
     return (
       <View style={styles.root}>
         <TouchableOpacity
@@ -32,20 +37,22 @@ export default class ThreadListItem extends Component {
           <View style={styles.innerButton}>
             <Avatar
               style={styles.avatar}
-              avatarUrl={getImageUrl(fromUser.profile.avatar, 'avatar')}
+              avatarUrl={getImageUrl(userAvatar, 'avatar')}
             />
             <View style={[styles.middle]}>
               <Text style={styles.usernameText}>
-                {fromUser.profile.fullName}
+                {userFullName}
               </Text>
               <Text
                 numberOfLines={2}
                 style={[
                   styles.messageText,
-                  isUnread ? {
-                    color: Colors.background,
-                    fontWeight: '700'
-                  } : {}
+                  isUnread
+                    ? {
+                      color: Colors.background,
+                      fontWeight: '700',
+                    }
+                    : {},
                 ]}
               >
                 {message}
@@ -72,11 +79,11 @@ export default class ThreadListItem extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    borderBottomColor: '#bdbdbd',
+    borderBottomColor: Colors.grey,
     borderBottomWidth: 1,
   },
   innerButton: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: Metrics.baseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin,
   },
@@ -86,23 +93,23 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     color: Colors.background,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   dateText: {
     flex: .25,
     marginLeft: Metrics.baseMargin,
-    color: '#757575',
+    color: Colors.grey,
     fontSize: 12,
-    textAlign: 'right'
+    textAlign: 'right',
   },
   messageText: {
     fontSize: 16,
-    color: '#757575',
+    color: Colors.grey,
   },
   avatar: {
-    marginHorizontal: Metrics.baseMargin
+    marginHorizontal: Metrics.baseMargin,
   },
   actionUserText: {
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })

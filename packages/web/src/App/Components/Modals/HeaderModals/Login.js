@@ -8,7 +8,7 @@ import SignupActions from '../../../Shared/Redux/SignupRedux'
 import UXActions from '../../../Redux/UXRedux'
 
 import OnClickOutsideModal from '../OnClickOutsideModal'
-import RoundedButton from '../../RoundedButton'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
 import SocialMediaButton from '../Shared/SocialMediaButton'
 import {
   Title,
@@ -113,17 +113,27 @@ class Login extends Component {
         />
         <Text>Or</Text>
           <form onSubmit={this.onAttemptLogin}>
-            <StyledInput placeholder='Username OR Email' onChange={this.setUserIdentifier}/>
-            <StyledInput placeholder='Password' onChange={this.setPassword} type='password'/>
-            {loginReduxFetching &&
+            <StyledInput
+              placeholder='Username OR Email'
+              onChange={this.setUserIdentifier}
+              type='text'
+              name='field'
+            />
+            <StyledInput
+              placeholder='Password'
+              onChange={this.setPassword}
+              type='password'
+              name='field'
+            />
+            {loginReduxFetching && (
               <LoginFetchingText>Signing In ...</LoginFetchingText>
-            }
-            {(loginReduxError && !loginReduxFetching) &&
+            )}
+            {(loginReduxError && !loginReduxFetching) && (
               <LoginErrorText>{loginReduxError}</LoginErrorText>
-            }
-            {this.state.localError &&
+            )}
+            {this.state.localError && (
               <LoginErrorText>{this.state.localError}</LoginErrorText>
-            }
+            )}
               <ForgotPasswordText
                 onClick={this._openResetPasswordModal}
               >

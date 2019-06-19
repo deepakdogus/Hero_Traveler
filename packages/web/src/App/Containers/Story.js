@@ -15,11 +15,12 @@ import FeedItemHeader from '../Components/FeedItemHeader'
 import StoryContentRenderer from '../Components/StoryContentRenderer'
 import GoogleMap from '../Components/GoogleMap'
 import FeedItemMetaInfo from '../Components/FeedItemMetaInfo'
-import RoundedButton from '../Components/RoundedButton'
-import Icon from '../Components/Icon'
+import RoundedButton from '../Shared/Web/Components/RoundedButton'
+import Icon from '../Shared/Web/Components/Icon'
 import FeedItemActionBar from '../Components/FeedItemActionBar'
 import Footer from '../Components/Footer'
 import { createDeepLinkWeb } from '../Lib/sharingWeb'
+import { getButtonText, handleClickActionButton} from '../Shared/Lib/buttonLinkHelpers'
 
 const Container = styled.div`
   margin: 0 7%;
@@ -44,14 +45,13 @@ const MapContainer = styled.div`
 
 const HashtagText = styled.p`
   margin: 0;
-  padding-top 30px;
+  padding-top: 30px;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   letter-spacing: .2px;
   text-decoration: none;
-  margin-botton: 45px;
 `
 
 const AddToGuideButtonStyles = `
@@ -70,6 +70,13 @@ const StyledIcon = styled(Icon)`
   height: 20px;
   align-self: center;
   cursor: pointer;
+`
+
+const ActionButtonContainer = styled.div`
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `
 
 const AddToGuideButton = ({ onClickAddToGuide }) => (
@@ -100,8 +107,10 @@ class Story extends Component {
     reroute: PropTypes.func,
     isLiked: PropTypes.bool,
     onClickLike: PropTypes.func,
+    onClickUnLike: PropTypes.func,
     isBookmarked: PropTypes.bool,
     onClickBookmark: PropTypes.func,
+    onClickRemoveBookmark: PropTypes.func,
     match: PropTypes.object,
     onClickComments: PropTypes.func,
     onClickAddToGuide: PropTypes.func,
@@ -125,11 +134,18 @@ class Story extends Component {
   }
 
   _onClickLike = () => {
-    this.props.onClickLike(this.props.sessionUserId)
+    const { sessionUserId } = this.props
+    if (this.props.isLiked) this.props.onClickUnLike(sessionUserId)
+    else this.props.onClickLike(sessionUserId)
   }
 
   _onClickBookmark = () => {
-    this.props.onClickBookmark(this.props.sessionUserId)
+    const {
+      isBookmarked, sessionUserId,
+      onClickBookmark, onClickRemoveBookmark,
+    } = this.props
+    if (isBookmarked) return onClickRemoveBookmark(sessionUserId)
+    return onClickBookmark(sessionUserId)
   }
 
   _onClickComments = () => {
@@ -142,6 +158,13 @@ class Story extends Component {
 
   _onClickShare = async () => {
     createDeepLinkWeb(this.props.story, 'story')
+  }
+
+  hasLatLng = () => {
+    const { story } = this.props
+    return story.locationInfo
+      && story.locationInfo.latitude
+      && story.locationInfo.longitude
   }
 
   renderHashtags = () => {
@@ -169,6 +192,7 @@ class Story extends Component {
       isLiked,
       onClickAddToGuide,
     } = this.props
+
     if (!story || !author) return null
 
     return (
@@ -186,16 +210,32 @@ class Story extends Component {
             isStory
             isDraft={isDraft}
           />
-          <StoryContentRenderer story={story} />
+          <StoryContentRenderer
+            story={story}
+            author={author}
+          />
           {this.renderHashtags()}
-          {story.locationInfo && story.locationInfo.latitude && story.locationInfo.longitude &&
+          {story.actionButton
+            && !!story.actionButton.link
+            && !!story.actionButton.type && (
+              <ActionButtonContainer>
+                <RoundedButton
+                  onClick={handleClickActionButton(story.actionButton.link, window.open)}
+                  text={getButtonText(story.actionButton)}
+                  margin="none"
+                  width="300px"
+                  height="45px"
+                />
+              </ActionButtonContainer>
+            )}
+          {this.hasLatLng() && (
             <MapContainer>
               <GoogleMap stories={ [story] } />
             </MapContainer>
-          }
+          )}
           <FeedItemMetaInfo feedItem={story} />
-          {!isDraft && <AddToGuideButton onClickAddToGuide={onClickAddToGuide}/>}
-          {!isDraft &&
+          {!isDraft && (<AddToGuideButton onClickAddToGuide={onClickAddToGuide}/>)}
+          {!isDraft && (
             <FeedItemActionBar
               feedItem={story}
               isStory
@@ -210,7 +250,7 @@ class Story extends Component {
               onClickFlag={this._onClickFlag}
               wrapperMaxWidth={wrapperMaxWidth}
             />
-          }
+          )}
         </ContentWrapper>
         <Footer hideOnTablet={true}/>
       </Container>
@@ -253,10 +293,16 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
       dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
-    onClickLike: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyLike, [sessionUserId, storyId])),
+    onClickLike: sessionUserId =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.likeStoryRequest, [storyId, sessionUserId])),
+    onClickUnLike: sessionUserId =>
+      dispatch(
+        runIfAuthed(sessionUserId, StoryActions.unlikeStoryRequest, [storyId, sessionUserId]),
+    ),
     onClickBookmark: (sessionUserId) =>
-      dispatch(runIfAuthed(sessionUserId, StoryActions.storyBookmark, [sessionUserId, storyId])),
+      dispatch(runIfAuthed(sessionUserId, StoryActions.bookmarkStoryRequest, [storyId])),
+    onClickRemoveBookmark: (sessionUserId) =>
+      dispatch(runIfAuthed(sessionUserId, StoryActions.removeStoryBookmarkRequest, [storyId])),
     onClickComments: (sessionUserId) =>
       dispatch(runIfAuthed(sessionUserId, UXActions.openGlobalModal, ['comments', { storyId }])),
     onClickAddToGuide: (sessionUserId) =>

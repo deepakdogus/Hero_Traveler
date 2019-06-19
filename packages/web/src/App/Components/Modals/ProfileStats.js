@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import {Row} from '../FlexboxGrid'
-import Icon from '../Icon'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
+import Icon from '../../Shared/Web/Components/Icon'
 import ProfileStatsCountsCol from '../ProfileStatsCountsCol'
 import {
   RightTitle,

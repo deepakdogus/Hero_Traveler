@@ -12,7 +12,7 @@ export const StartupTypes = Types
 
 const INITIAL_STATE = Immutable({
   modalName: '',
-  params: {}
+  params: {},
 })
 
 export const openGlobalModal = (state, {modalName, params}) => state.merge({modalName, params})

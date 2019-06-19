@@ -5,8 +5,10 @@ import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
 import StartupActions from '../Redux/StartupRedux'
 import SignupActions from '../Redux/SignupRedux'
+import PendingUpdatesActions from '../Redux/PendingUpdatesRedux'
+import StoryActions from '../Redux/Entities/Stories'
 
-const currentUserId = ({session}) => session.userId
+export const currentUserId = ({session}) => session.userId
 const currentUserTokens = ({session}) => session.tokens
 
 // attempts to signup with email
@@ -17,17 +19,19 @@ export function * logout (api, action) {
   const userId = yield select(currentUserId)
   yield call(api.removeDevice, userId)
 
-  let resultAction;
+  let resultAction
   try {
     yield call(
       api.logout,
-      tokens
+      tokens,
     )
-    resultAction = SessionActions.logoutSuccess;
+    resultAction = SessionActions.logoutSuccess
     setIsLoggedIn = LoginActions.setIsLoggedIn
-  } catch(err) {
-    resultAction = SessionActions.logoutFailure;
-  } finally {
+  }
+  catch(err) {
+    resultAction = SessionActions.logoutFailure
+  }
+  finally {
     setIsLoggedIn ? yield[
       put(resultAction(deviceType)),
       put(setIsLoggedIn(false)),
@@ -39,15 +43,18 @@ export function * logout (api, action) {
     yield [
       put(StartupActions.hideSplash()),
       put(UserActions.resetActivities()),
+      put(PendingUpdatesActions.reset()),
+      put(StoryActions.resetDrafts()),
     ]
   }
 }
 
 export function * resumeSession (api, action) {
   // I believe the userId here is redundant. Added task to remove
+  yield put(SessionActions.startInitializeSession())
   let [userId, tokens]= yield [
     select(currentUserId),
-    select(currentUserTokens)
+    select(currentUserTokens),
   ]
 
   // for web we use retrieved tokens (cookies) since store does not persist
@@ -62,7 +69,7 @@ export function * resumeSession (api, action) {
   yield call(api.setAuth, accessToken.value)
   const response = yield call(
     api.getMe,
-    userId
+    userId,
   )
 
   if (response.ok) {
@@ -79,7 +86,11 @@ export function * resumeSession (api, action) {
     ]
     yield put(SessionActions.initializeSession(user.id, tokens))
     yield put(SessionActions.refreshSessionSuccess(tokens))
-  } else {
+  }
+  else if (
+    response.problem !== 'NETWORK_ERROR'
+    && response.problem !== 'TIMEOUT_ERROR'
+  ) {
     yield put(SessionActions.resumeSessionFailure('Unauthorized'))
     yield put(SessionActions.logout(userId, 'mobile'))
     return
@@ -104,9 +115,10 @@ export function * refreshSession(api) {
     const newAccessToken = _.find(newTokens, {type: 'access'})
     return yield [
       call(api.setAuth, newAccessToken.value),
-      put(SessionActions.refreshSessionSuccess(newTokens))
+      put(SessionActions.refreshSessionSuccess(newTokens)),
     ]
-  } else {
+  }
+  else {
     return yield put(SessionActions.refreshSessionSuccess(tokens))
   }
 }

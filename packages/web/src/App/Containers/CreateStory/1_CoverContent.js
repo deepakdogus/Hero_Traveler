@@ -10,10 +10,12 @@ import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 
 class CreateStoryCoverContent extends Component {
   static propTypes = {
+    author: PropTypes.object,
     workingDraft: PropTypes.object,
     updateWorkingDraft: PropTypes.func,
     setGetEditorState: PropTypes.func,
-    uploadImage: PropTypes.func,
+    uploadMedia: PropTypes.func,
+    isPendingUpdateOverride: PropTypes.bool,
   }
 
   onInputChange = (update) => {
@@ -39,11 +41,13 @@ class CreateStoryCoverContent extends Component {
         <AddCoverTitles
           onInputChange={this.onInputChange}
           workingDraft={this.props.workingDraft}
-          uploadImage={this.props.uploadImage}
+          uploadMedia={this.props.uploadMedia}
+          isPendingUpdateOverride={this.props.isPendingUpdateOverride}
         />
         <BodyEditor
           onInputChange={this.onInputChange}
           setGetEditorState={this.props.setGetEditorState}
+          author={this.props.author}
           {...this.getContent()}
         />
       </div>
@@ -52,15 +56,21 @@ class CreateStoryCoverContent extends Component {
 }
 
 function mapStateToProps(state) {
+  const workingDraft = state.storyCreate.workingDraft
+  const author = _.get(state, `entities.users.entities[${workingDraft.author}]`, undefined)
+
   return {
-    workingDraft: {...state.storyCreate.workingDraft},
+    author,
+    isPendingUpdateOverride: state.storyCreate.isPendingUpdateOverride,
+    workingDraft: {...workingDraft},
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     updateWorkingDraft: (update) => dispatch(StoryCreateActions.updateWorkingDraft(update)),
-    uploadImage: (file, callback) => dispatch(StoryCreateActions.uploadImage(file, callback)),
+    uploadMedia: (file, callback, mediaType) =>
+      dispatch(StoryCreateActions.uploadMedia(file, callback, mediaType)),
   }
 }
 

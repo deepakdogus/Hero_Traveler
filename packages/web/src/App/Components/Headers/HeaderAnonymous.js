@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import logo from '../../Shared/Images/ht-logo-white.png'
 import { Link } from 'react-router-dom'
-import { Col } from '../FlexboxGrid'
+import { Col } from '../../Shared/Web/Components/FlexboxGrid'
 import {
   StyledRow,
   StyledRoundedLoginButton,
@@ -11,7 +11,7 @@ import {
   Logo,
   Divider,
   SearchNav,
-} from './Shared'
+} from '../../Shared/Web/Components/Headers/Shared'
 
 const ItemsRow = styled(StyledRow)`
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -22,7 +22,6 @@ const ItemsRow = styled(StyledRow)`
 export default class HeaderAnonymous extends React.Component {
   static propTypes = {
     pathname: PropTypes.string,
-    haveFieldsChanged: PropTypes.func,
     workingDraft: PropTypes.object,
     originalDraft: PropTypes.object,
     openGlobalModal: PropTypes.func,
@@ -35,7 +34,7 @@ export default class HeaderAnonymous extends React.Component {
 
   render () {
     const {
-      haveFieldsChanged,
+      reroute,
       workingDraft,
       originalDraft,
     } = this.props
@@ -54,7 +53,7 @@ export default class HeaderAnonymous extends React.Component {
             <SearchNav
               to='/search'
               pathname={this.props.pathname}
-              haveFieldsChanged={haveFieldsChanged}
+              reroute={reroute}
               workingDraft={workingDraft}
               originalDraft={originalDraft}
             />

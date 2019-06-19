@@ -1,23 +1,32 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
-import {ApplicationStyles, Colors} from '../Shared/Themes/'
+import PropTypes from 'prop-types'
+import { View, Text, StyleSheet } from 'react-native'
+import { ApplicationStyles, Colors } from '../Shared/Themes/'
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 100,
   },
   text: {
     ...ApplicationStyles.screen.titleText,
-    color: Colors.navBarText
-  }
+    textAlign: 'center',
+    color: Colors.navBarText,
+  },
 })
 
-export default function NoStoriesMessage({style, textStyle, text = "stories"}) {
+export default function NoStoriesMessage({ style, textStyle, text }) {
   return (
     <View style={[styles.wrapper, style]}>
-      <Text style={[styles.text, textStyle]}>There are no {text} here</Text>
+      <Text style={[styles.text, textStyle]}>{text}</Text>
     </View>
   )
+}
+
+NoStoriesMessage.propTypes = {
+  style: PropTypes.number,
+  textStyle: PropTypes.number,
+  text: PropTypes.string,
 }

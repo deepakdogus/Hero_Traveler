@@ -10,6 +10,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import R from 'ramda'
+import { AppEventsLogger } from 'react-native-fbsdk'
 
 import SignupActions, {hasSignedUp} from '../../Shared/Redux/SignupRedux'
 import { Images, Colors } from '../../Shared/Themes'
@@ -20,6 +21,10 @@ import TOS from '../../Components/TosFooter'
 import styles from '../Styles/SignupScreenStyles'
 import {validate, asyncValidate} from '../../Shared/Lib/userFormValidation'
 import { FormTextInput } from '../../Components/FormTextInput'
+
+// gotten from https://stackoverflow.com/questions/40982406/how-to-use-standard-events-in-the-react-native-facebook-sdk
+// use this if you need the FB names for a given standard event
+const completeRegistration = 'fb_mobile_complete_registration'
 
 class SignupScreen extends React.Component {
   static propTypes = {
@@ -33,12 +38,11 @@ class SignupScreen extends React.Component {
     email: PropTypes.string,
     password: PropTypes.string,
     signupError: PropTypes.string,
-    fromStory: PropTypes.bool,
-    fromGuide: PropTypes.bool,
   }
 
   componentWillReceiveProps(newProps) {
     if (!newProps.fetching && newProps.hasSignedUp) {
+      AppEventsLogger.logEvent(completeRegistration)
       NavigationActions.signupFlow()
     }
   }

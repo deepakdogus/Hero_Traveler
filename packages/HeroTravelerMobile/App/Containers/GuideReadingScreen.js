@@ -15,7 +15,7 @@ import ReadingScreensOverlap from '../Components/ReadingScreensOverlap'
 import ReadingDetails from '../Components/ReadingDetails'
 import TabBar from '../Components/TabBar'
 import {navToProfile} from '../Navigation/NavigationRouter'
-import GuideStoriesOfType from '../Components/GuideStoriesOfType'
+import FeedItemsOfType from '../Components/FeedItemsOfType'
 import {styles} from './Styles/StoryReadingScreenStyles'
 import {
   createShareDialog,
@@ -45,7 +45,6 @@ class GuideReadingScreen extends React.Component {
     author: PropTypes.object,
     guideStories: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.object,
-    user: PropTypes.object,
   }
 
   constructor(props) {
@@ -64,15 +63,6 @@ class GuideReadingScreen extends React.Component {
       getGuideStories(guideId)
     }
   }
-
-  componentDidMount = () => {
-    if (!this.props.user) NavActions.launchScreen({fromGuide: true})
-  }
-
-  // _onPressBookmark = () => {
-  //   const {toggleBookmark, sessionUser, storyId} = this.props
-  //   toggleBookmark(sessionUser.id, storyId)
-  // }
 
   _onPressComment = () => {
     NavActions.comments({
@@ -129,7 +119,7 @@ class GuideReadingScreen extends React.Component {
       else return false
     })
     return {
-      stories: storiesOfType,
+      feedItems: storiesOfType,
       authors: authors,
     }
   }
@@ -159,6 +149,7 @@ class GuideReadingScreen extends React.Component {
           activeTab={selectedTab}
           onClickTab={this.selectTab}
           tabStyle={styles.tabStyle}
+          largeTabBar={true}
         />
         {this.shouldDisplay(tabTypes.overview) &&
           <Fragment>
@@ -173,7 +164,7 @@ class GuideReadingScreen extends React.Component {
           </Fragment>
         }
         {this.shouldDisplay(tabTypes.see) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.see}
             label={'THINGS TO SEE'}
             onPressAll={this.selectTab}
@@ -183,7 +174,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.do) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.do}
             label={'THINGS TO DO'}
             onPressAll={this.selectTab}
@@ -193,7 +184,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.eat) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.eat}
             label={'PLACES TO EAT'}
             onPressAll={this.selectTab}
@@ -203,7 +194,7 @@ class GuideReadingScreen extends React.Component {
           />
         }
         {this.shouldDisplay(tabTypes.stay) &&
-          <GuideStoriesOfType
+          <FeedItemsOfType
             type={tabTypes.stay}
             label={'PLACES TO STAY'}
             onPressAll={this.selectTab}
@@ -219,9 +210,8 @@ class GuideReadingScreen extends React.Component {
   render () {
     const {
       guide, author, sessionUser, fetching, error,
-      isBookmarked, isGuideLiked, user,
+      isBookmarked, isGuideLiked,
     } = this.props
-    if (!user) return null
 
     return (
       <ReadingScreensOverlap
@@ -249,7 +239,6 @@ const mapStateToProps = (state, props) => {
   const {session: {userId}} = state
   let { fetching, entities: guides, error } = state.entities.guides
   const users = state.entities.users.entities
-  const user = users ? users[userId] : null
   const stories = state.entities.stories.entities
   const guide = guides[props.guideId]
   let guideStories = []
@@ -263,7 +252,6 @@ const mapStateToProps = (state, props) => {
     author: guide ? users[guide.author] : undefined,
     sessionUser: users[userId],
     users,
-    user,
     fetching,
     guide,
     guideStories,
@@ -275,8 +263,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLike: (userId, guideId) => dispatch(StoryActions.storyLike(userId, guideId)),
-    toggleBookmark: (userId, guideId) => dispatch(StoryActions.storyBookmark(userId, guideId)),
     onPressGuideLike: (guideId, sessionUserId) => {
       dispatch(GuideActions.likeGuideRequest(guideId, sessionUserId))
     },

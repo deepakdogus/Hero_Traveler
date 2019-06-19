@@ -25,27 +25,51 @@ const { Types, Creators } = createActions({
   dismissError: null,
   likeGuideRequest: ['guideId', 'userId'],
   unlikeGuideRequest: ['guideId', 'userId'],
-  likeGuide: ['guideId', 'userId'],
-  unlikeGuide: ['guideId', 'userId'],
   changeCountOfType:['feedItemId', 'countType', 'isIncrement'],
   deleteStoryFromGuides: ['storyId'],
+  adminGetGuides: ['params'],
+  adminGetGuidesSuccess: ['res'],
+  adminGetGuidesFailure: ['error'],
+  adminGetGuide: ['id'],
+  adminGetGuideSuccess: ['res'],
+  adminGetGuideFailure: ['error'],
+  adminPutGuide: ['payload'],
+  adminPutGuideFailure: null,
+  adminDeleteGuide: ['payload'],
+  adminDeleteGuideSuccess: ['id'],
+  adminDeleteGuideFailure: ['error'],
+  adminRestoreGuides: ['payload'],
 })
 
 export const GuideTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
+const initialFetchStatus = () => ({
+  fetching: false,
+  loaded: false,
+})
 
 export const INITIAL_STATE = Immutable({
   entities: {},
-  fetchStatus: {
-    fetching: false,
-    loaded: false,
-  },
+  fetchStatus: initialFetchStatus(),
   error: null,
   guideIdsByUserId: {},
   guideIdsByCategoryId: {},
   feedGuidesById: [],
+  adminGuides: {
+    fetchStatus: initialFetchStatus(),
+    byId: [],
+    total: 0,
+    error: null,
+    isDeleting: false,
+    isUpdating: false,
+    isRestoring: false,
+    params: {
+      page: 1,
+      limit: 5
+    }
+  }
 })
 
 /* ------------- Reducers ------------- */
@@ -178,6 +202,134 @@ export const deleteStoryFromGuides = (state, {storyId}) => {
   )
 }
 
+export const adminGetGuides = (state, { params = {} }) => {
+  return state
+    .setIn(
+      ['adminGuides', 'fetchStatus'],
+      {
+        fetching: true,
+        loaded: false
+      })
+    .setIn(
+      ['adminGuides', 'params'],
+      {
+        ...state.adminGuides.params,
+        ...params
+      })
+}
+
+export const adminGetGuidesFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminGuides', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminGuides', 'error'],
+      error)
+    .setIn(['adminGuides', 'isRestoring'], false)
+}
+
+export const adminGetGuidesSuccess = (state, { res }) => {
+  return state
+    .setIn(
+      ['adminGuides', 'byId'],
+      res.data)
+    .setIn(
+      ['adminGuides', 'total'],
+      res.count)
+    .setIn(
+      ['adminGuides', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminGuides', 'error'],
+      null)
+    .setIn(['adminGuides', 'isRestoring'], false)
+}
+
+export const adminGetGuide = (state, { params = {} }) => {
+  return state.setIn(['adminGuides', 'fetchStatus', 'fetching'], true)
+}
+
+export const adminGetGuideFailure = (state, { error }) => {
+  return state
+    .setIn(
+      ['adminGuides', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: false
+      })
+    .setIn(
+      ['adminGuides', 'error'],
+      error)
+}
+
+
+export const adminGetGuideSuccess = (state, { res }) => {
+  let list = [...state.getIn(['adminGuides', 'byId'])]
+  let total = state.getIn(['adminGuides', 'total'])
+  const { record = {} } = res
+  const recordIndex = _.findIndex(list, { id: record.id })
+  if (recordIndex >= 0) {
+    list[recordIndex] = record
+  } else {
+    list.push(record)
+    total = total + 1
+  }
+  return state
+    .setIn(
+      ['adminGuides', 'byId'],
+      list)
+    .setIn(
+      ['adminGuides', 'total'],
+      total)
+    .setIn(
+      ['adminGuides', 'fetchStatus'],
+      {
+        fetching: false,
+        loaded: true
+      })
+    .setIn(
+      ['adminGuides', 'error'],
+      null)
+    .setIn(
+      ['adminGuides', 'isUpdating'],
+      false)
+}
+
+export const adminDeleteGuide = (state) => {
+  return state.setIn(['adminGuides', 'isDeleting'], true)
+}
+
+export const adminDeleteGuideFailure = (state) => {
+  return state.setIn(['adminGuides', 'isDeleting'], false)
+}
+
+export const adminDeleteGuideSuccess = (state, { id }) => {
+  const list = [...state.getIn(['adminGuides', 'byId'])]
+  const recordIndex = _.findIndex(list, { id })
+    
+  return state.setIn(['adminGuides', 'byId', recordIndex, 'deleted'], true)
+    .setIn(['adminGuides', 'isDeleting'], false)
+}
+
+export const adminPutGuide = (state) => {
+  return state.setIn(['adminGuides', 'isUpdating'], true)
+}
+
+export const adminPutGuideFailure = (state) => {
+  return state.setIn(['adminGuides', 'isUpdating'], false)
+}
+
+export const adminRestoreGuides = (state) => {
+  return state.setIn(['adminGuides', 'isRestoring'], true)
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -199,4 +351,16 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.BULK_SAVE_STORY_TO_GUIDE_REQUEST]: request,
   [Types.DISMISS_ERROR]: dismissError,
   [Types.DELETE_STORY_FROM_GUIDES]: deleteStoryFromGuides,
+  [Types.ADMIN_GET_GUIDES]: adminGetGuides,
+  [Types.ADMIN_GET_GUIDES_FAILURE]: adminGetGuidesFailure,
+  [Types.ADMIN_GET_GUIDES_SUCCESS]: adminGetGuidesSuccess,
+  [Types.ADMIN_GET_GUIDE]: adminGetGuide,
+  [Types.ADMIN_GET_GUIDE_FAILURE]: adminGetGuideFailure,
+  [Types.ADMIN_GET_GUIDE_SUCCESS]: adminGetGuideSuccess,
+  [Types.ADMIN_DELETE_GUIDE]: adminDeleteGuide,
+  [Types.ADMIN_DELETE_GUIDE_FAILURE]: adminDeleteGuideFailure,
+  [Types.ADMIN_DELETE_GUIDE_SUCCESS]: adminDeleteGuideSuccess,
+  [Types.ADMIN_PUT_GUIDE]: adminPutGuide,
+  [Types.ADMIN_PUT_GUIDE_FAILURE]: adminPutGuideFailure,
+  [Types.ADMIN_RESTORE_GUIDES]: adminRestoreGuides,
 })

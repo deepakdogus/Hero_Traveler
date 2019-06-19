@@ -1,7 +1,16 @@
 import { delay } from 'redux-saga'
-import { takeLatest, take, fork, race, call, put } from 'redux-saga/effects'
+import {
+  call,
+  fork,
+  put,
+  race,
+  take,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
+import getAdditionalSagas from './getAdditionalSagas'
 
 /* ------------- Types ------------- */
 
@@ -67,16 +76,18 @@ import {
 import {
   getStory,
   getUserFeed,
+  getNearbyUserFeed,
+  getBadgeUserFeed,
   getLikesAndBookmarks,
-  registerDraft,
-  publishLocalDraft,
-  publishDraft,
+  saveLocalDraft,
   discardDraft,
   updateDraft,
   getUserStories,
   getCategoryStories,
   likeStory,
+  unlikeStory,
   bookmarkStory,
+  removeStoryBookmark,
   getBookmarks,
   uploadCoverImage,
   loadStory,
@@ -84,11 +95,14 @@ import {
   deleteStory,
   flagStory,
   getGuideStories,
-  uploadImage,
+  uploadMedia,
+  watchPendingUpdates,
+  syncPendingUpdates,
+  getDeletedStories,
 } from './StorySagas'
 
 import {
-  uploadMedia,
+  uploadMediaAsset,
 } from './MediaUploadSagas'
 
 import {
@@ -109,7 +123,6 @@ import {
   createComment
 } from './CommentsSagas'
 
-
 /* ------------- API ------------- */
 
 const heroAPI = HeroAPI.create()
@@ -123,13 +136,13 @@ const heroAPI = HeroAPI.create()
 //   return promise;
 // }
 
-function * pollRefreshTokens() {
+function *pollRefreshTokens() {
   yield call(delay, 60 * 60 * 1000) // 1h delay
   yield put(SessionActions.refreshSession())
 }
 
-function * watchRefreshTokens() {
-  while(true) { // eslint-disable-line no-constant-condition
+function *watchRefreshTokens() {
+  while (true) { // eslint-disable-line no-constant-condition
     yield take([
       SessionTypes.INITIALIZE_SESSION,
       SessionTypes.REFRESH_SESSION_SUCCESS,
@@ -141,10 +154,9 @@ function * watchRefreshTokens() {
   }
 }
 
-
-export default function * root () {
+export default function *root () {
   yield [
-    fork(watchRefreshTokens),
+    fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
     takeLatest(OpenScreenTypes.OPEN_SCREEN, openScreen),
@@ -166,22 +178,24 @@ export default function * root () {
     takeLatest(SessionTypes.REFRESH_SESSION, refreshSession, heroAPI),
 
     // Drafts and story creation
-    takeLatest(StoryCreateTypes.PUBLISH_LOCAL_DRAFT, publishLocalDraft, heroAPI),
-    takeLatest(StoryCreateTypes.PUBLISH_DRAFT, publishDraft, heroAPI),
-    takeLatest(StoryCreateTypes.REGISTER_DRAFT, registerDraft, heroAPI),
+    takeLatest(StoryCreateTypes.SAVE_LOCAL_DRAFT, saveLocalDraft, heroAPI),
     takeLatest(StoryCreateTypes.DISCARD_DRAFT, discardDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPDATE_DRAFT, updateDraft, heroAPI),
     takeLatest(StoryCreateTypes.UPLOAD_COVER_IMAGE, uploadCoverImage, heroAPI),
     takeLatest(StoryCreateTypes.EDIT_STORY, loadStory, heroAPI),
-    takeLatest(StoryCreateTypes.UPLOAD_IMAGE, uploadImage, heroAPI),
+    takeEvery(StoryCreateTypes.UPLOAD_MEDIA, uploadMedia, heroAPI),
 
     takeLatest(StoryTypes.STORY_REQUEST, getStory, heroAPI),
     takeLatest(StoryTypes.FEED_REQUEST, getUserFeed, heroAPI),
+    takeLatest(StoryTypes.NEARBY_FEED_REQUEST, getNearbyUserFeed, heroAPI),
+    takeLatest(StoryTypes.BADGE_USER_FEED_REQUEST, getBadgeUserFeed, heroAPI),
     takeLatest(StoryTypes.LIKES_AND_BOOKMARKS_REQUEST, getLikesAndBookmarks, heroAPI),
     takeLatest(StoryTypes.FROM_USER_REQUEST, getUserStories, heroAPI),
     takeLatest(StoryTypes.FROM_CATEGORY_REQUEST, getCategoryStories, heroAPI),
-    takeLatest(StoryTypes.STORY_LIKE, likeStory, heroAPI),
-    takeLatest(StoryTypes.STORY_BOOKMARK, bookmarkStory, heroAPI),
+    takeLatest(StoryTypes.LIKE_STORY_REQUEST, likeStory, heroAPI),
+    takeLatest(StoryTypes.UNLIKE_STORY_REQUEST, unlikeStory, heroAPI),
+    takeLatest(StoryTypes.BOOKMARK_STORY_REQUEST, bookmarkStory, heroAPI),
+    takeLatest(StoryTypes.REMOVE_STORY_BOOKMARK_REQUEST, removeStoryBookmark, heroAPI),
     takeLatest(CategoryTypes.LOAD_CATEGORIES_REQUEST, getCategories, heroAPI),
     takeLatest(HashtagTypes.LOAD_HASHTAGS_REQUEST, getHashtags, heroAPI),
     takeLatest(StoryTypes.LOAD_DRAFTS, loadDrafts, heroAPI),
@@ -189,6 +203,8 @@ export default function * root () {
     takeLatest(StoryTypes.DELETE_STORY, deleteStory, heroAPI),
     takeLatest(StoryTypes.GET_BOOKMARKS, getBookmarks, heroAPI),
     takeLatest(StoryTypes.FLAG_STORY, flagStory, heroAPI),
+    takeLatest(StoryTypes.SYNC_PENDING_UPDATES, syncPendingUpdates, heroAPI),
+    takeLatest(StoryTypes.GET_DELETED_STORIES, getDeletedStories, heroAPI),
 
     // Users
     takeLatest(UserTypes.LOAD_USER_SUGGESTIONS_REQUEST, getSuggestedUsers, heroAPI),
@@ -205,7 +221,7 @@ export default function * root () {
     takeLatest(UserTypes.ACTIVITY_SEEN, seenActivity, heroAPI),
 
     // Media Upload
-    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMedia, heroAPI),
+    takeLatest(MediaUploadTypes.UPLOAD_REQUEST, uploadMediaAsset, heroAPI),
 
     // Guides
     takeLatest(GuideTypes.CREATE_GUIDE, createGuide, heroAPI),
@@ -221,6 +237,11 @@ export default function * root () {
 
     //Comments
     takeLatest(CommentTypes.GET_COMMENTS_REQUEST, getComments, heroAPI),
-    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI)
+    takeLatest(CommentTypes.CREATE_COMMENT_REQUEST, createComment, heroAPI),
+
+    //Admin
+    ...getAdditionalSagas(heroAPI),
+    
+    fork(watchRefreshTokens),
   ]
 }

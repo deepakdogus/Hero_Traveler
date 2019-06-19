@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import RoundedButton from '../../RoundedButton'
-import Icon from '../../Icon'
-import {Row} from '../../FlexboxGrid'
-import VerticalCenter from '../../VerticalCenter'
+import RoundedButton from '../../../Shared/Web/Components/RoundedButton'
+import Icon from '../../../Shared/Web/Components/Icon'
+import {Row} from '../../../Shared/Web/Components/FlexboxGrid'
+import VerticalCenter from '../../../Shared/Web/Components/VerticalCenter'
 
 const StyledIcon = styled(Icon)`
   margin-right: 25px;
@@ -28,7 +28,7 @@ const SocialMediaText = styled.p`
   font-weight: 400;
   font-size: 16px;
   letter-spacing: .2px;
-  color: ${props => props.theme.Colors.white};
+  color: ${props => props.theme.Colors.snow};
   margin: 7px 0;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
 `

@@ -7,16 +7,21 @@ import Tab from './Tab'
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
-    backgroundColor: Colors.feedDividerGrey,
-    height: 50,
+    backgroundColor: Colors.snow,
+    height: 40,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.navBarText,
+    borderBottomColor: Colors.feedDividerGrey,
+  },
+  largeWrapper: {
+    height: 50,
+    borderTopWidth: 1,
+    borderTopColor: Colors.feedDividerGrey,
   },
   scrollView: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 export default class TabBar extends Component {
@@ -25,6 +30,7 @@ export default class TabBar extends Component {
     activeTab: PropTypes.string, // removing required since it can also be null
     onClickTab: PropTypes.func.isRequired,
     tabStyle: PropTypes.number, // StyleSheet.create returns numbers
+    largeTabBar: PropTypes.bool,
   }
 
   _onCickTab = (tabValue) => {
@@ -38,8 +44,8 @@ export default class TabBar extends Component {
         <Tab
           key={index}
           style={tabStyle}
-          text={key.toUpperCase()}
-          selected={activeTab===tabs[key]}
+          text={tabs[key].toUpperCase()}
+          selected={activeTab === tabs[key]}
           onPress={this._onCickTab(tabs[key])}
         />
       )
@@ -47,8 +53,12 @@ export default class TabBar extends Component {
   }
 
   render() {
+    const { largeTabBar } = this.props
     return (
-      <View style={styles.wrapper}>
+      <View style={[
+        styles.wrapper,
+        largeTabBar && styles.largeWrapper,
+      ]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}

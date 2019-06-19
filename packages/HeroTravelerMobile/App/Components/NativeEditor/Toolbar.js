@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
     height: Metrics.editorToolbarHeight,
-    borderTopColor: '#dedede',
+    borderTopColor: Colors.dividerGrey,
     borderTopWidth: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   list: {
     flex: 1,
@@ -146,11 +146,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   borderRight: {
     borderRightWidth: 1,
-    borderRightColor: '#dedede'
+    borderRightColor: Colors.dividerGrey,
   },
   textIcon: {
     width: 30,

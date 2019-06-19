@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import RoundedButton from '../RoundedButton'
+import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import {
   Container,
   Title,
   Text,
 } from './Shared'
-import {Row} from '../FlexboxGrid'
+import {Row} from '../../Shared/Web/Components/FlexboxGrid'
 
 export default class FlagStory extends React.Component {
   static propTypes = {
@@ -24,13 +24,12 @@ export default class FlagStory extends React.Component {
     this.props.closeModal()
   }
 
-
   _dontFlagAndReroute = () => {
     this.props.closeModal()
   }
 
   render(){
-    return(
+    return (
       <Container>
         <Title>Flag Story:</Title>
         <Text>Are you sure you want to flag this story?</Text>

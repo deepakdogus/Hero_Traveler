@@ -3,11 +3,13 @@ import onClickOutside from 'react-onclickoutside'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { haveFieldsChanged } from '../../Shared/Lib/draftChangedHelpers'
+
 const Sidebar = styled.div`
   position: absolute;
   right: 10px;
   top: 75px;
-  background-color: ${props => props.theme.Colors.white};
+  background-color: ${props => props.theme.Colors.snow};
   box-shadow: ${props => `0px 2px 6px 0px ${props.theme.Colors.backgroundTintLow}`};
   border: ${props => `1px solid ${props.theme.Colors.dividerGrey}`};
   padding: 20px 0px 20px 40px;
@@ -44,7 +46,6 @@ class ProfileMenu extends React.Component{
     originalDraft: PropTypes.object,
     openSaveEditsModal: PropTypes.func,
     pathname: PropTypes.string,
-    haveFieldsChanged: PropTypes.func,
   }
 
   handleClickOutside = () => {
@@ -93,7 +94,7 @@ class ProfileMenu extends React.Component{
   }
 
   _saveEditsModalHelper = (rerouteFunc, pathname) => {
-    const {haveFieldsChanged, workingDraft, originalDraft, openSaveEditsModal} = this.props
+    const {workingDraft, originalDraft, openSaveEditsModal} = this.props
     if (this._shouldOpenSaveEditsModal()){
       rerouteFunc()
     }
@@ -103,7 +104,7 @@ class ProfileMenu extends React.Component{
   }
 
   _shouldOpenSaveEditsModal = () => {
-    const {haveFieldsChanged, workingDraft, originalDraft} = this.props
+    const {workingDraft, originalDraft} = this.props
     return !this.props.pathname.includes('editStory')
       || !haveFieldsChanged(workingDraft, originalDraft)
   }
@@ -137,7 +138,7 @@ class ProfileMenu extends React.Component{
         <SidebarDemiLink onClick={this._openSaveEditsModalToProfile}>
           My Profile
         </SidebarDemiLink>
-        {globalModalParams.isHamburger &&
+        {globalModalParams.isHamburger && (
           <ExtraLinks>
             <SidebarDemiLink onClick={this.openNotifications}>
               Notifications
@@ -149,7 +150,7 @@ class ProfileMenu extends React.Component{
               My Feed
             </SidebarDemiLink>
           </ExtraLinks>
-        }
+        )}
         <SidebarDemiLink onClick={this.openSettings}>
           Settings
         </SidebarDemiLink>

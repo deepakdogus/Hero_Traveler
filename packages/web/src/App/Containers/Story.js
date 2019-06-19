@@ -210,7 +210,10 @@ class Story extends Component {
             isStory
             isDraft={isDraft}
           />
-          <StoryContentRenderer story={story} />
+          <StoryContentRenderer
+            story={story}
+            author={author}
+          />
           {this.renderHashtags()}
           {story.actionButton
             && !!story.actionButton.link

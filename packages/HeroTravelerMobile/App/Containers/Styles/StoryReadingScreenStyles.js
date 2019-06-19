@@ -259,7 +259,9 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tabStyle: {
-    width: Metrics.screenWidth / 4,
+    width: '100%',
+    marginLeft: 15,
+    marginRight: 15,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,

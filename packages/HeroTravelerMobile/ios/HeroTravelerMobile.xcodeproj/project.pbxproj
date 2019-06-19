@@ -1297,6 +1297,7 @@
 				91F19950204F29C700EC7125 /* SDAVAssetExportSession.m */,
 				654E80CD22959B26009F4F37 /* AVUtilities.swift */,
 				91F19951204F29C700EC7125 /* RNVideoTrimmerBridge.m */,
+				65C320AC228C726300E7F601 /* AVUtilities.swift */,
 				91F19952204F29C700EC7125 /* RNVideoTrimmer.swift */,
 				91F19953204F29C700EC7125 /* SDAVAssetExportSession.h */,
 			);

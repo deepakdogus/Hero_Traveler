@@ -26,7 +26,7 @@ Code Bundles:
   - `shared`: code that can be shared by all frontend applications in the above list, including mobile
   - `sharedWeb`: code shared between `web` and `cms-web`
 
-### Node and npm
+### Node, npm, yarn
 
 The first step is to install necessary global packages and install/link all project modules. We have mostly automated this processs, however we are also hosting several dependencies on our own npm server (located at [https://npm.abeck.io](https://npm.abeck.io)), which involves some configuration:
 
@@ -50,7 +50,15 @@ The first step is to install necessary global packages and install/link all proj
     npm run bootstrap
     ```
 
-    _Note: it's possible you'll still need to `yarn` or `npm install` again in at least some of the various packages. Try this first if you are getting dependency errors._
+4. Now run `yarn` in the following packages
+    - `packages/ht-util`
+    - `packages/ht-core`
+    - `packages/express-api`
+    - `packages/web`
+    - `packages/cms-web`
+    - `packages/HeroTravelerMobile`
+
+_Note: In general **prefer `yarn` over `npm i`** for all packages as npm will encounter more failure cases in this repo_
 
 ## Setting up various 3rd parties
 
@@ -294,8 +302,9 @@ New devs on the project will typically not be asked to manage deployments. If yo
 - Always close Xcode, the react-native packager (MetroBundler terminal), and simulator before moving to a new branch, or updating an existing branch
 - If you are on a clean branch and get errors after the splash screen, try to run `npm run newclear` which will reset caches, temporary iOS builds, etc.
 - We use redux-persist to persist the redux store on the user's device. You may sometimes need to clear this storage during development or testing. To do so, select Hardware > Erase all Content and Settings in the Simulator menu
+- checking out a branch with different dependency requirements may cause you to run into the follwoing non-obvious error in `packages/web`. The solution is to run `yarn` and then rerun `npm run start`
 
-### Deprecated troubleshooting
-
-- [Install the Facebook SDK](https://developers.facebook.com/docs/ios)
-- Workaround for Facebook SDK (v4.21.0) requires that the path to repo is two levels in dir structure. If FacebookSDK is in `~/Documents/FacebookSDK` then HT repo should be in `~/Sites/Hero Traveler/hero-traveler-monorepo` for example
+    ```md
+    ./src/App/Components/CreateStory/Editor.js
+    Module not found: Can't resolve 'draft-js-inline-toolbar-plugin' in '/Users/[your user]/path/to/hero-traveler-monorepo/packages/web/src/App/Components/CreateStory'
+    ```

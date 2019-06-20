@@ -595,6 +595,13 @@
 			remoteGlobalIDString = 2215B993E71FD766A2BFD424A42A4331;
 			remoteInfo = IQKeyboardManager;
 		};
+		F762B87522BAF54000FFF014 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DBE0D001F3B181A0099AA32;
+			remoteInfo = fishhook;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -979,6 +986,7 @@
 			children = (
 				139FDEF41B06529B00C62182 /* libRCTWebSocket.a */,
 				3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */,
+				F762B87622BAF54000FFF014 /* libfishhook.a */,
 				913DF582203388B40023A82B /* libfishhook-tvOS.a */,
 			);
 			name = Products;
@@ -1297,7 +1305,6 @@
 				91F19950204F29C700EC7125 /* SDAVAssetExportSession.m */,
 				654E80CD22959B26009F4F37 /* AVUtilities.swift */,
 				91F19951204F29C700EC7125 /* RNVideoTrimmerBridge.m */,
-				65C320AC228C726300E7F601 /* AVUtilities.swift */,
 				91F19952204F29C700EC7125 /* RNVideoTrimmer.swift */,
 				91F19953204F29C700EC7125 /* SDAVAssetExportSession.h */,
 			);
@@ -2152,6 +2159,13 @@
 			fileType = archive.ar;
 			path = libIQKeyboardManager.a;
 			remoteRef = EFE44EE91F3CF4BF00003CBA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F762B87622BAF54000FFF014 /* libfishhook.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libfishhook.a;
+			remoteRef = F762B87522BAF54000FFF014 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

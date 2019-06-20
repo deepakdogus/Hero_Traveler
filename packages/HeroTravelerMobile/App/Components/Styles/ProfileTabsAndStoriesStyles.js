@@ -28,7 +28,9 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   tabStyle: {
-    width: Metrics.screenWidth * 0.4,
+    width: '100%',
+    marginLeft: 10,
+    marginRight: 10,
   },
   noStories: {
     marginTop: Metrics.doubleSection,

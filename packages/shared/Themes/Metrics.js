@@ -38,13 +38,12 @@ const metrics = {
     },
     feed: {
       imageTypeHeight: 415,
-      // videoTypeHeight: 282,
-      videoTypeHeight: platformSpecificMetrics.screenWidth * 9 / 16,
+      videoTypeHeight: 415,
     },
   },
   feedCell: {
     imageCellHeight: 390, // Should be imageTypeHeight
-    videoCellHeight: platformSpecificMetrics.screenWidth * 9 / 16, // Should be videoTypeHeight
+    videoCellHeight: 390, // Should be videoTypeHeight
     padding: 152, // The heights of the bottom bar in feed
   },
 }

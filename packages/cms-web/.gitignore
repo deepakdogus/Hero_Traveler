@@ -25,4 +25,5 @@ yarn-error.log*
 
 src/App/Shared
 src/App/Config/Env.js
-src/App/Config/Env/index.js
+src/App/Config/Env/dev.js
+src/App/Config/Env/prod.js

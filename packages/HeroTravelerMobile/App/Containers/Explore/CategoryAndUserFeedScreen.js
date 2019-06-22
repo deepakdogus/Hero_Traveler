@@ -53,6 +53,9 @@ class CategoryAndUserFeedScreen extends React.Component {
     title: PropTypes.string,
     loadCategoryStories: PropTypes.func,
     loadCategoryGuides: PropTypes.func,
+    loadUserStories: PropTypes.func,
+    loadUserGuides: PropTypes.func,
+    userChannelName: PropTypes.func,
     getSelectedCategories: PropTypes.func,
     unfollowCategory: PropTypes.func,
     followCategory: PropTypes.func,
@@ -228,7 +231,7 @@ class CategoryAndUserFeedScreen extends React.Component {
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <NavBar
-          title={title || userChannelName.username || null}
+          title={title || userChannelName.username}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
           leftIcon="arrowLeft"

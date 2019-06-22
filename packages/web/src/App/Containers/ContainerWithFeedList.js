@@ -158,10 +158,6 @@ export default class ContainerWithFeedList extends React.Component {
     } = this.props
 
     // will use fetchStatus to show loading/error
-    // console.log(this.props, 'these are the props in the container with feedlist')
-    // const queryReqest = this.props.location.search
-    // const values = queryString.parse(queryReqest)
-    // console.log(values, 'these are the values')
     switch (this.state.activeTab) {
       case 'DRAFTS':
         return {

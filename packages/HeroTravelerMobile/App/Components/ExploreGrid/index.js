@@ -5,6 +5,7 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native'
+import _ from 'lodash'
 import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
@@ -25,7 +26,8 @@ export default class ExploreGrid extends Component {
 
   renderItem = categoryOrChannel => {
     const { isChannel } = this.props
-    const image = categoryOrChannel.image || categoryOrChannel.channelImage.versions.thumbnail240.path
+    const image = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
+
     const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
       width: isChannel ? null : measurements - 4,
       height: measurements - 4,

@@ -18,7 +18,7 @@ import ProfileEditScreen from '../Containers/ProfileEditScreen'
 import ReadOnlyProfileScreen from '../Containers/ReadOnlyProfileScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import Settings_NotificationScreen from '../Containers/Settings_NotificationScreen'
-import CategoryAndUserFeedScreen from '../Containers/Explore/CategoryAndUserFeedScreen'
+import GridItemFeedScreen from '../Containers/Explore/GridItemFeedScreen'
 import FollowersScreen from '../Containers/FollowersScreen'
 import ViewBioScreen from '../Components/ViewBioScreen'
 // import FollowingScreen from '../Containers/FollowingScreen'
@@ -355,7 +355,7 @@ export default NavActions.create(
           />
           <Scene
             key='explore_categoryFeed'
-            component={CategoryAndUserFeedScreen}
+            component={GridItemFeedScreen}
             onLeft={NavActions.pop}
             backButtonImage={Images.iconArrowLeft}
             hideNavBar={true}

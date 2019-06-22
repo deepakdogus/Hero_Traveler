@@ -42,7 +42,7 @@ const restrictedTabTypes = {
   guides: 'guides',
 }
 
-class CategoryAndUserFeedScreen extends React.Component {
+class GridItemFeedScreen extends React.Component {
   static propTypes = {
     categoryId: PropTypes.string,
     user: PropTypes.object,
@@ -295,4 +295,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CategoryAndUserFeedScreen)
+)(GridItemFeedScreen)

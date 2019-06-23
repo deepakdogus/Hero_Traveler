@@ -69,7 +69,7 @@ class Tile extends React.Component {
         imageSource={
           getImageUrl(
             category.image,
-            'categoryThumbnail',
+            'gridItemThumbnail',
             {width: 400, height: 400},
           )
         }

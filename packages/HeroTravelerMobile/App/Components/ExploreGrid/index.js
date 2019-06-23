@@ -9,7 +9,7 @@ import _ from 'lodash'
 import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
+import getItemUrl from '../../Shared/Lib/getImageUrl'
 import { GRID_ITEM_DIMENSION } from './ExploreGridStyles'
 
 export default class ExploreGrid extends Component {
@@ -28,7 +28,7 @@ export default class ExploreGrid extends Component {
     const { isChannel } = this.props
     const image = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
 
-    const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
+    const categoryOrChannelUrl = getItemUrl(image, 'gridItemThumbnail', {
       width: isChannel ? null : GRID_ITEM_DIMENSION - 4,
       height: GRID_ITEM_DIMENSION - 4,
     })

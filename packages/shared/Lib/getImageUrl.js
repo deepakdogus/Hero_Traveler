@@ -46,7 +46,7 @@ function getUri(image: object|string, type: string): ?string {
   if (typeof(image) === 'string') {
     return ensureJpgExtension(image)
   } else if (typeof(image) === 'object' && _.has(image, 'original')) {
-    const target = type === 'categoryThumbnail'
+    const target = type === 'gridItemThumbnail'
       ? image.versions.thumbnail240
       : image.original
     let {path, folders} = target

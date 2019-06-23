@@ -109,7 +109,7 @@ class Tile extends React.Component {
     return isChannel ? (
       <ChannelTile
         onClick={this._onClickTile}
-        imageSource={getImageUrl(image, 'categoryThumbnail')}
+        imageSource={getImageUrl(image, 'gridItemThumbnail')}
       />
     ) : (
       <Col
@@ -121,7 +121,7 @@ class Tile extends React.Component {
           isCategory={category.image ? true : false}
         >
           <CategoryTile
-            imageSource={getImageUrl(image, 'categoryThumbnail', {
+            imageSource={getImageUrl(image, 'gridItemThumbnail', {
               width: 400,
               height: 400,
             })}

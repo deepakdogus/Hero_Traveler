@@ -64,7 +64,7 @@ const columns = [{
   title: 'Image',
   render: (item) => (
     <SquareImg
-      src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder}
+      src={getImageUrl(get(item, 'image'), 'gridItemThumbnail') || Images.placeholder}
     />
   ),
 },

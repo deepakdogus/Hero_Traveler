@@ -33,7 +33,7 @@ import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
 import deleteUser from './deleteUser'
-import getAllUsersIsChannel from './getAllUsersIsChannel'
+import getAllChannelUsers from './getAllChannelUsers'
 
 const router = express.Router()
 
@@ -44,7 +44,7 @@ router.get(
 )
 
 router.get('/channels',
-  endpointWrapper(getAllUsersIsChannel)
+  endpointWrapper(getAllChannelUsers)
 )
 
 router.post('/',

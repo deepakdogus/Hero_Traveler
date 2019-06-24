@@ -63,13 +63,13 @@ class ExploreScreen extends Component {
     />
   )
 
-  _navToCategoryFeed = category => {
+  _navToCategoryFeed = tile => {
     NavActions.explore_categoryFeed({
-      categoryId: category.id,
-      title: category.title,
+      categoryId: tile.id,
+      title: tile.title,
       leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
       navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-      isCategory: category.username ? true : false,
+      isChannel: tile.username ? false : true,
     })
   }
 

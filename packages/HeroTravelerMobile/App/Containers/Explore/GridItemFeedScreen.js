@@ -72,15 +72,15 @@ class GridItemFeedScreen extends React.Component {
   }
 
   loadStories() {
-    this.props.isCategory 
-    ? this.props.loadUserStories(this.props.categoryId)
-    : this.props.loadCategoryStories(this.props.categoryId)
+    this.props.isChannel 
+    ? this.props.loadCategoryStories(this.props.categoryId)
+    : this.props.loadUserStories(this.props.categoryId)
   }
 
   loadGuides() {
-    this.props.isCategory  
-    ? this.props.loadUserGuides(this.props.categoryId)
-    : this.props.loadCategoryGuides(this.props.categoryId)
+    this.props.isChannel
+    ? this.props.loadCategoryGuides(this.props.categoryId)
+    : this.props.loadUserGuides(this.props.categoryId)
   }
 
   loadData() {
@@ -252,15 +252,15 @@ class GridItemFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const guidePath = props.isCategory
-  ? `entities.guides.guideIdsByUserId[${props.categoryId}]`
-  : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
+  const guidePath = props.isChannel
+  ? `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
+  : `entities.guides.guideIdsByUserId[${props.categoryId}]`
   return {
     user: state.entities.users.entities[state.session.userId], 
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
-    storiesById: props.isCategory 
-    ? getByUser(state.entities.stories, props.categoryId)
-    : getByCategory(state.entities.stories, props.categoryId),
+    storiesById: props.isChannel
+    ? getByCategory(state.entities.stories, props.categoryId)
+    : getByUser(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
       guidePath,

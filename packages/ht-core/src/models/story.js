@@ -177,7 +177,6 @@ StorySchema.statics = {
   },
 
   list(/* args */) {
-    console.log(...arguments, 'these are args')
     return this.find(...arguments)
       .populate({
         path: 'author',

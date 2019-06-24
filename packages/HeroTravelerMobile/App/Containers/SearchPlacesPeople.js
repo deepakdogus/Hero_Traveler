@@ -230,7 +230,6 @@ class SearchPlacesPeople extends Component {
         <View
           style={[
             styles.fakeNavBar,
-            renderTabs && !showSearch,
           ]}
         >
           <View style={styles.headerSearch}>

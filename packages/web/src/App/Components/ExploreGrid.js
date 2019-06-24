@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   margin: 10px;
   position: relative;
   cursor: pointer;
-  ${props => (props.isCategory ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;')}
+  ${props => (props.isChannel ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;')}
 `
 
 const CategoryTile = styled.div`
@@ -105,6 +105,7 @@ class Tile extends React.Component {
   render() {
     const { category, isChannel, isSelected } = this.props
     const image = category.image || _.get(category, 'channelImage')
+    console.log(this.props, 'this is the props')
 
     return isChannel ? (
       <ChannelTile
@@ -118,7 +119,7 @@ class Tile extends React.Component {
       >
         <Wrapper
           onClick={this._onClickTile}
-          isCategory={category.image ? true : false}
+          isChannel={isChannel}
         >
           <CategoryTile
             imageSource={getImageUrl(image, 'gridItemThumbnail', {

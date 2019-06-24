@@ -61,7 +61,6 @@ class ExploreScreen extends Component {
       onClickTab={this.selectTab}
       tabStyle={styles.tabStyle}
     />
-
   )
 
   _navToCategoryFeed = category => {
@@ -89,7 +88,7 @@ class ExploreScreen extends Component {
       user,
     } = this.props
 
-    const {selectedTab} = this.state
+    const { selectedTab } = this.state
     const categoriesArray = _.values(this.getEntitiesByType())
 
     const content = (

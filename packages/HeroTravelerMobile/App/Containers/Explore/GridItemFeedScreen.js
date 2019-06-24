@@ -252,7 +252,7 @@ class GridItemFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const getGuidePath = props.isCategory
+  const guidePath = props.isCategory
   ? `entities.guides.guideIdsByUserId[${props.categoryId}]`
   : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
   return {
@@ -263,7 +263,7 @@ const mapStateToProps = (state, props) => {
     : getByCategory(state.entities.stories, props.categoryId),
     categoryGuidesById: _.get(
       state,
-      getGuidePath,
+      guidePath,
       [],
     ),
     error: state.entities.stories.error,

@@ -8,7 +8,7 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
-import getCatagoriesOrChannels from '../../Shared/Lib/channelAndCategoryRender'
+import getGridData from '../../Shared/Lib/getGridData'
 
 import styles, {
   CategoryFeedNavActionStyles,
@@ -76,7 +76,7 @@ class ExploreScreen extends Component {
   getEntitiesByType = () => {
     const { selectedTab } = this.state
     const { channelsByID, users, categories } = this.props
-    return getCatagoriesOrChannels(selectedTab, channelsByID, users, categories, tabTypes)
+    return getGridData(selectedTab, channelsByID, users, categories, tabTypes)
   }
 
   render() {

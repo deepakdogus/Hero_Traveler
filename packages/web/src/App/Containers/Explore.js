@@ -11,7 +11,6 @@ import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import TabBar from '../Components/TabBar'
-import getCatagoriesOrChannels from '../Shared/Lib/channelAndCategoryRender'
 
 const Wrapper = styled.div``
 

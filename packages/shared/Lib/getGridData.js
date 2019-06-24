@@ -1,4 +1,4 @@
-const getCategoriesOrChannels = (
+const getGridData = (
   selectedTab,
   channelsByID,
   users,
@@ -24,4 +24,4 @@ const getCategoriesOrChannels = (
   }
 }
 
-export default getCategoriesOrChannels
+export default getGridData

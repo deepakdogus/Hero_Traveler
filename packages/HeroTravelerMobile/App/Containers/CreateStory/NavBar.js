@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    flex: 8 / 10,
+    flex: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: isIPhoneX() ? 15 : 0,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   left: {
-    flex: 3.5 / 10,
+    flex: 3.5,
     flexDirection: 'row',
     marginTop: isIPhoneX() ? 15 : 0,
   },
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     color: Colors.background,
   },
   right: {
-    flex: 3.5 / 10,
+    flex: 3.5,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: isIPhoneX() ? 15 : 0,

@@ -38,7 +38,7 @@ class CameraRollPicker extends Component {
     })
   }
 
-  fetch() {
+  fetch = () => {
     if (!this.state.loadingMore) {
       this.setState({loadingMore: true}, () => {
         this._fetch() 
@@ -46,7 +46,7 @@ class CameraRollPicker extends Component {
     }
   }
 
-  _fetch() {
+  _fetch = () => {
     var {groupTypes, assetType} = this.props
 
     var fetchParams = {
@@ -68,7 +68,7 @@ class CameraRollPicker extends Component {
       .then((data) => this._appendImages(data), (e) => console.log(e))
   }
 
-  _appendImages(data) {
+  _appendImages = (data) => {
     var assets = data.edges
     var newState = {
       loadingMore: false,
@@ -90,7 +90,7 @@ class CameraRollPicker extends Component {
     this.setState(newState)
   }
 
-  _renderImage(item) {
+  _renderImage = (item) => {
     const {selected} = this.state
     const {
       imageMargin,
@@ -116,7 +116,7 @@ class CameraRollPicker extends Component {
     )
   }
 
-  _renderRow(rowData) {
+  _renderRow = (rowData) => {
     const items = rowData.map((item) => {
       if (item === null) {
         return null
@@ -172,7 +172,7 @@ class CameraRollPicker extends Component {
     callback(selected, image)
   }
 
-  _nImagesPerRow(data, n) {
+  _nImagesPerRow = (data, n) => {
     const result = []
     let temp = []
 
@@ -287,7 +287,7 @@ CameraRollPicker.propTypes = {
   containerWidth: PropTypes.number,
   callback: PropTypes.func,
   selected: PropTypes.array,
-  selectedMarker: PropTypes.element,
+  selectedMarker: PropTypes.func,
   backgroundColor: PropTypes.string,
   emptyText: PropTypes.string,
   emptyTextStyle: Text.propTypes.style,

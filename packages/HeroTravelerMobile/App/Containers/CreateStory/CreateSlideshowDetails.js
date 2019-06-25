@@ -84,12 +84,12 @@ class CreateSlideshowDetails extends React.Component {
       })
       return
     }
-    this.next()
     if (workingDraft.draft) {
       workingDraft.draft = false
       this.props.saveDraft(workingDraft)
     }
     else this.saveDraft(workingDraft)
+    this.next()
   }
 
   _onLeft = () => {

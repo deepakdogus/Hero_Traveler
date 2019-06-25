@@ -321,8 +321,9 @@ function* uploadAtomicAssets(draft) {
 
 function * createSlideshow(draft){
   if (!draft.slideshow || _.isEmpty(draft.slideshow)) return
+  const slideshow = Immutable.asMutable(draft.slideshow, { deep: true })
 
-  const promise = yield Promise.all(draft.slideshow.map((item, index) => {
+  const promise = yield Promise.all(slideshow.map((item, index) => {
     const {uri, type} = item
     if (isLocalMediaAsset(uri)) {
       return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
@@ -342,7 +343,8 @@ function * createSlideshow(draft){
             _.get(responseData, 'coordinates.custom'),
           )
         }
-        return _.merge(item, responseData)
+        _.merge(item, responseData)
+        return item
       })
       .catch(err => {
         return Promise.reject(err)
@@ -350,7 +352,8 @@ function * createSlideshow(draft){
     }
     else return undefined
   }))
-
+  
+  draft.slideshow = promise
   // part of what needs to get refactored during CloudinaryAPI refactor
   let errorBlock
   promise.some(block => {

@@ -5,6 +5,7 @@ import CategoryRoutes from './category'
 import HashtagRoutes from './hashtag'
 import GuideRoutes from './guide'
 import AdminRoutes from './admin'
+import FilesRoutes from './files'
 
 export default function bootstrapRoutes(app) {
   app.use('/story', StoryRoutes)
@@ -14,6 +15,7 @@ export default function bootstrapRoutes(app) {
   app.use('/hashtag', HashtagRoutes)
   app.use('/guide', GuideRoutes)
   app.use('/admin', AdminRoutes)
+  app.use('/files', FilesRoutes)
 
   app.get('/', (req, res) => res.json({ success: true }))
 }

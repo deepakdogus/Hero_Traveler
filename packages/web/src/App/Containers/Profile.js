@@ -19,6 +19,7 @@ import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
+import UserFeed from '../Components/UserFeed'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -168,8 +169,13 @@ class Profile extends ContainerWithFeedList {
           uploadMedia={uploadMedia}
           sessionUserId={sessionUserId}
         />
-        {!isEdit
-          && <ListWrapper>
+        {!isEdit 
+          && <UserFeed 
+            isUsersProfile={isUsersProfile} 
+            pendingDrafts={pendingDrafts}
+            {...this.props}
+             />
+          /*<ListWrapper>
             <TabBar
               tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
               activeTab={this.state.activeTab}
@@ -182,7 +188,7 @@ class Profile extends ContainerWithFeedList {
               <Footer />
             </FeedItemListWrapper>
             }
-          </ListWrapper>
+          </ListWrapper>*/
         }
       </ContentWrapper>
     )

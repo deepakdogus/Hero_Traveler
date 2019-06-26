@@ -96,7 +96,16 @@ class Category extends ContainerWithFeedList {
           </FeedItemListWrapper>
         </ContentWrapper>
         )}
-        {values.type === 'channel' && <UserFeed {...this.props} />}
+        {values.type === 'channel' && (
+        <ContentWrapper>
+          <UserFeed 
+            {...this.props}
+            getGuides={this.props.getUserGuides}
+            guidesById={this.props.userGuidesById}
+            isChannel={true} 
+          />
+        </ContentWrapper>
+        )}
       </ContentWrapper>
     )
   }
@@ -120,13 +129,16 @@ function mapStateToProps(state, ownProps) {
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
     guides: state.entities.guides.entities,
-    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}]`, []),
+    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}`, []),
+    userGuidesById: _.get(state, `entities.guides.guideIdsByUserId[${userId}]`, []),
     isFollowingCategory,
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   const categoryId = ownProps.match.params.categoryId
+  const targetUserId = ownProps.match.params.userId
+
   return {
     getStories: (_0, _1, storyType) => {
       storyType = storyType.toLowerCase()
@@ -134,7 +146,8 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
+    getCategoryGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
+    getUserGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
     followCategory: (sessionUserId, categoryId) =>
       dispatch(runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId])),
     unfollowCategory: (sessionUserId, categoryId) =>

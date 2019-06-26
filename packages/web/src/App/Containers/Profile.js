@@ -175,20 +175,6 @@ class Profile extends ContainerWithFeedList {
             pendingDrafts={pendingDrafts}
             {...this.props}
              />
-          /*<ListWrapper>
-            <TabBar
-              tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
-              activeTab={this.state.activeTab}
-              onClickTab={this.onClickTab}
-            />
-
-            { (!!selectedFeedItems.length)
-            && <FeedItemListWrapper>
-              <FeedItemList feedItems={selectedFeedItems} />
-              <Footer />
-            </FeedItemListWrapper>
-            }
-          </ListWrapper>*/
         }
       </ContentWrapper>
     )

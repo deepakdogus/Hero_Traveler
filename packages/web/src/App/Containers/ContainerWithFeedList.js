@@ -98,9 +98,6 @@ export default class ContainerWithFeedList extends React.Component {
   }
 
   getTabInfo = page => {
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
-    const userOrCategoryId = this.props.match.params.categoryId || this.props.match.params.userId
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories

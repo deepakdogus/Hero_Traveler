@@ -108,7 +108,7 @@ function mapStateToProps(state, ownProps) {
   const sessionUserId = state.session.userId
   let isFollowingCategory = false
   if (state.session.userId) {
-    isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
+    isFollowingCategory = _.includes(state.signup.selectedCategories, (categoryId || userId))
   }
 
   return {

@@ -109,9 +109,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return (values.type === 'channel'
-          ? (this.props.getUserGuides && this.props.getUserGuides(userOrCategoryId))
-          : (this.props.getGuides && this.props.getGuides(userOrCategoryId)))
+        return this.props.getGuides(this.props.sessionUserId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':
@@ -123,19 +121,14 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        values.type === 'channel'
-          ? this.props.getUserStories(
-              (userOrCategoryId),
-              this.state.activeTab.toLowerCase(),
-            )
-          : this.props.getStories(
-              this.props.sessionUserId,
-            {
-              perPage: itemsPerQuery,
-              page,
-            },
-              this.state.activeTab,
-            )
+        return this.props.getStories(
+          this.props.sessionUserId,
+          {
+            perPage: itemsPerQuery,
+            page,
+          },
+          this.state.activeTab,
+        )
     }
   }
 

@@ -30,6 +30,10 @@ export default class UserFeed extends ContainerWithFeedList {
     }
   }
 
+  componentWillMount = () => {
+    this.props.getStories()
+  }
+
   onClickTab = event => {
     let tab = event.target.innerHTML
     if (this.state.activeTab !== tab) {

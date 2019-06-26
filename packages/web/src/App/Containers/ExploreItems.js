@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
-import StoryActions, { getByCategory, getFetchStatus } from '../Shared/Redux/Entities/Stories'
+import StoryActions, { getByCategory, getFetchStatus, getByUser } from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
@@ -102,7 +102,8 @@ class Category extends ContainerWithFeedList {
             {...this.props}
             getGuides={this.props.getUserGuides}
             guidesById={this.props.userGuidesById}
-            isChannel={true} 
+            isChannel={true}
+            getStories={this.props.getUserStories}
           />
         </ContentWrapper>
         )}
@@ -128,6 +129,7 @@ function mapStateToProps(state, ownProps) {
     fetchStatus: getFetchStatus(state.entities.stories, categoryId),
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
+    userFeedById: getByUser(state.entities.stories, userId),
     guides: state.entities.guides.entities,
     guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}`, []),
     userGuidesById: _.get(state, `entities.guides.guideIdsByUserId[${userId}]`, []),
@@ -145,6 +147,7 @@ function mapDispatchToProps(dispatch, ownProps) {
       if (storyType === 'all') storyType = null
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
+    getUserStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     getCategoryGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
     getUserGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),

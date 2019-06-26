@@ -39,39 +39,6 @@ export default class UserFeed extends ContainerWithFeedList {
     }
   }
 
-  getTabInfo = page => {
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
-    const userOrCategoryId = this.props.match.params.categoryId || this.props.match.params.userId
-    switch (this.state.activeTab) {
-      case 'DRAFTS':
-        // used to purge pendingUpdates of removed stories
-        this.props.getDeletedStories()
-        return this.props.loadDrafts()
-      case 'BOOKMARKS':
-        return this.props.loadBookmarks(this.props.sessionUserId)
-      case 'GUIDES':
-        return (values.type === 'channel'
-          ? (this.props.getUserGuides && this.props.getUserGuides(userOrCategoryId))
-          : (this.props.getGuides && this.props.getGuides(userOrCategoryId)))
-      case 'STORIES':
-      default:
-        values.type === 'channel'
-          ? this.props.getUserStories(
-              (userOrCategoryId),
-              this.state.activeTab.toLowerCase(),
-            )
-          : this.props.getStories(
-              this.props.sessionUserId,
-            {
-              perPage: itemsPerQuery,
-              page,
-            },
-              this.state.activeTab,
-            )
-    }
-  }
-
   render(){
     const { isUsersProfile, pendingDrafts } = this.props
     let {selectedFeedItems} = this.getSelectedFeedItems()

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
-import {fetching, fetchingError, fetchingSuccess} from '../helpers/fetchStatus'
+import { fetching, fetchingError, fetchingSuccess } from '../helpers/fetchStatus'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -37,7 +37,7 @@ const { Types, Creators } = createActions({
   deleteUserSuccess: null,
   deleteUserFailure: ['error'],
   removeActivities: ['feedItemId', 'feedItemType'],
-  eagerUpdateTooltips: ['userId' ,'tooltips'],
+  eagerUpdateTooltips: ['userId', 'tooltips'],
   receiveUsers: ['users'],
   receiveLikes: ['userId', 'likes'],
   receiveBookmarks: ['userId', 'storyIds'],
@@ -104,133 +104,126 @@ export const INITIAL_STATE = Immutable({
     isRestoring: false,
     params: {
       page: 1,
-      limit: 5
-    }
-  }
+      limit: 5,
+    },
+  },
 })
 
 /* ------------- Reducers ------------- */
 
-export const loadUsersChannels = (state) => {
-  return state.setIn(
-    ['fetchStatus'],
-    {fetching: true, loaded: false}
-  )
+export const loadUsersChannels = state => {
+  return state.setIn(['fetchStatus'], { fetching: true, loaded: false })
 }
 
-export const loadUsersChannelsSuccess = (state, {channels}) => {
+export const loadUsersChannelsSuccess = (state, { channels }) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
-      loaded: true
+      loaded: true,
     },
     channelsByID: channels,
-    error: null
+    error: null,
   })
 }
 
-export const loadUsersChannelsFailure = (state, {error}) => {
+export const loadUsersChannelsFailure = (state, { error }) => {
   return state.merge({
-    error, 
-    fetchStatus: {
-      fetching: false, 
-      loaded: false
-    }
-  })
-}
-
-export const loadUser = (state) => {
-  return state.setIn(
-    ['fetchStatus'],
-    {fetching: true, loaded: false}
-  )
-}
-
-export const loadUserSuccess = (state) => {
-  return state.merge({
+    error,
     fetchStatus: {
       fetching: false,
-      loaded: true
+      loaded: false,
     },
-    error: null
   })
 }
 
-export const loadUserFailure = (state, {error}) => {
-  return state.merge({error, fetchStatus: {fetching: false, loaded: false}})
+export const loadUser = state => {
+  return state.setIn(['fetchStatus'], { fetching: true, loaded: false })
 }
 
-export const suggestions = (state) => {
-  return state.setIn(
-    ['fetchStatus', 'fetching'],
-    true
-  )
-}
-
-export const suggestionsSuccess = (state, {usersById = []}) => {
+export const loadUserSuccess = state => {
   return state.merge({
     fetchStatus: {
       fetching: false,
       loaded: true,
     },
     error: null,
-    suggestedUsersById: usersById
-  }, {
-    deep: true
   })
 }
 
-export const suggestionsFailure = (state, {error}) => {
+export const loadUserFailure = (state, { error }) => {
+  return state.merge({ error, fetchStatus: { fetching: false, loaded: false } })
+}
+
+export const suggestions = state => {
+  return state.setIn(['fetchStatus', 'fetching'], true)
+}
+
+export const suggestionsSuccess = (state, { usersById = [] }) => {
+  return state.merge(
+    {
+      fetchStatus: {
+        fetching: false,
+        loaded: true,
+      },
+      error: null,
+      suggestedUsersById: usersById,
+    },
+    {
+      deep: true,
+    },
+  )
+}
+
+export const suggestionsFailure = (state, { error }) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
-      loaded: false
+      loaded: false,
     },
-    error
+    error,
   })
 }
 
 export const receive = (state, { users = {} }) => {
-  return state.merge({entities: users}, {deep: true})
+  return state.merge({ entities: users }, { deep: true })
 }
 
-export const updateUser = (state) => state.merge({
-  error: null,
-  updating: true
-})
+export const updateUser = state =>
+  state.merge({
+    error: null,
+    updating: true,
+  })
 
-export const updateUserSuccess = (state, {user}) => {
+export const updateUserSuccess = (state, { user }) => {
   const path = ['entities', user.id]
-  const updatedUser = state.getIn(path).merge(user, {deep: true})
+  const updatedUser = state.getIn(path).merge(user, { deep: true })
   return state.setIn(path, updatedUser).merge({
     error: null,
-    updating: false
+    updating: false,
   })
 }
 
-export const updateUserFailure = (state, {error}) => {
+export const updateUserFailure = (state, { error }) => {
   return state.merge({
     error,
-    updating: false
+    updating: false,
   })
 }
 
-export const removeAvatar = (state) => state.merge({
-  error: null,
-  updating: true,
-})
-
-export const removeAvatarSuccess = (state, {user}) => {
-  return state.setIn(
-    ['entities', user.id, 'profile', 'avatar'],
-    null,
-  ).merge({
+export const removeAvatar = state =>
+  state.merge({
     error: null,
-    updating: false
+    updating: true,
+  })
+
+export const removeAvatarSuccess = (state, { user }) => {
+  return state.setIn(['entities', user.id, 'profile', 'avatar'], null).merge({
+    error: null,
+    updating: false,
   })
 }
 
-export const removeAvatarFailure = (state, {error}) => {
+export const removeAvatarFailure = (state, { error }) => {
   return state.merge({
     error,
     updating: false,
@@ -238,7 +231,7 @@ export const removeAvatarFailure = (state, {error}) => {
 }
 
 // User is trying to connect a FB account to their existing account
-export const connectFacebook = (state) => {
+export const connectFacebook = state => {
   return state.merge({
     fetchStatus: {
       fetching: true,
@@ -247,29 +240,29 @@ export const connectFacebook = (state) => {
 }
 
 // FB account is successfully connected.
-export const connectFacebookSuccess = (state, {user}) => {
+export const connectFacebookSuccess = (state, { user }) => {
   const path = ['entities', user.id]
-  const updatedUser = state.getIn(path).merge(user, {deep: true})
+  const updatedUser = state.getIn(path).merge(user, { deep: true })
   return state.setIn(path, updatedUser).merge({
     error: null,
     fetchStatus: {
       fetching: false,
-    }
+    },
   })
 }
 
 // There was an error, either cancelled or that FB was connected to a different user
-export const connectFacebookFailure = (state, {error}) => {
+export const connectFacebookFailure = (state, { error }) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
     },
-    error
+    error,
   })
 }
 
 // User is trying to delete their account
-export const deleteUser = (state) => {
+export const deleteUser = state => {
   return state.merge({
     fetchStatus: {
       fetching: true,
@@ -277,7 +270,7 @@ export const deleteUser = (state) => {
   })
 }
 
-export const deleteUserSuccess = (state) => {
+export const deleteUserSuccess = state => {
   return state.merge({
     fetchStatus: {
       fetching: false,
@@ -285,16 +278,16 @@ export const deleteUserSuccess = (state) => {
   })
 }
 
-export const deleteUserFailure = (state, {error}) => {
+export const deleteUserFailure = (state, { error }) => {
   return state.merge({
     fetchStatus: {
       fetching: false,
     },
-    error
+    error,
   })
 }
 
-export const removeActivities = (state, {feedItemId, feedItemType}) => {
+export const removeActivities = (state, { feedItemId, feedItemType }) => {
   const removedActivitesIds = []
   const filteredActivities = Immutable.without(state.activities, (activity, id) => {
     if (activity[feedItemType] === feedItemId) {
@@ -304,269 +297,225 @@ export const removeActivities = (state, {feedItemId, feedItemType}) => {
     return false
   })
 
-  const updatedState = state.setIn(
-    ['activities'],
-    filteredActivities
-  )
+  const updatedState = state.setIn(['activities'], filteredActivities)
   return updatedState.setIn(
     ['activitiesById'],
-     _.without(state.activitiesById, ...removedActivitesIds)
+    _.without(state.activitiesById, ...removedActivitesIds),
   )
 }
 
-export const eagerUpdateTooltips = (state, {userId, tooltips}) => {
-  return state.setIn(
-    ['entities', userId, 'introTooltips'],
-    tooltips
-  )
+export const eagerUpdateTooltips = (state, { userId, tooltips }) => {
+  return state.setIn(['entities', userId, 'introTooltips'], tooltips)
 }
 
-export const receiveLikes = (state, {userId, likes}) => {
-  const updatedState = state.setIn(
-    ['usersLikesById', userId],
-    likes.stories,
-  )
-  return updatedState.setIn(
-    ['usersGuideLikesById', userId],
-    likes.guides,
-  )
+export const receiveLikes = (state, { userId, likes }) => {
+  const updatedState = state.setIn(['usersLikesById', userId], likes.stories)
+  return updatedState.setIn(['usersGuideLikesById', userId], likes.guides)
 }
 
-export const receiveBookmarks = (state, {userId, storyIds}) => state.setIn(
-  ['usersBookmarksById', userId],
-  storyIds
-)
+export const receiveBookmarks = (state, { userId, storyIds }) =>
+  state.setIn(['usersBookmarksById', userId], storyIds)
 
 export const getByBookmarks = (state, userId) => {
   return state.getIn(['usersBookmarksById', userId], [])
 }
 
-export const toggleLike = (state, {userId, storyId}) => {
+export const toggleLike = (state, { userId, storyId }) => {
   const likes = _.get(state, `usersLikesById.${userId}`, [])
   if (_.includes(likes, storyId)) {
-    return state.setIn(
-      ['usersLikesById', userId],
-      _.without(likes, storyId)
-    )
+    return state.setIn(['usersLikesById', userId], _.without(likes, storyId))
   } else {
-    return state.setIn(
-      ['usersLikesById', userId],
-      likes.concat(storyId)
-    )
+    return state.setIn(['usersLikesById', userId], likes.concat(storyId))
   }
 }
 
-export const addBookmark = (state, {userId, storyId}) => {
+export const addBookmark = (state, { userId, storyId }) => {
   const likes = _.get(state, `usersBookmarksById.${userId}`, [])
   if (_.includes(likes, storyId)) return state
-  return state.setIn(
-    ['usersBookmarksById', userId],
-    [storyId, ...likes]
-  )
+  return state.setIn(['usersBookmarksById', userId], [storyId, ...likes])
 }
 
-export const removeBookmark = (state, {userId, storyId}) => {
+export const removeBookmark = (state, { userId, storyId }) => {
   const likes = _.get(state, `usersBookmarksById.${userId}`, [])
   if (!_.includes(likes, storyId)) return state
-  return state.setIn(
-    ['usersBookmarksById', userId],
-    _.without(likes, storyId)
-  )
+  return state.setIn(['usersBookmarksById', userId], _.without(likes, storyId))
 }
 
-export const addStoryLike = (state, {userId, storyId}) => {
+export const addStoryLike = (state, { userId, storyId }) => {
   const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
   if (!_.includes(storyLikes, storyId)) {
-    return  state.setIn(
-      ['usersLikesById', userId],
-      storyLikes.concat(storyId)
-    )
+    return state.setIn(['usersLikesById', userId], storyLikes.concat(storyId))
   }
   return state
 }
 
-export const removeStoryLike = (state, {userId, storyId}) => {
+export const removeStoryLike = (state, { userId, storyId }) => {
   const storyLikes = _.get(state, `usersLikesById.${userId}`, [])
   if (_.includes(storyLikes, storyId)) {
-    return  state.setIn(
-      ['usersLikesById', userId],
-      _.without(storyLikes, storyId),
-    )
+    return state.setIn(['usersLikesById', userId], _.without(storyLikes, storyId))
   }
   return state
 }
 
-
-export const addGuideLike = (state, {userId, guideId}) => {
+export const addGuideLike = (state, { userId, guideId }) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
   if (!_.includes(guideLikes, guideId)) {
-    return  state.setIn(
-      ['usersGuideLikesById', userId],
-      guideLikes.concat(guideId)
-    )
+    return state.setIn(['usersGuideLikesById', userId], guideLikes.concat(guideId))
   }
   return state
 }
 
-export const removeGuideLike = (state, {userId, guideId}) => {
+export const removeGuideLike = (state, { userId, guideId }) => {
   const guideLikes = _.get(state, `usersGuideLikesById.${userId}`, [])
   if (_.includes(guideLikes, guideId)) {
-    return  state.setIn(
-      ['usersGuideLikesById', userId],
-      _.without(guideLikes, guideId),
-    )
+    return state.setIn(['usersGuideLikesById', userId], _.without(guideLikes, guideId))
   }
   return state
 }
 
-export const loadUserFollowers = (state, {userId}) => {
-  return state.setIn(
-    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: true, loaded: false}
-  )
+export const loadUserFollowers = (state, { userId }) => {
+  return state.setIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], {
+    fetching: true,
+    loaded: false,
+  })
 }
 
-export const loadUserFollowersSuccess = (state, {userId, usersById}) => {
-  return state.setIn(
-    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: true}
-  )
-  .setIn(
-    ['userFollowersByUserIdAndId', userId, 'byId'],
-    usersById
-  )
+export const loadUserFollowersSuccess = (state, { userId, usersById }) => {
+  return state
+    .setIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['userFollowersByUserIdAndId', userId, 'byId'], usersById)
 }
 
-export const loadUserFollowersFailure = (state, {userId, error}) => {
-  return state.setIn(
-    ['userFollowersByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
-  )
+export const loadUserFollowersFailure = (state, { userId, error }) => {
+  return state.setIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], {
+    fetching: false,
+    loaded: false,
+    error,
+  })
 }
 
-export const loadUserFollowing = (state, {userId}) => {
-  return state.setIn(
-    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: true, loaded: false}
-  )
+export const loadUserFollowing = (state, { userId }) => {
+  return state.setIn(['userFollowingByUserIdAndId', userId, 'fetchStatus'], {
+    fetching: true,
+    loaded: false,
+  })
 }
 
-export const loadUserFollowingSuccess = (state, {userId, usersById}) => {
-  return state.setIn(
-    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: true}
-  )
-  .setIn(
-    ['userFollowingByUserIdAndId', userId, 'byId'],
-    usersById
-  )
+export const loadUserFollowingSuccess = (state, { userId, usersById }) => {
+  return state
+    .setIn(['userFollowingByUserIdAndId', userId, 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['userFollowingByUserIdAndId', userId, 'byId'], usersById)
 }
 
-export const loadUserFollowingFailure = (state, {userId, error}) => {
-  return state.setIn(
-    ['userFollowingByUserIdAndId', userId, 'fetchStatus'],
-    {fetching: false, loaded: false, error}
-  )
+export const loadUserFollowingFailure = (state, { userId, error }) => {
+  return state.setIn(['userFollowingByUserIdAndId', userId, 'fetchStatus'], {
+    fetching: false,
+    loaded: false,
+    error,
+  })
 }
 
-export const followUser = (state, {userId, targetUserId}) =>
-  state.setIn(
-    ['userFollowingByUserIdAndId', userId, 'byId'],
-    state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []).concat(targetUserId)
-  )
-  .setIn(
-    ['entities', targetUserId, 'counts', 'followers'],
-    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) + 1
-  )
-  .setIn(
-    ['entities', userId, 'counts', 'following'],
-    state.getIn(['entities', userId, 'counts', 'following'], 0) + 1
-  )
+export const followUser = (state, { userId, targetUserId }) =>
+  state
+    .setIn(
+      ['userFollowingByUserIdAndId', userId, 'byId'],
+      state
+        .getIn(['userFollowingByUserIdAndId', userId, 'byId'], [])
+        .concat(targetUserId),
+    )
+    .setIn(
+      ['entities', targetUserId, 'counts', 'followers'],
+      state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) + 1,
+    )
+    .setIn(
+      ['entities', userId, 'counts', 'following'],
+      state.getIn(['entities', userId, 'counts', 'following'], 0) + 1,
+    )
 
-export const unfollowUser = (state, {userId, targetUserId}) =>
-  state.setIn(
-    ['userFollowingByUserIdAndId', userId, 'byId'],
-    _.without(state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []), targetUserId)
-  )
-  .setIn(
-    ['entities', targetUserId, 'counts', 'followers'],
-    state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) - 1
-  )
-  .setIn(
-    ['entities', userId, 'counts', 'following'],
-    state.getIn(['entities', userId, 'counts', 'following'], 0) - 1
-  )
+export const unfollowUser = (state, { userId, targetUserId }) =>
+  state
+    .setIn(
+      ['userFollowingByUserIdAndId', userId, 'byId'],
+      _.without(
+        state.getIn(['userFollowingByUserIdAndId', userId, 'byId'], []),
+        targetUserId,
+      ),
+    )
+    .setIn(
+      ['entities', targetUserId, 'counts', 'followers'],
+      state.getIn(['entities', targetUserId, 'counts', 'followers'], 0) - 1,
+    )
+    .setIn(
+      ['entities', userId, 'counts', 'following'],
+      state.getIn(['entities', userId, 'counts', 'following'], 0) - 1,
+    )
 
-export const fetchActivities = (state) => {
-  return state.merge({fetchStatus: fetching()})
+export const fetchActivities = state => {
+  return state.merge({ fetchStatus: fetching() })
 }
 
-export const fetchActivitiesSuccess = (state, {activitiesById}) => {
-  return state.merge({fetchStatus: fetchingSuccess(), activitiesById})
+export const fetchActivitiesSuccess = (state, { activitiesById }) => {
+  return state.merge({ fetchStatus: fetchingSuccess(), activitiesById })
 }
 
-export const fetchActivitiesFailure = (state, {error}) => {
-  return state.merge({fetchStatus: fetchingError(), error})
+export const fetchActivitiesFailure = (state, { error }) => {
+  return state.merge({ fetchStatus: fetchingError(), error })
 }
 
 export const receiveActivities = (state, { activities = {} }) => {
-  return state.merge({activities}, {deep: true})
+  return state.merge({ activities }, { deep: true })
 }
 
-export const activitySeen = (state, {activityId}) => {
-  return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
+export const activitySeen = (state, { activityId }) => {
+  return state.setIn(
+    ['activities', activityId, 'seen'],
+    !state.getIn(['activities', activityId, 'seen']),
+  )
 }
 
-export const activitySeenFailure = (state, {activityId}) => {
-  return state.setIn(['activities', activityId, 'seen'], !state.getIn(['activities', activityId, 'seen']))
+export const activitySeenFailure = (state, { activityId }) => {
+  return state.setIn(
+    ['activities', activityId, 'seen'],
+    !state.getIn(['activities', activityId, 'seen']),
+  )
 }
 
 export const adminGetUsers = (state, { params = {} }) => {
   return state
-    .setIn(
-      ['adminUsers', 'fetchStatus'],
-      {
-        fetching: true,
-        loaded: false
-      })
-    .setIn(
-      ['adminUsers', 'params'],
-      {
-        ...state.adminUsers.params,
-        ...params
-      })
+    .setIn(['adminUsers', 'fetchStatus'], {
+      fetching: true,
+      loaded: false,
+    })
+    .setIn(['adminUsers', 'params'], {
+      ...state.adminUsers.params,
+      ...params,
+    })
 }
 
 export const adminGetUsersFailure = (state, { error }) => {
   return state
-    .setIn(
-      ['adminUsers', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: false
-      })
-    .setIn(
-      ['adminUsers', 'error'],
-      error)
+    .setIn(['adminUsers', 'fetchStatus'], {
+      fetching: false,
+      loaded: false,
+    })
+    .setIn(['adminUsers', 'error'], error)
 }
 
 export const adminGetUsersSuccess = (state, { res }) => {
   return state
-    .setIn(
-      ['adminUsers', 'byId'],
-      res.data)
-    .setIn(
-      ['adminUsers', 'total'],
-      res.count)
-    .setIn(
-      ['adminUsers', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: true
-      })
-    .setIn(
-      ['adminUsers', 'error'],
-      null)
+    .setIn(['adminUsers', 'byId'], res.data)
+    .setIn(['adminUsers', 'total'], res.count)
+    .setIn(['adminUsers', 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['adminUsers', 'error'], null)
 }
 
 export const adminGetUser = (state, { params = {} }) => {
@@ -575,18 +524,13 @@ export const adminGetUser = (state, { params = {} }) => {
 
 export const adminGetUserFailure = (state, { error }) => {
   return state
-    .setIn(
-      ['adminUsers', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: false
-      })
-    .setIn(
-      ['adminUsers', 'error'],
-      error)
+    .setIn(['adminUsers', 'fetchStatus'], {
+      fetching: false,
+      loaded: false,
+    })
+    .setIn(['adminUsers', 'error'], error)
     .setIn(['adminUsers', 'isRestoring'], false)
 }
-
 
 export const adminGetUserSuccess = (state, { res }) => {
   let list = [...state.getIn(['adminUsers', 'byId'])]
@@ -600,60 +544,49 @@ export const adminGetUserSuccess = (state, { res }) => {
     total = total + 1
   }
   return state
-    .setIn(
-      ['adminUsers', 'byId'],
-      list)
-    .setIn(
-      ['adminUsers', 'total'],
-      total)
-    .setIn(
-      ['adminUsers', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: true
-      })
-    .setIn(
-      ['adminUsers', 'error'],
-      null)
-    .setIn(
-      ['adminUsers', 'isUpdating'],
-      false)
+    .setIn(['adminUsers', 'byId'], list)
+    .setIn(['adminUsers', 'total'], total)
+    .setIn(['adminUsers', 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['adminUsers', 'error'], null)
+    .setIn(['adminUsers', 'isUpdating'], false)
     .setIn(['adminUsers', 'isRestoring'], false)
 }
 
-export const adminDeleteUser = (state) => {
+export const adminDeleteUser = state => {
   return state.setIn(['adminUsers', 'isDeleting'], true)
 }
 
-export const adminDeleteUserFailure = (state) => {
+export const adminDeleteUserFailure = state => {
   return state.setIn(['adminUsers', 'isDeleting'], false)
 }
 
 export const adminDeleteUserSuccess = (state, { id }) => {
   const list = [...state.getIn(['adminUsers', 'byId'])]
   const recordIndex = _.findIndex(list, { id })
-    
-  return state.setIn(['adminUsers', 'byId', recordIndex, 'deleted'], true)
+
+  return state
+    .setIn(['adminUsers', 'byId', recordIndex, 'deleted'], true)
     .setIn(['adminUsers', 'isDeleting'], false)
 }
 
-export const adminPutUser = (state) => {
+export const adminPutUser = state => {
   return state.setIn(['adminUsers', 'isUpdating'], true)
 }
 
-export const adminPutUserFailure = (state) => {
+export const adminPutUserFailure = state => {
   return state.setIn(['adminUsers', 'isUpdating'], false)
 }
 
-export const adminRestoreUsers = (state) => {
+export const adminRestoreUsers = state => {
   return state.setIn(['adminUsers', 'isRestoring'], true)
 }
 
 /* -------------        Selectors        ------------- */
 export const isInitialAppDataLoaded = (state, userId) => {
-  return _.every([
-    _.has(state.usersLikesById, userId)
-  ])
+  return _.every([_.has(state.usersLikesById, userId)])
 }
 
 export const isStoryLiked = (state: object, userId: string, storyId: string) => {
@@ -676,7 +609,11 @@ export const getFollowers = (state: object, followersType: string, userId: strin
   }
 }
 
-export const getFollowersFetchStatus = (state: object, followersType: string, userId: string) => {
+export const getFollowersFetchStatus = (
+  state: object,
+  followersType: string,
+  userId: string,
+) => {
   if (followersType === 'followers') {
     return state.getIn(['userFollowersByUserIdAndId', userId, 'fetchStatus'], [])
   } else {
@@ -684,12 +621,13 @@ export const getFollowersFetchStatus = (state: object, followersType: string, us
   }
 }
 
-export const clearErrors = (state) => state.merge({ error: null })
+export const clearErrors = state => state.merge({ error: null })
 
-export const resetActivities = (state) => state.merge({
-  activities: {},
-  activitiesById: [],
-})
+export const resetActivities = state =>
+  state.merge({
+    activities: {},
+    activitiesById: [],
+  })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

@@ -10,9 +10,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
 import getGridData from '../../Shared/Lib/getGridData'
 
-import styles, {
-  CategoryFeedNavActionStyles,
-} from '../Styles/ExploreScreenStyles'
+import styles, { CategoryFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
 
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -91,9 +89,8 @@ class ExploreScreen extends Component {
     const { selectedTab } = this.state
     const categoriesArray = _.values(this.getEntitiesByType())
 
-    const content = (
-      categoriesFetchStatus.fetching && !categoriesArray.length
-    ) ? (
+    const content
+      = categoriesFetchStatus.fetching && !categoriesArray.length ? (
         <Loader style={styles.loader} />
       ) : (
         <ScrollView>

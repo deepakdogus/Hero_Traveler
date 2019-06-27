@@ -1,13 +1,5 @@
 import { delay } from 'redux-saga'
-import {
-  call,
-  fork,
-  put,
-  race,
-  take,
-  takeEvery,
-  takeLatest,
-} from 'redux-saga/effects'
+import { call, fork, put, race, take, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import HeroAPI from '../Services/HeroAPI'
 import getAdditionalSagas from './getAdditionalSagas'
@@ -48,11 +40,7 @@ import {
   followCategory,
   unfollowCategory,
 } from './SignupSagas'
-import {
-  logout,
-  resumeSession,
-  refreshSession
-} from './SessionSagas'
+import { logout, resumeSession, refreshSession } from './SessionSagas'
 // related to nav which is device specific so not located in shared folder
 import { openScreen } from '../../Sagas/OpenScreenSagas'
 
@@ -102,9 +90,7 @@ import {
   getDeletedStories,
 } from './StorySagas'
 
-import {
-  uploadMediaAsset,
-} from './MediaUploadSagas'
+import { uploadMediaAsset } from './MediaUploadSagas'
 
 import {
   createGuide,
@@ -119,10 +105,7 @@ import {
   unlikeGuide,
 } from './GuideSagas'
 
-import {
-  getComments,
-  createComment
-} from './CommentsSagas'
+import { getComments, createComment } from './CommentsSagas'
 
 /* ------------- API ------------- */
 
@@ -137,25 +120,20 @@ const heroAPI = HeroAPI.create()
 //   return promise;
 // }
 
-function *pollRefreshTokens() {
+function* pollRefreshTokens() {
   yield call(delay, 60 * 60 * 1000) // 1h delay
   yield put(SessionActions.refreshSession())
 }
 
-function *watchRefreshTokens() {
-  while (true) { // eslint-disable-line no-constant-condition
-    yield take([
-      SessionTypes.INITIALIZE_SESSION,
-      SessionTypes.REFRESH_SESSION_SUCCESS,
-    ])
-    yield race([
-      call(pollRefreshTokens),
-      take(SessionTypes.LOGOUT_SUCCESS),
-    ])
+function* watchRefreshTokens() {
+  while (true) {
+    // eslint-disable-line no-constant-condition
+    yield take([SessionTypes.INITIALIZE_SESSION, SessionTypes.REFRESH_SESSION_SUCCESS])
+    yield race([call(pollRefreshTokens), take(SessionTypes.LOGOUT_SUCCESS)])
   }
 }
 
-export default function *root () {
+export default function* root() {
   yield [
     fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
@@ -233,7 +211,11 @@ export default function *root () {
     takeLatest(GuideTypes.GET_USER_GUIDES, getUserGuides, heroAPI),
     takeLatest(GuideTypes.GUIDE_FEED_REQUEST, getUserFeedGuides, heroAPI),
     takeLatest(GuideTypes.GET_CATEGORY_GUIDES, getCategoryGuides, heroAPI),
-    takeLatest(GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST, bulkSaveStoryToGuide, heroAPI),
+    takeLatest(
+      GuideTypes.BULK_SAVE_STORY_TO_GUIDE_REQUEST,
+      bulkSaveStoryToGuide,
+      heroAPI,
+    ),
     takeLatest(GuideTypes.LIKE_GUIDE_REQUEST, likeGuide, heroAPI),
     takeLatest(GuideTypes.UNLIKE_GUIDE_REQUEST, unlikeGuide, heroAPI),
 
@@ -243,7 +225,7 @@ export default function *root () {
 
     //Admin
     ...getAdditionalSagas(heroAPI),
-    
+
     fork(watchRefreshTokens),
   ]
 }

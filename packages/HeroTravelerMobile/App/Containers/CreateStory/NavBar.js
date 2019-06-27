@@ -149,7 +149,10 @@ export default class NavBar extends Component {
         {title && (
           <View style={styles.title}>
             {!onTitle && (
-              <Text style={[styles.text, styles.titleText, titleStyle || {}]} numberOfLines={1}>
+              <Text
+                style={[styles.text, styles.titleText, titleStyle || {}]}
+                numberOfLines={1}
+              >
                 {title}
               </Text>
             )}

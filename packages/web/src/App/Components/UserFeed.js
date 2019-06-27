@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import queryString from 'query-string'
 
 import TabBar from './TabBar'
 import Footer from './Footer'
 import FeedItemList from './FeedItemList'
-import ContainerWithFeedList from '../Containers/ContainerWithFeedList';
+import ContainerWithFeedList from '../Containers/ContainerWithFeedList'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -23,7 +23,7 @@ const FeedItemListWrapper = styled.div`
 export const itemsPerQuery = 100
 
 export default class UserFeed extends ContainerWithFeedList {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       activeTab: 'STORIES',
@@ -43,9 +43,9 @@ export default class UserFeed extends ContainerWithFeedList {
     }
   }
 
-  render(){
+  render() {
     const { isUsersProfile, pendingDrafts } = this.props
-    let {selectedFeedItems} = this.getSelectedFeedItems()
+    let { selectedFeedItems } = this.getSelectedFeedItems()
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
       const filteredPendingDrafts = pendingDrafts.filter(draft => {
@@ -60,12 +60,12 @@ export default class UserFeed extends ContainerWithFeedList {
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
-        { (!!selectedFeedItems.length)
-        && <FeedItemListWrapper>
+        {!!selectedFeedItems.length && (
+          <FeedItemListWrapper>
             <FeedItemList feedItems={selectedFeedItems} />
             <Footer />
-           </FeedItemListWrapper>
-        }
+          </FeedItemListWrapper>
+        )}
       </ListWrapper>
     )
   }

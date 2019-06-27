@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { Metrics, Colors, Fonts } from '../../Shared/Themes/'
 
-export const GRID_ITEM_DIMENSION = Metrics.screenWidth * (Metrics.feedMargin / 100) / 3
+export const GRID_ITEM_DIMENSION = (Metrics.screenWidth * (Metrics.feedMargin / 100)) / 3
 
 export default StyleSheet.create({
   grid: {
@@ -11,7 +11,8 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     width: `${Metrics.feedMargin}%`,
     alignSelf: 'center',
-    marginVertical: (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
+    marginVertical:
+      (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
   },
   gridItem: {
     width: GRID_ITEM_DIMENSION - 16, // 16 = l/r margin

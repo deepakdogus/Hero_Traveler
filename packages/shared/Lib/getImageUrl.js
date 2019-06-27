@@ -1,12 +1,14 @@
 import _ from 'lodash'
 import Env from '../../Config/Env'
-import {getVideoUrlBase, isLocalMediaAsset} from './getVideoUrl'
+import { getVideoUrlBase, isLocalMediaAsset } from './getVideoUrl'
 import metrics from '../Themes/Metrics'
 
 function isFromFacebook(image) {
-  return typeof(image) === 'object'
-    && _.has(image, ['original', 'folders'])
-    && image.original.folders.includes('facebook')
+  return (
+    typeof image === 'object' &&
+    _.has(image, ['original', 'folders']) &&
+    image.original.folders.includes('facebook')
+  )
 }
 
 function getImageUrlBase(image) {
@@ -32,24 +34,23 @@ function buildUrl(base: string, uri: string, urlParameters: object): string {
 }
 
 function ensureJpgExtension(uri: string): string {
-    uri = uri.split('.')
-    uri[uri.length-1] = 'jpg'
-    uri = uri.join('.')
-    return uri
+  uri = uri.split('.')
+  uri[uri.length - 1] = 'jpg'
+  uri = uri.join('.')
+  return uri
 }
 
-function getUri(image: object|string, type: string): ?string {
+function getUri(image: object | string, type: string): ?string {
   if (!image) {
     return undefined
   }
 
-  if (typeof(image) === 'string') {
+  if (typeof image === 'string') {
     return ensureJpgExtension(image)
-  } else if (typeof(image) === 'object' && _.has(image, 'original')) {
-    const target = type === 'gridItemThumbnail'
-      ? image.versions.thumbnail240
-      : image.original
-    let {path, folders} = target
+  } else if (typeof image === 'object' && _.has(image, 'original')) {
+    const target =
+      type === 'gridItemThumbnail' ? image.versions.thumbnail240 : image.original
+    let { path, folders } = target
     if (!path) {
       return undefined
     }
@@ -86,7 +87,7 @@ function getBasicOptimizedUrlParameters(size: object) {
 }
 
 function getContentBlockImageParameters(size: object): string {
-  return {q: 'auto:best', f: 'auto'}
+  return { q: 'auto:best', f: 'auto' }
 }
 
 function getBasicImageUrlParameters(size: object): string {
@@ -111,7 +112,7 @@ function getLargeAvatarImageUrlParameters(size: object): string {
   })
 }
 
-function getNotificationImageUrlParameters(){
+function getNotificationImageUrlParameters() {
   return {
     f: 'auto',
     c: 'fit',
@@ -122,10 +123,10 @@ function getNotificationImageUrlParameters(){
 
 function getLoadingPreviewImageUrlParameters(size: object): string {
   if (size.width) {
-    size.width = Math.round(size.width/4)
+    size.width = Math.round(size.width / 4)
   }
   if (size.height) {
-    size.height = Math.round(size.height/4)
+    size.height = Math.round(size.height / 4)
   }
 
   const urlParameters = getBasicOptimizedUrlParameters(size)
@@ -147,29 +148,33 @@ const imageUrlParametersFactories = {
   loading: getLoadingPreviewImageUrlParameters,
   optimized: getOptimizedImageUrlParameters,
   thumbnail: getNotificationImageUrlParameters,
-  avatarLarge: getLargeAvatarImageUrlParameters
+  avatarLarge: getLargeAvatarImageUrlParameters,
 }
 
 // hacky way to extract the url for images that get uploaded to Cloudinary but not DB
 // will look to refactor
-function midSyncSpecialCase(image, type){
-    const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
-    const urlParameters = urlParametersFactory(image)
-    let parameters = buildParameters(urlParameters).join(",")
+function midSyncSpecialCase(image, type) {
+  const urlParametersFactory =
+    imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
+  const urlParameters = urlParametersFactory(image)
+  let parameters = buildParameters(urlParameters).join(',')
 
-    let orignalUrl = image.uri || image.secure_url
-    if (!parameters.length) return orignalUrl
+  let orignalUrl = image.uri || image.secure_url
+  if (!parameters.length) return orignalUrl
 
-    orignalUrl = orignalUrl.split("/")
-    orignalUrl[6] = parameters
-    let lastArrayItem = orignalUrl[orignalUrl.length-1].split('.')
-    lastArrayItem[1] = 'jpg'
-    orignalUrl[orignalUrl.length-1] = lastArrayItem.join('.')
-    return orignalUrl.join("/")
-
+  orignalUrl = orignalUrl.split('/')
+  orignalUrl[6] = parameters
+  let lastArrayItem = orignalUrl[orignalUrl.length - 1].split('.')
+  lastArrayItem[1] = 'jpg'
+  orignalUrl[orignalUrl.length - 1] = lastArrayItem.join('.')
+  return orignalUrl.join('/')
 }
 
-export default function getImageUrl(image: object|string, type: string, options: object = {}): ?string {
+export default function getImageUrl(
+  image: object | string,
+  type: string,
+  options: object = {},
+): ?string {
   if (isLocalMediaAsset(image) || (image && image.uri)) return image.uri || image
 
   // special cases where image has not been fully synced
@@ -197,7 +202,8 @@ export default function getImageUrl(image: object|string, type: string, options:
   }
 
   const base = options.video ? getVideoUrlBase() : getImageUrlBase(image)
-  const urlParametersFactory = imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
+  const urlParametersFactory =
+    imageUrlParametersFactories[type] || getOptimizedImageUrlParameters
   const urlParameters = urlParametersFactory(imageSize)
   return buildUrl(base, uri, urlParameters)
 }

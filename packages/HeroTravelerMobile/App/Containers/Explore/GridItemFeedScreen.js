@@ -72,15 +72,15 @@ class GridItemFeedScreen extends React.Component {
   }
 
   loadStories() {
-    this.props.isChannel 
-    ? this.props.loadCategoryStories(this.props.categoryId)
-    : this.props.loadUserStories(this.props.categoryId)
+    this.props.isChannel
+      ? this.props.loadCategoryStories(this.props.categoryId)
+      : this.props.loadUserStories(this.props.categoryId)
   }
 
   loadGuides() {
     this.props.isChannel
-    ? this.props.loadCategoryGuides(this.props.categoryId)
-    : this.props.loadUserGuides(this.props.categoryId)
+      ? this.props.loadCategoryGuides(this.props.categoryId)
+      : this.props.loadUserGuides(this.props.categoryId)
   }
 
   loadData() {
@@ -105,22 +105,15 @@ class GridItemFeedScreen extends React.Component {
   }
 
   _wrapElt = elt => (
-    <View style={[
-      styles.scrollItemFullScreen,
-      styles.center,
-    ]}>
-      {elt}
-    </View>
+    <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
   )
 
   _changeTab = selectedTab => {
-    if (selectedTab !== restrictedTabTypes.guides) this.loadStories()  
+    if (selectedTab !== restrictedTabTypes.guides) this.loadStories()
     if (selectedTab !== restrictedTabTypes.stories) this.loadGuides()
-    this.setState(
-      {
-        selectedTab,
-      },
-    )
+    this.setState({
+      selectedTab,
+    })
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -197,10 +190,8 @@ class GridItemFeedScreen extends React.Component {
       bottomContent = this.renderNoStories(<Loader />)
     }
     else if (
-      (selectedTab !== restrictedTabTypes.guides
-        && _.size(storiesById) === 0)
-      || (selectedTab === restrictedTabTypes.guides
-        && _.size(categoryGuidesById) === 0)
+      (selectedTab !== restrictedTabTypes.guides && _.size(storiesById) === 0)
+      || (selectedTab === restrictedTabTypes.guides && _.size(categoryGuidesById) === 0)
     ) {
       bottomContent = this.renderNoStories(
         <NoStoriesMessage
@@ -215,9 +206,7 @@ class GridItemFeedScreen extends React.Component {
         <ConnectedFeedList
           isStory={selectedTab !== restrictedTabTypes.guides}
           entitiesById={
-            selectedTab === restrictedTabTypes.guides
-              ? categoryGuidesById
-              : storiesById
+            selectedTab === restrictedTabTypes.guides ? categoryGuidesById : storiesById
           }
           renderSectionHeader={this.renderTabs()}
           sectionContentHeight={40}
@@ -237,9 +226,7 @@ class GridItemFeedScreen extends React.Component {
           leftIcon="arrowLeft"
           onRight={this._onRight}
           rightTextStyle={
-            isFollowingCategory
-            ? styles.followingTextStyle
-            : styles.followTextStyle
+            isFollowingCategory ? styles.followingTextStyle : styles.followTextStyle
           }
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
           style={styles.navbarContainer}
@@ -253,19 +240,15 @@ class GridItemFeedScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const guidePath = props.isChannel
-  ? `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
-  : `entities.guides.guideIdsByUserId[${props.categoryId}]`
+    ? `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
+    : `entities.guides.guideIdsByUserId[${props.categoryId}]`
   return {
-    user: state.entities.users.entities[state.session.userId], 
+    user: state.entities.users.entities[state.session.userId],
     fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
     storiesById: props.isChannel
-    ? getByCategory(state.entities.stories, props.categoryId)
-    : getByUser(state.entities.stories, props.categoryId),
-    categoryGuidesById: _.get(
-      state,
-      guidePath,
-      [],
-    ),
+      ? getByCategory(state.entities.stories, props.categoryId)
+      : getByUser(state.entities.stories, props.categoryId),
+    categoryGuidesById: _.get(state, guidePath, []),
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
     location: state.routes.scene.name,
@@ -279,12 +262,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(GuideActions.getCategoryGuides(categoryId)),
     loadCategoryStories: (categoryId, storyType) =>
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    loadUserStories: (userId) => 
-      dispatch(StoryActions.fromUserRequest(userId)),
-    loadUserGuides: (userId) => 
-      dispatch(GuideActions.getUserGuides(userId)),
-    getSelectedCategories: () =>
-      dispatch(SignupActions.signupGetUsersCategories()),
+    loadUserStories: userId => dispatch(StoryActions.fromUserRequest(userId)),
+    loadUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
+    getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
     followCategory: () =>
       dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
     unfollowCategory: () =>

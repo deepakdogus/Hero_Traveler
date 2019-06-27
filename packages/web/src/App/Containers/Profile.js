@@ -1,15 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import UserActions, { getByBookmarks } from '../Shared/Redux/Entities/Users'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
+import StoryActions, {
+  getByUser,
+  getUserFetchStatus,
+  getBookmarksFetchStatus,
+} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
 import getPendingDrafts from '../Shared/Lib/getPendingDrafts'
 import { runIfAuthed } from '../Lib/authHelpers'
@@ -141,7 +145,7 @@ class Profile extends ContainerWithFeedList {
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
 
-    let {selectedFeedItems} = this.getSelectedFeedItems()
+    let { selectedFeedItems } = this.getSelectedFeedItems()
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
       const filteredPendingDrafts = pendingDrafts.filter(draft => {
@@ -169,13 +173,13 @@ class Profile extends ContainerWithFeedList {
           uploadMedia={uploadMedia}
           sessionUserId={sessionUserId}
         />
-        {!isEdit 
-          && <UserFeed 
-            isUsersProfile={isUsersProfile} 
+        {!isEdit && (
+          <UserFeed
+            isUsersProfile={isUsersProfile}
             pendingDrafts={pendingDrafts}
             {...this.props}
-             />
-        }
+          />
+        )}
       </ContentWrapper>
     )
   }
@@ -183,7 +187,7 @@ class Profile extends ContainerWithFeedList {
 
 function mapStateToProps(state, ownProps) {
   const userId = ownProps.match.params.userId
-  let {stories, users, guides} = state.entities
+  let { stories, users, guides } = state.entities
   const profilesUser = users.entities[userId]
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
@@ -217,24 +221,39 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
-    updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
-    getUser: (userId) => dispatch(UserActions.loadUser(userId)),
+    updateUser: attrs => dispatch(UserActions.updateUser(attrs)),
+    getUser: userId => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadDrafts: () => dispatch(StoryActions.loadDrafts()),
     getDeletedStories: () => dispatch(StoryActions.getDeletedStories(targetUserId)),
     loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
-    loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
+    loadUserFollowing: userId => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>
-      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
-    reroute: (path) => dispatch(push(path)),
-    uploadMediaAsset: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
-    removeAvatar: (userId) => dispatch(UserActions.removeAvatar(userId)),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
+    reroute: path => dispatch(push(path)),
+    uploadMediaAsset: (userId, file, uploadType) =>
+      dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
+    removeAvatar: userId => dispatch(UserActions.removeAvatar(userId)),
+    openGlobalModal: (modalName, params) =>
+      dispatch(UXActions.openGlobalModal(modalName, params)),
     uploadMedia: (file, callback) =>
       dispatch(StoryCreateActions.uploadMedia(file, callback, 'image')),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Profile)

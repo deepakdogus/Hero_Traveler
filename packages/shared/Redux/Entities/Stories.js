@@ -71,7 +71,7 @@ export default Creators
 
 const initialFetchStatus = () => ({
   fetching: false,
-  loaded: false
+  loaded: false,
 })
 
 export const INITIAL_STATE = Immutable({
@@ -92,7 +92,7 @@ export const INITIAL_STATE = Immutable({
   drafts: {
     error: null,
     fetchStatus: initialFetchStatus(),
-    byId: []
+    byId: [],
   },
   adminStories: {
     fetchStatus: initialFetchStatus(),
@@ -104,9 +104,9 @@ export const INITIAL_STATE = Immutable({
     isRestoring: false,
     params: {
       page: 1,
-      limit: 5
-    }
-  }
+      limit: 5,
+    },
+  },
 })
 
 /* ------------- Reducers ------------- */
@@ -126,15 +126,15 @@ export const genericFeedSuccess = (state, type, feedById, count, params) => {
     {
       fetchStatus: {
         fetching: false,
-        loaded: true
+        loaded: true,
       },
       [`${type}FeedById`]: feedUpdate,
       [`${type}FeedCount`]: count,
-      error: null
+      error: null,
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   )
 }
 
@@ -144,15 +144,13 @@ export const userFeedSuccess = (state, { userFeedById, count, params }) =>
 export const nearbyFeedSuccess = (state, { nearbyFeedById, count, params }) =>
   genericFeedSuccess(state, 'nearby', nearbyFeedById, count, params)
 
-export const badgeUserFeedSuccess = (
-  state,
-  { badgeUserFeedById, count, params }
-) => genericFeedSuccess(state, 'badgeUser', badgeUserFeedById, count, params)
+export const badgeUserFeedSuccess = (state, { badgeUserFeedById, count, params }) =>
+  genericFeedSuccess(state, 'badgeUser', badgeUserFeedById, count, params)
 
 export const userRequest = (state, { userId }) => {
   return state.setIn(['storiesByUserAndId', userId, 'fetchStatus'], {
     fetching: true,
-    loaded: false
+    loaded: false,
   })
 }
 
@@ -160,7 +158,7 @@ export const userSuccess = (state, { userId, userStoriesById }) => {
   return state
     .setIn(['storiesByUserAndId', userId, 'fetchStatus'], {
       fetching: false,
-      loaded: true
+      loaded: true,
     })
     .setIn(['storiesByUserAndId', userId, 'byId'], userStoriesById)
 }
@@ -176,7 +174,7 @@ export const userFailure = (state, { userId, error }) => {
     .setIn(['storiesByUserAndId', userId, 'fetchStatus'], {
       fetching: false,
       loaded: false,
-      error
+      error,
     })
     .setIn(['storiesByUserAndId', userId, 'byId'], derivedById)
 }
@@ -184,14 +182,14 @@ export const userFailure = (state, { userId, error }) => {
 export const getBookmarks = (state, { userId }) => {
   return state.setIn(['bookmarks', userId, 'fetchStatus'], {
     fetching: true,
-    loaded: false
+    loaded: false,
   })
 }
 
 export const getBookmarksSuccess = (state, { userId, bookmarks }) => {
   return state.setIn(['bookmarks', userId, 'fetchStatus'], {
     fetching: false,
-    loaded: true
+    loaded: true,
   })
 }
 
@@ -199,23 +197,23 @@ export const getBookmarksFailure = (state, { userId, error }) => {
   return state.setIn(['bookmarks', userId, 'fetchStatus'], {
     fetching: false,
     loaded: false,
-    error
+    error,
   })
 }
 
 export const categoryRequest = (state, { categoryId }) => {
   const errorLessState = state.setIn(['error'], null)
-  return errorLessState.setIn(
-    ['storiesByCategoryAndId', categoryId, 'fetchStatus'],
-    { fetching: true, loaded: false }
-  )
+  return errorLessState.setIn(['storiesByCategoryAndId', categoryId, 'fetchStatus'], {
+    fetching: true,
+    loaded: false,
+  })
 }
 
 export const categorySuccess = (state, { categoryId, categoryStoriesById }) => {
   return state
     .setIn(['storiesByCategoryAndId', categoryId, 'fetchStatus'], {
       fetching: false,
-      loaded: true
+      loaded: true,
     })
     .setIn(['storiesByCategoryAndId', categoryId, 'byId'], categoryStoriesById)
 }
@@ -232,7 +230,7 @@ export const categoryFailure = (state, { categoryId, error }) => {
   return state
     .setIn(['storiesByCategoryAndId', categoryId, 'fetchStatus'], {
       fetching: false,
-      loaded: false
+      loaded: false,
     })
     .setIn(['storiesByCategoryAndId', categoryId, 'byId'], derivedStoriesById)
     .setIn(['error'], error)
@@ -243,13 +241,13 @@ export const failure = (state, { error }) =>
     {
       fetchStatus: {
         fetching: false,
-        loaded: false
+        loaded: false,
       },
-      error
+      error,
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   )
 
 export const updateEntities = (state, { stories = {} }) => {
@@ -257,10 +255,7 @@ export const updateEntities = (state, { stories = {} }) => {
 }
 
 export const receiveStoriesByGuide = (state, { guideId, storiesByGuide }) => {
-  return state.setIn(
-    ['storiesByGuide', guideId],
-    storiesByGuide
-  )
+  return state.setIn(['storiesByGuide', guideId], storiesByGuide)
 }
 
 export const addUserStory = (state, { stories = {}, draftId }) => {
@@ -278,7 +273,7 @@ export const addUserStory = (state, { stories = {}, draftId }) => {
     // updating fetchstatus and user's storiesByUserAndId
     state = userSuccess(state, {
       userId: story.author,
-      userStoriesById
+      userStoriesById,
     })
     state = state.merge({ userFeedById })
   }
@@ -291,10 +286,10 @@ export const loadDrafts = state => {
       error: null,
       fetchStatus: {
         fetching: true,
-        loaded: false
+        loaded: false,
       },
-      byId: state.drafts.byId
-    }
+      byId: state.drafts.byId,
+    },
   })
 }
 
@@ -303,10 +298,10 @@ export const loadDraftsSuccess = (state, { draftsById }) => {
     drafts: {
       fetchStatus: {
         fetching: false,
-        loaded: true
+        loaded: true,
       },
-      byId: draftsById
-    }
+      byId: draftsById,
+    },
   })
 }
 
@@ -321,10 +316,10 @@ export const loadDraftsFailure = (state, { error, userId }) => {
       error,
       fetchStatus: {
         fetching: false,
-        loaded: false
+        loaded: false,
       },
-      byId: derivedById
-    }
+      byId: derivedById,
+    },
   })
 }
 
@@ -341,10 +336,10 @@ export const addDraft = (state, { draft }) => {
     drafts: {
       fetchStatus: {
         fetching: false,
-        loaded: true
+        loaded: true,
       },
-      byId: draftsById
-    }
+      byId: draftsById,
+    },
   })
 }
 
@@ -359,7 +354,7 @@ export const removeDraft = (state, { draftId }) => {
     path,
     state.getIn(path, draftId).filter(id => {
       return id !== draftId
-    })
+    }),
   )
 }
 
@@ -373,15 +368,10 @@ export const deleteStory = (state, { userId, storyId }) => {
 
 export const deleteStorySuccess = (state, { userId, storyId }) => {
   let newState = state.setIn(['entities'], state.entities.without(storyId))
-  newState = newState.setIn(
-    ['userFeedById'],
-    _.without(state.userFeedById, storyId)
-  )
+  newState = newState.setIn(['userFeedById'], _.without(state.userFeedById, storyId))
 
   const story = state.entities[storyId]
-  const path = story.draft
-    ? ['drafts', 'byId']
-    : ['storiesByUserAndId', userId, 'byId']
+  const path = story.draft ? ['drafts', 'byId'] : ['storiesByUserAndId', userId, 'byId']
   return newState.setIn(path, _.without(state.getIn(path), storyId))
 }
 
@@ -391,61 +381,44 @@ export const removeDeletedStories = (state, { deleteStories = [{}] }) => {
     if (cachedStory) {
       return deleteStorySuccess(state, {
         userId: cachedStory.author,
-        storyId: story.id
+        storyId: story.id,
       })
     }
     return workingState
   }, state)
 }
 
-
 export const adminGetStories = (state, { params = {} }) => {
   return state
-    .setIn(
-      ['adminStories', 'fetchStatus'],
-      {
-        fetching: true,
-        loaded: false
-      })
-    .setIn(
-      ['adminStories', 'params'],
-      {
-        ...state.adminStories.params,
-        ...params
-      })
+    .setIn(['adminStories', 'fetchStatus'], {
+      fetching: true,
+      loaded: false,
+    })
+    .setIn(['adminStories', 'params'], {
+      ...state.adminStories.params,
+      ...params,
+    })
 }
 
 export const adminGetStoriesFailure = (state, { error }) => {
   return state
-    .setIn(
-      ['adminStories', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: false
-      })
-    .setIn(
-      ['adminStories', 'error'],
-      error)
+    .setIn(['adminStories', 'fetchStatus'], {
+      fetching: false,
+      loaded: false,
+    })
+    .setIn(['adminStories', 'error'], error)
     .setIn(['adminStories', 'isRestoring'], false)
 }
 
 export const adminGetStoriesSuccess = (state, { res }) => {
   return state
-    .setIn(
-      ['adminStories', 'byId'],
-      res.data)
-    .setIn(
-      ['adminStories', 'total'],
-      res.count)
-    .setIn(
-      ['adminStories', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: true
-      })
-    .setIn(
-      ['adminStories', 'error'],
-      null)
+    .setIn(['adminStories', 'byId'], res.data)
+    .setIn(['adminStories', 'total'], res.count)
+    .setIn(['adminStories', 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['adminStories', 'error'], null)
     .setIn(['adminStories', 'isRestoring'], false)
 }
 
@@ -455,17 +428,12 @@ export const adminGetStory = (state, { params = {} }) => {
 
 export const adminGetStoryFailure = (state, { error }) => {
   return state
-    .setIn(
-      ['adminStories', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: false
-      })
-    .setIn(
-      ['adminStories', 'error'],
-      error)
+    .setIn(['adminStories', 'fetchStatus'], {
+      fetching: false,
+      loaded: false,
+    })
+    .setIn(['adminStories', 'error'], error)
 }
-
 
 export const adminGetStorySuccess = (state, { res }) => {
   let list = [...state.getIn(['adminStories', 'byId'])]
@@ -479,31 +447,21 @@ export const adminGetStorySuccess = (state, { res }) => {
     total = total + 1
   }
   return state
-    .setIn(
-      ['adminStories', 'byId'],
-      list)
-    .setIn(
-      ['adminStories', 'total'],
-      total)
-    .setIn(
-      ['adminStories', 'fetchStatus'],
-      {
-        fetching: false,
-        loaded: true
-      })
-    .setIn(
-      ['adminStories', 'error'],
-      null)
-    .setIn(
-      ['adminStories', 'isUpdating'],
-      false)
+    .setIn(['adminStories', 'byId'], list)
+    .setIn(['adminStories', 'total'], total)
+    .setIn(['adminStories', 'fetchStatus'], {
+      fetching: false,
+      loaded: true,
+    })
+    .setIn(['adminStories', 'error'], null)
+    .setIn(['adminStories', 'isUpdating'], false)
 }
 
-export const adminDeleteStory = (state) => {
+export const adminDeleteStory = state => {
   return state.setIn(['adminStories', 'isDeleting'], true)
 }
 
-export const adminDeleteStoryFailure = (state) => {
+export const adminDeleteStoryFailure = state => {
   return state.setIn(['adminStories', 'isDeleting'], false)
 }
 
@@ -511,19 +469,20 @@ export const adminDeleteStorySuccess = (state, { id }) => {
   const list = [...state.getIn(['adminStories', 'byId'])]
   const recordIndex = _.findIndex(list, { id })
 
-  return state.setIn(['adminStories', 'byId', recordIndex, 'deleted'], true)
+  return state
+    .setIn(['adminStories', 'byId', recordIndex, 'deleted'], true)
     .setIn(['adminStories', 'isDeleting'], false)
 }
 
-export const adminPutStory = (state) => {
+export const adminPutStory = state => {
   return state.setIn(['adminStories', 'isUpdating'], true)
 }
 
-export const adminPutStoryFailure = (state) => {
+export const adminPutStoryFailure = state => {
   return state.setIn(['adminStories', 'isUpdating'], false)
 }
 
-export const adminRestoreStories = (state) => {
+export const adminRestoreStories = state => {
   return state.setIn(['adminStories', 'isRestoring'], true)
 }
 
@@ -552,9 +511,9 @@ export const getBookmarksFetchStatus = (state, userId) => {
 export const genericFailure = (state, { error }) => {
   return state.merge({
     fetchStatus: {
-      fetching: false
+      fetching: false,
     },
-    error
+    error,
   })
 }
 
@@ -609,5 +568,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADMIN_PUT_STORY_FAILURE]: adminPutStoryFailure,
   [Types.ADMIN_RESTORE_STORIES]: adminRestoreStories,
   [Types.STORY_FAILURE]: genericFailure,
-  [Types.STORY_FAILURE]: genericFailure
+  [Types.STORY_FAILURE]: genericFailure,
 })

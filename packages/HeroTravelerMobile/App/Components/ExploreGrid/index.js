@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import _ from 'lodash'
 import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
@@ -26,7 +22,8 @@ export default class ExploreGrid extends Component {
 
   renderItem = categoryOrChannel => {
     const { isChannel } = this.props
-    const image = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
+    const image
+      = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
 
     const categoryOrChannelUrl = getItemUrl(image, 'gridItemThumbnail', {
       width: isChannel ? null : GRID_ITEM_DIMENSION - 4,
@@ -41,14 +38,13 @@ export default class ExploreGrid extends Component {
               cached={false}
               background={true}
               source={{ uri: categoryOrChannelUrl }}
-              style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
+              style={
+                isChannel ? styles.gridImageForChannels : styles.gridImageForCategories
+              }
               imageStyle={{ borderRadius: 6 }}
             >
               {categoryOrChannel.selected && (
-                <TabIcon
-                  name="redCheckOutlined"
-                  style={{ view: styles.selectedIcon }}
-                />
+                <TabIcon name="redCheckOutlined" style={{ view: styles.selectedIcon }} />
               )}
             </ImageWrapper>
             <Text
@@ -67,10 +63,6 @@ export default class ExploreGrid extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.grid}>
-        {this.props.categories.map(this.renderItem)}
-      </View>
-    )
+    return <View style={styles.grid}>{this.props.categories.map(this.renderItem)}</View>
   }
 }

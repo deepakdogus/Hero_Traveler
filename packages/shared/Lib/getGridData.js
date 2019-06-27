@@ -1,10 +1,4 @@
-const getGridData = (
-  selectedTab,
-  channelsByID,
-  users,
-  categories,
-  tabTypes
-) => {
+const getGridData = (selectedTab, channelsByID, users, categories, tabTypes) => {
   const channels = []
   if (selectedTab === tabTypes.channels && !!channelsByID) {
     for (let i = 0; i < channelsByID.length; i++) {

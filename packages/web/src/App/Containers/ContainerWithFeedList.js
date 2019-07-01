@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import queryString from 'query-string'
 
 import env from '../Config/Env'
 
@@ -41,6 +40,8 @@ export default class ContainerWithFeedList extends React.Component {
     draftsFetchStatus: PropTypes.object,
     userBookmarksFetchStatus: PropTypes.object,
     guidesFetchStatus: PropTypes.object,
+    isChannel: PropTypes.bool,
+    categoryId: PropTypes.string,
   }
 
   state = {
@@ -98,6 +99,7 @@ export default class ContainerWithFeedList extends React.Component {
   }
 
   getTabInfo = page => {
+    const { isChannel, sessionUserId, categoryId } = this.props
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
@@ -106,7 +108,9 @@ export default class ContainerWithFeedList extends React.Component {
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return this.props.getGuides(this.props.sessionUserId)
+        return isChannel
+          ? this.props.getGuides && this.props.getGuides(sessionUserId)
+          : this.props.getUserGuides && this.props.getUserGuides(categoryId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':

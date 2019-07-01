@@ -17,7 +17,7 @@ const ChannelGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
   max-width: 1000px;
-  margin: 20px auto 0;
+  margin: 20px auto;
   padding: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: repeat(4, 1fr);
@@ -30,7 +30,7 @@ const ChannelGrid = styled(DisplayGrid)`
 const CategoryGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(4, 1fr);
   max-width: 1000px;
-  margin: auto;
+  margin: 80px auto;
   padding: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: repeat(4, 1fr);

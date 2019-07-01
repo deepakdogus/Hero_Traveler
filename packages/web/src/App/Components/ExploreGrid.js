@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import _ from 'lodash'
-
-import { Grid, Row, Col } from '../Shared/Web/Components/FlexboxGrid'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from '../Shared/Web/Components/Icon'
 import { VerticalCenterStyles } from '../Shared/Web/Components/VerticalCenter'
@@ -13,10 +11,10 @@ const DisplayGrid = styled.div`
   padding: 0 !important;
   max-width: 1000px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-`
-
+  `
+  
 const ChannelGrid = styled(DisplayGrid)`
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
   max-width: 1000px;
   margin: 20px auto 0;
@@ -30,11 +28,9 @@ const ChannelGrid = styled(DisplayGrid)`
 `
 
 const CategoryGrid = styled(DisplayGrid)`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
   max-width: 1000px;
-  margin: 20px auto 0;
+  margin: auto;
   padding: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: repeat(4, 1fr);
@@ -48,12 +44,10 @@ const Wrapper = styled.div`
   margin: 10px;
   position: relative;
   cursor: pointer;
-  ${props => (props.isChannel ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;')}
 `
 
 const CategoryCol = styled.div`
   grid-column: auto;
-  grid-row: auto;
 `
 
 const CategoryTile = styled.div`
@@ -117,6 +111,7 @@ class Tile extends React.Component {
     isChannel: PropTypes.bool,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
+    onClickExploreItem: PropTypes.func,
   }
 
   _onClickTile = () => {

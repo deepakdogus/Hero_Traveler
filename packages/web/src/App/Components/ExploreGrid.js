@@ -9,11 +9,27 @@ import Icon from '../Shared/Web/Components/Icon'
 import { VerticalCenterStyles } from '../Shared/Web/Components/VerticalCenter'
 import OverlayHover from './OverlayHover'
 
-const StyledGrid = styled(Grid)`
+const DisplayGrid = styled.div`
+  padding: 0 !important;
   max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 `
 
-const ChannelGrid = styled.div`
+const ChannelGrid = styled(DisplayGrid)`
+  grid-gap: 10px;
+  max-width: 1000px;
+  margin: 20px auto 0;
+  padding: 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`
+
+const CategoryGrid = styled(DisplayGrid)`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
@@ -33,6 +49,11 @@ const Wrapper = styled.div`
   position: relative;
   cursor: pointer;
   ${props => (props.isChannel ? 'margin-bottom: 10px;' : 'margin-bottom: 20px;')}
+`
+
+const CategoryCol = styled.div`
+  grid-column: auto;
+  grid-row: auto;
 `
 
 const CategoryTile = styled.div`
@@ -105,7 +126,6 @@ class Tile extends React.Component {
   render() {
     const { category, isChannel, isSelected } = this.props
     const image = category.image || _.get(category, 'channelImage')
-    console.log(this.props, 'this is the props')
 
     return isChannel ? (
       <ChannelTile
@@ -113,10 +133,7 @@ class Tile extends React.Component {
         imageSource={getImageUrl(image, 'gridItemThumbnail')}
       />
     ) : (
-      <Col
-        xs={category.image ? 4 : 2}
-        lg={category.image ? 3 : 2}
-      >
+      <CategoryCol>
         <Wrapper
           onClick={this._onClickTile}
           isChannel={isChannel}
@@ -135,7 +152,7 @@ class Tile extends React.Component {
           </TitleContainer>
           {isSelected && <RedCheck name="redCheck" />}
         </Wrapper>
-      </Col>
+      </CategoryCol>
     )
   }
 }
@@ -167,9 +184,7 @@ export default class ExploreGrid extends React.Component {
     return isChannel ? (
       <ChannelGrid>{renderedCategories}</ChannelGrid>
     ) : (
-      <StyledGrid fluid>
-        <Row>{renderedCategories}</Row>
-      </StyledGrid>
+      <CategoryGrid>{renderedCategories}</CategoryGrid>
     )
   }
 }

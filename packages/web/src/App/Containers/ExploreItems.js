@@ -72,7 +72,9 @@ class Category extends ContainerWithFeedList {
     const { selectedFeedItems } = this.getSelectedFeedItems()
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
-    console.log(user, 'these are the user in the explore items')
+    const image = category 
+      ? category.interstitialImage.original.path
+      : null
     return (
       <ContentWrapper>
         <CategoryHeader
@@ -89,7 +91,7 @@ class Category extends ContainerWithFeedList {
               activeTab={this.state.activeTab}
               onClickTab={this.onClickTab}
             />
-            {/* <HeadlineDivider /> */}
+            {image && <HeadlineDivider img={image} />}
             <FeedItemListWrapper>
               <FeedItemList
                 feedItems={selectedFeedItems}

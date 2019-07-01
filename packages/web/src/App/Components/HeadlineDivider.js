@@ -23,7 +23,22 @@ const FeedText = styled(CenteredText)`
   }
 `
 
+const SponsorText = styled(CenteredText)`
+  color: #a9a9a9;
+  font-family: ${props => props.theme.Fonts.type.montserrat};
+  font-weight: 100;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  padding: 30px 0 0 0;
+  @media (max-width: ${sizes.tablet}px) {
+    padding: 20px;
+    font-size: 8px;
+  }
+`
+
 const Wrapper = styled.div``
+
+const SponsorWrapper = styled.div``
 
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
@@ -34,9 +49,12 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
-export const SquareImg = styled.img`
-  height: 90px;
-  width: 90px;
+export const Img = styled.img`
+  height: 100px;
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export default class HeadlineDivider extends Component {
@@ -51,10 +69,10 @@ export default class HeadlineDivider extends Component {
         {!img ? (
           <FeedText>{title}</FeedText>
         ) : (
-          <Wrapper>
-            <FeedText>{'sponsored by'}</FeedText>
-            {<SquareImg src={getImageUrl(img)} />}
-          </Wrapper>
+          <SponsorWrapper>
+            <SponsorText>{'Sponsored by'}</SponsorText>
+            {<Img src={getImageUrl(img)} />}
+          </SponsorWrapper>
         )}
         <StyledDivider />
       </Wrapper>

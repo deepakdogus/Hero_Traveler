@@ -178,6 +178,7 @@ class Profile extends ContainerWithFeedList {
             isUsersProfile={isUsersProfile}
             pendingDrafts={pendingDrafts}
             {...this.props}
+            isUser={true}
           />
         )}
       </ContentWrapper>

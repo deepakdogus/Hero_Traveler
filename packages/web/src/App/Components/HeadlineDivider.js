@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import getImageUrl from '../Shared/Lib/getImageUrl'
 import { sizes } from '../Shared/Web/Themes/Metrics'
 import HorizontalDivider from './HorizontalDivider'
 
@@ -33,16 +34,28 @@ const StyledDivider = styled(HorizontalDivider)`
   }
 `
 
+export const SquareImg = styled.img`
+  height: 90px;
+  width: 90px;
+`
+
 export default class HeadlineDivider extends Component {
   static propTypes = {
     title: PropTypes.string,
   }
 
   render() {
-    const { title } = this.props
+    const { title, img } = this.props
     return (
       <Wrapper>
-        <FeedText>{title}</FeedText>
+        {!img ? (
+          <FeedText>{title}</FeedText>
+        ) : (
+          <Wrapper>
+            <FeedText>{'sponsored by'}</FeedText>
+            {<SquareImg src={getImageUrl(img)} />}
+          </Wrapper>
+        )}
         <StyledDivider />
       </Wrapper>
     )

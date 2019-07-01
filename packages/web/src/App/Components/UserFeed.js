@@ -5,6 +5,7 @@ import queryString from 'query-string'
 import TabBar from './TabBar'
 import Footer from './Footer'
 import FeedItemList from './FeedItemList'
+import HeadlineDivider from './HeadlineDivider'
 import ContainerWithFeedList from '../Containers/ContainerWithFeedList'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
@@ -44,8 +45,10 @@ export default class UserFeed extends ContainerWithFeedList {
   }
 
   render() {
-    const { isUsersProfile, pendingDrafts } = this.props
+    const { isUsersProfile, pendingDrafts, user } = this.props
+    const image = user.interstitialImage.original.path
     let { selectedFeedItems } = this.getSelectedFeedItems()
+    console.log(this.props, 'props in userFeed')
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
       const filteredPendingDrafts = pendingDrafts.filter(draft => {
@@ -60,6 +63,7 @@ export default class UserFeed extends ContainerWithFeedList {
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
+        {image && <HeadlineDivider img={image} />}
         {!!selectedFeedItems.length && (
           <FeedItemListWrapper>
             <FeedItemList feedItems={selectedFeedItems} />

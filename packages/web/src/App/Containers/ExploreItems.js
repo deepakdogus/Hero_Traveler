@@ -20,6 +20,7 @@ import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 import UserFeed from '../Components/UserFeed'
+import HeadlineDivider from '../Components/HeadlineDivider'
 
 import { runIfAuthed } from '../Lib/authHelpers'
 
@@ -71,6 +72,7 @@ class Category extends ContainerWithFeedList {
     const { selectedFeedItems } = this.getSelectedFeedItems()
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
+    console.log(user, 'these are the user in the explore items')
     return (
       <ContentWrapper>
         <CategoryHeader
@@ -87,6 +89,7 @@ class Category extends ContainerWithFeedList {
               activeTab={this.state.activeTab}
               onClickTab={this.onClickTab}
             />
+            {/* <HeadlineDivider /> */}
             <FeedItemListWrapper>
               <FeedItemList
                 feedItems={selectedFeedItems}

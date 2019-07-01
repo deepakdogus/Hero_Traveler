@@ -42,6 +42,7 @@ export default class ContainerWithFeedList extends React.Component {
     guidesFetchStatus: PropTypes.object,
     isChannel: PropTypes.bool,
     categoryId: PropTypes.string,
+    getCategoryGuides: PropTypes.func,
   }
 
   state = {
@@ -110,7 +111,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'GUIDES':
         return isChannel
           ? this.props.getGuides && this.props.getGuides(sessionUserId)
-          : this.props.getUserGuides && this.props.getUserGuides(categoryId)
+          : this.props.getCategoryGuides && this.props.getCategoryGuides(categoryId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':

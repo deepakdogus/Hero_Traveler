@@ -81,7 +81,11 @@ class CameraRollPicker extends Component {
 
     if (assets.length > 0) {
       newState.lastCursor = data.page_info.end_cursor
-      newState.images = this.state.images.concat(assets)
+      // Show only photos and videos under 30 seconds
+      const filteredAssets = _.filter(assets, (a) => {
+        return _.get(a, 'node.image.playableDuration') <= 30
+      })
+      newState.images = this.state.images.concat(filteredAssets)
       newState.dataSource = this.state.dataSource.cloneWithRows(
         this._nImagesPerRow(newState.images, this.props.imagesPerRow),
       )

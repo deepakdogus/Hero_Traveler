@@ -6860,10 +6860,10 @@ react-native-button@^2.3.0:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-device-info@^0.11.0:
-  version "0.11.0"
-  resolved "https://npm.abeck.io:443/react-native-device-info/-/react-native-device-info-0.11.0.tgz#e96dd0e3f8a7d7e3022c1f441f51fa912fdc7444"
-  integrity sha1-6W3Q4/in1+MCLB9EH1H6kS/cdEQ=
+react-native-device-info@^1.7.0:
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-1.8.0.tgz#98a7e3adb4e3d377eeba9c751bda03b2d7f9da35"
+  integrity sha512-pGSMzU/ywpJT97bIrC94p0JgNn6VZT4Rrfo9F47PfAfIfQJvsqSef3ulimr6FeUkK1nEfp0oRByV35OaOt+uZA==
 
 react-native-draftjs-render@2.4.0:
   version "2.4.0"

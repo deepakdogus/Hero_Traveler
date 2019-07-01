@@ -87,9 +87,11 @@ export default class SlideshowCover extends Component {
     }
   }
 
-  renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl, index) {
+  renderImageWithUrl(isVideo, imageUrl, imageThumbnailUrl, index, sliderHeight) {
     const {children, showPlayButton, isFeed, isGuide} = this.props
     // handling for backgroundPublish failures. Covers will not be correctly formatted yet
+    const calculatedDimensions = this._getWidthHeight(false, index)
+    if (calculatedDimensions.height > sliderHeight) calculatedDimensions.height = sliderHeight
     return (
       <TouchableWithoutFeedback
         style={{flex: 1, overflow: 'hidden'}}
@@ -97,7 +99,7 @@ export default class SlideshowCover extends Component {
       >
         <View style={{
           ...imageStyle,
-          ...this._getWidthHeight(false, index),
+          ...calculatedDimensions,
         }}>
           { imageThumbnailUrl && (
             <ImageWrapper
@@ -135,13 +137,13 @@ export default class SlideshowCover extends Component {
       : 6,
   })
 
-  renderImage(cover, index) {
+  renderImage(cover, index, sliderHeight) {
     let imageUrl = getImageUrl(
       cover,
       'optimized',
       this._getWidthHeight(true, index),
     )
-    return this.renderImageWithUrl(false, imageUrl, null, index)
+    return this.renderImageWithUrl(false, imageUrl, null, index, sliderHeight)
   }
 
   _onPress = () => this.props.onPress(this.props.title)
@@ -223,18 +225,20 @@ export default class SlideshowCover extends Component {
       width: 'screen',
     }
 
+
     const videoImageUrl = getImageUrl(cover, 'optimized', videoThumbnailOptions)
 
     let videoPath = getVideoUrl(cover)
     let nonStreamingVideoPath = getVideoUrl(cover, false)
+    const calculatedDimensions = this._getWidthHeight(true, index)
     // If videoPath is a file url, then we do not need preview image or stream url
     if (this.props.isFeed && videoPath.startsWith('file://')) {
       return (
         <TouchableWithoutFeedback
-          style={{flex: 1}}
+          style={{flex: 1, justifyContent: 'center'}}
           onPress={this._onPress}
         >
-          <View style={this._getWidthHeight(true, index, true)}>
+          <View style={calculatedDimensions}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -259,7 +263,7 @@ export default class SlideshowCover extends Component {
     }
 
     return (
-      <View style={this._getWidthHeight(true, index, true)}>
+      <View style={calculatedDimensions}>
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
@@ -280,14 +284,14 @@ export default class SlideshowCover extends Component {
     )
   }
 
-  renderItem(s, index) {
+  renderItem(s, index, sliderHeight) {
     let coverType
     if (s.purpose === 'coverImage') coverType = 'image'
     else coverType = 'video'
     return (
       <View key={`${index}`} style={[styles.root, this.props.style]}>
-        {this.hasVideo(index) && coverType === 'video' && this.renderVideo(s, index)}
-        {coverType === 'image' && this.renderImage(s, index)}
+        {this.hasVideo(index) && coverType === 'video' && this.renderVideo(s, index, sliderHeight)}
+        {coverType === 'image' && this.renderImage(s, index, sliderHeight)}
         {!coverType && (
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.noCover}>
@@ -310,6 +314,7 @@ export default class SlideshowCover extends Component {
     return (
       <View style={styles.root}>
         <Swiper
+          bounces
           loop={false}
           showsButtons={false}
           dotColor="#cccccc"
@@ -323,7 +328,7 @@ export default class SlideshowCover extends Component {
             position: 'relative',
           }}
         >
-          {slideshow.map((s, index) => this.renderItem(s, index))}
+          {slideshow.map((s, index) => this.renderItem(s, index, height))}
         </Swiper>
         <View style={styles.topPagination}>
           <Text style={styles.paginationText}>{currentIndex} / {slideshow.length}</Text>
@@ -363,8 +368,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   gradient: {
-    paddingHorizontal: 25,
-    paddingVertical: Metrics.doubleBaseMargin,
     top: 0,
     left: 0,
     right: 0,

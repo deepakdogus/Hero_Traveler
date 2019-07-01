@@ -66,7 +66,41 @@ class ImageCrop extends Component {
   }
 
   componentWillMount(){
-    Image.getSize(this.props.image, (width, height) => {
+    this.setup(this.props)
+  }
+
+  componentWillReceiveProps(nextProps){
+    // if (this.props.zoom !== nextProps.zoom) {
+    //   var zoom = (100 - nextProps.zoom) / 100
+    //   this.setState({ zoom: zoom })
+    // }
+
+    //
+    //get dimensions after crop
+    //
+    this._dimensionAfterZoom = imageDimensionsAfterZoom(
+      {height: nextProps.cropHeight, width: nextProps.cropWidth},
+      {height: this.state.imageHeight, width: this.state.imageWidth},
+      this.state.zoom,
+    )
+    this.setState({
+      imageDimHeight: this._dimensionAfterZoom.height,
+      imageDimWidth: this._dimensionAfterZoom.width,
+    })
+    if (this.props.image !== nextProps.image) {
+      this.setup(nextProps)
+    }
+  }
+
+  componentWillUnmount(){
+    this.setState({
+      isMounted: false,
+    })
+  }
+
+  setup = (props) => {
+    Image.getSize(props.image, (width, height) => {
+      console.log('image original width, height', width, height)
       //update state
       this.setState({
         imageHeight: height,
@@ -78,7 +112,7 @@ class ImageCrop extends Component {
     //get dimensions after crop
     //
     this._dimensionAfterZoom = imageDimensionsAfterZoom(
-      {height: this.props.cropHeight, width: this.props.cropWidth},
+      {height: props.cropHeight, width: props.cropWidth},
       {height: this.state.imageHeight, width: this.state.imageWidth},
       this.state.zoom,
     )
@@ -109,8 +143,8 @@ class ImageCrop extends Component {
       onPanResponderMove: (evt, gestureState) => {
         //We are moving the image
         if (evt.nativeEvent.changedTouches.length <= 1){
-          var trackX = (gestureState.dx / this.props.cropWidth) * this.state.zoom
-          var trackY = (gestureState.dy / this.props.cropHeight) * this.state.zoom
+          var trackX = (gestureState.dx / props.cropWidth) * this.state.zoom
+          var trackY = (gestureState.dy / props.cropHeight) * this.state.zoom
           var newPosX = (Number(this.offsetX) - Number(trackX))
           var newPosY = (Number(this.offsetY) - Number(trackY))
           if (newPosX > 1) newPosX = Number(1)
@@ -120,7 +154,7 @@ class ImageCrop extends Component {
 
           var movement = movementFromZoom(
             gestureState,
-            {width: this.props.cropWidth, height: this.props.cropHeight},
+            {width: props.cropWidth, height: props.cropHeight},
             {width: this.state.imageDimWidth, height: this.state.imageDimHeight},
             {x: this.offsetX, y: this.offsetY},
             this.state.zoom,
@@ -153,32 +187,6 @@ class ImageCrop extends Component {
           }
         }
       },
-    })
-  }
-
-  componentWillReceiveProps(nextProps){
-    // if (this.props.zoom !== nextProps.zoom) {
-    //   var zoom = (100 - nextProps.zoom) / 100
-    //   this.setState({ zoom: zoom })
-    // }
-
-    //
-    //get dimensions after crop
-    //
-    this._dimensionAfterZoom = imageDimensionsAfterZoom(
-      {height: nextProps.cropHeight, width: nextProps.cropWidth},
-      {height: this.state.imageHeight, width: this.state.imageWidth},
-      this.state.zoom,
-    )
-    this.setState({
-      imageDimHeight: this._dimensionAfterZoom.height,
-      imageDimWidth: this._dimensionAfterZoom.width,
-    })
-  }
-
-  componentWillUnmount(){
-    this.setState({
-      isMounted: false,
     })
   }
 

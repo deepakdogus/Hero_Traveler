@@ -61,8 +61,7 @@ function areAlreadyInProfileScreen(
 function onPressUser(sessionUserId, sceneName, profileId) {
   return userId => {
     // avoids naving to the scene we are already in
-    if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId))
-      return
+    if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId)) return
     if (sessionUserId === userId) {
       navToProfile()
     }
@@ -109,17 +108,17 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = true
-  const isShowCover = !isReadingScreen
-    || isStory
-    || selectedTab === tabTypes.overview
+  const isShowCover
+    = !isReadingScreen || isStory || selectedTab === tabTypes.overview
 
-  const selectedStories = isStory || !isReadingScreen
-    ? []
-    : getSelectedStories(
-      entities.stories.entities,
-      feedItem.stories,
-      ownProps.selectedTab,
-    )
+  const selectedStories
+    = isStory || !isReadingScreen
+      ? []
+      : getSelectedStories(
+        entities.stories.entities,
+        feedItem.stories,
+        ownProps.selectedTab,
+      )
 
   const accessToken = _.find(state.session.tokens, { type: 'access' })
 
@@ -169,7 +168,8 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(StoryActions.bookmarkStoryRequest(feedItemId)),
     onPressRemoveBookmark: () =>
       dispatch(StoryActions.removeStoryBookmarkRequest(feedItemId)),
-    onPressFollow: idToFollow => dispatch(UserActions.followUser(userId, idToFollow)),
+    onPressFollow: idToFollow =>
+      dispatch(UserActions.followUser(userId, idToFollow)),
     onPressUnfollow: idToUnfollow =>
       dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }

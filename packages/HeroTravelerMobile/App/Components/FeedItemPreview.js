@@ -91,8 +91,18 @@ export default class FeedItemPreview extends Component {
   }
 
   _touchEdit = () => {
-    const { isStory, feedItem } = this.props
-    if (isStory) this.navToStoryEdit()
+    const { isStory, feedItem, editingDisabled } = this.props
+    // FOR TEMPORARY BUILDS ONLY -- REMOVE AFTER `feature/editor-upgrades` PR merged
+    if (isStory && editingDisabled) {
+      Alert.alert(
+        `Your story contains formatting not supported in the app editor`,
+        `Please go to the HERO Traveler website to make changes`,
+        [{ text: 'Ok' }],
+      )
+    }
+    else if (isStory) this.navToStoryEdit()
+    // REMOVE ABOVE, UNCOMMENT BELOW:
+    // if (isStory) this.navToStoryEdit()
     else NavActions.createGuide({ guideId: feedItem.id })
   }
 

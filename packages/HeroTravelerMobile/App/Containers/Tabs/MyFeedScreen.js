@@ -104,7 +104,6 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
     }
-
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
@@ -332,11 +331,10 @@ class MyFeedScreen extends React.Component {
 
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateApp} = this.state
+    const { needToUpdateApp } = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-
     let bottomContent
     bottomContent = (
       <ConnectedFeedList
@@ -368,7 +366,7 @@ class MyFeedScreen extends React.Component {
         <SearchPlacesPeople
           stories={stories}
           user={user}
-          placeholder={`Search`}
+          placeholder={`Where to?`}
         >
           {bottomContent}
         </SearchPlacesPeople>

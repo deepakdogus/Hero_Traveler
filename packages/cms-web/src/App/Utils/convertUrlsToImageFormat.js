@@ -1,5 +1,12 @@
-const preparePicData = (fileData) => {
-  console.log('fileData', fileData)
+const preparePicData = (fileData, type) => {
+  if (fileData.altText) {
+    if (type === 'thumbnail') {
+      return fileData.versions.thumbnail240
+    }
+    if (type === 'heroImage') {
+      return fileData.original
+    }
+  }
   const format = fileData.format === 'jpg' || 'jpeg' ? 'jpeg' : fileData.format
   const preFn = fileData.public_id.substring(fileData.public_id.lastIndexOf('/') + 1)
   const filename = `${preFn}.${fileData.format}`
@@ -22,11 +29,11 @@ export default function convertUrlsToImageFormat(thumbnail, heroImage, altText){
   }
   if (thumbnail) {
     result.versions = {
-      thumbnail240: preparePicData(thumbnail),
+      thumbnail240: preparePicData(thumbnail, 'thumbnail'),
     }
   }
   if (heroImage) {
-    result.original = preparePicData(heroImage)
+    result.original = preparePicData(heroImage, 'heroImage')
   }
   return result
 }

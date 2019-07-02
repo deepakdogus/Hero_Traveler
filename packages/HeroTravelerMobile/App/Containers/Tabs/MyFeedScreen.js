@@ -31,9 +31,9 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 
 const tabTypes = {
   following: 'following',
-  guides: 'guides',
-  nearby: 'nearby',
   fromUs: 'from us',
+  nearby: 'nearby',
+  guides: 'guides',
 }
 
 const algoliasearch = algoliasearchModule(

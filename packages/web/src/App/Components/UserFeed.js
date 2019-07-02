@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import queryString from 'query-string'
+import _ from 'lodash'
 
 import TabBar from './TabBar'
 import Footer from './Footer'
@@ -46,7 +46,7 @@ export default class UserFeed extends ContainerWithFeedList {
 
   render() {
     const { isUsersProfile, pendingDrafts, user } = this.props
-    const image = user.interstitialImage.original.path
+    const image = _.get(user, 'interstitialImage.original.path')
     let { selectedFeedItems } = this.getSelectedFeedItems()
     console.log(this.props, 'props in userFeed')
     if (this.state.activeTab === 'DRAFTS') {

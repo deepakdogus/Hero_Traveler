@@ -7,6 +7,7 @@ import Footer from '../Components/Footer'
 import FeedItemList from '../Components/FeedItemList'
 import HeadlineDivider from '../Components/HeadlineDivider'
 import ContainerWithFeedList from './ContainerWithFeedList'
+import FeedItemMessage from '../Components/FeedItemMessage'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -63,9 +64,15 @@ export default class extends ContainerWithFeedList {
           onClickTab={this.onClickTab}
         />
         {image && <HeadlineDivider img={image} />}
-        {!!selectedFeedItems.length && (
+        {selectedFeedItems.length && (
           <FeedItemListWrapper>
             <FeedItemList feedItems={selectedFeedItems} />
+            <Footer />
+          </FeedItemListWrapper>
+        )}
+        {!selectedFeedItems.length && (
+          <FeedItemListWrapper>
+            <FeedItemMessage message={'Looks like there are no guides yet.'}/>
             <Footer />
           </FeedItemListWrapper>
         )}

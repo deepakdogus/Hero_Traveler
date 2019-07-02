@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { sizes } from '../Shared/Web/Themes/Metrics'
+import { Colors } from '../Shared/Themes'
 import HorizontalDivider from './HorizontalDivider'
 
 const CenteredText = styled.p`
@@ -24,18 +25,20 @@ const FeedText = styled(CenteredText)`
 `
 
 const SponsorText = styled(CenteredText)`
-  color: #a9a9a9;
+  color: ${Colors.bioGrey};
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 100;
   font-size: 10px;
   letter-spacing: 0.3px;
-  padding: 30px 15px 0 0;
+  padding: 30px 0 5px;
   @media (max-width: ${sizes.tablet}px) {
     padding: 20px;
     font-size: 8px;
   }
-  width: 200px;
+  width: 100px;
   text-align: right;
+  justify-content: right;
+  margin-right: 5px;
 `
 
 const Wrapper = styled.div``
@@ -43,6 +46,13 @@ const Wrapper = styled.div``
 const SponsorWrapper = styled.div`
   display: flex;
   margin: 20px 0 auto;
+  justify-content: center;
+
+`
+
+const ImageAndTextWrapper = styled.div`
+  display: flex;
+  width: 310px;
   justify-content: center;
 `
 
@@ -56,9 +66,12 @@ const StyledDivider = styled(HorizontalDivider)`
 `
 
 export const Img = styled.img`
-  height: 100px;
-  width: 200px;
+  margin-left: 5px;
+  padding: 30px 0 5px;
+  height: 40px;
+  width: 100px;
   object-fit: contain;
+  justify-content: right;
 `
 
 export default class HeadlineDivider extends Component {
@@ -74,8 +87,10 @@ export default class HeadlineDivider extends Component {
           <FeedText>{title}</FeedText>
         ) : (
           <SponsorWrapper>
-            <SponsorText>{'Sponsored by'}</SponsorText>
-            {<Img src={getImageUrl(img)} />}
+            <ImageAndTextWrapper>
+              <SponsorText>{'Sponsored by'}</SponsorText>
+              {<Img src={getImageUrl(img)} />}
+            </ImageAndTextWrapper>
           </SponsorWrapper>
         )}
         <StyledDivider />

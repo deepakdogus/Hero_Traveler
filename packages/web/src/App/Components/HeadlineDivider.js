@@ -29,16 +29,22 @@ const SponsorText = styled(CenteredText)`
   font-weight: 100;
   font-size: 10px;
   letter-spacing: 0.3px;
-  padding: 30px 0 0 0;
+  padding: 30px 15px 0 0;
   @media (max-width: ${sizes.tablet}px) {
     padding: 20px;
     font-size: 8px;
   }
+  width: 200px;
+  text-align: right;
 `
 
 const Wrapper = styled.div``
 
-const SponsorWrapper = styled.div``
+const SponsorWrapper = styled.div`
+  display: flex;
+  margin: 20px 0 auto;
+  justify-content: center;
+`
 
 const StyledDivider = styled(HorizontalDivider)`
   border-color: ${props => props.theme.Colors.background};
@@ -51,10 +57,8 @@ const StyledDivider = styled(HorizontalDivider)`
 
 export const Img = styled.img`
   height: 100px;
-  width: 300px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  width: 200px;
+  object-fit: contain;
 `
 
 export default class HeadlineDivider extends Component {

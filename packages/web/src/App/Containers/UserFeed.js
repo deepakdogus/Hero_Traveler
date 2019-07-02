@@ -72,7 +72,7 @@ export default class extends ContainerWithFeedList {
         )}
         {!selectedFeedItems.length && (
           <FeedItemListWrapper>
-            <FeedItemMessage message={'Looks like there are no guides yet.'}/>
+            <FeedItemMessage message={'Looks like there are no guides yet.'} />
             <Footer />
           </FeedItemListWrapper>
         )}

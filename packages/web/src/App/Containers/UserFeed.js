@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
-import TabBar from './TabBar'
-import Footer from './Footer'
-import FeedItemList from './FeedItemList'
-import HeadlineDivider from './HeadlineDivider'
-import ContainerWithFeedList from '../Containers/ContainerWithFeedList'
+import TabBar from '../Components/TabBar'
+import Footer from '../Components/Footer'
+import FeedItemList from '../Components/FeedItemList'
+import HeadlineDivider from '../Components/HeadlineDivider'
+import ContainerWithFeedList from './ContainerWithFeedList'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -23,7 +23,7 @@ const FeedItemListWrapper = styled.div`
 `
 export const itemsPerQuery = 100
 
-export default class UserFeed extends ContainerWithFeedList {
+export default class extends ContainerWithFeedList {
   constructor() {
     super()
     this.state = {

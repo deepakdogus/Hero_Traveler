@@ -3,27 +3,35 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import queryString from 'query-string'
 
 import StoryActions, {
   getByCategory,
   getFetchStatus,
-  getByUser,
 } from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
-import CategoryHeader from '../Components/CategoryHeader'
-import UserFeed from './UserFeed'
-import CategoryFeed from './CategoryFeed'
+import TabBar from '../Components/TabBar'
+import FeedItemList from '../Components/FeedItemList'
+import Footer from '../Components/Footer'
+import HeadlineDivider from '../Components/HeadlineDivider'
 
 import { runIfAuthed } from '../Lib/authHelpers'
 
+const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY', 'GUIDES']
+
 const ContentWrapper = styled.div``
 
-class Category extends ContainerWithFeedList {
+const FeedItemListWrapper = styled.div`
+  margin: 50px 7% 0;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    margin: 0;
+  }
+`
+
+class CategoryFeed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.object,
     categoryId: PropTypes.string,
@@ -35,49 +43,41 @@ class Category extends ContainerWithFeedList {
     isFollowingCategory: PropTypes.bool,
   }
 
+  state = { activeTab: 'ALL' }
+
   componentDidMount() {
     const { category, loadCategories } = this.props
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
     this.getTabInfo()
-    if (values.type === 'category') {
-      if (!category) loadCategories()
-    }
+    if (!category) loadCategories()
   }
 
-  _followItem = itemId => {
-    this.props.followCategory(this.props.sessionUserId, itemId)
+  _followCategory = categoryId => {
+    this.props.followCategory(this.props.sessionUserId, categoryId)
   }
 
-  _unfollowItem = itemId => {
-    this.props.unfollowCategory(this.props.sessionUserId, itemId)
+  _unfollowCategory = categoryId => {
+    this.props.unfollowCategory(this.props.sessionUserId, categoryId)
   }
 
   render() {
-    const { category, isFollowingCategory, user } = this.props
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
+    const { category, isFollowingCategory } = this.props
+    const { selectedFeedItems } = this.getSelectedFeedItems()
+    const image = _.get(category, 'interstitialImage.original.path')
     return (
       <ContentWrapper>
-        <CategoryHeader
-          category={category}
-          user={user}
-          followItem={this._followItem}
-          unfollowItem={this._unfollowItem}
-          isFollowingCategory={isFollowingCategory}
+        <TabBar
+          tabs={tabBarTabs}
+          activeTab={this.state.activeTab}
+          onClickTab={this.onClickTab}
         />
-        {values.type === 'category' && <CategoryFeed {...this.props} />}
-        {values.type === 'channel' && (
-          <ContentWrapper>
-            <UserFeed
-              {...this.props}
-              getGuides={this.props.getUserGuides}
-              guidesById={this.props.userGuidesById}
-              isChannel={true}
-              getStories={this.props.getUserStories}
-            />
-          </ContentWrapper>
-        )}
+        {image && <HeadlineDivider img={image} />}
+        <FeedItemListWrapper>
+          <FeedItemList
+            feedItems={selectedFeedItems}
+            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}
+          />
+          <Footer />
+        </FeedItemListWrapper>
       </ContentWrapper>
     )
   }
@@ -85,46 +85,35 @@ class Category extends ContainerWithFeedList {
 
 function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
-  const userId = ownProps.match.params.userId
   const sessionUserId = state.session.userId
   let isFollowingCategory = false
   if (state.session.userId) {
-    isFollowingCategory = _.includes(
-      state.signup.selectedCategories,
-      categoryId || userId,
-    )
+    isFollowingCategory = _.includes(state.signup.selectedCategories, categoryId)
   }
 
   return {
     sessionUserId,
     categoryId,
-    user: state.entities.users.entities[userId],
     category: state.entities.categories.entities[categoryId],
     fetchStatus: getFetchStatus(state.entities.stories, categoryId),
     storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
-    userFeedById: getByUser(state.entities.stories, userId),
     guides: state.entities.guides.entities,
-    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}`, []),
-    userGuidesById: _.get(state, `entities.guides.guideIdsByUserId[${userId}]`, []),
+    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}]`, []),
     isFollowingCategory,
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   const categoryId = ownProps.match.params.categoryId
-  const targetUserId = ownProps.match.params.userId
-
   return {
     getStories: (_0, _1, storyType) => {
       storyType = storyType.toLowerCase()
       if (storyType === 'all') storyType = null
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
-    getUserStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    getCategoryGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
-    getUserGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
+    getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
     followCategory: (sessionUserId, categoryId) =>
       dispatch(
         runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId]),
@@ -139,4 +128,4 @@ function mapDispatchToProps(dispatch, ownProps) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Category)
+)(CategoryFeed)

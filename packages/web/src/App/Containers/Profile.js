@@ -23,7 +23,7 @@ import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
-import UserFeed from '../Components/UserFeed'
+import UserFeed from './UserFeed'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']

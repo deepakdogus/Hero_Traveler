@@ -21,6 +21,7 @@ const GUIDE_INDEX = env.SEARCH_GUIDE_INDEX
 const MAX_STORY_RESULTS = 64
 const MAX_GUIDE_RESULTS = 20
 const METER_PRECISION = 1000 // 0-1000m, 1001-2000m, etc., distances ranked "equally near"
+const FIVE_HUNDRED_MILES = 804672 // 50 miles in meters
 
 const Container = styled.div`
   margin: 80px 7% 0;
@@ -167,6 +168,7 @@ class SearchResults extends Component {
     helper
       .setQuery()
       .setQueryParameter('aroundLatLng', `${lat}, ${lng}`)
+      .setQueryParameter('aroundRadius', FIVE_HUNDRED_MILES)
       .setQueryParameter('aroundPrecision', METER_PRECISION)
       .setQueryParameter('hitsPerPage', hits)
       .search()

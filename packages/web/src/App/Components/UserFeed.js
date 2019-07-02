@@ -48,7 +48,6 @@ export default class UserFeed extends ContainerWithFeedList {
     const { isUsersProfile, pendingDrafts, user } = this.props
     const image = _.get(user, 'interstitialImage.original.path')
     let { selectedFeedItems } = this.getSelectedFeedItems()
-    console.log(this.props, 'props in userFeed')
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
       const filteredPendingDrafts = pendingDrafts.filter(draft => {

@@ -122,6 +122,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
+        console.log('getting here', this.state.activeTab, this.props.getStories)
         return this.props.getStories(
           this.props.sessionUserId,
           {

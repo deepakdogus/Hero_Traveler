@@ -136,10 +136,10 @@ class GridItemFeedScreen extends React.Component {
   _onLeft = () => NavActions.pop()
 
   _onRight = () => {
-    const { profileId } = this.props
+    const { user } = this.props
     const shouldUnfollow = this.getIsFollowingCategory()
-    if (shouldUnfollow) this.props.unfollowProfile(profileId)
-    else this.props.followProfile(profileId)
+    if (shouldUnfollow) this.props.unfollowProfile(user.id)
+    else this.props.followProfile(user.id)
   }
 
   getIsFollowingCategory = () => {

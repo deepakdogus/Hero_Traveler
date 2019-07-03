@@ -277,8 +277,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 : SignupActions.signupFollowCategory(profileId)),
     unfollowProfile: (userId) =>
       dispatch(isChannel
-                ? SignupActions.signupUnfollowCategory(ownProps.profileId)
-                : UserActions.unfollowUser(userId, profileId)),
+                ? UserActions.unfollowUser(userId, profileId)
+                : SignupActions.signupUnfollowCategory(ownProps.profileId)),
   }
 }
 

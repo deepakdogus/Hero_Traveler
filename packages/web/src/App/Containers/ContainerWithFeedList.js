@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import algoliasearchModule from 'algoliasearch'
 import algoliaSearchHelper from 'algoliasearch-helper'
-import queryString from 'query-string'
 
 import env from '../Config/Env'
 
@@ -41,6 +40,10 @@ export default class ContainerWithFeedList extends React.Component {
     draftsFetchStatus: PropTypes.object,
     userBookmarksFetchStatus: PropTypes.object,
     guidesFetchStatus: PropTypes.object,
+    isChannel: PropTypes.bool,
+    isUser: PropTypes.bool,
+    categoryId: PropTypes.string,
+    getCategoryGuides: PropTypes.func,
   }
 
   state = {
@@ -98,9 +101,7 @@ export default class ContainerWithFeedList extends React.Component {
   }
 
   getTabInfo = page => {
-    const queryReqest = this.props.location.search
-    const values = queryString.parse(queryReqest)
-    const userOrCategoryId = this.props.match.params.categoryId || this.props.match.params.userId
+    const { isUser, isChannel, sessionUserId, categoryId } = this.props
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
@@ -109,9 +110,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return (values.type === 'channel'
-          ? (this.props.getUserGuides && this.props.getUserGuides(userOrCategoryId))
-          : (this.props.getGuides && this.props.getGuides(userOrCategoryId)))
+        return this.props.getGuides && this.props.getGuides(sessionUserId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':
@@ -123,19 +122,14 @@ export default class ContainerWithFeedList extends React.Component {
       case 'EAT':
       case 'STAY':
       default:
-        values.type === 'channel'
-          ? this.props.getUserStories(
-              (userOrCategoryId),
-              this.state.activeTab.toLowerCase(),
-            )
-          : this.props.getStories(
-              this.props.sessionUserId,
-            {
-              perPage: itemsPerQuery,
-              page,
-            },
-              this.state.activeTab,
-            )
+        return this.props.getStories(
+          this.props.sessionUserId,
+          {
+            perPage: itemsPerQuery,
+            page,
+          },
+          this.state.activeTab,
+        )
     }
   }
 
@@ -158,10 +152,6 @@ export default class ContainerWithFeedList extends React.Component {
     } = this.props
 
     // will use fetchStatus to show loading/error
-    // console.log(this.props, 'these are the props in the container with feedlist')
-    // const queryReqest = this.props.location.search
-    // const values = queryString.parse(queryReqest)
-    // console.log(values, 'these are the values')
     switch (this.state.activeTab) {
       case 'DRAFTS':
         return {

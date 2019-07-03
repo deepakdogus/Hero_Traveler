@@ -10,34 +10,24 @@ import StoryActions, {
   getFetchStatus,
   getByUser,
 } from '../Shared/Redux/Entities/Stories'
+import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
-import UserActions from '../Shared/Redux/Entities/Users'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
-import CategoryHeader from '../Components/CategoryHeader'
-import TabBar from '../Components/TabBar'
-import FeedItemList from '../Components/FeedItemList'
-import Footer from '../Components/Footer'
+import ProfileHeader from '../Components/ProfileHeader'
+import UserFeed from './UserFeed'
+import CategoryFeed from './CategoryFeed'
 
 import { runIfAuthed } from '../Lib/authHelpers'
 
-const tabBarTabs = ['ALL', 'SEE', 'DO', 'EAT', 'STAY', 'GUIDES']
-
 const ContentWrapper = styled.div``
-
-const FeedItemListWrapper = styled.div`
-  margin: 50px 7% 0;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    margin: 0;
-  }
-`
 
 class Category extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.object,
-    userOrCategoryId: PropTypes.string,
+    categoryId: PropTypes.string,
     category: PropTypes.object,
     loadCategories: PropTypes.func,
     loadCategoryStories: PropTypes.func,
@@ -46,108 +36,131 @@ class Category extends ContainerWithFeedList {
     isFollowingCategory: PropTypes.bool,
   }
 
-  state = { activeTab: 'ALL' }
-
   componentDidMount() {
     const { category, loadCategories } = this.props
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
-    this.getTabInfo()
-    if (values.type === category) {
+    if (values.type === 'category') {
       if (!category) loadCategories()
     }
   }
 
-  _followItem = categoryOrUserId => {
-    this.props.followCategory(this.props.sessionUserId, categoryOrUserId)
+  _followItem = itemId => {
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    values.type === 'category'
+      ? this.props.followCategory(this.props.sessionUserId, itemId)
+      : this.props.followUser(this.props.sessionUserId, itemId)
+    this.props.loadUserFollowing(itemId)
   }
 
-  _unfollowItem = categoryOrUserId => {
-    this.props.unfollowCategory(this.props.sessionUserId, categoryOrUserId)
+  _unfollowItem = itemId => {
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    values.type === 'category'
+      ? this.props.unfollowCategory(this.props.sessionUserId, itemId)
+      : this.props.unfollowUser(this.props.sessionUserId, itemId)
+    this.props.loadUserFollowing(itemId)
   }
 
   render() {
-    const { category, isFollowingCategory, user } = this.props
-    const { selectedFeedItems } = this.getSelectedFeedItems()
+    const { category, isFollowingCategory, user, isFollowingUsers } = this.props
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
     return (
       <ContentWrapper>
-        <CategoryHeader
-          category={category}
+        <ProfileHeader
+          profile={category}
           user={user}
           followItem={this._followItem}
           unfollowItem={this._unfollowItem}
-          isFollowingCategory={isFollowingCategory}
+          isFollowingCategory={isFollowingCategory || isFollowingUsers}
         />
-        <TabBar
-          tabs={tabBarTabs}
-          activeTab={this.state.activeTab}
-          onClickTab={this.onClickTab}
-        />
-        <FeedItemListWrapper>
-          <FeedItemList
-            feedItems={selectedFeedItems}
-            activeTab={this.state.activeTab === 'GUIDES' ? 'GUIDES' : 'STORIES'}
-          />
-          <Footer />
-        </FeedItemListWrapper>
+        {values.type === 'category' && <CategoryFeed {...this.props} />}
+        {values.type === 'channel' && (
+          <ContentWrapper>
+            <UserFeed
+              {...this.props}
+              getGuides={this.props.getUserGuides}
+              guidesById={this.props.userGuidesById}
+              isChannel={true}
+              getStories={this.props.getUserStories}
+            />
+          </ContentWrapper>
+        )}
       </ContentWrapper>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const userOrCategoryId = ownProps.match.params.categoryId || ownProps.match.params.userId
+  const categoryId = ownProps.match.params.categoryId
+  const userId = ownProps.match.params.userId
   const sessionUserId = state.session.userId
-  let isFollowingCategory = false
-  const queryReqest = ownProps.location.search
-  const values = queryString.parse(queryReqest)
-  const categoryOrChannelSearch = values.type === 'channel' 
-    ? `entities.guides.guideIdsByUserId[${userOrCategoryId}]`
-    : `entities.guides.guideIdsByCategoryId[${userOrCategoryId}]`
+  const myFollowedUsersObject
+    = state.entities.users.userFollowingByUserIdAndId[sessionUserId]
+  const followedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
 
-  if (state.session.userId) {
-    isFollowingCategory = _.includes(state.signup.selectedCategories, userOrCategoryId)
-  }
+  const isFollowingUsers = _.includes(followedUsers, userId)
+
+  const isFollowingCategory
+    = sessionUserId && _.includes(state.signup.selectedCategories, categoryId)
 
   return {
     sessionUserId,
-    userOrCategoryId,
-    category: state.entities.categories.entities[userOrCategoryId],
-    user: state.entities.users.entities[userOrCategoryId],
-    fetchStatus: getFetchStatus(state.entities.stories, userOrCategoryId),
-    storiesById:
-      values && values.type === 'channel'
-        ? getByUser(state.entities.stories, userOrCategoryId)
-        : getByCategory(state.entities.stories, userOrCategoryId),
+    categoryId,
+    user: state.entities.users.entities[userId],
+    category: state.entities.categories.entities[categoryId],
+    fetchStatus: getFetchStatus(state.entities.stories, categoryId),
+    storiesById: getByCategory(state.entities.stories, categoryId),
     stories: state.entities.stories.entities,
+    userFeedById: getByUser(state.entities.stories, userId),
     guides: state.entities.guides.entities,
-    guidesById: _.get(state, (categoryOrChannelSearch), []),
+    guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}`, []),
+    userGuidesById: _.get(state, `entities.guides.guideIdsByUserId[${userId}]`, []),
     isFollowingCategory,
+    isFollowingUsers,
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const userOrCategoryId = ownProps.match.params.categoryId || ownProps.match.params.userId
+  const categoryId = ownProps.match.params.categoryId
+  const targetUserId = ownProps.match.params.userId
+
   return {
     getStories: (_0, _1, storyType) => {
       storyType = storyType.toLowerCase()
       if (storyType === 'all') storyType = null
-      dispatch(StoryActions.fromCategoryRequest(userOrCategoryId, storyType))
+      dispatch(StoryActions.fromCategoryRequest(categoryId, storyType))
     },
-    getUserStories: (userOrCategoryId, storyType) =>
-      dispatch(StoryActions.fromUserRequest(userOrCategoryId, storyType)),
+    getUserStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    loadUsers: () => dispatch(UserActions.loadUser()),
-    getGuides: () => dispatch(GuideActions.getCategoryGuides(userOrCategoryId)),
-    getUserGuides: () => dispatch(GuideActions.getUserGuides(userOrCategoryId)),
-    followCategory: (sessionUserId, userOrCategoryId) =>
+    getCategoryGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
+    getUserGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
+    followCategory: (sessionUserId, categoryId) =>
       dispatch(
-        runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [userOrCategoryId]),
+        runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId]),
       ),
-    unfollowCategory: (sessionUserId, userOrCategoryId) =>
+    unfollowCategory: (sessionUserId, categoryId) =>
       dispatch(
-        runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [userOrCategoryId]),
+        runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [categoryId]),
       ),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
+    loadUserFollowing: sessionUserId =>
+      dispatch(UserActions.loadUserFollowing(sessionUserId)),
   }
 }
 

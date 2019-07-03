@@ -33,12 +33,12 @@ export default class TabBar extends Component {
     largeTabBar: PropTypes.bool,
   }
 
-  _onClickTab = (tabValue) => {
+  _onClickTab = tabValue => {
     return () => this.props.onClickTab(tabValue)
   }
 
-  renderTabs(){
-    const {activeTab, tabs, tabStyle} = this.props
+  renderTabs() {
+    const { activeTab, tabs, tabStyle } = this.props
     return Object.keys(tabs).map((key, index) => {
       return (
         <Tab
@@ -55,10 +55,7 @@ export default class TabBar extends Component {
   render() {
     const { largeTabBar } = this.props
     return (
-      <View style={[
-        styles.wrapper,
-        largeTabBar && styles.largeWrapper,
-      ]}>
+      <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -68,7 +65,6 @@ export default class TabBar extends Component {
           {this.renderTabs()}
         </ScrollView>
       </View>
-
     )
   }
 }

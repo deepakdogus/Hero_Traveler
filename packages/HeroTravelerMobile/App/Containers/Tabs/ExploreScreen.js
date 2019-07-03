@@ -8,11 +8,9 @@ import { Actions as NavActions } from 'react-native-router-flux'
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
-import getCatagoriesOrChannels from '../../Shared/Lib/channelAndCategoryRender'
+import getGridData from '../../Shared/Lib/getGridData'
 
-import styles, {
-  CategoryFeedNavActionStyles,
-} from '../Styles/ExploreScreenStyles'
+import styles, { CategoryFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
 
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -61,23 +59,22 @@ class ExploreScreen extends Component {
       onClickTab={this.selectTab}
       tabStyle={styles.tabStyle}
     />
-
   )
 
-  _navToCategoryFeed = category => {
+  _navToCategoryFeed = tile => {
     NavActions.explore_categoryFeed({
-      categoryId: category.id,
-      title: category.title,
+      profileId: tile.id,
+      title: tile.title,
       leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
       navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
-      isCategory: category.username ? true : false,
+      isChannel: tile.username ? true : false,
     })
   }
 
   getEntitiesByType = () => {
     const { selectedTab } = this.state
     const { channelsByID, users, categories } = this.props
-    return getCatagoriesOrChannels(selectedTab, channelsByID, users, categories, tabTypes)
+    return getGridData(selectedTab, channelsByID, users, categories, tabTypes)
   }
 
   render() {
@@ -89,12 +86,11 @@ class ExploreScreen extends Component {
       user,
     } = this.props
 
-    const {selectedTab} = this.state
+    const { selectedTab } = this.state
     const categoriesArray = _.values(this.getEntitiesByType())
 
-    const content = (
-      categoriesFetchStatus.fetching && !categoriesArray.length
-    ) ? (
+    const content
+      = categoriesFetchStatus.fetching && !categoriesArray.length ? (
         <Loader style={styles.loader} />
       ) : (
         <ScrollView>

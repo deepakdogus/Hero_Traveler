@@ -12,6 +12,7 @@ import StoryActions, {
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
+import UserActions, { getFollowers } from '../../Shared/Redux/Entities/Users'
 
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
@@ -42,9 +43,9 @@ const restrictedTabTypes = {
   guides: 'guides',
 }
 
-class CategoryAndUserFeedScreen extends React.Component {
+class GridItemFeedScreen extends React.Component {
   static propTypes = {
-    categoryId: PropTypes.string,
+    profileId: PropTypes.string,
     user: PropTypes.object,
     storiesById: PropTypes.array,
     categoryGuidesById: PropTypes.arrayOf(PropTypes.string),
@@ -53,6 +54,9 @@ class CategoryAndUserFeedScreen extends React.Component {
     title: PropTypes.string,
     loadCategoryStories: PropTypes.func,
     loadCategoryGuides: PropTypes.func,
+    loadUserStories: PropTypes.func,
+    loadUserGuides: PropTypes.func,
+    userChannelName: PropTypes.func,
     getSelectedCategories: PropTypes.func,
     unfollowCategory: PropTypes.func,
     followCategory: PropTypes.func,
@@ -69,15 +73,15 @@ class CategoryAndUserFeedScreen extends React.Component {
   }
 
   loadStories() {
-    this.props.isCategory 
-    ? this.props.loadUserStories(this.props.categoryId)
-    : this.props.loadCategoryStories(this.props.categoryId)
+    this.props.isChannel
+      ? this.props.loadUserStories(this.props.profileId)
+      : this.props.loadCategoryStories(this.props.profileId)
   }
 
   loadGuides() {
-    this.props.isCategory  
-    ? this.props.loadUserGuides(this.props.categoryId)
-    : this.props.loadCategoryGuides(this.props.categoryId)
+    this.props.isChannel
+    ? this.props.loadUserGuides(this.props.profileId)
+    : this.props.loadCategoryGuides(this.props.profileId)
   }
 
   loadData() {
@@ -102,22 +106,15 @@ class CategoryAndUserFeedScreen extends React.Component {
   }
 
   _wrapElt = elt => (
-    <View style={[
-      styles.scrollItemFullScreen,
-      styles.center,
-    ]}>
-      {elt}
-    </View>
+    <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
   )
 
   _changeTab = selectedTab => {
-    if (selectedTab !== restrictedTabTypes.guides) this.loadStories()  
+    if (selectedTab !== restrictedTabTypes.guides) this.loadStories()
     if (selectedTab !== restrictedTabTypes.stories) this.loadGuides()
-    this.setState(
-      {
-        selectedTab,
-      },
-    )
+    this.setState({
+      selectedTab,
+    })
   }
 
   renderFeedItem = (feedItem, index) => {
@@ -139,14 +136,17 @@ class CategoryAndUserFeedScreen extends React.Component {
   _onLeft = () => NavActions.pop()
 
   _onRight = () => {
+    const { user } = this.props
     const shouldUnfollow = this.getIsFollowingCategory()
-    if (shouldUnfollow) this.props.unfollowCategory()
-    else this.props.followCategory()
+    if (shouldUnfollow) this.props.unfollowProfile(user.id)
+    else this.props.followProfile(user.id)
   }
 
   getIsFollowingCategory = () => {
-    const { categoryId, selectedCategories } = this.props
-    return _.includes(selectedCategories, categoryId)
+    const { profileId, selectedCategories, myFollowedUsers, isChannel, user } = this.props
+    return isChannel
+            ? _.includes(myFollowedUsers, profileId)
+            : _.includes(selectedCategories, profileId)
   }
 
   renderTabs() {
@@ -194,10 +194,8 @@ class CategoryAndUserFeedScreen extends React.Component {
       bottomContent = this.renderNoStories(<Loader />)
     }
     else if (
-      (selectedTab !== restrictedTabTypes.guides
-        && _.size(storiesById) === 0)
-      || (selectedTab === restrictedTabTypes.guides
-        && _.size(categoryGuidesById) === 0)
+      (selectedTab !== restrictedTabTypes.guides && _.size(storiesById) === 0)
+      || (selectedTab === restrictedTabTypes.guides && _.size(categoryGuidesById) === 0)
     ) {
       bottomContent = this.renderNoStories(
         <NoStoriesMessage
@@ -212,9 +210,7 @@ class CategoryAndUserFeedScreen extends React.Component {
         <ConnectedFeedList
           isStory={selectedTab !== restrictedTabTypes.guides}
           entitiesById={
-            selectedTab === restrictedTabTypes.guides
-              ? categoryGuidesById
-              : storiesById
+            selectedTab === restrictedTabTypes.guides ? categoryGuidesById : storiesById
           }
           renderSectionHeader={this.renderTabs()}
           sectionContentHeight={40}
@@ -228,15 +224,13 @@ class CategoryAndUserFeedScreen extends React.Component {
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
         <NavBar
-          title={title || userChannelName.username || null}
+          title={title || userChannelName.username}
           titleStyle={styles.navbarTitleStyle}
           onLeft={this._onLeft}
           leftIcon="arrowLeft"
           onRight={this._onRight}
           rightTextStyle={
-            isFollowingCategory
-            ? styles.followingTextStyle
-            : styles.followTextStyle
+            isFollowingCategory ? styles.followingTextStyle : styles.followTextStyle
           }
           rightTitle={isFollowingCategory ? 'FOLLOWING' : '+ FOLLOW'}
           style={styles.navbarContainer}
@@ -249,47 +243,46 @@ class CategoryAndUserFeedScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const getGuidePath = props.isCategory
-  ? `entities.guides.guideIdsByUserId[${props.categoryId}]`
-  : `entities.guides.guideIdsByCategoryId[${props.categoryId}]`
+  const guidePath = props.isChannel
+    ? `entities.guides.guideIdsByUserId[${props.profileId}]`
+    : `entities.guides.guideIdsByCategoryId[${props.profileId}]`
   return {
-    user: state.entities.users.entities[state.session.userId], 
-    fetchStatus: getFetchStatus(state.entities.stories, props.categoryId),
-    storiesById: props.isCategory 
-    ? getByUser(state.entities.stories, props.categoryId)
-    : getByCategory(state.entities.stories, props.categoryId),
-    categoryGuidesById: _.get(
-      state,
-      getGuidePath,
-      [],
-    ),
+    user: state.entities.users.entities[state.session.userId],
+    fetchStatus: getFetchStatus(state.entities.stories, props.profileId),
+    storiesById: props.isChannel
+      ? getByUser(state.entities.stories, props.profileId)
+      : getByCategory(state.entities.stories, props.profileId),
+    categoryGuidesById: _.get(state, guidePath, []),
     error: state.entities.stories.error,
     selectedCategories: state.signup.selectedCategories,
     location: state.routes.scene.name,
-    userChannelName: state.entities.users.entities[props.categoryId],
+    userChannelName: state.entities.users.entities[props.profileId],
+    myFollowedUsers: getFollowers(state.entities.users, 'following', state.session.userId),
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  const { isChannel, profileId } = ownProps
   return {
     loadCategoryGuides: categoryId =>
       dispatch(GuideActions.getCategoryGuides(categoryId)),
     loadCategoryStories: (categoryId, storyType) =>
       dispatch(StoryActions.fromCategoryRequest(categoryId, storyType)),
-    loadUserStories: (userId) => 
-      dispatch(StoryActions.fromUserRequest(userId)),
-    loadUserGuides: (userId) => 
-      dispatch(GuideActions.getUserGuides(userId)),
-    getSelectedCategories: () =>
-      dispatch(SignupActions.signupGetUsersCategories()),
-    followCategory: () =>
-      dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
-    unfollowCategory: () =>
-      dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
+    loadUserStories: userId => dispatch(StoryActions.fromUserRequest(userId)),
+    loadUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
+    getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
+    followProfile: (userId) =>
+      dispatch(isChannel
+                ? UserActions.followUser(userId, profileId)
+                : SignupActions.signupFollowCategory(profileId)),
+    unfollowProfile: (userId) =>
+      dispatch(isChannel
+                ? UserActions.unfollowUser(userId, profileId)
+                : SignupActions.signupUnfollowCategory(ownProps.profileId)),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CategoryAndUserFeedScreen)
+)(GridItemFeedScreen)

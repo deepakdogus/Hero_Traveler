@@ -6,7 +6,7 @@ import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from '../Shared/Web/Components/RoundedButton'
-import {OverlayStyles} from './Overlay'
+import { OverlayStyles } from './Overlay'
 import HeaderTopGradient from '../Shared/Web/Components/Headers/Shared/HeaderTopGradient'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
@@ -15,12 +15,12 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   background-position: center;
 `
 
-const CategoryTitle = styled.p`
+const ProfileTitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 59px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   margin: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -32,7 +32,7 @@ const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
   height: 570px;
-  top:0;
+  top: 0;
   text-align: center;
   z-index: 2;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -61,7 +61,7 @@ const StyledRoundedButton = styled(RoundedButton)`
   text-transform: uppercase;
   width: 160px;
   padding: 9px;
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
 `
 
 const textProps = `
@@ -83,7 +83,7 @@ const responsiveFollowButtonTextStyles = `
   font-size: 10px;
 `
 
-export default class CategoryHeader extends React.Component {
+export default class ProfileHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
     user: PropTypes.object,
@@ -102,18 +102,23 @@ export default class CategoryHeader extends React.Component {
     this.props.unfollowItem((category && category.id) || (user && user.id))
   }
 
-  render () {
+  render() {
     const { user, category, isFollowingCategory } = this.props
     if (!category && !user) return null
-    const categoryImageUrl = getImageUrl((( category && category.image) || (user && user.channelImage)), 'image')
+    const categoryImageUrl = getImageUrl(
+      (category && category.image) || (user && user.channelImage),
+      'image',
+    )
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}
-        size='large'
+        size="large"
       >
-        <HeaderTopGradient/>
+        <HeaderTopGradient />
         <Centered>
-          <CategoryTitle>{(category && category.title) || (user && user.username)}</CategoryTitle>
+          <ProfileTitle>
+            {(category && category.title) || (user && user.username)}
+          </ProfileTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton

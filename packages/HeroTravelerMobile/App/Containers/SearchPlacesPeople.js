@@ -22,10 +22,7 @@ import SearchList from '../Components/SearchList'
 import SearchTabBar from '../Components/SearchTabBar'
 import TabIcon from '../Components/TabIcon'
 
-const algoliasearch = algoliasearchModule(
-  env.SEARCH_APP_NAME,
-  env.SEARCH_API_KEY,
-)
+const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 
 const USERS_INDEX = env.SEARCH_USER_INDEX
 
@@ -102,12 +99,13 @@ class SearchPlacesPeople extends Component {
     }
 
     // do not search when the search query is empty
-    if (_.isString(inputText) && inputText.length === 0) return this.setState({
-      lastPeopleSearchResults: null,
-      lastLocationPredictions: null,
-      searchingAlgolia: false,
-      hasSearchText,
-    })
+    if (_.isString(inputText) && inputText.length === 0)
+      return this.setState({
+        lastPeopleSearchResults: null,
+        lastLocationPredictions: null,
+        searchingAlgolia: false,
+        hasSearchText,
+      })
 
     // do not search when under 3 characters query length
     if (_.isString(inputText) && inputText.length < 3) {
@@ -164,8 +162,7 @@ class SearchPlacesPeople extends Component {
   _goToPeopleTab = () => this._changeTab(1)
 
   setFocus = () => {
-    if (this.state.selectedTabIndex === null)
-      this.setState({ selectedTabIndex: 0 })
+    if (this.state.selectedTabIndex === null) this.setState({ selectedTabIndex: 0 })
   }
 
   checkClearResults = text => {
@@ -219,20 +216,13 @@ class SearchPlacesPeople extends Component {
       searchingAlgolia,
     } = this.state
     const showSearch
-      = lastPeopleSearchResults
-      || lastLocationPredictions
-      || selectedTabIndex !== null
+      = lastPeopleSearchResults || lastLocationPredictions || selectedTabIndex !== null
     // TODO: remove conditional navBarBorder when you want to display the tab bar;
     // uncomment the renderTab() line
 
     return (
       <View style={[styles.containerWithTabbar, styles.root]}>
-        <View
-          style={[
-            styles.fakeNavBar,
-            renderTabs && !showSearch,
-          ]}
-        >
+        <View style={[styles.fakeNavBar]}>
           <View style={styles.headerSearch}>
             <View style={styles.searchWrapper}>
               {!hasSearchText && (
@@ -251,10 +241,7 @@ class SearchPlacesPeople extends Component {
               )}
               <TextInput
                 ref={this.setupInputRef}
-                style={[
-                  styles.searchInput,
-                  hasSearchText && styles.searchInputFlex,
-                ]}
+                style={[styles.searchInput, hasSearchText && styles.searchInputFlex]}
                 placeholder={placeholder || `Places & People`}
                 placeholderTextColor={Colors.grey}
                 onFocus={this.setFocus}
@@ -273,10 +260,7 @@ class SearchPlacesPeople extends Component {
                 <TabIcon
                   name="closeDark"
                   style={{
-                    view: [
-                      styles.InputXView,
-                      !hasSearchText && styles.InputXViewHidden,
-                    ],
+                    view: [styles.InputXView, !hasSearchText && styles.InputXViewHidden],
                     image: styles.InputXIcon,
                   }}
                 />

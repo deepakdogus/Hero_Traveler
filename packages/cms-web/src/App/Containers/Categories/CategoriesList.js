@@ -12,75 +12,76 @@ import getImageUrl from '../../Shared/Lib/getImageUrl'
 
 import GenericList from '../../Components/Shared/GenericList'
 
-import {
-  SquareImg,
-} from '../../Components/Shared/StyledListComponents'
+import { SquareImg } from '../../Components/Shared/StyledListComponents'
 
-const columns = [{
-  title: 'Title',
-  dataIndex: 'title',
-  sorter: true,
-},
-{
-  title: 'Date Created',
-  dataIndex: 'createdAt',
-  render: v => (<span>{moment(v).format('YYYY/MM/DD')}</span>),
-  sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-},
-{
-  title: '# Of Stories',
-  render: (item) => {
-    return (
+const columns = [
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    sorter: true,
+  },
+  {
+    title: 'Date Created',
+    dataIndex: 'createdAt',
+    render: v => <span>{moment(v).format('YYYY/MM/DD')}</span>,
+    sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  },
+  {
+    title: '# Of Stories',
+    render: item => {
+      return (
+        <Link
+          to={{
+            pathname: `/categories/${item._id}/stories`,
+            query: { categoryName: item.title },
+          }}
+        >
+          {get(item, 'counts.stories', 0)}
+        </Link>
+      )
+    },
+    sorter: true,
+  },
+  {
+    title: '# Of Guides',
+    render: item => (
       <Link
         to={{
-          pathname: `/categories/${item._id}/stories`,
+          pathname: `/categories/${item._id}/guides`,
           query: { categoryName: item.title },
         }}
       >
-        {get(item, 'counts.stories', 0)}
-      </Link>)
+        {item.numberOfGuides}
+      </Link>
+    ),
   },
-  sorter: true,
-},
-{
-  title: '# Of Guides',
-  render: (item) => (
-    <Link
-      to={{
-        pathname: `/categories/${item._id}/guides`,
-        query: { categoryName: item.title },
-      }}
-    >
-      {item.numberOfGuides}
-    </Link>
-  ),
-},
-{
-  title: '# Of Followers',
-  dataIndex: 'counts.followers',
-  sorter: true,
-},
-{
-  title: 'Image',
-  render: (item) => (
-    <SquareImg
-      src={getImageUrl(get(item, 'image'), 'categoryThumbnail') || Images.placeholder}
-    />
-  ),
-},
-{
-  title: 'Edit',
-  render: (item) => (<Link to={`/categories/${item.id}`}><Icon type='edit' /></Link>),
-},
+  {
+    title: '# Of Followers',
+    dataIndex: 'counts.followers',
+    sorter: true,
+  },
+  {
+    title: 'Image',
+    render: item => (
+      <SquareImg
+        src={getImageUrl(get(item, 'image'), 'gridItemThumbnail') || Images.placeholder}
+      />
+    ),
+  },
+  {
+    title: 'Edit',
+    render: item => (
+      <Link to={`/categories/${item.id}`}>
+        <Icon type="edit" />
+      </Link>
+    ),
+  },
 ]
 
-const filterOptions = [
-  'featured',
-  'all',
-]
+const filterOptions = ['featured', 'all']
 
 class CategoriesList extends React.Component {
-  handleApplyTypeFilter = (value) => {
+  handleApplyTypeFilter = value => {
     const { getCategories, params } = this.props
     getCategories({
       ...params,
@@ -103,11 +104,9 @@ class CategoriesList extends React.Component {
     } = this.props
 
     const additionalControls = [
-      (
-        <Link to='/newCategory' key="link">
-          <Button type="primary">Create Category</Button>
-        </Link>
-      ),
+      <Link to="/newCategory" key="link">
+        <Button type="primary">Create Category</Button>
+      </Link>,
     ]
 
     return (
@@ -148,20 +147,20 @@ function mapStateToProps(state) {
     list: newList,
     total: get(state, 'entities.categories.adminCategories.total'),
     params: get(state, 'entities.categories.adminCategories.params'),
-    isLoading:
-      get(state, 'entities.categories.adminCategories.fetchStatus.fetching'),
-    isRestoring:
-      get(state, 'entities.categories.adminCategories.isRestoring'),
+    isLoading: get(state, 'entities.categories.adminCategories.fetchStatus.fetching'),
+    isRestoring: get(state, 'entities.categories.adminCategories.isRestoring'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategories: (params) =>
-      dispatch(CategoriesActions.adminGetCategories(params)),
-    restoreCategories: (payload) =>
+    getCategories: params => dispatch(CategoriesActions.adminGetCategories(params)),
+    restoreCategories: payload =>
       dispatch(CategoriesActions.adminRestoreCategories(payload)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CategoriesList)

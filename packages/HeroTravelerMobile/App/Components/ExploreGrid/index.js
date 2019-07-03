@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
+import _ from 'lodash'
 import TabIcon from '../TabIcon'
 import ImageWrapper from '../ImageWrapper'
 import styles from './ExploreGridStyles'
-import getImageUrl from '../../Shared/Lib/getImageUrl'
-import { measurements } from './ExploreGridStyles'
+import getItemUrl from '../../Shared/Lib/getImageUrl'
+import { GRID_ITEM_DIMENSION } from './ExploreGridStyles'
 
 export default class ExploreGrid extends Component {
   static propTypes = {
@@ -17,18 +14,20 @@ export default class ExploreGrid extends Component {
     onPress: PropTypes.func,
   }
 
-  _onPress = category => {
+  _onPress = categoryOrChannel => {
     const { onPress } = this.props
-    if (onPress) return () => onPress(category)
+    if (onPress) return () => onPress(categoryOrChannel)
     else return null
   }
 
   renderItem = categoryOrChannel => {
     const { isChannel } = this.props
-    const image = categoryOrChannel.image || categoryOrChannel.channelImage.versions.thumbnail240.path
-    const categoryOrChannelUrl = getImageUrl(image, 'categoryThumbnail', {
-      width: isChannel ? null : measurements - 4,
-      height: measurements - 4,
+    const image
+      = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
+
+    const categoryOrChannelUrl = getItemUrl(image, 'gridItemThumbnail', {
+      width: isChannel ? null : GRID_ITEM_DIMENSION - 4,
+      height: GRID_ITEM_DIMENSION - 4,
     })
 
     return (
@@ -39,14 +38,13 @@ export default class ExploreGrid extends Component {
               cached={false}
               background={true}
               source={{ uri: categoryOrChannelUrl }}
-              style={isChannel ? styles.gridImageForChannels : styles.gridImageForCategories}
+              style={
+                isChannel ? styles.gridImageForChannels : styles.gridImageForCategories
+              }
               imageStyle={{ borderRadius: 6 }}
             >
               {categoryOrChannel.selected && (
-                <TabIcon
-                  name="redCheckOutlined"
-                  style={{ view: styles.selectedIcon }}
-                />
+                <TabIcon name="redCheckOutlined" style={{ view: styles.selectedIcon }} />
               )}
             </ImageWrapper>
             <Text
@@ -65,10 +63,6 @@ export default class ExploreGrid extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.grid}>
-        {this.props.categories.map(this.renderItem)}
-      </View>
-    )
+    return <View style={styles.grid}>{this.props.categories.map(this.renderItem)}</View>
   }
 }

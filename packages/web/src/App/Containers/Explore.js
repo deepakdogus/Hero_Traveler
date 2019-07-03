@@ -11,7 +11,7 @@ import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import UserActions from '../Shared/Redux/Entities/Users'
 import TabBar from '../Components/TabBar'
-import getCatagoriesOrChannels from '../Shared/Lib/channelAndCategoryRender'
+import getGridData from '../Shared/Lib/getGridData'
 
 const Wrapper = styled.div``
 
@@ -69,7 +69,7 @@ class Explore extends Component {
     const { activeTab } = this.state
     const { channels, users, categories } = this.props
 
-    return getCatagoriesOrChannels(activeTab, channels, users, categories, tabTypes)
+    return getGridData(activeTab, channels, users, categories, tabTypes)
   }
 
   render() {

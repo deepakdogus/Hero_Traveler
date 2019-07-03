@@ -15,7 +15,7 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   background-position: center;
 `
 
-const CategoryTitle = styled.p`
+const ProfileTitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 59px;
@@ -83,7 +83,7 @@ const responsiveFollowButtonTextStyles = `
   font-size: 10px;
 `
 
-export default class CategoryHeader extends React.Component {
+export default class ProfileHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
     user: PropTypes.object,
@@ -116,9 +116,9 @@ export default class CategoryHeader extends React.Component {
       >
         <HeaderTopGradient />
         <Centered>
-          <CategoryTitle>
+          <ProfileTitle>
             {(category && category.title) || (user && user.username)}
-          </CategoryTitle>
+          </ProfileTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton

@@ -10,12 +10,13 @@ import StoryActions, {
   getFetchStatus,
   getByUser,
 } from '../Shared/Redux/Entities/Stories'
+import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
-import CategoryHeader from '../Components/CategoryHeader'
+import ProfileHeader from '../Components/ProfileHeader'
 import UserFeed from './UserFeed'
 import CategoryFeed from './CategoryFeed'
 
@@ -45,25 +46,35 @@ class Category extends ContainerWithFeedList {
   }
 
   _followItem = itemId => {
-    this.props.followCategory(this.props.sessionUserId, itemId)
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    values.type === 'category'
+      ? this.props.followCategory(this.props.sessionUserId, itemId)
+      : this.props.followUser(this.props.sessionUserId, itemId)
+    this.props.loadUserFollowing(itemId)
   }
 
   _unfollowItem = itemId => {
-    this.props.unfollowCategory(this.props.sessionUserId, itemId)
+    const queryReqest = this.props.location.search
+    const values = queryString.parse(queryReqest)
+    values.type === 'category'
+      ? this.props.unfollowCategory(this.props.sessionUserId, itemId)
+      : this.props.unfollowUser(this.props.sessionUserId, itemId)
+    this.props.loadUserFollowing(itemId)
   }
 
   render() {
-    const { category, isFollowingCategory, user } = this.props
+    const { category, isFollowingCategory, user, isFollowingUsers } = this.props
     const queryReqest = this.props.location.search
     const values = queryString.parse(queryReqest)
     return (
       <ContentWrapper>
-        <CategoryHeader
-          category={category}
+        <ProfileHeader
+          profile={category}
           user={user}
           followItem={this._followItem}
           unfollowItem={this._unfollowItem}
-          isFollowingCategory={isFollowingCategory}
+          isFollowingCategory={isFollowingCategory || isFollowingUsers}
         />
         {values.type === 'category' && <CategoryFeed {...this.props} />}
         {values.type === 'channel' && (
@@ -86,13 +97,14 @@ function mapStateToProps(state, ownProps) {
   const categoryId = ownProps.match.params.categoryId
   const userId = ownProps.match.params.userId
   const sessionUserId = state.session.userId
-  let isFollowingCategory = false
-  if (state.session.userId) {
-    isFollowingCategory = _.includes(
-      state.signup.selectedCategories,
-      categoryId || userId,
-    )
-  }
+  const myFollowedUsersObject
+    = state.entities.users.userFollowingByUserIdAndId[sessionUserId]
+  const followedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
+
+  const isFollowingUsers = _.includes(followedUsers, userId)
+
+  const isFollowingCategory
+    = sessionUserId && _.includes(state.signup.selectedCategories, categoryId)
 
   return {
     sessionUserId,
@@ -107,6 +119,7 @@ function mapStateToProps(state, ownProps) {
     guidesById: _.get(state, `entities.guides.guideIdsByCategoryId[${categoryId}`, []),
     userGuidesById: _.get(state, `entities.guides.guideIdsByUserId[${userId}]`, []),
     isFollowingCategory,
+    isFollowingUsers,
   }
 }
 
@@ -132,6 +145,22 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(
         runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [categoryId]),
       ),
+    followUser: (sessionUserId, userIdToFollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
+    unfollowUser: (sessionUserId, userIdToUnfollow) =>
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
+    loadUserFollowing: sessionUserId =>
+      dispatch(UserActions.loadUserFollowing(sessionUserId)),
   }
 }
 

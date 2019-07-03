@@ -10,13 +10,13 @@ import StoryActions, {
   getFetchStatus,
   getByUser,
 } from '../Shared/Redux/Entities/Stories'
-import UserActions, { getFollowers } from '../Shared/Redux/Entities/Users'
+import UserActions from '../Shared/Redux/Entities/Users'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
-import ProfileHeader from '../Components/ProfileHeader'
+import ExploreFeedHeader from '../Components/ExploreFeedHeader'
 import UserFeed from './UserFeed'
 import CategoryFeed from './CategoryFeed'
 
@@ -69,8 +69,8 @@ class Category extends ContainerWithFeedList {
     const values = queryString.parse(queryReqest)
     return (
       <ContentWrapper>
-        <ProfileHeader
-          profile={category}
+        <ExploreFeedHeader
+          category={category}
           user={user}
           followItem={this._followItem}
           unfollowItem={this._unfollowItem}

@@ -64,7 +64,7 @@ export default class extends ContainerWithFeedList {
           onClickTab={this.onClickTab}
         />
         {image && <HeadlineDivider img={image} />}
-        {selectedFeedItems.length && (
+        {!!selectedFeedItems.length && (
           <FeedItemListWrapper>
             <FeedItemList feedItems={selectedFeedItems} />
             <Footer />

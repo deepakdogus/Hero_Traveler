@@ -15,7 +15,7 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   background-position: center;
 `
 
-const ProfileTitle = styled.p`
+const ExploreFeedHeaderTitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 59px;
@@ -83,12 +83,12 @@ const responsiveFollowButtonTextStyles = `
   font-size: 10px;
 `
 
-export default class ProfileHeader extends React.Component {
+export default class ExploreFeedHeaderHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
     user: PropTypes.object,
-    followCategory: PropTypes.func,
-    unfollowCategory: PropTypes.func,
+    followItem: PropTypes.func,
+    unfollowItem: PropTypes.func,
     isFollowingCategory: PropTypes.bool,
   }
 
@@ -116,9 +116,9 @@ export default class ProfileHeader extends React.Component {
       >
         <HeaderTopGradient />
         <Centered>
-          <ProfileTitle>
+          <ExploreFeedHeaderTitle>
             {(category && category.title) || (user && user.username)}
-          </ProfileTitle>
+          </ExploreFeedHeaderTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton

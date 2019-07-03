@@ -12,7 +12,7 @@ import StoryActions, {
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
-import UserActions from '../../Shared/Redux/Entities/Users'
+import UserActions, { getFollowers } from '../../Shared/Redux/Entities/Users'
 
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
@@ -143,8 +143,8 @@ class GridItemFeedScreen extends React.Component {
   }
 
   getIsFollowingCategory = () => {
-    const { categoryId, selectedCategories } = this.props
-    return _.includes(selectedCategories, categoryId)
+    const { categoryId, selectedCategories, myFollowedUsers, isChannel, user } = this.props
+    return isChannel ? _.includes(selectedCategories, categoryId) : _.includes(myFollowedUsers, categoryId)
   }
 
   renderTabs() {
@@ -256,6 +256,7 @@ const mapStateToProps = (state, props) => {
     selectedCategories: state.signup.selectedCategories,
     location: state.routes.scene.name,
     userChannelName: state.entities.users.entities[props.categoryId],
+    myFollowedUsers: getFollowers(state.entities.users, 'following', state.session.userId),
   }
 }
 

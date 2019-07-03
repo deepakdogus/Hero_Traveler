@@ -90,8 +90,18 @@ export default class FeedItemPreview extends Component {
     })
   }
 
+  navToSlideshowEdit = () => {
+    const storyId = this.props.feedItem.id
+    NavActions.createStory_slideshow({
+      storyId,
+      navigatedFromProfile: true,
+      shouldLoadStory: false,
+    })
+  }
+
   _touchEdit = () => {
     const { isStory, feedItem, editingDisabled } = this.props
+    const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
     // FOR TEMPORARY BUILDS ONLY -- REMOVE AFTER `feature/editor-upgrades` PR merged
     if (isStory && editingDisabled) {
       Alert.alert(
@@ -100,6 +110,7 @@ export default class FeedItemPreview extends Component {
         [{ text: 'Ok' }],
       )
     }
+    else if (isSlideshow) this.navToSlideshowEdit()
     else if (isStory) this.navToStoryEdit()
     // REMOVE ABOVE, UNCOMMENT BELOW:
     // if (isStory) this.navToStoryEdit()

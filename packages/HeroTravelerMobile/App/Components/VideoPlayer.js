@@ -285,7 +285,7 @@ export default class VideoPlayer extends React.Component {
   render() {
     const isNotReadyForDisplay = !this.state.isLoaded || !this.state.isReadyForDisplay
     const hasError = this.state.error
-
+    console.log('VideoPlayer props', this.props)
     return (
       <View style={[
         styles.root,
@@ -323,7 +323,7 @@ export default class VideoPlayer extends React.Component {
           onPauseFromUI={this._onPauseFromUI}
           onPlayFromUI={this._onPlayFromUI}
           showControls={this.props.showControls}
-          />
+        />
 
         {(hasError || this.state.isStalled || isNotReadyForDisplay) &&
          <ActivityIndicator size="small" color={Colors.snow} />

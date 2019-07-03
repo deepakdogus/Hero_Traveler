@@ -419,12 +419,6 @@ export default function NavigationRouter({ openAddStoryModal }) {
           panHandlers={null}
           component={LocationScreen}
         />
-        <Scene
-          key='createStory_slideshow'
-          component={CreateSlideshowScreen}
-          panHandlers={null}
-          direction="horizontal"
-        />
       </Scene>
       <Scene
         key='createStory_slideshow'

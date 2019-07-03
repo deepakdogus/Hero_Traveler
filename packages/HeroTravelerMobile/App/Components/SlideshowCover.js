@@ -260,9 +260,16 @@ export default class SlideshowCover extends Component {
         </TouchableWithoutFeedback>
       )
     }
-    console.log('Slideshow Cover this.props', this.props)
     return (
-      <View style={calculatedDimensions}>
+      <TouchableWithoutFeedback
+        style={{
+          flex: 1,
+          overflow: 'hidden',
+          width: calculatedDimensions.width,
+          height: calculatedDimensions.height > 345.5 ? 345.5 : calculatedDimensions.height,
+        }}
+        onPress={this._onPress}
+      >
         <VideoPlayer
           areInRenderLocation={this.props.areInRenderLocation}
           path={videoPath}
@@ -279,7 +286,7 @@ export default class SlideshowCover extends Component {
           showControls={false}
           resizeMode='cover'
         />
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 

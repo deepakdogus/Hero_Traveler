@@ -14,9 +14,9 @@ export default class ExploreGrid extends Component {
     onPress: PropTypes.func,
   }
 
-  _onPress = category => {
+  _onPress = categoryOrChannel => {
     const { onPress } = this.props
-    if (onPress) return () => onPress(category)
+    if (onPress) return () => onPress(categoryOrChannel)
     else return null
   }
 

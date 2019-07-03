@@ -12,6 +12,7 @@ import StoryActions, {
 } from '../../Shared/Redux/Entities/Stories'
 import GuideActions from '../../Shared/Redux/Entities/Guides'
 import SignupActions from '../../Shared/Redux/SignupRedux'
+import UserActions from '../../Shared/Redux/Entities/Users'
 
 import ConnectedFeedItemPreview from '../ConnectedFeedItemPreview'
 import ConnectedFeedList from '../../Containers/ConnectedFeedList'
@@ -135,9 +136,10 @@ class GridItemFeedScreen extends React.Component {
   _onLeft = () => NavActions.pop()
 
   _onRight = () => {
+    const { user } = this.props
     const shouldUnfollow = this.getIsFollowingCategory()
-    if (shouldUnfollow) this.props.unfollowCategory()
-    else this.props.followCategory()
+    if (shouldUnfollow) this.props.unfollowProfile(user && user.id)
+    else this.props.followProfile(user && user.id)
   }
 
   getIsFollowingCategory = () => {
@@ -166,6 +168,7 @@ class GridItemFeedScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props, 'grid item feed')
     let {
       storiesById,
       fetchStatus,
@@ -257,6 +260,7 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  const { isChannel, categoryId, user } = ownProps
   return {
     loadCategoryGuides: categoryId =>
       dispatch(GuideActions.getCategoryGuides(categoryId)),
@@ -265,10 +269,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     loadUserStories: userId => dispatch(StoryActions.fromUserRequest(userId)),
     loadUserGuides: userId => dispatch(GuideActions.getUserGuides(userId)),
     getSelectedCategories: () => dispatch(SignupActions.signupGetUsersCategories()),
-    followCategory: () =>
-      dispatch(SignupActions.signupFollowCategory(ownProps.categoryId)),
-    unfollowCategory: () =>
-      dispatch(SignupActions.signupUnfollowCategory(ownProps.categoryId)),
+    followProfile: (userId) =>
+      dispatch(!isChannel ? UserActions.followUser(userId, categoryId) : SignupActions.signupFollowCategory(categoryId)),
+    unfollowProfile: (userId) =>
+      dispatch(!isChannel ? UserActions.unfollowUser(userId, categoryId) : SignupActions.signupUnfollowCategory(ownProps.categoryId)),
   }
 }
 

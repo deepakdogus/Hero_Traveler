@@ -225,7 +225,6 @@ export default class SlideshowCover extends Component {
       width: 'screen',
     }
 
-
     const videoImageUrl = getImageUrl(cover, 'optimized', videoThumbnailOptions)
 
     let videoPath = getVideoUrl(cover)
@@ -261,7 +260,7 @@ export default class SlideshowCover extends Component {
         </TouchableWithoutFeedback>
       )
     }
-
+    console.log('Slideshow Cover this.props', this.props)
     return (
       <View style={calculatedDimensions}>
         <VideoPlayer

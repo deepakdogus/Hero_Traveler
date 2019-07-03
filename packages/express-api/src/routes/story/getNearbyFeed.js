@@ -6,12 +6,6 @@ export default async function getNearbyFeed(req, res) {
   // const page = parseInt(req.query.page, 10)
   // const perPage = parseInt(req.query.perPage, 10)
 
-  // ensure stories are returned in closest-to-farthest order (the way they were sent)
-  const sortByIdPosition = (a, b) =>
-    nearbyStoryIds.indexOf(a.id) > nearbyStoryIds.indexOf(b.id)
   const nearbyStories = await Story.getStoriesById(nearbyStoryIds)
-  return {
-    ...nearbyStories,
-    feed: nearbyStories.feed.sort(sortByIdPosition),
-  }
+  return nearbyStories
 }

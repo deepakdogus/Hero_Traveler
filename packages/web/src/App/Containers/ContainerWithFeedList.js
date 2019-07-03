@@ -12,7 +12,7 @@ export const itemsPerQuery = 100
 const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
-const ONE_HUNDRED_MILES = 160934 // 100 miles
+const ONE_HUNDRED_MILES = 80468 // 50 miles
 const ONE_TENTH_MILE_IN_KM = 0.160934
 
 export default class ContainerWithFeedList extends React.Component {

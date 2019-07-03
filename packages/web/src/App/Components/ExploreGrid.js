@@ -155,7 +155,7 @@ class Tile extends React.Component {
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {
-    categories: PropTypes.object,
+    categories: PropTypes.array,
     isChannel: PropTypes.bool,
     onClickCategory: PropTypes.func,
     getIsSelected: PropTypes.func,

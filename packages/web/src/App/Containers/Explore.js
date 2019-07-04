@@ -8,7 +8,6 @@ import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
-import VideoUpload from '../Shared/Web/Components/VideoUpload'
 
 const CenteredText = styled.p`
   text-align: center;

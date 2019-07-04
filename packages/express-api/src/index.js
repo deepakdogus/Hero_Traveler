@@ -7,7 +7,6 @@ import initCore from '@hero/ht-core'
 import cors from 'cors'
 import routes from './routes'
 import passport from './passport'
-import busboy from 'connect-busboy'
 import {cleanup as apnCleanup} from './apn'
 
 const app = express()
@@ -18,9 +17,6 @@ app.use(bodyParser.json({}))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
 app.use(passport.initialize())
-app.use(busboy({
-  highWaterMark: 2 * 1024 * 1024,
-}));
 
 if (process.env.NODE_ENV !== 'development') {
   nodeCleanup(() => {

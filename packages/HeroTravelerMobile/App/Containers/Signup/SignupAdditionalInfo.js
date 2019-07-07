@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  DatePickerIOS,
-} from 'react-native'
+import { View, TouchableOpacity, Text, TextInput, DatePickerIOS } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import moment from 'moment'
 
@@ -45,7 +39,7 @@ class SignupAdditionalInfo extends Component {
     showDatePicker: false,
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.updating && !this.props.updating && !this.props.error) {
       NavActions.signupFlow_topics()
     }
@@ -65,7 +59,10 @@ class SignupAdditionalInfo extends Component {
 
   openDatePicker = () => this.setState({ showDatePicker: true })
 
-  getEndRange = () => moment().subtract('year', 13).toDate()
+  getEndRange = () =>
+    moment()
+      .subtract('year', 13)
+      .toDate()
 
   onDateChange = birthday => this.setState({ birthday })
 
@@ -81,11 +78,26 @@ class SignupAdditionalInfo extends Component {
   onRight = () => {
     const { locationInfo, birthday, gender } = this.state
     const attrs = {}
-    if (locationInfo) attrs.locationInfo = locationInfo
-    if (birthday) attrs.birthday = birthday
-    if (gender) attrs.gender = gender.toLowerCase()
+    let formInfoPresent = false
+    if (locationInfo) {
+      attrs.locationInfo = locationInfo
+      formInfoPresent = true
+    }
+    if (birthday) {
+      attrs.birthday = birthday
+      formInfoPresent = true
+    }
+    if (gender) {
+      attrs.gender = gender.toLowerCase()
+      formInfoPresent = true
+    }
 
-    if (Object.keys(attrs).length >= 0) this.props.updateUser(attrs)
+    if (formInfoPresent) {
+      this.props.updateUser(attrs)
+    }
+    else {
+      NavActions.signupFlow_topics()
+    }
   }
 
   render = () => {
@@ -99,11 +111,7 @@ class SignupAdditionalInfo extends Component {
       >
         <View style={styles.navBar}>
           <View style={styles.navButton}>
-            <NavButton
-              onRight={this.onRight}
-              text="Next"
-              iconName="arrowRightRed"
-            />
+            <NavButton onRight={this.onRight} text="Next" iconName="arrowRightRed" />
           </View>
         </View>
         <View style={[styles.container, styles.root]}>
@@ -116,18 +124,12 @@ class SignupAdditionalInfo extends Component {
             </Text>
           </View>
           <View style={styles.form}>
-            <TouchableOpacity
-              style={styles.inputContainer}
-              onPress={this.navToLocation}
-            >
+            <TouchableOpacity style={styles.inputContainer} onPress={this.navToLocation}>
               <Text style={styles.input}>
                 {locationInfo ? locationInfo.name : 'Hometown'}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.inputContainer}
-              onPress={this.openDatePicker}
-            >
+            <TouchableOpacity style={styles.inputContainer} onPress={this.openDatePicker}>
               <Text style={styles.input}>
                 {birthday ? moment(birthday).format('DD-MM-YYYY') : 'Birthday'}
               </Text>
@@ -193,8 +195,7 @@ class SignupAdditionalInfo extends Component {
                 maximumDate={this.getEndRange()}
                 onDateChange={this.onDateChange}
               />
-              <RoundedButton text="Confirm"
-                onPress={this.confirmDate} />
+              <RoundedButton text="Confirm" onPress={this.confirmDate} />
             </View>
           </View>
         )}

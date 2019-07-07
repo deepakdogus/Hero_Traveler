@@ -259,7 +259,9 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tabStyle: {
-    width: Metrics.screenWidth / 4,
+    width: '100%',
+    marginLeft: 15,
+    marginRight: 15,
   },
   description: {
     fontFamily: Fonts.type.sourceSansPro,
@@ -310,6 +312,49 @@ export const rendererStyles = StyleSheet.flatten({
     paddingHorizontal: 15,
     marginTop: Metrics.baseMargin,
     marginBottom: 0,
+  },
+  link: {
+    color: Colors.redHighlights,
+    textDecorationLine: 'none',
+    fontWeight: '600',
+  },
+  unorderedListItemContainer: {
+    paddingHorizontal: 15,
+    marginTop: -(Metrics.section / 2),
+    marginBottom: Metrics.section,
+  },
+  unorderedListItemBullet: {
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    marginRight: 8,
+    alignSelf: 'center',
+    backgroundColor: Colors.grey,
+  },
+  'unordered-list-item': {
+    fontSize: 18,
+    fontWeight: '400',
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    letterSpacing: 0.7,
+  },
+  blockquoteContainer: {
+    borderLeftColor: Colors.grey,
+    borderLeftWidth: 3,
+    borderStyle: 'solid',
+    marginTop: 0,
+    marginLeft: 25,
+    marginBottom: Metrics.section,
+    paddingRight: 15,
+  },
+  blockquote: {
+    marginLeft: 0,
+    fontSize: 22,
+    fontWeight: '400',
+    fontFamily: Fonts.type.base,
+    color: Colors.grey,
+    letterSpacing: 0.7,
+    textAlignVertical: 'top',
   },
 })
 

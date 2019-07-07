@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import Icon from '../../../Shared/Web/Components/Icon'
 import './buttonStyles.css'
 
+/* styles derived from 'draft-js-side-toolbar-plugin/lib/plugin.css' */
+
 const PlusButtonWrapper = styled.div`
   box-sizing: border-box;
   border: 1px solid #757575;
@@ -31,8 +33,6 @@ const Spacer = styled.div`
 
 const Popup = styled.div`
   position: absolute;
-  left: 50%;
-  /* transform: translate(-50%); */
   background: #efefef;
   border: 1px solid #ddd;
   background: #fff;
@@ -46,7 +46,7 @@ const Popup = styled.div`
   transition: ${({ transition }) => transition || 'unset'};
   &:after {
     bottom: 100%;
-    left: 50%;
+    right: 20%;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -60,7 +60,7 @@ const Popup = styled.div`
   }
   &:before {
     bottom: 100%;
-    left: 50%;
+    right: calc(20% - 2px); /* minus half width of :after element to center*/
     border: solid transparent;
     content: " ";
     height: 0;

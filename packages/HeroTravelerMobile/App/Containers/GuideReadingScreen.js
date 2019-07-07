@@ -149,6 +149,7 @@ class GuideReadingScreen extends React.Component {
           activeTab={selectedTab}
           onClickTab={this.selectTab}
           tabStyle={styles.tabStyle}
+          largeTabBar={true}
         />
         {this.shouldDisplay(tabTypes.overview) &&
           <Fragment>

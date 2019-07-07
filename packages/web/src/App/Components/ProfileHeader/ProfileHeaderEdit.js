@@ -241,10 +241,12 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.user){
+    const { user } = this.props
+    if(user){
       this.setState({
-        gender: this.props.user.gender,
-        locationInfo: this.props.user.locationInfo,
+        gender: user.gender,
+        locationInfo: user.locationInfo,
+        address: user.locationInfo[0] && user.locationInfo[0].name,
       })
     }
   }

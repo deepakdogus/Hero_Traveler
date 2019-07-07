@@ -266,7 +266,7 @@ class AdditionalInformationForm extends Component {
               {!welcomeDisplay && <Label>Home</Label>}
               <Section welcomeDisplay={welcomeDisplay}>
                 <GoogleLocator
-                  value={(this.props.locationInfo && this.props.locationInfo[0].name) || address}
+                  value={address}
                   searchOptions={{ types: ['(regions)'] }}
                   onChange={handleHometownChange}
                   onSelect={handleHometownSelect}

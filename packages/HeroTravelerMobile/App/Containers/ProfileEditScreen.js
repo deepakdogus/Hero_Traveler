@@ -64,6 +64,8 @@ class ProfileEditScreen extends React.Component {
 
   componentDidMount() {
     const { accessToken, user } = this.props
+    const userLocationInfo = _.get(user, 'locationInfo[0].name')
+    this.setState({locationInfo: userLocationInfo})
     api.setAuth(accessToken)
     if (user) setOriginalUsername(user.username)
   }
@@ -106,6 +108,7 @@ class ProfileEditScreen extends React.Component {
       'profile.fullName': this.props.newValues.fullName,
       about: this.props.newValues.about,
       bio: this.props.newValues.bio,
+      locationInfo: this.state.locationInfo
     })
     NavActions.pop()
   }

@@ -256,16 +256,13 @@ class ProfileEditScreen extends React.Component {
                   multiline={true}
                   maxLength={500}
                 />
-                <Text style={styles.subtitle}>
-                  (Location is optional and not visible to other users)
-                </Text>
                 <TouchableOpacity
                   style={styles.inputWrapper}
                   onPress={this.navToLocation}
                 >
                   <Text style={styles.inputLabel}>Location</Text>
                   <Text style={styles.input}>
-                    {locationInfoName || userLocationInfo || 'Hometown'}
+                    {locationInfoName || userLocationInfo || 'Location is optional and not visible to other users'}
                   </Text>
                 </TouchableOpacity>
               </View>

@@ -83,6 +83,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
     color: Colors.background,
+    marginBottom: 10,
   },
   input: {
     ...Fonts.style.inputLabels,

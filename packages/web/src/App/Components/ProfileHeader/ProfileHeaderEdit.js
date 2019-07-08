@@ -245,8 +245,8 @@ export default class ProfileHeaderEdit extends React.Component {
     if(user){
       this.setState({
         gender: user.gender,
-        locationInfo: user.locationInfo,
-        address: user.locationInfo[0] && user.locationInfo[0].name,
+        locationInfo: _.get(user, 'locationInfo'),
+        address: _.get(user, 'locationInfo[0].name'),
       })
     }
   }

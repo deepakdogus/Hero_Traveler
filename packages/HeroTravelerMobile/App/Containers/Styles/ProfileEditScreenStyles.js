@@ -115,4 +115,10 @@ export default StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.feedDividerGrey,
   },
+  subtitle: {
+    ...Fonts.style.instructions,
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 10,
+  },
 })

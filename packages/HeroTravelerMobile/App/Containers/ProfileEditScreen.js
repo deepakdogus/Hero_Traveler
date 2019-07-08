@@ -65,7 +65,11 @@ class ProfileEditScreen extends React.Component {
   componentDidMount() {
     const { accessToken, user } = this.props
     const userLocationInfo = _.get(user, 'locationInfo[0].name')
-    this.setState({ locationInfo: userLocationInfo })
+    const gender = _.get(user, 'gender')
+    this.setState({
+      locationInfo: userLocationInfo,
+      gender
+    })
     api.setAuth(accessToken)
     if (user) setOriginalUsername(user.username)
   }
@@ -108,10 +112,12 @@ class ProfileEditScreen extends React.Component {
       'profile.fullName': this.props.newValues.fullName,
       about: this.props.newValues.about,
       bio: this.props.newValues.bio,
-      locationInfo: this.state.locationInfo,
     })
 
-    this.props.updateUser({gender: this.state.gender})
+    this.props.updateUser({
+      gender: this.state.gender,
+      locationInfo: this.state.locationInfo,
+    })
     NavActions.pop()
   }
 

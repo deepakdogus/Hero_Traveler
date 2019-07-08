@@ -24,13 +24,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { FormTextInput } from '../Components/FormTextInput'
+import RadioButton from '../Components/RadioButton'
 import {
   validate,
   asyncValidate as asyncValidateOriginal,
   setOriginalUsername,
 } from '../Shared/Lib/userFormValidation'
 import HeroAPI from '../Shared/Services/HeroAPI'
-import SignupAdditionalInfo from './Signup/SignupAdditionalInfo'
 
 const api = HeroAPI.create()
 
@@ -65,7 +65,7 @@ class ProfileEditScreen extends React.Component {
   componentDidMount() {
     const { accessToken, user } = this.props
     const userLocationInfo = _.get(user, 'locationInfo[0].name')
-    this.setState({locationInfo: userLocationInfo})
+    this.setState({ locationInfo: userLocationInfo })
     api.setAuth(accessToken)
     if (user) setOriginalUsername(user.username)
   }
@@ -108,9 +108,18 @@ class ProfileEditScreen extends React.Component {
       'profile.fullName': this.props.newValues.fullName,
       about: this.props.newValues.about,
       bio: this.props.newValues.bio,
-      locationInfo: this.state.locationInfo
+      locationInfo: this.state.locationInfo,
     })
     NavActions.pop()
+  }
+
+  selectGenderOption = gender => {
+    this.setState({ gender: gender.toString() })
+  }
+
+  onGenderTextChange = gender => {
+    if (!gender) return this.setState({ gender: 'other' })
+    this.setState({ gender })
   }
 
   navToLocation = () => {
@@ -201,7 +210,7 @@ class ProfileEditScreen extends React.Component {
 
   render() {
     const { user, handleSubmit } = this.props
-    const { locationInfo } = this.state
+    const { locationInfo, gender } = this.state
     const locationInfoName = _.get(locationInfo, 'name')
     const userLocationInfo = _.get(user, 'locationInfo[0].name')
 
@@ -262,9 +271,51 @@ class ProfileEditScreen extends React.Component {
                 >
                   <Text style={styles.inputLabel}>Location</Text>
                   <Text style={styles.input}>
-                    {locationInfoName || userLocationInfo || 'Location is optional and not visible to other users'}
+                    {locationInfoName
+                      || userLocationInfo
+                      || 'Location is optional and not visible to other users'}
                   </Text>
                 </TouchableOpacity>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.radioButtonContainer}>
+                    <RadioButton
+                      style={styles.radioButton}
+                      selected={gender === 'male'}
+                      value="male"
+                      onPress={this.selectGenderOption}
+                      text="Male"
+                    />
+                  </View>
+                  <View style={styles.radioButtonContainer}>
+                    <RadioButton
+                      style={styles.radioButton}
+                      selected={gender === 'female'}
+                      onPress={this.selectGenderOption}
+                      value="female"
+                      text="Female"
+                    />
+                  </View>
+                  <View style={styles.radioWithTextInput}>
+                    <RadioButton
+                      selected={!!gender && !['male', 'female'].includes(gender)}
+                      onPress={this.selectGenderOption}
+                      value="other"
+                      text="Other:"
+                    />
+                    <View style={styles.radioTextInputContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Self Describe"
+                        value={
+                          !['male', 'female', 'other'].includes(gender) ? gender : ''
+                        }
+                        returnKeyType="done"
+                        onChangeText={this.onGenderTextChange}
+                        placeholderTextColor={Colors.whiteAlphaPt3}
+                      />
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
           </ScrollView>

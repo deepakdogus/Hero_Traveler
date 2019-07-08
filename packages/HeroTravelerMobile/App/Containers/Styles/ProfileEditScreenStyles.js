@@ -122,4 +122,29 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
+  radioGroup: {
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section,
+  },
+  radioButtonContainer: {
+    paddingTop: 5,
+    height: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioWithTextInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioTextInputContainer: {
+    marginTop: 5,
+    flex: 1,
+    justifyContent: 'center',
+    height: 25,
+    marginLeft: Metrics.baseMargin,
+    marginBottom: Metrics.baseMargin,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+    borderStyle: 'solid',
+  },
 })

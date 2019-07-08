@@ -110,6 +110,8 @@ class ProfileEditScreen extends React.Component {
       bio: this.props.newValues.bio,
       locationInfo: this.state.locationInfo,
     })
+
+    this.props.updateUser({gender: this.state.gender})
     NavActions.pop()
   }
 

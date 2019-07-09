@@ -364,7 +364,7 @@ class ProfileEditScreen extends React.Component {
         {showDatePicker && (
           <View
             style={styles.dateWrapper}
-            shadowColor="black"
+            shadowColor="white"
             shadowOpacity={0.9}
             shadowRadius={10}
             shadowOffset={{ width: 0, height: 0 }}

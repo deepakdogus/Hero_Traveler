@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import moment from 'moment'
 
 import { Colors } from '../Shared/Themes'
 import UserActions from '../Shared/Redux/Entities/Users'
@@ -25,6 +26,7 @@ import Avatar from '../Components/Avatar'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import { FormTextInput } from '../Components/FormTextInput'
 import RadioButton from '../Components/RadioButton'
+import RoundedButton from '../Components/RoundedButton'
 import {
   validate,
   asyncValidate as asyncValidateOriginal,
@@ -37,6 +39,11 @@ const api = HeroAPI.create()
 const asyncValidate = values => {
   // Make the validation ignore our own username
   return asyncValidateOriginal(values, null, true)
+}
+
+const dateLikeItemAsDate = dateLikeItem => {
+  const timeStamp = Date.parse(dateLikeItem)
+  return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
 }
 
 class ProfileEditScreen extends React.Component {
@@ -66,13 +73,26 @@ class ProfileEditScreen extends React.Component {
     const { accessToken, user } = this.props
     const userLocationInfo = _.get(user, 'locationInfo[0].name')
     const gender = _.get(user, 'gender')
+    const birthday = _.get(user, 'birthday')
     this.setState({
       locationInfo: userLocationInfo,
-      gender
+      gender,
+      birthday,
     })
     api.setAuth(accessToken)
     if (user) setOriginalUsername(user.username)
   }
+
+  openDatePicker = () => this.setState({ showDatePicker: true })
+
+  getEndRange = () =>
+    moment()
+      .subtract('year', 13)
+      .toDate()
+
+  onDateChange = birthday => this.setState({ birthday })
+
+  confirmDate = () => this.setState({ showDatePicker: false })
 
   _handleUpdateAvatarPhoto = data => {
     api
@@ -117,7 +137,9 @@ class ProfileEditScreen extends React.Component {
     this.props.updateUser({
       gender: this.state.gender,
       locationInfo: this.state.locationInfo,
+      birthday: this.state.birthday
     })
+
     NavActions.pop()
   }
 
@@ -218,7 +240,7 @@ class ProfileEditScreen extends React.Component {
 
   render() {
     const { user, handleSubmit } = this.props
-    const { locationInfo, gender } = this.state
+    const { locationInfo, gender, birthday, showDatePicker } = this.state
     const locationInfoName = _.get(locationInfo, 'name')
     const userLocationInfo = _.get(user, 'locationInfo[0].name')
 
@@ -324,6 +346,16 @@ class ProfileEditScreen extends React.Component {
                     </View>
                   </View>
                 </View>
+                <View style={styles.inputWrapper}>
+                  <TouchableOpacity
+                    style={styles.inputContainer}
+                    onPress={this.openDatePicker}
+                  >
+                    <Text style={styles.input}>
+                      {birthday ? moment(birthday).format('MM-DD-YYYY') : 'Birthday'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </ScrollView>
@@ -334,6 +366,26 @@ class ProfileEditScreen extends React.Component {
             onPress={this._clearError}
             text={this.state.error}
           />
+        )}
+        {showDatePicker && (
+          <View
+            style={styles.dateWrapper}
+            shadowColor="black"
+            shadowOpacity={0.9}
+            shadowRadius={10}
+            shadowOffset={{ width: 0, height: 0 }}
+          >
+            <View style={styles.dateView}>
+              <DatePickerIOS
+                date={dateLikeItemAsDate(this.state.birthday)}
+                mode="date"
+                maximumDate={this.getEndRange()}
+                onDateChange={this.onDateChange}
+              />
+              <RoundedButton text="Confirm"
+                onPress={this.confirmDate} />
+            </View>
+          </View>
         )}
       </View>
     )

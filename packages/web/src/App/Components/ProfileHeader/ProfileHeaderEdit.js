@@ -342,7 +342,7 @@ export default class ProfileHeaderEdit extends React.Component {
       bio: this.state.bio,
       username: this.state.username,
       about: this.state.about,
-      birthday: this.props.user.birthday,
+      birthday: this.state.birthday,
       gender: this.state.gender,
       locationInfo: this.state.locationInfo,
       'profile.fullName': this.state.fullname,

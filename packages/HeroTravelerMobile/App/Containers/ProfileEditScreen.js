@@ -71,7 +71,7 @@ class ProfileEditScreen extends React.Component {
 
   componentDidMount() {
     const { accessToken, user } = this.props
-    const userLocationInfo = _.get(user, 'locationInfo[0].name')
+    const userLocationInfo = _.get(user, 'locationInfo[0]')
     const gender = _.get(user, 'gender')
     const birthday = _.get(user, 'birthday')
     this.setState({
@@ -242,7 +242,6 @@ class ProfileEditScreen extends React.Component {
     const { user, handleSubmit } = this.props
     const { locationInfo, gender, birthday, showDatePicker } = this.state
     const locationInfoName = _.get(locationInfo, 'name')
-    const userLocationInfo = _.get(user, 'locationInfo[0].name')
 
     return (
       <View style={styles.flexOne}>
@@ -302,7 +301,6 @@ class ProfileEditScreen extends React.Component {
                   <Text style={styles.inputLabel}>Location</Text>
                   <Text style={styles.input}>
                     {locationInfoName
-                      || userLocationInfo
                       || 'Location is optional and not visible to other users'}
                   </Text>
                 </TouchableOpacity>

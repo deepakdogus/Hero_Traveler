@@ -127,14 +127,16 @@ class ProfileEditScreen extends React.Component {
   }
 
   _updateUser = () => {
+    const { username, fullName, about, bio } = this.props.newValues
+    const { gender, locationInfo, birthday } = this.state
     this.props.updateUser({
-      username: this.props.newValues.username,
-      'profile.fullName': this.props.newValues.fullName,
-      about: this.props.newValues.about,
-      bio: this.props.newValues.bio,
-      gender: this.state.gender,
-      locationInfo: this.state.locationInfo,
-      birthday: this.state.birthday
+      username: username,
+      'profile.fullName': fullName,
+      about: about,
+      bio: bio,
+      gender: gender,
+      locationInfo: locationInfo,
+      birthday: birthday
     })
     NavActions.pop()
   }

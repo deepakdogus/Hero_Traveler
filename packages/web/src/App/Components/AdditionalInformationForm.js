@@ -241,7 +241,6 @@ class AdditionalInformationForm extends Component {
       handleHometownSelect,
       handleBirthdaySelect,
     } = this.props
-    console.log(this.props, 'props in additional information')
     const startRange = moment()
       .subtract(100, 'years')
       .format('YYYY-MM-DD')

@@ -132,14 +132,10 @@ class ProfileEditScreen extends React.Component {
       'profile.fullName': this.props.newValues.fullName,
       about: this.props.newValues.about,
       bio: this.props.newValues.bio,
-    })
-
-    this.props.updateUser({
       gender: this.state.gender,
       locationInfo: this.state.locationInfo,
       birthday: this.state.birthday
     })
-
     NavActions.pop()
   }
 

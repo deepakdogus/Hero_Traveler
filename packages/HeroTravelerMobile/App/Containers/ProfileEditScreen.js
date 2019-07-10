@@ -337,7 +337,7 @@ class ProfileEditScreen extends React.Component {
                         }
                         returnKeyType="done"
                         onChangeText={this.onGenderTextChange}
-                        placeholderTextColor={Colors.whiteAlphaPt3}
+                        placeholderTextColor={Colors.lightGrey}
                       />
                     </View>
                   </View>

@@ -47,7 +47,7 @@ export default class extends ContainerWithFeedList {
 
   render() {
     const { isUsersProfile, pendingDrafts, user } = this.props
-    const image = _.get(user, 'interstitialImage.original.path')
+    const image = _.get(user, 'channelSponsorLogo.original.path')
     let { selectedFeedItems } = this.getSelectedFeedItems()
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)

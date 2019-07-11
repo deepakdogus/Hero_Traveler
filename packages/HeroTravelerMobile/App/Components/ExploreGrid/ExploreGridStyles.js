@@ -29,11 +29,11 @@ export default StyleSheet.create({
     lineHeight: 20,
     paddingBottom: 10,
   },
-  gridImageForCategories: {
+  categoryGridImage: {
     width: GRID_ITEM_DIMENSION - 16,
     height: GRID_ITEM_DIMENSION - 16 + 5,
   },
-  gridImageForChannels: {
+  channelGridImage: {
     width: GRID_ITEM_DIMENSION - 16,
     height: GRID_ITEM_DIMENSION - 16 + 25,
   },

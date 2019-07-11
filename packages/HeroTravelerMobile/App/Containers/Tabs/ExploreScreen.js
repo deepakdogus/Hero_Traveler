@@ -10,7 +10,7 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
 import getGridData from '../../Shared/Lib/getGridData'
 
-import styles, { CategoryFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
+import styles, { ExploreItemFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
 
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -65,13 +65,13 @@ class ExploreScreen extends Component {
     NavActions.explore_categoryFeed({
       profileId: tile.id,
       title: tile.title,
-      leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
-      navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
+      leftButtonIconStyle: ExploreItemFeedNavActionStyles.leftButtonIconStyle,
+      navigationBarStyle: ExploreItemFeedNavActionStyles.navigationBarStyle,
       isChannel: tile.username ? true : false,
     })
   }
 
-  getEntitiesByType = () => {
+  getExploreItemsByType = () => {
     const { selectedTab } = this.state
     const { channelsByID, users, categories } = this.props
     return getGridData(selectedTab, channelsByID, users, categories, tabTypes)
@@ -87,16 +87,16 @@ class ExploreScreen extends Component {
     } = this.props
 
     const { selectedTab } = this.state
-    const categoriesArray = _.values(this.getEntitiesByType())
+    const exploreItemArray = _.values(this.getExploreItemsByType())
 
     const content
-      = categoriesFetchStatus.fetching && !categoriesArray.length ? (
+      = categoriesFetchStatus.fetching && !exploreItemArray.length ? (
         <Loader style={styles.loader} />
       ) : (
         <ScrollView>
           <ExploreGrid
             onPress={this._navToCategoryFeed}
-            categories={categoriesArray}
+            exploreItems={exploreItemArray}
             isChannel={selectedTab === tabTypes.channels ? true : false}
           />
         </ScrollView>

@@ -33,23 +33,19 @@ export default class TabBar extends Component {
     largeTabBar: PropTypes.bool,
   }
 
-  _onClickTab = tabValue => {
-    return () => this.props.onClickTab(tabValue)
-  }
+  onClickTab = tabValue => () => this.props.onClickTab(tabValue)
 
   renderTabs() {
     const { activeTab, tabs, tabStyle } = this.props
-    return Object.keys(tabs).map((key, index) => {
-      return (
-        <Tab
-          key={index}
-          style={tabStyle}
-          text={tabs[key].toUpperCase()}
-          selected={activeTab === tabs[key]}
-          onPress={this._onClickTab(tabs[key])}
-        />
-      )
-    })
+    return Object.keys(tabs).map((key, index) => (
+      <Tab
+        key={index}
+        style={tabStyle}
+        text={tabs[key].toUpperCase()}
+        selected={activeTab === tabs[key]}
+        onPress={this.onClickTab(tabs[key])}
+      />
+    ))
   }
 
   render() {

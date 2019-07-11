@@ -10,52 +10,58 @@ import { GRID_ITEM_DIMENSION } from './ExploreGridStyles'
 
 export default class ExploreGrid extends Component {
   static propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.object),
+    exploreItems: PropTypes.arrayOf(PropTypes.object),
+    isChannel: PropTypes.bool,
     onPress: PropTypes.func,
   }
 
-  _onPress = categoryOrChannel => {
+  onPress = exploreItem => {
     const { onPress } = this.props
-    if (onPress) return () => onPress(categoryOrChannel)
+    if (onPress) return () => onPress(exploreItem)
     else return null
   }
 
-  renderItem = categoryOrChannel => {
+  renderItem = exploreItem => {
     const { isChannel } = this.props
     const image
-      = categoryOrChannel.image || _.get(categoryOrChannel, 'channelImage.original.path')
+      = exploreItem.image || _.get(exploreItem, 'channelImage.original.path')
 
-    const categoryOrChannelUrl = getItemUrl(image, 'gridItemThumbnail', {
+    const exploreItemUrl = getItemUrl(image, 'gridItemThumbnail', {
       width: isChannel ? null : GRID_ITEM_DIMENSION - 4,
       height: GRID_ITEM_DIMENSION - 4,
     })
 
     return (
-      <View key={categoryOrChannel.id} style={styles.gridItem}>
-        <TouchableWithoutFeedback onPress={this._onPress(categoryOrChannel)}>
+      <View key={exploreItem.id} style={styles.gridItem}>
+        <TouchableWithoutFeedback onPress={this.onPress(exploreItem)}>
           <View style={styles.gridImage}>
             <ImageWrapper
               cached={false}
               background={true}
-              source={{ uri: categoryOrChannelUrl }}
+              source={{ uri: exploreItemUrl }}
               style={
-                isChannel ? styles.gridImageForChannels : styles.gridImageForCategories
+                isChannel ? styles.channelGridImage : styles.categoryGridImage
               }
               imageStyle={{ borderRadius: 6 }}
             >
-              {categoryOrChannel.selected && (
-                <TabIcon name="redCheckOutlined" style={{ view: styles.selectedIcon }} />
+              {exploreItem.selected && (
+                <TabIcon
+                  name="redCheckOutlined"
+                  style={{ view: styles.selectedIcon }}
+                />
               )}
             </ImageWrapper>
-            <Text
-              style={styles.gridItemText}
-              numberOfLines={2}
-              ellipsizeMode={'tail'}
-              adjustsFontSizeToFit
-              minimumFontScale={0.9}
-            >
-              {isChannel ? null : categoryOrChannel.title}
-            </Text>
+            {isChannel && (
+              <Text
+                style={styles.gridItemText}
+                numberOfLines={2}
+                ellipsizeMode={'tail'}
+                adjustsFontSizeToFit
+                minimumFontScale={0.9}
+              >
+                {exploreItem.title}
+              </Text>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -63,6 +69,10 @@ export default class ExploreGrid extends Component {
   }
 
   render() {
-    return <View style={styles.grid}>{this.props.categories.map(this.renderItem)}</View>
+    return (
+      <View style={styles.grid}>
+        {this.props.exploreItems.map(this.renderItem)}
+      </View>
+    )
   }
 }

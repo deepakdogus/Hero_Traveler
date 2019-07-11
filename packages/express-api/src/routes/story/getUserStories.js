@@ -7,7 +7,5 @@ export default function getUserStories(req, res) {
       if (req.user && req.params.userId === req.user.id) return stories
       return removeStreamlessStories(stories)
     })
-    .then(data => {
-      res.json(data)
-    })
+    .then(data => res.json(data))
 }

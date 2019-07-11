@@ -190,8 +190,8 @@ const create = () => {
     .then(response => safeNormalize(response, User))
   }
 
-  const getUser = (userId) => {
-    return api.get(`user/${userId}`)
+  const getUser = (username) => {
+    return api.get(`user/${username}`)
     .then(response => safeNormalize(response, User))
   }
 

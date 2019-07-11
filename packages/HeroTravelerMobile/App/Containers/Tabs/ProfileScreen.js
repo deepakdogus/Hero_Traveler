@@ -33,7 +33,7 @@ class ProfileScreen extends React.Component {
   }
 
   initializeData = () => {
-    this.props.getUser(this.props.user.id)
+    this.props.getUser(this.props.user.username)
     this.props.getStories(this.props.user.id)
     this.props.loadBookmarks(this.props.user.id)
     this.props.getGuides(this.props.user.id)

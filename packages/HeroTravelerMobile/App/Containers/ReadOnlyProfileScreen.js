@@ -44,8 +44,9 @@ class ReadOnlyProfileScreen extends Component {
       attemptGetUserStories,
       attemptGetUserGuides,
       userId,
+      user,
     } = this.props
-    attemptRefreshUser(userId)
+    attemptRefreshUser(user.username)
     attemptGetUserStories(userId)
     attemptGetUserGuides(userId)
   }

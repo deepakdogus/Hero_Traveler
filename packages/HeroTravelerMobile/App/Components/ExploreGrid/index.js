@@ -24,7 +24,7 @@ export default class ExploreGrid extends Component {
   renderItem = exploreItem => {
     const { isChannel } = this.props
     const image
-      = exploreItem.image || _.get(exploreItem, 'channelImage.original.path')
+      = exploreItem.image || _.get(exploreItem, 'channelImage.versions.thumbnail240.path')
 
     const exploreItemUrl = getItemUrl(image, 'gridItemThumbnail', {
       width: isChannel ? null : GRID_ITEM_DIMENSION - 4,

@@ -27,7 +27,7 @@ export default class ExploreGrid extends Component {
       = exploreItem.image || _.get(exploreItem, 'channelImage.versions.thumbnail240.path')
 
     const exploreItemUrl = getItemUrl(image, 'gridItemThumbnail', {
-      width: isChannel ? null : GRID_ITEM_DIMENSION - 4,
+      width: !isChannel ? null : GRID_ITEM_DIMENSION - 4,
       height: GRID_ITEM_DIMENSION - 4,
     })
 
@@ -51,7 +51,7 @@ export default class ExploreGrid extends Component {
                 />
               )}
             </ImageWrapper>
-            {isChannel && (
+            {!isChannel && (
               <Text
                 style={styles.gridItemText}
                 numberOfLines={2}

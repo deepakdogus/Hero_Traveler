@@ -98,7 +98,7 @@ export default class ContainerWithFeedList extends React.Component {
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
-        this.props.getDeletedStories()
+        this.props.getDeletedStories(this.props.sessionUserId)
         return this.props.loadDrafts()
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)

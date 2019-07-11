@@ -29,6 +29,7 @@ export default class ProfileHeader extends React.Component {
     toProfileView: PropTypes.func,
     sessionUserId: PropTypes.string,
     openGlobalModal: PropTypes.func,
+    reroute: PropTypes.func,
   }
 
   constructor(props) {

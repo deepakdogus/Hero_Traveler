@@ -256,7 +256,7 @@ export default class ProfileHeaderView extends React.Component {
     const { user } = this.props
     return (
       <AbsoluteEditButtonContainer>
-        <NavLinkStyled to={`/profile/${user.id}/edit`}>
+        <NavLinkStyled to={`/${user.username}/edit`}>
           <PencilIcon
             name='pencilBlack'
           />
@@ -322,7 +322,7 @@ export default class ProfileHeaderView extends React.Component {
           >
             <StyledButton>
               { isUsersProfile &&
-                <NavLinkStyled to={`/profile/${user.id}/edit`}>
+                <NavLinkStyled to={`/${user.username}/edit`}>
                   <RoundedButton
                     type='blackWhite'
                     text='EDIT PROFILE'

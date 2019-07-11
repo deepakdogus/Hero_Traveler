@@ -213,7 +213,7 @@ export default class HeaderSlide extends React.Component {
         </Centered>
         <BottomContainer>
           <Row center="xs">
-            <ProfileLink to={`/profile/${author.id}/view`}>
+            <ProfileLink to={`/${author.username}/view`}>
               <Avatar
                 avatarUrl={getImageUrl(author.profile.avatar, 'avatar')}
                 size="extraMedium"
@@ -225,7 +225,7 @@ export default class HeaderSlide extends React.Component {
               <StoryInfoRow>
                 <StoryInfo>
                   By{' '}
-                  <NavLinkStyled to={`/profile/${author.id}/view`}>
+                  <NavLinkStyled to={`/${author.username}/view`}>
                     {author.username}
                   </NavLinkStyled>
                 </StoryInfo>

@@ -60,7 +60,7 @@ export default class MessageRow extends Component {
   }
 
   _profileReroute = () => {
-    this.props.reroute(`/profile/${this.props.user.id}/view`)
+    this.props.reroute(`/${this.props.user.username}/view`)
     this.props.closeModal()
   }
 

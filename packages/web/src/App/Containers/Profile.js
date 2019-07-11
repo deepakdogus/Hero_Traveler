@@ -36,6 +36,18 @@ const ListWrapper = styled.div`
   position: relative;
 `
 
+const getUserByUserName = (users, name) => {
+  let user
+
+  for (const i in users) {
+    if (users.hasOwnProperty(i) && users[i].username === name) {
+      user = users[i]
+    }
+  }
+
+  return user
+}
+
 class Profile extends ContainerWithFeedList {
   static propTypes = {
     match: PropTypes.object,
@@ -98,11 +110,18 @@ class Profile extends ContainerWithFeedList {
   }
 
   componentDidMount() {
-    const userId = this.props.match.params.userId
-    this.props.getUser(userId)
-    this.props.getStories(userId)
-    if (this.props.sessionUserId === userId) {
-      this.props.loadBookmarks(userId)
+    const username = this.props.match.params.username
+    this.props.getUser(username)
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.profilesUser !== this.props.profilesUser && nextProps.profilesUser) {
+      const userId = nextProps.profilesUser.id
+
+      this.props.getStories(userId)
+      if (this.props.sessionUserId === userId) {
+        this.props.loadBookmarks(userId)
+      }
     }
   }
 
@@ -115,7 +134,7 @@ class Profile extends ContainerWithFeedList {
   }
 
   _toProfileReroute = () => {
-    this.props.reroute(`/profile/${this.props.profilesUser.id}/view`)
+    this.props.reroute(`/${this.props.profilesUser.username}/view`)
   }
 
   render() {
@@ -132,6 +151,7 @@ class Profile extends ContainerWithFeedList {
       uploadMedia,
       openGlobalModal,
       pendingDrafts,
+      reroute,
     } = this.props
     if (!profilesUser) return null
 
@@ -167,6 +187,7 @@ class Profile extends ContainerWithFeedList {
           openGlobalModal={openGlobalModal}
           uploadMedia={uploadMedia}
           sessionUserId={sessionUserId}
+          reroute={reroute}
         />
         {!isEdit
           && <ListWrapper>
@@ -190,9 +211,10 @@ class Profile extends ContainerWithFeedList {
 }
 
 function mapStateToProps(state, ownProps) {
-  const userId = ownProps.match.params.userId
   let {stories, users, guides} = state.entities
-  const profilesUser = users.entities[userId]
+  const username = ownProps.match.params.username
+  const profilesUser = getUserByUserName(users.entities, username)
+  const userId = profilesUser && profilesUser.id
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]
   const myFollowedUsers = myFollowedUsersObject ? myFollowedUsersObject.byId : undefined
@@ -219,18 +241,16 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
-  const targetUserId = ownProps.match.params.userId
-
+function mapDispatchToProps(dispatch) {
   return {
-    getStories: () => dispatch(StoryActions.fromUserRequest(targetUserId)),
-    getGuides: () => dispatch(GuideActions.getUserGuides(targetUserId)),
+    getStories: (userId) => dispatch(StoryActions.fromUserRequest(userId)),
+    getGuides: (userId) => dispatch(GuideActions.getUserGuides(userId)),
     updateUser: (attrs) => dispatch(UserActions.updateUser(attrs)),
     getUser: (userId) => dispatch(UserActions.loadUser(userId)),
     deleteStory: (userId, storyId) => dispatch(StoryActions.deleteStory(userId, storyId)),
     loadDrafts: () => dispatch(StoryActions.loadDrafts()),
-    getDeletedStories: () => dispatch(StoryActions.getDeletedStories(targetUserId)),
-    loadBookmarks: () => dispatch(StoryActions.getBookmarks(targetUserId)),
+    getDeletedStories: (userId) => dispatch(StoryActions.getDeletedStories(userId)),
+    loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>
       dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),

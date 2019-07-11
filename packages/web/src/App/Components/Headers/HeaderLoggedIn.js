@@ -144,6 +144,7 @@ class HeaderLoggedIn extends React.Component {
     const {
       openGlobalModal,
       userId,
+      user,
       pathname,
       reroute,
       attemptLogout,
@@ -158,6 +159,7 @@ class HeaderLoggedIn extends React.Component {
         closeMyself={this.closeProfileMenu}
         openGlobalModal={openGlobalModal}
         userId={userId}
+        user={user}
         reroute={reroute}
         attemptLogout={attemptLogout}
         globalModalParams={globalModalParams}
@@ -312,11 +314,13 @@ class HeaderLoggedIn extends React.Component {
 function mapStateToProps(state, ownProps) {
   let {users} = state.entities
   let profileAvatar = _.get(users, `entities[${ownProps.userId}].profile.avatar`)
+
   return {
     globalModal: state.ux.modalName,
     globalModalParams: state.ux.params,
     pendingMediaUploads: state.storyCreate.pendingMediaUploads,
     profileAvatar,
+    user: users.entities[ownProps.userId],
   }
 }
 

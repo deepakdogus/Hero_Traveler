@@ -157,11 +157,11 @@ class AppRoot extends Component {
           component={EditStory}
         />
         <Route
-          path="/profile/:userId/view"
+          path="/:username/view"
           component={Profile}
         />
         <AuthRoute
-          path="/profile/:userId/edit"
+          path="/:username/edit"
           component={Profile}
         />
         <Route

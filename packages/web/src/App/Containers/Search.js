@@ -272,7 +272,7 @@ class Search extends Component {
       id: userId,
       ...user,
     })
-    this.props.reroute(`/profile/${userId}/view`)
+    this.props.reroute(`/${user.username}/view`)
   }
 
   navToLocationResults = async item => {

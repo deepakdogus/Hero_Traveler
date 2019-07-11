@@ -40,6 +40,7 @@ class ProfileMenu extends React.Component{
     closeMyself: PropTypes.func,
     openGlobalModal: PropTypes.func,
     userId: PropTypes.string,
+    user: PropTypes.object,
     attemptLogout: PropTypes.func,
     globalModalParams: PropTypes.object,
     workingDraft: PropTypes.object,
@@ -53,7 +54,7 @@ class ProfileMenu extends React.Component{
   }
 
   rerouteToProfile = ()=> {
-    this.rerouteAndClose(`/profile/${this.props.userId}/view`)
+    this.rerouteAndClose(`/${this.props.user.username}/view`)
   }
 
   rerouteToExplore = () => {
@@ -74,7 +75,7 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToProfile = () => {
-    this._saveEditsModalHelper(this.rerouteToProfile, `/profile/${this.props.userId}/view`)
+    this._saveEditsModalHelper(this.rerouteToProfile, `/${this.props.user.username}/view`)
   }
 
   _openSaveEditsModalToLogout = () => {

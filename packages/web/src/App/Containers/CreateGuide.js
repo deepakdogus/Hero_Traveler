@@ -135,7 +135,7 @@ class CreateGuide extends SharedCreateGuide {
       reroute,
       storyId,
       guideId,
-      sessionUserId,
+      username,
       openGlobalModal,
     } = this.props
     if (storyId) {
@@ -144,7 +144,7 @@ class CreateGuide extends SharedCreateGuide {
     }
     else if (guideId) {
       reroute({
-        pathname: `/profile/${sessionUserId}/view`,
+        pathname: `/${username}/view`,
         search: '?at=guides',
       })
     }
@@ -232,11 +232,13 @@ function extendedMapStateToProps(state, ownProps) {
   const sessionUserId = state.session.userId
   const stateMapping = mapStateToProps(state, ownProps)
   const guideId = ownProps.match.params.guideId
+  const username = state.entities.users.entities[sessionUserId].username
   stateMapping.categories = state.entities.categories.entities
   stateMapping.storyId = state.ux.params.storyId
   stateMapping.guide = state.entities.guides.entities[ownProps.match.params.guideId]
   stateMapping.guideId = guideId
   stateMapping.sessionUserId = sessionUserId
+  stateMapping.username = username
   return stateMapping
 }
 

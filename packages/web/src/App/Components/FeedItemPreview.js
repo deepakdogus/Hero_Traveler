@@ -297,7 +297,7 @@ class FeedItemPreview extends Component {
   }
 
   navToUserProfile = () => {
-    this.props.reroute(`/profile/${this.props.author.id}/view`)
+    this.props.reroute(`/${this.props.author.username}/view`)
   }
 
   _onClickLike = () => {

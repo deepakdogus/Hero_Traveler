@@ -221,6 +221,7 @@ export default class ProfileHeaderEdit extends React.Component {
     uploadMediaAsset: PropTypes.func,
     uploadMedia: PropTypes.func,
     updating: PropTypes.bool,
+    reroute: PropTypes.func,
   }
 
   constructor(props) {
@@ -315,6 +316,10 @@ export default class ProfileHeaderEdit extends React.Component {
       about: this.state.about,
       'profile.fullName': this.state.fullname,
     })
+
+    if (this.props.user.profile.username !== this.state.username) {
+      this.props.reroute(`/${this.state.username}/view`)
+    }
   }
 
   render () {
@@ -408,6 +413,10 @@ export default class ProfileHeaderEdit extends React.Component {
           { !!isUsernameError &&
             <ErrorText>Sorry, that username is already in use</ErrorText>
           }
+          { !SignupConstants.USERNAME_REGEX.test(username) &&
+            <ErrorText>Usernames may contain letters, numbers, _ and -</ErrorText>
+          }
+
           <Label>About</Label>
           <TextareaWrapper>
             <Textarea
@@ -449,7 +458,7 @@ export default class ProfileHeaderEdit extends React.Component {
               margin='small'
               text='SAVE CHANGES'
               onClick={this.onSave}
-              disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
+              disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH) || !SignupConstants.USERNAME_REGEX.test(username)}
             />
         </SaveCancelButtonWrapper>
         <Modal

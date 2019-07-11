@@ -2,7 +2,6 @@ import express from 'express'
 import {hasValidOauth, hasClientId} from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
-import getUser from './getUser'
 import create from './create'
 import createFacebook from './createFacebook'
 import connectFacebook from './connectFacebook'
@@ -33,6 +32,7 @@ import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
 import deleteUser from './deleteUser'
+import getUserByUserName from './getUserByUserName';
 
 const router = express.Router()
 
@@ -150,8 +150,8 @@ router.post('/threads/:id',
   endpointWrapper(threadCreateMessage)
 )
 
-router.get('/:id',
-  endpointWrapper(getUser)
+router.get('/:username',
+  endpointWrapper(getUserByUserName)
 )
 
 router.put('/:id',

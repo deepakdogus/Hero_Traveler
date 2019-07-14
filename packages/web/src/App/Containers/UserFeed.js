@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
+import PropTypes from 'prop-types'
 
 import TabBar from '../Components/TabBar'
 import Footer from '../Components/Footer'
 import FeedItemList from '../Components/FeedItemList'
 import HeadlineDivider from '../Components/HeadlineDivider'
 import ContainerWithFeedList from './ContainerWithFeedList'
-import FeedItemMessage from '../Components/FeedItemMessage'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -25,6 +25,13 @@ const FeedItemListWrapper = styled.div`
 export const itemsPerQuery = 100
 
 export default class extends ContainerWithFeedList {
+  static propTypes = {
+    getStories: PropTypes.func,
+    isUsersProfile: PropTypes.bool,
+    pendingDrafts: PropTypes.arrayOf(PropTypes.object),
+    user: PropTypes.object,
+  }
+
   constructor() {
     super()
     this.state = {
@@ -64,18 +71,13 @@ export default class extends ContainerWithFeedList {
           onClickTab={this.onClickTab}
         />
         {image && <HeadlineDivider img={image} />}
-        {!!selectedFeedItems.length && (
-          <FeedItemListWrapper>
-            <FeedItemList feedItems={selectedFeedItems} />
-            <Footer />
-          </FeedItemListWrapper>
-        )}
-        {!selectedFeedItems.length && (
-          <FeedItemListWrapper>
-            <FeedItemMessage message={'Looks like there are no guides yet.'} />
-            <Footer />
-          </FeedItemListWrapper>
-        )}
+        <FeedItemListWrapper>
+          <FeedItemList
+            activeTab={this.state.activeTab}
+            feedItems={selectedFeedItems}
+          />
+          <Footer />
+        </FeedItemListWrapper>z
       </ListWrapper>
     )
   }

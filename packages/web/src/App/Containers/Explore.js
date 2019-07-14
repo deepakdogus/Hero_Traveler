@@ -68,7 +68,6 @@ class Explore extends Component {
   getEntitiesByType = () => {
     const { activeTab } = this.state
     const { channels, users, categories } = this.props
-
     return getGridData(activeTab, channels, users, categories, tabTypes)
   }
 
@@ -85,7 +84,7 @@ class Explore extends Component {
         />
         <ContentWrapper>
           <ExploreGrid
-            categories={exploreItems}
+            exploreItems={exploreItems}
             isChannel={activeTab === tabTypes.channels}
             onClickExploreItem={
               activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory
@@ -98,17 +97,11 @@ class Explore extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  let {
-    fetchStatus: categoriesFetchStatus,
-    entities: categories,
-  } = state.entities.categories
-
+function mapStateToProps(state) {
   return {
     channels: state.entities.users.channelsByID,
     users: state.entities.users.entities,
-    categories,
-    categoriesFetchStatus,
+    categories: state.entities.categories.entities,
   }
 }
 

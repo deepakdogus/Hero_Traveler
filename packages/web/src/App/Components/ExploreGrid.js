@@ -11,8 +11,8 @@ const DisplayGrid = styled.div`
   padding: 0 !important;
   max-width: 1000px;
   display: grid;
-  `
-  
+`
+
 const ChannelGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
@@ -105,33 +105,32 @@ const RedCheck = styled(Icon)`
   background-color: ${props => props.theme.Colors.snow};
 `
 
-// created specific component to optimize speed with _onClickTile
 class Tile extends React.Component {
   static propTypes = {
-    category: PropTypes.object,
+    exploreItem: PropTypes.object,
     isChannel: PropTypes.bool,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
     onClickExploreItem: PropTypes.func,
   }
 
-  _onClickTile = () => {
-    this.props.onClick(this.props.category.id)
+  onClickTile = () => {
+    this.props.onClick(this.props.exploreItem.id)
   }
 
   render() {
-    const { category, isChannel, isSelected } = this.props
-    const image = category.image || _.get(category, 'channelImage')
+    const { exploreItem, isChannel, isSelected } = this.props
+    const image = exploreItem.image || _.get(exploreItem, 'channelImage')
 
     return isChannel ? (
       <ChannelTile
-        onClick={this._onClickTile}
+        onClick={this.onClickTile}
         imageSource={getImageUrl(image, 'gridItemThumbnail')}
       />
     ) : (
       <CategoryCol>
         <Wrapper
-          onClick={this._onClickTile}
+          onClick={this.onClickTile}
           isChannel={isChannel}
         >
           <CategoryTile
@@ -141,10 +140,10 @@ class Tile extends React.Component {
             })}
           />
           <TitleContainer
-            selected={category.selected}
+            selected={exploreItem.selected}
             overlayColor="black"
           >
-            <Title>{category.title}</Title>
+            <Title>{exploreItem.title}</Title>
           </TitleContainer>
           {isSelected && <RedCheck name="redCheck" />}
         </Wrapper>
@@ -155,32 +154,35 @@ class Tile extends React.Component {
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {
-    categories: PropTypes.array,
+    exploreItems: PropTypes.array,
     isChannel: PropTypes.bool,
     onClickCategory: PropTypes.func,
+    onClickExploreItem: PropTypes.func,
     getIsSelected: PropTypes.func,
   }
 
   render() {
-    const { categories, isChannel, getIsSelected, onClickExploreItem, onClickCategory } = this.props
-    const renderedCategories = Object.keys(categories).map(key => {
-      const category = categories[key]
-
+    const {
+      exploreItems,
+      isChannel,
+      getIsSelected,
+      onClickExploreItem,
+      onClickCategory,
+    } = this.props
+    const Grid = isChannel ? ChannelGrid : CategoryGrid
+    const renderedExploreItems = Object.keys(exploreItems).map(key => {
+      const exploreItem = exploreItems[key]
       return (
         <Tile
-          key={category.id}
-          category={category}
+          key={exploreItem.id}
+          exploreItem={exploreItem}
           isChannel={isChannel}
-          isSelected={getIsSelected ? getIsSelected(category.id) : false}
+          isSelected={getIsSelected ? getIsSelected(exploreItem.id) : false}
           onClick={onClickExploreItem || onClickCategory}
         />
       )
     })
 
-    return isChannel ? (
-      <ChannelGrid>{renderedCategories}</ChannelGrid>
-    ) : (
-      <CategoryGrid>{renderedCategories}</CategoryGrid>
-    )
+    return <Grid>{renderedExploreItems}</Grid>
   }
 }

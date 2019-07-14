@@ -92,12 +92,12 @@ export default class ExploreFeedHeaderHeader extends React.Component {
     isFollowingCategory: PropTypes.bool,
   }
 
-  _followItem = () => {
+  followItem = () => {
     const { user, category } = this.props
     this.props.followItem((category && category.id) || (user && user.id))
   }
 
-  _unfollowItem = () => {
+  unfollowItem = () => {
     const { user, category } = this.props
     this.props.unfollowItem((category && category.id) || (user && user.id))
   }
@@ -124,7 +124,7 @@ export default class ExploreFeedHeaderHeader extends React.Component {
             <StyledRoundedButton
               type={isFollowingCategory ? '' : 'exploreCategoryFollow'}
               text={isFollowingCategory ? 'Following' : '+ Follow'}
-              onClick={isFollowingCategory ? this._unfollowItem : this._followItem}
+              onClick={isFollowingCategory ? this.unfollowItem : this.followItem}
               textProps={textProps}
               responsiveTextProps={responsiveFollowButtonTextStyles}
               responsiveButtonProps={responsiveFollowButtonStyles}

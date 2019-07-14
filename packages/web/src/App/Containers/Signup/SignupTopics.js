@@ -88,7 +88,7 @@ class SignupTopics extends Component {
               <Title>FOLLOW TOPICS</Title>
               <Subtitle>Pick some topics you are interested in. We will use them to customize your reading list based on your interests.</Subtitle>
               <ExploreGrid
-                categories={this.props.categories}
+                exploreItems={this.props.categories}
                 onClickCategory={this._toggleCategory}
                 getIsSelected={this.getIsSelected}
               />

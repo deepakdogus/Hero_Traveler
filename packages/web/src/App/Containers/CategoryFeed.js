@@ -16,7 +16,6 @@ import ContainerWithFeedList from './ContainerWithFeedList'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
-import HeadlineDivider from '../Components/HeadlineDivider'
 
 import { runIfAuthed } from '../Lib/authHelpers'
 
@@ -60,9 +59,7 @@ class CategoryFeed extends ContainerWithFeedList {
   }
 
   render() {
-    const { category, isFollowingCategory } = this.props
     const { selectedFeedItems } = this.getSelectedFeedItems()
-    const image = _.get(category, 'interstitialImage.original.path')
     return (
       <ContentWrapper>
         <TabBar
@@ -70,7 +67,6 @@ class CategoryFeed extends ContainerWithFeedList {
           activeTab={this.state.activeTab}
           onClickTab={this.onClickTab}
         />
-        {image && <HeadlineDivider img={image} />}
         <FeedItemListWrapper>
           <FeedItemList
             feedItems={selectedFeedItems}

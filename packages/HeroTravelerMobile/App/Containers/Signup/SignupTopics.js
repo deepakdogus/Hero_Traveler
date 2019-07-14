@@ -1,11 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  ScrollView,
-  View,
-  Text,
-} from 'react-native'
-import {connect} from 'react-redux'
+import { ScrollView, View, Text } from 'react-native'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import SignupActions from '../../Shared/Redux/SignupRedux'
@@ -36,27 +32,26 @@ class SignupTopicsScreen extends React.Component {
     this.props.loadCategories()
   }
 
-  render () {
+  render() {
     let content
 
     if (this.props.areCategoriesLoaded) {
       content = (
-      <ScrollView>
-        <ExploreGrid
-          onPress={this._toggleCategory}
-          categories={_.values(this.props.categories).map(category => {
-            return {
-              ...category,
-              selected: this.getIsSelected(category),
-            }
-          })} />
+        <ScrollView>
+          <ExploreGrid
+            onPress={this.toggleCategory}
+            exploreItems={_.values(this.props.categories).map(category => {
+              return {
+                ...category,
+                selected: this.getIsSelected(category),
+              }
+            })}
+          />
         </ScrollView>
       )
     }
     else {
-      content = (
-        <Text>No categories yet</Text>
-      )
+      content = <Text>No categories yet</Text>
     }
 
     return (
@@ -74,7 +69,7 @@ class SignupTopicsScreen extends React.Component {
     return _.includes(this.props.selectedCategories, category.id)
   }
 
-  _toggleCategory = (category) => {
+  toggleCategory = category => {
     const isSelected = this.getIsSelected(category)
     if (!isSelected) {
       this.props.selectCategory(category.id)
@@ -85,7 +80,7 @@ class SignupTopicsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     categories: state.entities.categories.entities,
     areCategoriesLoaded: state.entities.categories.fetchStatus.loaded,
@@ -93,12 +88,17 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    selectCategory: (categoryId) => dispatch(SignupActions.signupFollowCategory(categoryId)),
-    unselectCategory: (categoryId) => dispatch(SignupActions.signupUnfollowCategory(categoryId)),
+    selectCategory: categoryId =>
+      dispatch(SignupActions.signupFollowCategory(categoryId)),
+    unselectCategory: categoryId =>
+      dispatch(SignupActions.signupUnfollowCategory(categoryId)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupTopicsScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignupTopicsScreen)

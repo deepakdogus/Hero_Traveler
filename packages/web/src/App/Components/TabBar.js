@@ -25,6 +25,7 @@ const TabItems = styled(Row)`
 
 const TabContainer = styled.div`
   cursor: pointer;
+  padding: 0 25px;
   margin: ${props => props.isModal ? '0' : '0 25px'};
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     margin: ${props => props.isModal ? '0' : '0 10px 0 0'};

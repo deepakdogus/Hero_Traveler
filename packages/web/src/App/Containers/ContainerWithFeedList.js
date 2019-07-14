@@ -22,8 +22,10 @@ export default class ContainerWithFeedList extends React.Component {
     loadDrafts: PropTypes.func,
     loadBookmarks: PropTypes.func,
     getGuides: PropTypes.func,
+    getUserGuides: PropTypes.func,
     getStories: PropTypes.func,
     getNearbyStories: PropTypes.func,
+    getUserStories: PropTypes.func,
     getBadgeUserStories: PropTypes.func,
     draftsById: PropTypes.objectOf(PropTypes.object),
     userBookmarksById: PropTypes.objectOf(PropTypes.object),
@@ -38,6 +40,10 @@ export default class ContainerWithFeedList extends React.Component {
     draftsFetchStatus: PropTypes.object,
     userBookmarksFetchStatus: PropTypes.object,
     guidesFetchStatus: PropTypes.object,
+    isChannel: PropTypes.bool,
+    isUser: PropTypes.bool,
+    categoryId: PropTypes.string,
+    getCategoryGuides: PropTypes.func,
   }
 
   state = {
@@ -95,6 +101,7 @@ export default class ContainerWithFeedList extends React.Component {
   }
 
   getTabInfo = page => {
+    const { isUser, isChannel, sessionUserId, categoryId } = this.props
     switch (this.state.activeTab) {
       case 'DRAFTS':
         // used to purge pendingUpdates of removed stories
@@ -103,7 +110,7 @@ export default class ContainerWithFeedList extends React.Component {
       case 'BOOKMARKS':
         return this.props.loadBookmarks(this.props.sessionUserId)
       case 'GUIDES':
-        return this.props.getGuides(this.props.sessionUserId)
+        return this.props.getGuides && this.props.getGuides(sessionUserId)
       case 'NEARBY':
         return this.getGeolocation()
       case 'FROM US':

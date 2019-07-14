@@ -7,7 +7,6 @@ import FeedList from '../Components/FeedList'
 
 const mapStateToProps = (state, ownProps) => {
   const {entities} = state
-
   // mapping Ids to actual stories or guides
   let mapFunc
   if (ownProps.isStory) {

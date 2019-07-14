@@ -20,8 +20,8 @@ const Explore = Loadable({
   delay: 300,
 })
 
-const Category = Loadable({
-  loader: () => import('./Category'),
+const ExploreItems = Loadable({
+  loader: () => import('./ExploreItems'),
   loading: Loading,
   delay: 300,
 })
@@ -117,7 +117,12 @@ class AppRoot extends Component {
         <Route
           exact
           path="/category/:categoryId"
-          component={Category}
+          component={ExploreItems}
+        />
+        <Route
+          exact
+          path="/channel/:userId"
+          component={ExploreItems}
         />
         <AuthRoute
           exact

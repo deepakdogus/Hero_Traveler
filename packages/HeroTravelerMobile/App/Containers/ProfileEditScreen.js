@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import R from 'ramda'
@@ -46,7 +46,7 @@ const dateLikeItemAsDate = dateLikeItem => {
   return isNaN(timeStamp) ? new Date() : new Date(timeStamp)
 }
 
-class ProfileEditScreen extends React.Component {
+class ProfileEditScreen extends Component {
   static propTypes = {
     user: PropTypes.object,
     accessToken: PropTypes.string,
@@ -117,7 +117,8 @@ class ProfileEditScreen extends React.Component {
       .catch(() => {
         NavActions.pop()
         this.setState({
-          error: 'There was an error updating your profile photo. Please try again',
+          error:
+            'There was an error updating your profile photo. Please try again',
         })
       })
   }
@@ -136,7 +137,7 @@ class ProfileEditScreen extends React.Component {
       bio: bio,
       gender: gender,
       locationInfo: locationInfo,
-      birthday: birthday
+      birthday: birthday,
     })
     NavActions.pop()
   }
@@ -208,12 +209,19 @@ class ProfileEditScreen extends React.Component {
       = user && user.profile
         ? [user.profile.avatar, user.profile.tempAvatar]
         : [undefined, undefined]
-    const avatarUrl = getImageUrl(tempAvatar ? tempAvatar : userAvatar, 'avatarLarge')
+    const avatarUrl = getImageUrl(
+      tempAvatar ? tempAvatar : userAvatar,
+      'avatarLarge',
+    )
 
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>
-          <Avatar size="extraLarge" avatarUrl={avatarUrl} style={styles.avatar} />
+          <Avatar
+            size="extraLarge"
+            avatarUrl={avatarUrl}
+            style={styles.avatar}
+          />
           <TouchableOpacity
             style={styles.addAvatarPhotoButton}
             onPress={this._selectAvatar}
@@ -255,7 +263,6 @@ class ProfileEditScreen extends React.Component {
           <ScrollView style={[styles.flexOne, styles.topBorder]}>
             <View style={styles.flexOne}>
               {this.renderAvatar()}
-
               <View style={styles.form}>
                 <Field
                   name="username"
@@ -323,7 +330,9 @@ class ProfileEditScreen extends React.Component {
                   </View>
                   <View style={styles.radioWithTextInput}>
                     <RadioButton
-                      selected={!!gender && !['male', 'female'].includes(gender)}
+                      selected={
+                        !!gender && !['male', 'female'].includes(gender)
+                      }
                       onPress={this.selectGenderOption}
                       value="other"
                       text="Other:"
@@ -333,7 +342,9 @@ class ProfileEditScreen extends React.Component {
                         style={styles.input}
                         placeholder="Self Describe"
                         value={
-                          !['male', 'female', 'other'].includes(gender) ? gender : ''
+                          !['male', 'female', 'other'].includes(gender)
+                            ? gender
+                            : ''
                         }
                         returnKeyType="done"
                         onChangeText={this.onGenderTextChange}
@@ -348,7 +359,9 @@ class ProfileEditScreen extends React.Component {
                     onPress={this.openDatePicker}
                   >
                     <Text style={styles.input}>
-                      {birthday ? moment(birthday).format('MM-DD-YYYY') : 'Birthday'}
+                      {birthday
+                        ? moment(birthday).format('MM-DD-YYYY')
+                        : 'Birthday'}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -366,7 +379,7 @@ class ProfileEditScreen extends React.Component {
         {showDatePicker && (
           <View
             style={styles.dateWrapper}
-            shadowColor="white"
+            shadowColor="black"
             shadowOpacity={0.9}
             shadowRadius={10}
             shadowOffset={{ width: 0, height: 0 }}
@@ -378,8 +391,7 @@ class ProfileEditScreen extends React.Component {
                 maximumDate={this.getEndRange()}
                 onDateChange={this.onDateChange}
               />
-              <RoundedButton text="Confirm"
-                onPress={this.confirmDate} />
+              <RoundedButton text="Confirm" onPress={this.confirmDate} />
             </View>
           </View>
         )}

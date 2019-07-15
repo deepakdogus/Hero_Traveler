@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 const coverInnerHeight = 370
@@ -68,6 +68,7 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    paddingBottom: 50,
   },
   inputWrapper: {
     flexShrink: 1,
@@ -146,5 +147,13 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.whiteAlphaPt3,
     borderStyle: 'solid',
+  },
+  dateWrapper: {
+    position: 'absolute',
+    top: 250,
+    left: 40,
+    width: Dimensions.get('window').width - 80,
+    elevation: 100,
+    backgroundColor: Colors.snow,
   },
 })

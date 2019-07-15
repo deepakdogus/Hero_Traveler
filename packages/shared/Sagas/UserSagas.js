@@ -7,33 +7,31 @@ import SessionActions from '../Redux/SessionRedux'
 import SignupActions from '../Redux/SignupRedux'
 import { loginToFacebookAndGetUserInfo } from '../../Services/FacebookConnect'
 
-const currentUserId = ({session}) => session.userId
+const currentUserId = ({ session }) => session.userId
 
-export function * updateUser (api, action) {
-  const {attrs} = action
+export function* updateUser(api, action) {
+  const { attrs } = action
   const userId = yield select(currentUserId)
   if (attrs.introTooltips) {
     yield put(UserActions.eagerUpdateTooltips(userId, attrs.introTooltips))
   }
-  const response = yield call(
-    api.updateUser,
-    userId,
-    attrs
-  )
+  const response = yield call(api.updateUser, userId, attrs)
   if (response.ok) {
     yield put(UserActions.updateUserSuccess(response.data))
   } else {
-    yield put(UserActions.updateUserFailure(new Error(
-      _.get(response, "data.message", "Failed to update user")
-    )))
+    yield put(
+      UserActions.updateUserFailure(
+        new Error(_.get(response, 'data.message', 'Failed to update user')),
+      ),
+    )
   }
 }
 
-export function * connectFacebook (api) {
+export function* connectFacebook(api) {
   let userResponse
   try {
     userResponse = yield loginToFacebookAndGetUserInfo()
-  } catch(err) {
+  } catch (err) {
     console.log('Facebook connect failed with error: ', err)
     yield put(SignupActions.signupFacebookFailure(err))
     return
@@ -45,34 +43,25 @@ export function * connectFacebook (api) {
   }
 
   try {
-    const response = yield call(
-      api.connectFacebook,
-      userResponse.id,
-      userResponse.email
-    )
+    const response = yield call(api.connectFacebook, userResponse.id, userResponse.email)
     if (response.ok) {
       yield put(UserActions.connectFacebookSuccess(response.data))
     } else {
-      yield put(UserActions.connectFacebookFailure(
-        new Error(
-          _.get(response, "data.message", "Unknown Error")
-        )
-      ))
+      yield put(
+        UserActions.connectFacebookFailure(
+          new Error(_.get(response, 'data.message', 'Unknown Error')),
+        ),
+      )
     }
   } catch (error) {
-    yield put(UserActions.connectFacebookFailure(
-      new Error("There was a network error")
-    ))
+    yield put(UserActions.connectFacebookFailure(new Error('There was a network error')))
   }
 }
 
-export function * deleteUser(api) {
+export function* deleteUser(api) {
   try {
     const userId = yield select(currentUserId)
-    const response = yield call(
-      api.deleteUser,
-      userId
-    )
+    const response = yield call(api.deleteUser, userId)
     if (response.ok) {
       yield [
         put(UserActions.deleteUserSuccess()),
@@ -81,33 +70,54 @@ export function * deleteUser(api) {
       ]
       yield put(StartupActions.hideSplash())
     } else {
-      yield put(UserActions.deleteUserFailure(
-        new Error(
-          (response.data && response.data.message) ? response.data.message : "Unknown Error")
-        )
+      yield put(
+        UserActions.deleteUserFailure(
+          new Error(
+            response.data && response.data.message
+              ? response.data.message
+              : 'Unknown Error',
+          ),
+        ),
       )
     }
-  } catch(err) {
-    yield put(UserActions.deleteUserFailure(
-      new Error("There was an error deleting the user.")
-    ))
+  } catch (err) {
+    yield put(
+      UserActions.deleteUserFailure(new Error('There was an error deleting the user.')),
+    )
   }
 }
 
-export function * getSuggestedUsers (api, action) {
+export function* getChannelUsers(api) {
+  const response = yield call(api.getUsersThatAreChannels)
+  const { entities, result } = response.data
+  if (response.ok) {
+    yield [
+      put(UserActions.receiveUsers(entities.users)),
+      put(UserActions.loadUsersChannelsSuccess(result)),
+    ]
+  } else {
+    yield put(
+      UserActions.loadUsersChannelsFailure(new Error('error loading channel users')),
+    )
+  }
+}
+
+export function* getSuggestedUsers(api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
-      put(UserActions.loadUserSuggestionsSuccess(result))
+      put(UserActions.loadUserSuggestionsSuccess(result)),
     ]
   } else {
-    yield put(UserActions.loadUserSuggestionsFailure(new Error('error loading user suggestions')))
+    yield put(
+      UserActions.loadUserSuggestionsFailure(new Error('error loading user suggestions')),
+    )
   }
 }
 
-export function * loadUser (api, {userId}) {
+export function* loadUser(api, { userId }) {
   const response = yield call(api.getUser, userId)
   if (response.ok) {
     const { entities } = response.data
@@ -118,37 +128,41 @@ export function * loadUser (api, {userId}) {
   }
 }
 
-export function * loadUserFollowers (api, {userId}) {
+export function* loadUserFollowers(api, { userId }) {
   const response = yield call(api.getUserFollowers, userId)
   if (response.ok) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
-      put(UserActions.loadUserFollowersSuccess(userId, result))
+      put(UserActions.loadUserFollowersSuccess(userId, result)),
     ]
   } else {
-    yield put(UserActions.loadUserFollowersFailure(userId, new Error('Failed to load followers')))
+    yield put(
+      UserActions.loadUserFollowersFailure(userId, new Error('Failed to load followers')),
+    )
   }
 }
 
-export function * loadUserFollowing (api, {userId}) {
+export function* loadUserFollowing(api, { userId }) {
   const response = yield call(api.getUserFollowing, userId)
   if (response.ok) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
-      put(UserActions.loadUserFollowingSuccess(userId, result))
+      put(UserActions.loadUserFollowingSuccess(userId, result)),
     ]
   } else {
-    yield put(UserActions.loadUserFollowingFailure(userId, new Error('Failed to load follower suggestions')))
+    yield put(
+      UserActions.loadUserFollowingFailure(
+        userId,
+        new Error('Failed to load follower suggestions'),
+      ),
+    )
   }
 }
 
-export function * userFollowUser(api, {userId, targetUserId}) {
-  const response = yield call(
-    api.followUser,
-    targetUserId
-  )
+export function* userFollowUser(api, { userId, targetUserId }) {
+  const response = yield call(api.followUser, targetUserId)
 
   yield put(UserActions.followUserSuccess(userId, targetUserId))
 
@@ -157,11 +171,8 @@ export function * userFollowUser(api, {userId, targetUserId}) {
   }
 }
 
-export function * userUnfollowUser(api, {userId, targetUserId}) {
-  const response = yield call(
-    api.unfollowUser,
-    targetUserId
-  )
+export function* userUnfollowUser(api, { userId, targetUserId }) {
+  const response = yield call(api.unfollowUser, targetUserId)
 
   yield put(UserActions.unfollowUserSuccess(userId, targetUserId))
 
@@ -170,13 +181,11 @@ export function * userUnfollowUser(api, {userId, targetUserId}) {
   }
 }
 
-export function  * getActivities(api) {
-  const response = yield call(
-    api.getActivity
-  )
+export function* getActivities(api) {
+  const response = yield call(api.getActivity)
 
   if (response.ok) {
-    const {entities, result} = response.data
+    const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.receiveActivities(entities.activities)),
@@ -188,33 +197,30 @@ export function  * getActivities(api) {
   }
 }
 
-export function * seenActivity(api, {activityId}) {
-  const response = yield call(
-    api.setActivityRead,
-    activityId
-  )
+export function* seenActivity(api, { activityId }) {
+  const response = yield call(api.setActivityRead, activityId)
 
   if (!response.ok) {
-    yield put(UserActions.activitySeenFailure(new Error('Something went wrong'), activityId))
+    yield put(
+      UserActions.activitySeenFailure(new Error('Something went wrong'), activityId),
+    )
   }
 }
 
-export function * removeAvatar(api, {userId}) {
-  const response = yield call(
-    api.removeAvatarImage,
-    userId,
-  )
+export function* removeAvatar(api, { userId }) {
+  const response = yield call(api.removeAvatarImage, userId)
   if (response.ok) {
     yield put(UserActions.removeAvatarSuccess(response.data))
-  }
-  else {
-    yield put(UserActions.removeAvatarFailure(new Error(
-      _.get(response, 'data.message', 'Failed to update user')
-    )))
+  } else {
+    yield put(
+      UserActions.removeAvatarFailure(
+        new Error(_.get(response, 'data.message', 'Failed to update user')),
+      ),
+    )
   }
 }
 
-export function * adminGetUsers (api, action) {
+export function* adminGetUsers(api, action) {
   const { params } = action
   const response = yield call(api.adminGetUsers, params)
   if (response.ok && response.data && response.data.data) {
@@ -226,7 +232,7 @@ export function * adminGetUsers (api, action) {
   }
 }
 
-export function * adminGetUser (api, action) {
+export function* adminGetUser(api, action) {
   const { id } = action
   const response = yield call(api.adminGetUser, id)
   if (response.ok && response.data) {
@@ -238,7 +244,7 @@ export function * adminGetUser (api, action) {
   }
 }
 
-export function * adminPutUser (api, action) {
+export function* adminPutUser(api, action) {
   const { values, id, message } = action.payload
   const response = yield call(api.adminPutUser, { values, id })
   if (response.ok && response.data) {
@@ -252,7 +258,7 @@ export function * adminPutUser (api, action) {
   }
 }
 
-export function * adminDeleteUser (api, action) {
+export function* adminDeleteUser(api, action) {
   const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteUser, id)
   if (response.ok && response.data) {
@@ -267,7 +273,7 @@ export function * adminDeleteUser (api, action) {
   }
 }
 
-export function * adminRestoreUsers (api, action) {
+export function* adminRestoreUsers(api, action) {
   const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreUsers, ids)
   if (response.ok && response.data) {
@@ -286,4 +292,3 @@ export function * adminRestoreUsers (api, action) {
     message.error(error)
   }
 }
-

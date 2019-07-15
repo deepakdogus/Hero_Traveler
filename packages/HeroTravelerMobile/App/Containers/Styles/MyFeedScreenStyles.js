@@ -40,7 +40,9 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   tabStyle: {
-    width: Metrics.screenWidth * 0.3,
+    width: '100%',
+    marginLeft: 14,
+    marginRight: 14,
   },
   tabWrapper: {
     width: Metrics.screenWidth,

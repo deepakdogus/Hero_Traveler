@@ -13,10 +13,10 @@ export default StyleSheet.create({
   root: {
     flex: 1,
     marginTop: Metrics.statusBarHeight,
-  }
+  },
 })
 
-export const CategoryFeedNavActionStyles = StyleSheet.create({
+export const ExploreItemFeedNavActionStyles = StyleSheet.create({
   leftButtonIconStyle: { tintColor: Colors.navBarText },
   navigationBarStyle: {
     paddingTop: 5,

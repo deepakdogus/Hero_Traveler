@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 import React, { Component } from 'react'
 import {
+  Alert,
   Animated,
   View,
   ScrollView,
@@ -18,19 +19,21 @@ import GuideActions from '../../Shared/Redux/Entities/Guides'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import NavBar from '../CreateStory/NavBar'
 import GuideListItem from '../../Components/GuideListItem'
-import {imageHeight, imageWidth} from '../../Components/Styles/GuideListItemStyles'
 import {
-  Metrics,
-  Colors,
-} from '../../Shared/Themes'
+  imageHeight,
+  imageWidth,
+} from '../../Components/Styles/GuideListItemStyles'
+import { Metrics, Colors } from '../../Shared/Themes'
 
 import { getFeedItemImageURL } from '../../Components/FeedItemsOfType'
-import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
+import isTooltipComplete, {
+  Types as TooltipTypes,
+} from '../../Shared/Lib/firstTimeTooltips'
 
 const deleteBtnParams = {
   text: 'Delete',
-  backgroundColor : Colors.redHighlights,
-  underlayColor : Colors.redHighlights,
+  backgroundColor: Colors.redHighlights,
+  underlayColor: Colors.redHighlights,
 }
 
 const videoImageUrlOptions = {
@@ -54,7 +57,7 @@ class EditGuideStories extends Component {
   }
 
   onDone = () => {
-    NavActions.tabbar({type: 'reset'})
+    NavActions.tabbar({ type: 'reset' })
     NavActions.profile()
   }
 
@@ -62,14 +65,25 @@ class EditGuideStories extends Component {
     NavActions.pop()
   }
 
-  removeStoryFromGuide = (storyIdToRemove) => {
-    const {updateGuide, guide} = this.props
+  removeStoryFromGuide = storyIdToRemove => {
+    const { updateGuide, guide } = this.props
     return () => {
-      const filteredStories = guide.stories.filter((storyId) => storyIdToRemove !== storyId)
-      updateGuide({
-        id: guide.id,
-        stories: filteredStories,
-      })
+      Alert.alert(`Delete Story`, `Are you sure?`, [
+        { text: 'Cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            const filteredStories = guide.stories.filter(
+              storyId => storyIdToRemove !== storyId,
+            )
+            updateGuide({
+              id: guide.id,
+              stories: filteredStories,
+            })
+          },
+        },
+      ])
     }
   }
 
@@ -81,38 +95,45 @@ class EditGuideStories extends Component {
     this.props.completeTooltip(updatedTooltips)
   }
 
-  renderToolTip = (hasOne) => {
-    const {user} = this.props
-    const showNextTooltip = !!user && !isTooltipComplete(
-      TooltipTypes.SLIDE_DELETE_GUIDE,
-      user.introTooltips,
-    )
+  renderToolTip = hasOne => {
+    const { user } = this.props
+    const showNextTooltip
+      = !!user
+      && !isTooltipComplete(TooltipTypes.SLIDE_DELETE_GUIDE, user.introTooltips)
     if (!showNextTooltip) return null
 
     return (
-      <TouchableOpacity key={'tooltip'} style={{zIndex: 100}} onPress={this.dismissTooltip}>
-        <Animated.View
-          style={[
-            storyCoverStyles.slideToDeleteTooltip,
-          ]}>
+      <TouchableOpacity
+        key={'tooltip'}
+        style={{ zIndex: 100 }}
+        onPress={this.dismissTooltip}
+      >
+        <Animated.View style={[storyCoverStyles.slideToDeleteTooltip]}>
           <Text style={{ color: 'white' }}>
             {`Swipe left on a\nstory to delete`}
           </Text>
-          <View style={hasOne ? storyCoverStyles.slideToDeleteTooltipUpArrow : storyCoverStyles.slideToDeleteTooltipArrow} />
+          <View
+            style={
+              hasOne
+                ? storyCoverStyles.slideToDeleteTooltipUpArrow
+                : storyCoverStyles.slideToDeleteTooltipArrow
+            }
+          />
         </Animated.View>
       </TouchableOpacity>
     )
   }
 
   render = () => {
-    const {stories} = this.props
+    const { stories } = this.props
     return (
       <View style={storyCoverStyles.root}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           bounces={false}
           stickyHeaderIndices={[0]}
-          ref={this.setScrollViewRef}>
+          ref={this.setScrollViewRef}
+        >
           <NavBar
             onLeft={this.onLeft}
             leftTitle={'Back'}
@@ -124,8 +145,8 @@ class EditGuideStories extends Component {
           />
           <View style={styles.storyWrapper}>
             {!!stories.length && this.renderToolTip(stories.length === 1)}
-            {!!stories.length &&
-              stories.map((story, idx) => {
+            {!!stories.length
+              && stories.map((story, idx) => {
                 const coverUrl = getFeedItemImageURL(
                   story,
                   videoImageUrlOptions,
@@ -133,12 +154,14 @@ class EditGuideStories extends Component {
                 )
                 return (
                   <Swipeout
-                    style={{backgroundColor: 'white'}}
-                    key={`story-${idx}`}
-                    right={[{
-                      ...deleteBtnParams,
-                      onPress: this.removeStoryFromGuide(story.id),
-                    }]}
+                    style={{ backgroundColor: 'white' }}
+                    key={`story-${story._id}`}
+                    right={[
+                      {
+                        ...deleteBtnParams,
+                        onPress: this.removeStoryFromGuide(story.id),
+                      },
+                    ]}
                   >
                     <GuideListItem
                       imageUri={{ uri: coverUrl }}
@@ -147,9 +170,7 @@ class EditGuideStories extends Component {
                     />
                   </Swipeout>
                 )
-              })
-            }
-
+              })}
           </View>
         </ScrollView>
       </View>
@@ -160,8 +181,10 @@ class EditGuideStories extends Component {
 const mapStateToProps = (state, props) => {
   const guide = state.entities.guides.entities[props.guideId]
   const allStories = state.entities.stories.entities
-  const stories = _.compact(guide.stories.map((storyId) => allStories[storyId]))
-  const {session: {userId}} = state
+  const stories = _.compact(guide.stories.map(storyId => allStories[storyId]))
+  const {
+    session: { userId },
+  } = state
 
   return {
     guide,
@@ -172,10 +195,14 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => ({
   updateGuide: guide => dispatch(GuideActions.updateGuide(guide)),
-  completeTooltip: (introTooltips) => dispatch(UserActions.updateUser({introTooltips})),
+  completeTooltip: introTooltips =>
+    dispatch(UserActions.updateUser({ introTooltips })),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditGuideStories)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EditGuideStories)
 
 const styles = StyleSheet.create({
   storyWrapper: {

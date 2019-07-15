@@ -10,26 +10,9 @@ import StoryActions from '../Shared/Redux/Entities/Stories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignUpActions from '../Shared/Redux/SignupRedux'
 import Footer from '../Components/Footer'
-import HorizontalDivider from '../Components/HorizontalDivider'
 import TabBar from '../Components/TabBar'
+import HeadlineDivider from '../Components/HeadlineDivider'
 import { sizes } from '../Shared/Web/Themes/Metrics'
-
-const CenteredText = styled.p`
-  text-align: center;
-`
-
-const FeedText = styled(CenteredText)`
-  color: ${props => props.theme.Colors.background};
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 30px;
-  letter-spacing: 0.6px;
-  padding: 30px 0 0 0;
-  @media (max-width: ${sizes.tablet}px) {
-    padding: 20px;
-    font-size: 18px;
-  }
-`
 
 const Wrapper = styled.div``
 
@@ -39,15 +22,6 @@ const ContentWrapper = styled.div`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-`
-const StyledDivider = styled(HorizontalDivider)`
-  border-color: ${props => props.theme.Colors.background};
-  border-width: 1px;
-  margin-bottom: 23px;
-  max-width: 960px;
-  @media (max-width: ${sizes.tablet}px) {
-    display: none;
   }
 `
 
@@ -130,8 +104,7 @@ class Feed extends ContainerWithFeedList {
           onClickTab={this.onClickTab}
         />
         <ContentWrapper>
-          <FeedText>MY FEED</FeedText>
-          <StyledDivider />
+          <HeadlineDivider title={'My Feed'} />
           <FeedItemList
             getTabInfo={this.getTabInfo}
             activeTab={this.state.activeTab}

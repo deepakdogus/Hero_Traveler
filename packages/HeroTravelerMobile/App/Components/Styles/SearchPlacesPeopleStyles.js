@@ -13,10 +13,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.snow,
     zIndex: 2, // need to set this so embedded NativeFeeds can't capture clicks in the navBar
   },
-  navBarBorder: {
-    borderBottomColor: Colors.feedDividerGrey,
-    borderBottomWidth: 1,
-  },
   loader: {
     height: Metrics.screenHeight - 100 - Metrics.tabBarHeight,
   },

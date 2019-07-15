@@ -13,7 +13,7 @@ export const ModelName = 'Story'
 const StorySchema = new Schema(
   {
     title: {
-      type: String
+      type: String,
     },
     // slug: {
     //   type: String,
@@ -26,140 +26,140 @@ const StorySchema = new Schema(
         Constants.STORY_TYPE_SEE_VALUE,
         Constants.STORY_TYPE_EAT_VALUE,
         Constants.STORY_TYPE_STAY_VALUE,
-        Constants.STORY_TYPE_DO_VALUE
-      ]
+        Constants.STORY_TYPE_DO_VALUE,
+      ],
     },
     draft: {
       type: Boolean,
-      index: true
+      index: true,
     },
     featured: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     description: {
-      type: String
+      type: String,
     },
     videoDescription: {
-      type: String
+      type: String,
     },
     author: {
       type: Schema.ObjectId,
       ref: UserRef,
-      required: true
+      required: true,
     },
     categories: [
       {
         type: Schema.ObjectId,
-        ref: CategoryRef
-      }
+        ref: CategoryRef,
+      },
     ],
     hashtags: [
       {
         type: Schema.ObjectId,
-        ref: HashtagRef
-      }
+        ref: HashtagRef,
+      },
     ],
     content: {
-      type: String
+      type: String,
     },
     draftjsContent: {
       type: Schema.Types.Mixed,
-      default: {}
+      default: {},
     },
     locationInfo: {
       name: {
-        type: String
+        type: String,
       },
       locality: {
-        type: String
+        type: String,
       },
       state: {
-        type: String
+        type: String,
       },
       country: {
-        type: String
+        type: String,
       },
       latitude: {
-        type: Number
+        type: Number,
       },
       longitude: {
-        type: Number
-      }
+        type: Number,
+      },
     },
     // location is being phased out in favor of locationInfo and
     // will be removed in future.
     location: {
-      type: String
+      type: String,
     },
     latitude: {
-      type: Number
+      type: Number,
     },
     longitude: {
-      type: Number
+      type: Number,
     },
     tripDate: {
-      type: Date
+      type: Date,
     },
     flagged: {
       type: Boolean,
-      default: false
+      default: false,
     },
     counts: {
       likes: {
         type: Number,
-        default: 0
+        default: 0,
       },
       comments: {
         type: Number,
-        default: 0
-      }
+        default: 0,
+      },
     },
     coverImage: {
       type: Schema.ObjectId,
-      ref: UploadRef
+      ref: UploadRef,
     },
     coverVideo: {
       type: Schema.ObjectId,
-      ref: UploadRef
+      ref: UploadRef,
     },
     coverCaption: {
-      type: String
+      type: String,
     },
     cost: {
-      type: Number
+      type: Number,
     },
     currency: {
-      type: String
+      type: String,
     },
     travelTips: {
-      type: String
+      type: String,
     },
     publishedDate: {
-      type: Date
+      type: Date,
     },
     rating: {
-      type: Number
+      type: Number,
     },
     actionButton: {
       type: {
-        type: String
+        type: String,
       },
       link: {
-        type: String
-      }
-    }
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,
     toObject: {
-      virtuals: true
+      virtuals: true,
     },
     toJSON: {
-      virtuals: true
-    }
-  }
+      virtuals: true,
+    },
+  },
 )
 
 StorySchema.statics = {
@@ -168,8 +168,8 @@ StorySchema.statics = {
       .populate({
         path: 'author',
         populate: {
-          path: 'profile.cover profile.avatar'
-        }
+          path: 'profile.cover profile.avatar',
+        },
       })
       .populate('categories')
       .populate('hashtags')
@@ -181,8 +181,8 @@ StorySchema.statics = {
       .populate({
         path: 'author',
         populate: {
-          path: 'profile.cover profile.avatar'
-        }
+          path: 'profile.cover profile.avatar',
+        },
       })
       .populate('categories')
       .populate('hashtags')
@@ -191,7 +191,7 @@ StorySchema.statics = {
   },
 
   // includes soft-deleted by default
-  getMany({ page = 1, perPage = 5, search='', sort, query }) {
+  getMany({ page = 1, perPage = 5, search = '', sort, query }) {
     let queryToApply = {}
 
     if (query) {
@@ -200,12 +200,12 @@ StorySchema.statics = {
 
     if (search !== '') {
       queryToApply['$text'] = { $search: search }
-    } 
+    }
 
-    let sortToApply = {createdAt: -1}
+    let sortToApply = { createdAt: -1 }
     if (sort) {
       sortToApply = {
-        [sort.fieldName]: sort.order
+        [sort.fieldName]: sort.order,
       }
     }
     return Promise.props({
@@ -216,7 +216,7 @@ StorySchema.statics = {
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort(sortToApply)
-          .exec(),
+        .exec(),
     })
   },
 
@@ -228,8 +228,8 @@ StorySchema.statics = {
         { author: userId },
         { author: { $in: followingIds } },
         { categories: { $in: followingIds } },
-        { featured: true }
-      ]
+        { featured: true },
+      ],
     }
 
     return this.getFeed(query, page, perPage)
@@ -237,13 +237,13 @@ StorySchema.statics = {
 
   getStoriesById(ids) {
     const query = {
-      _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) }
+      _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) },
     }
     return this.getFeed(query)
   },
 
   getStoriesByAuthors(authors) {
-    const query = { author: { $in: authors} }
+    const query = { author: { $in: authors } }
     return this.getFeed(query)
   },
 
@@ -253,26 +253,26 @@ StorySchema.statics = {
       feed: this.list(query)
         .skip((page - 1) * perPage)
         .limit(perPage)
-        .exec()
+        .exec(),
     })
   },
 
-  getUserStories(userId) {
-    return this.list({ author: userId, draft: false }).exec()
+  getUserStories(query) {
+    if (!query.type) delete query.type
+    if (query.type === 'all') delete query.type
+    return this.list({ ...query, draft: false }).exec()
   },
 
   getCountUserStories(userId) {
-    return this
-      .count({author: userId})
-      .exec()
+    return this.count({ author: userId }).exec()
   },
 
   getSearchStory(storyId) {
     return this.findOne({
-      _id: storyId
+      _id: storyId,
     })
       .select(
-        'title description createdAt content location tripDate coverImage coverVideo author categories'
+        'title description createdAt content location tripDate coverImage coverVideo author categories',
       )
       .populate('coverImage coverVideo author categories hashtags')
       .exec()
@@ -284,12 +284,12 @@ StorySchema.statics = {
       .then(story => {
         return String(story.author) === String(userId)
       })
-  }
+  },
 }
 
-StorySchema.index({title: 'text'})
+StorySchema.index({ title: 'text' })
 
-StorySchema.plugin(slug, {truncate: 120})
-StorySchema.plugin(softDelete, {overrideMethods: true})
+StorySchema.plugin(slug, { truncate: 120 })
+StorySchema.plugin(softDelete, { overrideMethods: true })
 
 export default mongoose.model(ModelName, StorySchema)

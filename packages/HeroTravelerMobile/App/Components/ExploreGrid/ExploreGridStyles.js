@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import { Metrics, Colors, Fonts } from '../../Shared/Themes/'
 
+export const GRID_ITEM_DIMENSION = (Metrics.screenWidth * (Metrics.feedMargin / 100)) / 3
+
 export default StyleSheet.create({
   grid: {
     flex: 1,
@@ -9,11 +11,12 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     width: `${Metrics.feedMargin}%`,
     alignSelf: 'center',
-    marginVertical: (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
+    marginVertical:
+      (Metrics.screenWidth - Metrics.screenWidth * (Metrics.feedMargin / 100)) / 2,
   },
   gridItem: {
-    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16, // 16 = l/r margin
-    height:Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5 + 30, // to achieve 100 x 105 images + 30 height
+    width: GRID_ITEM_DIMENSION - 16, // 16 = l/r margin
+    height: GRID_ITEM_DIMENSION - 16 + 5 + 30, // to achieve 100 x 105 images + 30 height
     margin: 8,
     backgroundColor: Colors.transparent,
   },
@@ -26,9 +29,13 @@ export default StyleSheet.create({
     lineHeight: 20,
     paddingBottom: 10,
   },
-  gridImage: {
-    width: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16,
-    height: Metrics.screenWidth * (Metrics.feedMargin / 100) / 3 - 16 + 5,
+  categoryGridImage: {
+    width: GRID_ITEM_DIMENSION - 16,
+    height: GRID_ITEM_DIMENSION - 16 + 5,
+  },
+  channelGridImage: {
+    width: GRID_ITEM_DIMENSION - 16,
+    height: GRID_ITEM_DIMENSION - 16 + 25,
   },
   selectedIcon: {
     position: 'absolute',

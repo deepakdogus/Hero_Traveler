@@ -31,9 +31,9 @@ const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBar
 
 const tabTypes = {
   following: 'following',
-  guides: 'guides',
-  nearby: 'nearby',
   fromUs: 'from us',
+  nearby: 'nearby',
+  guides: 'guides',
 }
 
 const algoliasearch = algoliasearchModule(
@@ -42,7 +42,7 @@ const algoliasearch = algoliasearchModule(
 )
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
-const ONE_HUNDRED_MILES = 160934 // 100 miles in meters
+const FIFTY_MILES = 80468 // 50 miles in meters
 
 class MyFeedScreen extends React.Component {
   static propTypes = {
@@ -104,7 +104,6 @@ class MyFeedScreen extends React.Component {
           console.log('error occurred', err)
         })
     }
-
     // search helper
     this.helper = AlgoliaSearchHelper(algoliasearch, STORY_INDEX)
     this.helper.on('result', res => {
@@ -144,7 +143,7 @@ class MyFeedScreen extends React.Component {
         this.helper
           .setQuery('')
           .setQueryParameter('aroundLatLng', `${latitude}, ${longitude}`)
-          .setQueryParameter('aroundRadius', ONE_HUNDRED_MILES)
+          .setQueryParameter('aroundRadius', FIFTY_MILES)
           .setQueryParameter('hitsPerPage', MAX_STORY_RESULTS)
           .search()
         this.setState({ permissionStatus: 'GRANTED' })
@@ -332,11 +331,10 @@ class MyFeedScreen extends React.Component {
 
   render() {
     let { fetchStatus, sync, stories, user } = this.props
-    const { needToUpdateApp} = this.state
+    const { needToUpdateApp } = this.state
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-
     let bottomContent
     bottomContent = (
       <ConnectedFeedList
@@ -368,7 +366,7 @@ class MyFeedScreen extends React.Component {
         <SearchPlacesPeople
           stories={stories}
           user={user}
-          placeholder={`Search`}
+          placeholder={`Where to?`}
         >
           {bottomContent}
         </SearchPlacesPeople>

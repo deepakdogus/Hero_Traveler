@@ -36,10 +36,7 @@ const tabTypes = {
   guides: 'guides',
 }
 
-const algoliasearch = algoliasearchModule(
-  env.SEARCH_APP_NAME,
-  env.SEARCH_API_KEY,
-)
+const algoliasearch = algoliasearchModule(env.SEARCH_APP_NAME, env.SEARCH_API_KEY)
 const STORY_INDEX = env.SEARCH_STORY_INDEX
 const MAX_STORY_RESULTS = 100
 const FIFTY_MILES = 80468 // 50 miles in meters
@@ -98,7 +95,8 @@ class MyFeedScreen extends React.Component {
         .then(versionOnAppStore => {
           const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
           const currentVersion = VersionNumber.appVersion.split('.')
-          if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
+          if (Number(appStoreVersion[0] - currentVersion[0]) >= 1)
+            this.setState({ needToUpdateApp: true })
         })
         .catch(err => {
           console.log('error occurred', err)
@@ -112,7 +110,7 @@ class MyFeedScreen extends React.Component {
     })
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.activeTab !== this.state.activeTab) this.getEntitiesByType()
   }
 
@@ -152,11 +150,10 @@ class MyFeedScreen extends React.Component {
         console.error(error)
         // if user has changed location settings to 'DENIED' in the middle of a session,
         // clear all cached nearby stories
-        if (error.code && error.code === 1)
-          this.props.discardNearbyFeedStories()
+        if (error.code && error.code === 1) this.props.discardNearbyFeedStories()
         this.setState({ permissionStatus: 'DENIED' })
       },
-      {enableHighAccuracy: true},
+      { enableHighAccuracy: true },
     )
   }
 
@@ -178,16 +175,12 @@ class MyFeedScreen extends React.Component {
   }
 
   isStoryTabSelected = () =>
-    [tabTypes.following, tabTypes.nearby, tabTypes.fromUs].includes(
-      this.state.activeTab,
-    )
+    [tabTypes.following, tabTypes.nearby, tabTypes.fromUs].includes(this.state.activeTab)
 
   openSettings = () => Linking.openURL('app-settings:')
 
   _wrapElt(elt) {
-    return (
-      <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
-    )
+    return <View style={[styles.scrollItemFullScreen, styles.center]}>{elt}</View>
   }
 
   _showNoStories() {
@@ -263,8 +256,7 @@ class MyFeedScreen extends React.Component {
   }
 
   getLocationPermission = () => {
-    if (!this.state.permissionStatus)
-      navigator.geolocation.requestAuthorization()
+    if (!this.state.permissionStatus) navigator.geolocation.requestAuthorization()
   }
 
   getEntitiesById() {
@@ -313,18 +305,25 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  updateAppNotice(){
-    const APP_STORE_LINK = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
+  updateAppNotice() {
+    const APP_STORE_LINK
+      = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
     Alert.alert(
       'Update Available',
-      'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
+      'This version of the app is outdated. Please update app from the '
+        + (Platform.OS === 'ios' ? 'App Store' : 'Play Store')
+        + '.',
       [
-        {text: 'Update Now',
+        {
+          text: 'Update Now',
           onPress: () => {
-            if(Platform.OS === 'ios'){
-              Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
+            if (Platform.OS === 'ios') {
+              Linking.openURL(APP_STORE_LINK).catch(err =>
+                console.error('An error occurred', err),
+              )
             }
-          }},
+          },
+        },
       ],
     )
   }
@@ -335,22 +334,25 @@ class MyFeedScreen extends React.Component {
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-    let bottomContent
-    bottomContent = (
-      <ConnectedFeedList
-        isStory={isStoryTabSelected}
-        entitiesById={entitiesById}
-        renderFeedItem={this.renderFeedItem}
-        renderSectionHeader={this.renderTabs()}
-        sectionContentHeight={40}
-        onRefresh={this._onRefresh}
-        refreshing={fetchStatus.fetching}
-      />
-    )
-    if (!entitiesById || !entitiesById.length) {
-      let innerContent = this._showNoStories()
-      bottomContent = this._wrapElt(innerContent)
-    }
+    console.log(fetchStatus, 'this is fetch')
+    // let bottomContent
+    // bottomContent = (
+    //   <ConnectedFeedList
+    //     isStory={isStoryTabSelected}
+    //     entitiesById={entitiesById}
+    //     renderFeedItem={this.renderFeedItem}
+    //     renderSectionHeader={this.renderTabs()}
+    //     sectionContentHeight={40}
+    //     onRefresh={this._onRefresh}
+    //     refreshing={fetchStatus.fetching}
+    //   />
+    // )
+    // if (!fetchStatus.fetching && (!entitiesById || !entitiesById.length)) {
+    //   let innerContent = this._showNoStories()
+    //   bottomContent = (
+    //     <View style={[styles.scrollItemFullScreen, styles.center]}>{innerContent}</View>
+    //   )
+    // }
 
     return (
       <View style={styles.statusBarAvoider}>
@@ -363,12 +365,24 @@ class MyFeedScreen extends React.Component {
           discardUpdate={this.props.discardUpdate}
           resetFailCount={this.props.resetFailCount}
         />
-        <SearchPlacesPeople
-          stories={stories}
-          user={user}
-          placeholder={`Where to?`}
-        >
-          {bottomContent}
+        <SearchPlacesPeople stories={stories} user={user} placeholder={`Where to?`}>
+          {((entitiesById || entitiesById.length)) && (
+            <ConnectedFeedList
+              isStory={isStoryTabSelected}
+              entitiesById={entitiesById}
+              renderFeedItem={this.renderFeedItem}
+              renderSectionHeader={this.renderTabs()}
+              sectionContentHeight={40}
+              onRefresh={this._onRefresh}
+              refreshing={fetchStatus.fetching}
+            />
+          )}
+
+          {(!fetchStatus.fetching && (!entitiesById || !entitiesById.length)) && (
+            <View style={[styles.scrollItemFullScreen, styles.center]}>
+              {this._showNoStories()}
+            </View>
+          )}
         </SearchPlacesPeople>
       </View>
     )
@@ -402,23 +416,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    attemptGetUserFeedStories: userId =>
-      dispatch(StoryActions.feedRequest(userId)),
+    attemptGetUserFeedStories: userId => dispatch(StoryActions.feedRequest(userId)),
     attemptGetNearbyFeedStories: nearbyStoryIds =>
       dispatch(StoryActions.nearbyFeedRequest(nearbyStoryIds)),
-    attemptGetBadgeUserStories: () =>
-      dispatch(StoryActions.badgeUserFeedRequest()),
-    attemptGetUserFeedGuides: userId =>
-      dispatch(GuideActions.guideFeedRequest(userId)),
-    discardNearbyFeedStories: () =>
-      dispatch(StoryActions.nearbyFeedSuccess([], 0, {})),
+    attemptGetBadgeUserStories: () => dispatch(StoryActions.badgeUserFeedRequest()),
+    attemptGetUserFeedGuides: userId => dispatch(GuideActions.guideFeedRequest(userId)),
+    discardNearbyFeedStories: () => dispatch(StoryActions.nearbyFeedSuccess([], 0, {})),
     discardUpdate: storyId =>
       dispatch(PendingUpdatesActions.removePendingUpdate(storyId)),
-    resetFailCount: storyId =>
-      dispatch(PendingUpdatesActions.resetFailCount(storyId)),
+    resetFailCount: storyId => dispatch(PendingUpdatesActions.resetFailCount(storyId)),
     saveLocalDraft: story => dispatch(StoryCreateActions.saveLocalDraft(story)),
-    updateDraft: story =>
-      dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
+    updateDraft: story => dispatch(StoryCreateActions.updateDraft(story.id, story, true)),
   }
 }
 

@@ -77,7 +77,7 @@ export default class extends ContainerWithFeedList {
             feedItems={selectedFeedItems}
           />
           <Footer />
-        </FeedItemListWrapper>z
+        </FeedItemListWrapper>
       </ListWrapper>
     )
   }

@@ -366,7 +366,7 @@ class MyFeedScreen extends React.Component {
           resetFailCount={this.props.resetFailCount}
         />
         <SearchPlacesPeople stories={stories} user={user} placeholder={`Where to?`}>
-          {((entitiesById || entitiesById.length)) && (
+          {((entitiesById && !!entitiesById.length)) && (
             <ConnectedFeedList
               isStory={isStoryTabSelected}
               entitiesById={entitiesById}

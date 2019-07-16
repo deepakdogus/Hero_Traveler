@@ -27,7 +27,8 @@ import BackgroundPublishingBars from '../../Components/BackgroundPublishingBars'
 import TabBar from '../../Components/TabBar'
 import SearchPlacesPeople from '../SearchPlacesPeople'
 
-const imageHeight = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
+const imageHeight
+  = Metrics.screenHeight - Metrics.navBarHeight - Metrics.tabBarHeight
 
 const tabTypes = {
   following: 'following',
@@ -98,10 +99,12 @@ class MyFeedScreen extends React.Component {
         .then(versionOnAppStore => {
           const appStoreVersion = versionOnAppStore.split('.') //split into 3 parts. example: 1.05.12
           const currentVersion = VersionNumber.appVersion.split('.')
-          if(Number(appStoreVersion[0] - currentVersion[0]) >= 1) this.setState({needToUpdateApp: true})
+          if (Number(appStoreVersion[0] - currentVersion[0]) >= 1) {
+            this.setState({ needToUpdateApp: true })
+          }
         })
         .catch(err => {
-          console.log('error occurred', err)
+          console.error('error occurred', err)
         })
     }
     // search helper
@@ -112,7 +115,7 @@ class MyFeedScreen extends React.Component {
     })
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.activeTab !== this.state.activeTab) this.getEntitiesByType()
   }
 
@@ -156,7 +159,7 @@ class MyFeedScreen extends React.Component {
           this.props.discardNearbyFeedStories()
         this.setState({ permissionStatus: 'DENIED' })
       },
-      {enableHighAccuracy: true},
+      { enableHighAccuracy: true },
     )
   }
 
@@ -313,18 +316,25 @@ class MyFeedScreen extends React.Component {
     )
   }
 
-  updateAppNotice(){
-    const APP_STORE_LINK = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
+  updateAppNotice() {
+    const APP_STORE_LINK
+      = 'https://itunes.apple.com/us/app/hero-traveler/id1288145566?mt=8'
     Alert.alert(
       'Update Available',
-      'This version of the app is outdated. Please update app from the ' + (Platform.OS === 'ios' ? 'App Store' : 'Play Store') + '.',
+      'This version of the app is outdated. Please update app from the '
+        + (Platform.OS === 'ios' ? 'App Store' : 'Play Store')
+        + '.',
       [
-        {text: 'Update Now',
+        {
+          text: 'Update Now',
           onPress: () => {
-            if(Platform.OS === 'ios'){
-              Linking.openURL(APP_STORE_LINK).catch(err => console.error('An error occurred', err))
+            if (Platform.OS === 'ios') {
+              Linking.openURL(APP_STORE_LINK).catch(err =>
+                console.error('An error occurred', err),
+              )
             }
-          }},
+          },
+        },
       ],
     )
   }
@@ -348,8 +358,12 @@ class MyFeedScreen extends React.Component {
           discardUpdate={this.props.discardUpdate}
           resetFailCount={this.props.resetFailCount}
         />
-        <SearchPlacesPeople stories={stories} user={user} placeholder={`Where to?`}>
-          {((entitiesById && !!entitiesById.length)) && (
+        <SearchPlacesPeople
+          stories={stories}
+          user={user}
+          placeholder={`Where to?`}
+        >
+          {entitiesById && !!entitiesById.length && (
             <ConnectedFeedList
               isStory={isStoryTabSelected}
               entitiesById={entitiesById}
@@ -360,8 +374,7 @@ class MyFeedScreen extends React.Component {
               refreshing={fetchStatus.fetching}
             />
           )}
-
-          {(!fetchStatus.fetching && noStories) && (
+          {!fetchStatus.fetching && noStories && (
             <View style={[styles.scrollItemFullScreen, styles.center]}>
               {this._showNoStories()}
             </View>

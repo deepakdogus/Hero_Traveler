@@ -1307,6 +1307,7 @@
 				91F19951204F29C700EC7125 /* RNVideoTrimmerBridge.m */,
 				91F19952204F29C700EC7125 /* RNVideoTrimmer.swift */,
 				91F19953204F29C700EC7125 /* SDAVAssetExportSession.h */,
+				6580145C227B3C1D004FECE5 /* AVUtilities.swift */,
 			);
 			path = RNVideoTrimmer;
 			sourceTree = "<group>";

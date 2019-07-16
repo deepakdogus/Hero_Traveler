@@ -39,7 +39,7 @@ const Title = styled.div`
   font-size: 18px;
   text-align: left;
   color: ${props => props.theme.Colors.background};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   margin: 0;
   padding-left: 25px;
   flex-shrink: 1;
@@ -52,7 +52,7 @@ const Title = styled.div`
 
 // created specific component to optimize speed with _onClickTile
 class Tile extends React.Component {
-   static propTypes = {
+  static propTypes = {
     category: PropTypes.object,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
@@ -63,25 +63,20 @@ class Tile extends React.Component {
   }
 
   renderImage = () => {
-    const {category} = this.props
+    const { category } = this.props
     return (
       <CategoryTile
-        imageSource={
-          getImageUrl(
-            category.image,
-            'categoryThumbnail',
-            {width: 400, height: 400},
-          )
-        }
+        imageSource={getImageUrl(category.image, 'gridItemThumbnail', {
+          width: 400,
+          height: 400,
+        })}
       />
     )
   }
 
   renderText = () => {
-    const {category} = this.props
-    return (
-      <Title>{category.title}</Title>
-    )
+    const { category } = this.props
+    return <Title>{category.title}</Title>
   }
 
   renderRight = () => {
@@ -91,8 +86,8 @@ class Tile extends React.Component {
         <RoundedButton
           text={isSelected ? 'FOLLOWING' : '+ FOLLOW'}
           type={isSelected ? undefined : 'blackWhite'}
-          width='154px'
-          padding='even'
+          width="154px"
+          padding="even"
           onClick={this._onClickTile}
           textProps={FollowButtonTextStyle}
           responsiveTextProps={FollowButtonResponsiveTextStyle}
@@ -102,7 +97,7 @@ class Tile extends React.Component {
     )
   }
 
-  render(){
+  render() {
     return (
       <FullWidthDiv>
         <SpaceBetweenRow
@@ -112,9 +107,7 @@ class Tile extends React.Component {
           leftProps={LeftProps}
           rowProps={RowProps}
         />
-        <HorizontalDivider
-          color='grey'
-        />
+        <HorizontalDivider color="grey" />
       </FullWidthDiv>
     )
   }
@@ -128,9 +121,9 @@ export default class ExploreList extends React.Component {
   }
 
   render() {
-    const {categories, getIsSelected, onClickCategory} = this.props
+    const { categories, getIsSelected, onClickCategory } = this.props
 
-    const renderedCategories = Object.keys(categories).map((key) => {
+    const renderedCategories = Object.keys(categories).map(key => {
       const category = categories[key]
       return (
         <Tile
@@ -144,9 +137,7 @@ export default class ExploreList extends React.Component {
 
     return (
       <StyledList fluid>
-        <Row>
-          {renderedCategories}
-        </Row>
+        <Row>{renderedCategories}</Row>
       </StyledList>
     )
   }

@@ -4,13 +4,15 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import StoryActions, { getByCategory, getFetchStatus } from '../Shared/Redux/Entities/Stories'
+import StoryActions, {
+  getByCategory,
+  getFetchStatus,
+} from '../Shared/Redux/Entities/Stories'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
 import GuideActions from '../Shared/Redux/Entities/Guides'
 import SignupActions from '../Shared/Redux/SignupRedux'
 
 import ContainerWithFeedList from './ContainerWithFeedList'
-import CategoryHeader from '../Components/CategoryHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
@@ -28,7 +30,7 @@ const FeedItemListWrapper = styled.div`
   }
 `
 
-class Category extends ContainerWithFeedList {
+class CategoryFeed extends ContainerWithFeedList {
   static propTypes = {
     users: PropTypes.object,
     categoryId: PropTypes.string,
@@ -43,34 +45,23 @@ class Category extends ContainerWithFeedList {
   state = { activeTab: 'ALL' }
 
   componentDidMount() {
-    const {category, loadCategories} = this.props
+    const { category, loadCategories } = this.props
     this.getTabInfo()
     if (!category) loadCategories()
   }
 
-  _followCategory = (categoryId) => {
+  _followCategory = categoryId => {
     this.props.followCategory(this.props.sessionUserId, categoryId)
   }
 
-  _unfollowCategory = (categoryId) => {
+  _unfollowCategory = categoryId => {
     this.props.unfollowCategory(this.props.sessionUserId, categoryId)
   }
 
   render() {
-    const {
-      category,
-      isFollowingCategory,
-    } = this.props
-    const {selectedFeedItems} = this.getSelectedFeedItems()
-
+    const { selectedFeedItems } = this.getSelectedFeedItems()
     return (
       <ContentWrapper>
-        <CategoryHeader
-          category={category}
-          followCategory={this._followCategory}
-          unfollowCategory={this._unfollowCategory}
-          isFollowingCategory={isFollowingCategory}
-        />
         <TabBar
           tabs={tabBarTabs}
           activeTab={this.state.activeTab}
@@ -120,13 +111,17 @@ function mapDispatchToProps(dispatch, ownProps) {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     getGuides: () => dispatch(GuideActions.getCategoryGuides(categoryId)),
     followCategory: (sessionUserId, categoryId) =>
-      dispatch(runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId])),
+      dispatch(
+        runIfAuthed(sessionUserId, SignupActions.signupFollowCategory, [categoryId]),
+      ),
     unfollowCategory: (sessionUserId, categoryId) =>
-      dispatch(runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [categoryId])),
+      dispatch(
+        runIfAuthed(sessionUserId, SignupActions.signupUnfollowCategory, [categoryId]),
+      ),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Category)
+)(CategoryFeed)

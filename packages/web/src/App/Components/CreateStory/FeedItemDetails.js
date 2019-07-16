@@ -100,7 +100,7 @@ export const StyledInput = styled.input`
   border-width: 0;
   margin: 10px 0 10px 25px;
   outline: none;
-  cursor: ${props => props.onClick ? 'pointer' : 'auto'};
+  cursor: ${props => (props.onClick ? 'pointer' : 'auto')};
   ::placeholder {
     font-family: ${props => props.theme.Fonts.type.base};
     color: ${props => props.theme.Colors.navBarText};
@@ -258,7 +258,8 @@ export default class FeedItemDetails extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      Object.keys(this.props.categories).length !== Object.keys(nextProps.categories).length
+      Object.keys(this.props.categories).length
+        !== Object.keys(nextProps.categories).length
       && nextProps.workingDraft
     ) {
       const categoriesList = formatCategories(nextProps.categories)
@@ -278,12 +279,12 @@ export default class FeedItemDetails extends React.Component {
           locations: [...this.props.workingDraft.locations, locationInfo],
         })
       }
- else {
+      else {
         this.setState({ address: locationInfo.name })
         this.props.onInputChange({ locationInfo: locationInfo })
       }
     }
- else {
+    else {
       this.setState({ address: location })
     }
   }
@@ -349,10 +350,16 @@ export default class FeedItemDetails extends React.Component {
     const clickedTile = _.find(selectedTilesOfType, findByTitleFns[type])
     if (!clickedTile) return
 
-    const updatedTiles = _.differenceWith(selectedTilesOfType, [clickedTile], isSameFns[type])
+    const updatedTiles = _.differenceWith(
+      selectedTilesOfType,
+      [clickedTile],
+      isSameFns[type],
+    )
 
     if (type === 'categories') {
-      this.updateCategoriesList(sortCategories(this.state.categoriesList.concat([clickedTile])))
+      this.updateCategoriesList(
+        sortCategories(this.state.categoriesList.concat([clickedTile])),
+      )
     }
     this.props.onInputChange({ [type]: updatedTiles })
   }
@@ -399,7 +406,7 @@ export default class FeedItemDetails extends React.Component {
     })
   }
 
-  onChangeActionButton = actionButton => this.props.onInputChange({actionButton})
+  onChangeActionButton = actionButton => this.props.onInputChange({ actionButton })
 
   togglePrivacy = () => {
     this.props.onInputChange({
@@ -487,7 +494,9 @@ export default class FeedItemDetails extends React.Component {
                       label={button.toUpperCase()}
                       style={styles.radioButton}
                       labelStyle={styles.radioButtonLabel}
-                      checkedIcon={<RadioButtonChecked style={styles.radioButtonFilled} />}
+                      checkedIcon={
+                        <RadioButtonChecked style={styles.radioButtonFilled} />
+                      }
                       uncheckedIcon={<RadioButtonUnchecked />}
                     />
                   )
@@ -631,36 +640,34 @@ export default class FeedItemDetails extends React.Component {
             type="number"
             placeholder={this.getCostPlaceHolderText(workingDraft.type)}
             value={workingDraft.cost || ''}
-            min='0'
-            name='cost'
+            min="0"
+            name="cost"
             onChange={this.onGenericChange}
           />
         </InputRowContainer>
         <StyledDivider
-          color='lighter-grey'
+          color="lighter-grey"
           opaque
         />
         {user && user.role !== 'user' && (
-        <InputRowContainer>
-          <IconWrapper>
-            <IconWithMargin name='addActionButton'/>
-          </IconWrapper>
-          <StyledInput
-            type='text'
-            placeholder={actionButtonLink || 'Enter Url'}
-            value={actionButtonLink}
-            name='actionButton'
-            onClick={this.openActionButtonModal}
-            readOnly
-          />
-        </InputRowContainer>
+          <InputRowContainer>
+            <IconWrapper>
+              <IconWithMargin name="addActionButton" />
+            </IconWrapper>
+            <StyledInput
+              type="text"
+              placeholder={actionButtonLink || 'Enter Url'}
+              value={actionButtonLink}
+              name="actionButton"
+              onClick={this.openActionButtonModal}
+              readOnly
+            />
+          </InputRowContainer>
         )}
-        {user && user.role !== 'user' && (
-          <StyledDivider
-            color='lighter-grey'
-            opaque
-          />
-        )}
+        {user && user.role !== 'user' && <StyledDivider
+          color="lighter-grey"
+          opaque
+                                         />}
         <Spacer />
         <TravelTipsContainer>
           <DetailLabel>{isGuide ? 'Overview' : 'Travel Tips'}</DetailLabel>
@@ -668,7 +675,9 @@ export default class FeedItemDetails extends React.Component {
             value={isGuide ? workingDraft.description : workingDraft.travelTips}
             name={isGuide ? 'description' : 'travelTips'}
             placeholder={
-              isGuide ? `What's your guide about?` : 'What should your fellow travelers know?'
+              isGuide
+                ? `What's your guide about?`
+                : 'What should your fellow travelers know?'
             }
             onChange={this.onGenericChange}
           />

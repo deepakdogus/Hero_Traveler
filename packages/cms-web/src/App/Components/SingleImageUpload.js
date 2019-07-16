@@ -37,7 +37,7 @@ class SingleImageUpload extends React.Component {
     if (props.value !== get(state, 'fileList.0.url')) {
       const { fileList } = state
       const url = props.id === 'thumbnail' || props.id === 'channelThumbnail'
-        ? getImageUrl(props.value, 'categoryThumbnail')
+        ? getImageUrl(props.value, 'gridItemThumbnail')
         : getImageUrl(props.value)
       return {
         fileList: [{
@@ -59,7 +59,7 @@ class SingleImageUpload extends React.Component {
     if (!value) return
     const { fileList } = this.state
     const url = id === 'thumbnail' || id === 'channelThumbnail'
-        ? getImageUrl(value, 'categoryThumbnail')
+        ? getImageUrl(value, 'gridItemThumbnail')
         : getImageUrl(value)
     this.setState({
       fileList: [{

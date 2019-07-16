@@ -6,7 +6,7 @@ import HeaderImageWrapper from './HeaderImageWrapper'
 import VerticalCenter from '../Shared/Web/Components/VerticalCenter'
 import HorizontalDivider from './HorizontalDivider'
 import RoundedButton from '../Shared/Web/Components/RoundedButton'
-import {OverlayStyles} from './Overlay'
+import { OverlayStyles } from './Overlay'
 import HeaderTopGradient from '../Shared/Web/Components/Headers/Shared/HeaderTopGradient'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 
@@ -15,12 +15,12 @@ const OpaqueHeaderImageWrapper = styled(HeaderImageWrapper)`
   background-position: center;
 `
 
-const CategoryTitle = styled.p`
+const ExploreFeedHeaderTitle = styled.p`
   font-family: ${props => props.theme.Fonts.type.montserrat};
   font-weight: 400;
   font-size: 59px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   margin: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -32,7 +32,7 @@ const Centered = styled(VerticalCenter)`
   position: absolute;
   width: 100vw;
   height: 570px;
-  top:0;
+  top: 0;
   text-align: center;
   z-index: 2;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
@@ -61,7 +61,7 @@ const StyledRoundedButton = styled(RoundedButton)`
   text-transform: uppercase;
   width: 160px;
   padding: 9px;
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
 `
 
 const textProps = `
@@ -83,41 +83,48 @@ const responsiveFollowButtonTextStyles = `
   font-size: 10px;
 `
 
-export default class CategoryHeader extends React.Component {
+export default class ExploreFeedHeaderHeader extends React.Component {
   static propTypes = {
     category: PropTypes.object,
-    followCategory: PropTypes.func,
-    unfollowCategory: PropTypes.func,
+    user: PropTypes.object,
+    followItem: PropTypes.func,
+    unfollowItem: PropTypes.func,
     isFollowingCategory: PropTypes.bool,
   }
 
-  _followCategory = () => {
-    this.props.followCategory(this.props.category.id)
+  followItem = () => {
+    const { user, category } = this.props
+    this.props.followItem((category && category.id) || (user && user.id))
   }
 
-  _unfollowCategory = () => {
-    this.props.unfollowCategory(this.props.category.id)
+  unfollowItem = () => {
+    const { user, category } = this.props
+    this.props.unfollowItem((category && category.id) || (user && user.id))
   }
 
-  render () {
-    const {category, isFollowingCategory} = this.props
-
-    if (!category) return null
-    const categoryImageUrl = getImageUrl(category.image, 'image')
+  render() {
+    const { user, category, isFollowingCategory } = this.props
+    if (!category && !user) return null
+    const categoryImageUrl = getImageUrl(
+      (category && category.image) || (user && user.channelImage),
+      'image',
+    )
     return (
       <OpaqueHeaderImageWrapper
         backgroundImage={categoryImageUrl}
-        size='large'
+        size="large"
       >
-        <HeaderTopGradient/>
+        <HeaderTopGradient />
         <Centered>
-          <CategoryTitle>{category.title}</CategoryTitle>
+          <ExploreFeedHeaderTitle>
+            {(category && category.title) || (user && user.username)}
+          </ExploreFeedHeaderTitle>
           <StyledHorizontalDivider />
           <ButtonWrapper>
             <StyledRoundedButton
               type={isFollowingCategory ? '' : 'exploreCategoryFollow'}
               text={isFollowingCategory ? 'Following' : '+ Follow'}
-              onClick={isFollowingCategory ? this._unfollowCategory : this._followCategory}
+              onClick={isFollowingCategory ? this.unfollowItem : this.followItem}
               textProps={textProps}
               responsiveTextProps={responsiveFollowButtonTextStyles}
               responsiveButtonProps={responsiveFollowButtonStyles}

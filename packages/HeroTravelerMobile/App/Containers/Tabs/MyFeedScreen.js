@@ -335,22 +335,7 @@ class MyFeedScreen extends React.Component {
     const failure = this.getFirstPendingFailure()
     const isStoryTabSelected = this.isStoryTabSelected()
     const entitiesById = this.getEntitiesById() || []
-    let bottomContent
-    bottomContent = (
-      <ConnectedFeedList
-        isStory={isStoryTabSelected}
-        entitiesById={entitiesById}
-        renderFeedItem={this.renderFeedItem}
-        renderSectionHeader={this.renderTabs()}
-        sectionContentHeight={40}
-        onRefresh={this._onRefresh}
-        refreshing={fetchStatus.fetching}
-      />
-    )
-    if (!entitiesById || !entitiesById.length) {
-      let innerContent = this._showNoStories()
-      bottomContent = this._wrapElt(innerContent)
-    }
+    const noStories = !entitiesById || !entitiesById.length
 
     return (
       <View style={styles.statusBarAvoider}>
@@ -363,12 +348,24 @@ class MyFeedScreen extends React.Component {
           discardUpdate={this.props.discardUpdate}
           resetFailCount={this.props.resetFailCount}
         />
-        <SearchPlacesPeople
-          stories={stories}
-          user={user}
-          placeholder={`Where to?`}
-        >
-          {bottomContent}
+        <SearchPlacesPeople stories={stories} user={user} placeholder={`Where to?`}>
+          {((entitiesById && !!entitiesById.length)) && (
+            <ConnectedFeedList
+              isStory={isStoryTabSelected}
+              entitiesById={entitiesById}
+              renderFeedItem={this.renderFeedItem}
+              renderSectionHeader={this.renderTabs()}
+              sectionContentHeight={40}
+              onRefresh={this._onRefresh}
+              refreshing={fetchStatus.fetching}
+            />
+          )}
+
+          {(!fetchStatus.fetching && noStories) && (
+            <View style={[styles.scrollItemFullScreen, styles.center]}>
+              {this._showNoStories()}
+            </View>
+          )}
         </SearchPlacesPeople>
       </View>
     )

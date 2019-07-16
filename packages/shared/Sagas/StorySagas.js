@@ -328,7 +328,10 @@ function * createSlideshow(draft){
     if (isLocalMediaAsset(uri)) {
       return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
       .then(response => {
-        if (response.error) return response
+        if (response.error) {
+          console.log('error from cloudinary', response.error)
+          return response
+        }
         const responseData = typeof response.data === 'string'
           ? JSON.parse(response.data)
           : response.data
@@ -430,8 +433,17 @@ function getSyncProgressSteps(story) {
 }
 
 export function* saveLocalDraft(api, action) {
+  console.log('saveLocalDraft is called', action)
   const { draft, saveAsDraft = false } = action
   draft.draft = saveAsDraft
+
+  yield put(
+      StoryCreateActions.initializeSyncProgress(
+        getSyncProgressSteps(draft),
+        `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
+      )
+    )
+
   yield [
     put(
       PendingUpdatesActions.addPendingUpdate(
@@ -439,12 +451,6 @@ export function* saveLocalDraft(api, action) {
         'Failed to publish',
         'saveLocalDraft',
         'retrying'
-      )
-    ),
-    put(
-      StoryCreateActions.initializeSyncProgress(
-        getSyncProgressSteps(draft),
-        `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
       )
     )
   ]

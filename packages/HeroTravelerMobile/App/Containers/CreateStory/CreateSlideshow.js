@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import SlideshowCover from './SlideshowCover'
+import CreateSlideshowDetails from './CreateSlideshowDetails'
 import StoryCreateActions from '../../Shared/Redux/StoryCreateRedux'
 import createLocalDraft from '../../Shared/Lib/createLocalDraft'
 import isLocalDraft from '../../Shared/Lib/isLocalDraft'
@@ -20,6 +21,7 @@ class CreateSlideshowScreen extends Component {
     resetCreateStore: PropTypes.func,
     reroute: PropTypes.func,
     setWorkingDraft: PropTypes.func,
+    displayEditSlideshow: PropTypes.bool,
   }
 
   componentWillMount() {
@@ -40,6 +42,12 @@ class CreateSlideshowScreen extends Component {
   }
 
   render () {
+    const { displayEditSlideshow } = this.props
+    if (displayEditSlideshow) {
+      return (
+        <CreateSlideshowDetails {...this.props} />
+      )
+    }
     return (
       <SlideshowCover {...this.props}/>
     )

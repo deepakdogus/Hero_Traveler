@@ -100,7 +100,6 @@ class ImageCrop extends Component {
 
   setup = (props) => {
     Image.getSize(props.image, (width, height) => {
-      console.log('image original width, height', width, height)
       //update state
       this.setState({
         imageHeight: height,

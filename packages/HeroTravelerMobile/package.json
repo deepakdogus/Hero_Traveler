@@ -84,7 +84,7 @@
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^4.0.0",
     "react-native-version-number": "^0.1.2",
-    "react-native-video-processing": "^1.13.0",
+    "react-native-video-processing": "^1.20.0",
     "react-native-webview-bridge-updated": "https://github.com/rwoody/react-native-webview-bridge#container-style",
     "react-native-zss-rich-text-editor": "1.1",
     "react-redux": "^5.0.2",

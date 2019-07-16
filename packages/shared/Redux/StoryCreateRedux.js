@@ -57,19 +57,20 @@ export const INITIAL_STATE = Immutable({
   error: null,
   fetchStatus: {
     loaded: false,
-    fetching: false
+    fetching: false,
   },
   pendingMediaUploads: 0,
   imageUpload: {
-    ...initialImageUpload
+    ...initialImageUpload,
   },
   // used to make sure we dont save the same local draft multiple times to DB
   draftIdToDBId: {},
 })
 
 /* ------------- Reducers ------------- */
-export const reset = () => {
-  return INITIAL_STATE
+export const reset = (state) => {
+  const previousSync = state.sync
+  return INITIAL_STATE.setIn(['sync'], previousSync)
 }
 
 export const saveDraft = (state, { draft }) => state.merge({
@@ -83,7 +84,7 @@ export const saveDraftSuccess = (state, {draft, story}) => {
     sync: {
       syncProgress: state.sync.syncProgressSteps,
     },
-    draftIdToDBId: { [draft.id]: story.id}
+    draftIdToDBId: { [draft.id]: story.id},
   }
 
   return state.merge(update, {deep: true})
@@ -95,8 +96,8 @@ export const failureUpdating = (state, {error}) => {
   return state.merge({
     error,
     sync: {
-      error: true
-    }
+      error: true,
+    },
   })
 }
 

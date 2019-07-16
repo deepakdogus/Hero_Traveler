@@ -231,7 +231,7 @@ export default class SlideshowCover extends Component {
     let nonStreamingVideoPath = getVideoUrl(cover, false)
     const calculatedDimensions = this._getWidthHeight(true, index)
     // If videoPath is a file url, then we do not need preview image or stream url
-    if (this.props.isFeed && videoPath.startsWith('file://')) {
+    if (this.props.isFeed && videoPath && videoPath.startsWith('file://')) {
       return (
         <TouchableWithoutFeedback
           style={{flex: 1, justifyContent: 'center'}}
@@ -265,8 +265,10 @@ export default class SlideshowCover extends Component {
         style={{
           flex: 1,
           overflow: 'hidden',
-          width: calculatedDimensions.width,
-          height: calculatedDimensions.height > 345.5 ? 345.5 : calculatedDimensions.height,
+          position: 'absolute',
+          ...calculatedDimensions,
+          // width: calculatedDimensions.width,
+          // height: calculatedDimensions.height > 345.5 ? 345.5 : calculatedDimensions.height,
         }}
         onPress={this._onPress}
       >
@@ -292,7 +294,7 @@ export default class SlideshowCover extends Component {
 
   renderItem(s, index, sliderHeight) {
     let coverType
-    if (s.purpose === 'coverImage') coverType = 'image'
+    if (s.purpose === 'coverImage' || (s.resource_type === 'image')) coverType = 'image'
     else coverType = 'video'
     return (
       <View key={`${index}`} style={[styles.root, this.props.style]}>
@@ -317,14 +319,25 @@ export default class SlideshowCover extends Component {
     const { slideshow } = this.props
     const { currentIndex } = this.state
     const { height } = this._getWidthHeight(true, 0)
+
+    const rootStyles = {
+      flex: 1,
+      position: 'relative',
+      backgroundColor: 'white',
+    }
+    const moreThanOneSlide = slideshow.length > 1
+    if (moreThanOneSlide) {
+      rootStyles.marginBottom = 40
+    }
     return (
-      <View style={styles.root}>
+      <View style={rootStyles}>
         <Swiper
           bounces
           loop={false}
           showsButtons={false}
           dotColor="#cccccc"
           activeDotColor="#ed1e2e"
+          showsPagination={moreThanOneSlide}
           paginationStyle={paginationStyle}
           onIndexChanged={this._handleIndexChanged}
           style={{

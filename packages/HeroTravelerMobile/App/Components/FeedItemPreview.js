@@ -96,6 +96,7 @@ export default class FeedItemPreview extends Component {
       storyId,
       navigatedFromProfile: true,
       shouldLoadStory: false,
+      displayEditSlideshow: true,
     })
   }
 
@@ -431,8 +432,12 @@ export default class FeedItemPreview extends Component {
 
   getOnPress = () => {
     const { isStory, onPressStory, onPressGuide, feedItem } = this.props
+    const isSlideshow = feedItem.slideshow && !_.isEmpty(feedItem.slideshow)
     if (!isStory) return onPressGuide
-    return isLocalDraft(feedItem.id) ? this.navToStoryEdit : onPressStory
+    return isLocalDraft(feedItem.id)
+      ? isSlideshow
+        ? this.navToSlideshowEdit
+        : this.navToStoryEdit : onPressStory
   }
 
   render() {

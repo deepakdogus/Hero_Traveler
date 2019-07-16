@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  DatePickerIOS,
-} from 'react-native'
+import { View, TouchableOpacity, Text, TextInput, DatePickerIOS } from 'react-native'
 import { Actions as NavActions } from 'react-native-router-flux'
 import moment from 'moment'
 
@@ -45,12 +39,6 @@ class SignupAdditionalInfo extends Component {
     showDatePicker: false,
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.updating && !this.props.updating && !this.props.error) {
-      NavActions.signupFlow_topics()
-    }
-  }
-
   receiveLocation = locationInfo => {
     this.setState({ locationInfo })
     NavActions.pop()
@@ -65,7 +53,10 @@ class SignupAdditionalInfo extends Component {
 
   openDatePicker = () => this.setState({ showDatePicker: true })
 
-  getEndRange = () => moment().subtract('year', 13).toDate()
+  getEndRange = () =>
+    moment()
+      .subtract('year', 13)
+      .toDate()
 
   onDateChange = birthday => this.setState({ birthday })
 
@@ -85,7 +76,8 @@ class SignupAdditionalInfo extends Component {
     if (birthday) attrs.birthday = birthday
     if (gender) attrs.gender = gender.toLowerCase()
 
-    if (Object.keys(attrs).length) this.props.updateUser(attrs)
+    if (Object.keys(attrs).length > 0) this.props.updateUser(attrs)
+    NavActions.signupFlow_topics()
   }
 
   render = () => {
@@ -193,8 +185,10 @@ class SignupAdditionalInfo extends Component {
                 maximumDate={this.getEndRange()}
                 onDateChange={this.onDateChange}
               />
-              <RoundedButton text="Confirm"
-                onPress={this.confirmDate} />
+              <RoundedButton
+                text="Confirm"
+                onPress={this.confirmDate}
+              />
             </View>
           </View>
         )}

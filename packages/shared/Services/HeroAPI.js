@@ -1,8 +1,8 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
-import {isArray} from 'lodash'
-import {normalize, schema} from 'normalizr'
-import {getToken as getPushToken} from '../../Config/PushConfig'
+import { isArray } from 'lodash'
+import { normalize, schema } from 'normalizr'
+import { getToken as getPushToken } from '../../Config/PushConfig'
 import env from '../../Config/Env'
 import CloudinaryAPI from '../../Services/CloudinaryAPI'
 import _ from 'lodash'
@@ -12,7 +12,7 @@ const Category = new schema.Entity('categories')
 const Hashtag = new schema.Entity('hashtags')
 const Story = new schema.Entity('stories', {
   author: User,
-  category: Category
+  category: Category,
 })
 const Guide = new schema.Entity('guides', {
   author: User,
@@ -27,15 +27,19 @@ const Activity = new schema.Entity('activities', {
 const videoTimeout = 120 * 1000
 const imageTimeout = 45 * 1000
 
-function putMediaResponse(api, url, response, timeout){
-  return api.put(url, {
-    file: response.data
-  }, {
-    timeout
-  })
+function putMediaResponse(api, url, response, timeout) {
+  return api.put(
+    url,
+    {
+      file: response.data,
+    },
+    {
+      timeout,
+    },
+  )
 }
 
-function safeNormalize(response, schema, path = 'data'){
+function safeNormalize(response, schema, path = 'data') {
   if (!response.ok) return response
   if (!_.get(response, path)) {
     response.ok = false
@@ -43,7 +47,7 @@ function safeNormalize(response, schema, path = 'data'){
     return response
   }
   return Object.assign({}, response, {
-    data: normalize(_.get(response, path), schema)
+    data: normalize(_.get(response, path), schema),
   })
 }
 
@@ -56,7 +60,7 @@ const create = () => {
       'client-id': 'xzy',
       'Cache-Control': 'no-cache',
     },
-    timeout: 15000
+    timeout: 15000,
   })
 
   // Wrap api's addMonitor to allow the calling code to attach
@@ -66,7 +70,7 @@ const create = () => {
     api.addMonitor(console.tron.apisauce)
   }
 
-  const setAuth = (accessToken) => {
+  const setAuth = accessToken => {
     api.setHeader('Authorization', `Bearer ${accessToken}`)
     return Promise.resolve()
   }
@@ -101,9 +105,9 @@ const create = () => {
         name,
         username,
         email,
-        password
+        password,
       },
-      deviceId: getPushToken()
+      deviceId: getPushToken(),
     })
   }
 
@@ -113,86 +117,96 @@ const create = () => {
         fbid,
         name,
         email,
-        pictureUrl
+        pictureUrl,
       },
-      deviceId: getPushToken()
+      deviceId: getPushToken(),
     })
   }
 
   const connectFacebook = (fbid, email) => {
-    return api.post('user/connectFacebook', {fbid, email})
+    return api.post('user/connectFacebook', { fbid, email })
   }
 
-  const deleteUser = (userId) => {
-    return api.delete(`user/${userId}`);
+  const deleteUser = userId => {
+    return api.delete(`user/${userId}`)
   }
 
   const login = (username, password) => {
-    return api.post('auth', {}, {
-      auth: {
-        username,
-        password
-      }
-    })
+    return api.post(
+      'auth',
+      {},
+      {
+        auth: {
+          username,
+          password,
+        },
+      },
+    )
   }
 
   const loginAdmin = (username, password) => {
-    return api.post('admin/auth', {}, {
-      auth: {
-        username,
-        password
-      }
-    })
+    return api.post(
+      'admin/auth',
+      {},
+      {
+        auth: {
+          username,
+          password,
+        },
+      },
+    )
   }
 
-  const logout = (tokens) => {
+  const logout = tokens => {
     return api.post('auth/revoke', {
-      tokens: tokens
+      tokens: tokens,
     })
   }
 
-  const updateDevice = (userId) => {
+  const updateDevice = userId => {
     if (!getPushToken) return
     return api.put(`user/${userId}/device`, {
-      device: getPushToken()
+      device: getPushToken(),
     })
   }
 
-  const removeDevice = (userId) => {
+  const removeDevice = userId => {
     const device = getPushToken()
     if (device === null) return Promise.resolve()
     return api.delete(`user/${userId}/device/${device.token}`)
   }
 
-  const refreshTokens = (refreshToken) => {
+  const refreshTokens = refreshToken => {
     return api.post('auth/refresh', {
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
     })
   }
 
-  const resetPasswordRequest = (email) => {
-    return api.post('user/resetPasswordRequest', {email})
+  const resetPasswordRequest = email => {
+    return api.post('user/resetPasswordRequest', { email })
   }
 
   const resetPassword = (token, password) => {
     return api.put('user/resetPassword', {
       token,
-      password
+      password,
     })
   }
 
-  const verifyEmail = (token) => {
+  const verifyEmail = token => {
     return api.get(`user/verify-email/${token}`)
   }
 
   const getMe = () => {
-    return api.get('user')
-    .then(response => safeNormalize(response, User))
+    return api.get('user').then(response => safeNormalize(response, User))
   }
 
-  const getUser = (username) => {
-    return api.get(`user/${username}`)
-    .then(response => safeNormalize(response, User))
+  const getUser = userId => {
+    return api.get(`user/${userId}`).then(response => safeNormalize(response, User))
+  }
+
+  const getUsersThatAreChannels = () => {
+    return api.get('user/channels').then(response => safeNormalize(response, [User]))
   }
 
   const updateUser = (userId, attrs) => {
@@ -200,8 +214,7 @@ const create = () => {
   }
 
   const getUserFeed = (userId, params) => {
-    return api.get(`story/feed/userfeed/${userId}`, params)
-    .then(response => {
+    return api.get(`story/feed/userfeed/${userId}`, params).then(response => {
       if (!response.ok) return response
       return {
         count: response.data.count,
@@ -210,23 +223,22 @@ const create = () => {
     })
   }
 
-  const getNearbyFeed = (nearbyStoryIds) => {
+  const getNearbyFeed = nearbyStoryIds => {
     return api
       .get(`story/feed/nearby`, {
-        nearbyStoryIds: JSON.stringify(nearbyStoryIds)
+        nearbyStoryIds: JSON.stringify(nearbyStoryIds),
       })
       .then(response => {
         if (!response.ok) return response
         return {
           count: response.data.count,
-          ...safeNormalize(response, [Story], 'data.feed')
+          ...safeNormalize(response, [Story], 'data.feed'),
         }
       })
   }
 
   const getBadgeUserFeed = () => {
-    return api.get(`story/feed/badgeUsers`)
-    .then(response => {
+    return api.get(`story/feed/badgeUsers`).then(response => {
       if (!response.ok) return response
       return {
         count: response.data.count,
@@ -236,22 +248,24 @@ const create = () => {
   }
 
   const getUserStories = (userId, params) => {
-    return api.get(`story/user/${userId}`, params)
-    .then(response => safeNormalize(response, [Story]))
+    return api
+      .get(`story/user/${userId}`, params)
+      .then(response => safeNormalize(response, [Story]))
   }
 
-  const getUsersDeletedStories = (userId) => {
+  const getUsersDeletedStories = userId => {
     return api.get(`story/user/${userId}/deleted`)
   }
 
   const getCategoryStories = (categoryId, params = {}) => {
-    return api.get(`story/category/${categoryId}`, params)
-    .then(response => safeNormalize(response, [Story]))
+    return api
+      .get(`story/category/${categoryId}`, params)
+      .then(response => safeNormalize(response, [Story]))
   }
 
   // publishes a draft
-  const createStory = (story) => {
-    return api.post('story/v2', {story})
+  const createStory = story => {
+    return api.post('story/v2', { story })
   }
 
   const createDraft = () => {
@@ -259,57 +273,56 @@ const create = () => {
   }
 
   const updateDraft = (id, attrs) => {
-    return api.put(`story/draft/${id}`, {
-      story: attrs
-    })
-    .then(response => safeNormalize(response, Story))
+    return api
+      .put(`story/draft/${id}`, {
+        story: attrs,
+      })
+      .then(response => safeNormalize(response, Story))
   }
 
-  const removeDraft = (draftId) => {
+  const removeDraft = draftId => {
     return api.delete(`story/draft/${draftId}`)
   }
 
-  const deleteStory = (storyId) => {
+  const deleteStory = storyId => {
     return api.delete(`story/${storyId}`)
   }
 
-  const getStory = (storyId) => {
-    return api.get(`story/${storyId}`)
-    .then(response => safeNormalize(response, Story))
+  const getStory = storyId => {
+    return api.get(`story/${storyId}`).then(response => safeNormalize(response, Story))
   }
 
   const getDrafts = () => {
-    return api.get(`story/draft`)
-    .then(response => safeNormalize(response, [Story]))
+    return api.get(`story/draft`).then(response => safeNormalize(response, [Story]))
   }
 
-  const getGuideStories = (guideId) => {
-    return api.get(`story/guide/${guideId}`)
-    .then(response => safeNormalize(response, [Story]))
+  const getGuideStories = guideId => {
+    return api
+      .get(`story/guide/${guideId}`)
+      .then(response => safeNormalize(response, [Story]))
   }
 
   const getCategories = () => {
-    return api.get('category')
-    .then(response => safeNormalize(response, [Category]))
+    return api.get('category').then(response => safeNormalize(response, [Category]))
   }
 
   const getHashtags = () => {
-    return api.get('hashtag')
-    .then(response => safeNormalize(response, [Hashtag]))
+    return api.get('hashtag').then(response => safeNormalize(response, [Hashtag]))
   }
 
-  const getSuggestedUsers = (params) => {
-    return api.get('user/suggestFollowers', {
-      params
-    })
-    .then(response => safeNormalize(response, [User]))
+  const getSuggestedUsers = params => {
+    return api
+      .get('user/suggestFollowers', {
+        params,
+      })
+      .then(response => safeNormalize(response, [User]))
   }
 
-  const followUser = (userId) => {
+  const followUser = userId => {
     return api.post(`user/follow/user/${userId}`)
   }
 
-  const unfollowUser = (userId) => {
+  const unfollowUser = userId => {
     return api.put(`user/unfollow/user/${userId}`)
   }
 
@@ -317,228 +330,239 @@ const create = () => {
     return api.get('user/categories')
   }
 
-  const followCategory = (categoryIds) => {
+  const followCategory = categoryIds => {
     const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
     return api.post(`user/follow/category`, {
-      categories
+      categories,
     })
   }
 
-  const unfollowCategory = (categoryIds) => {
+  const unfollowCategory = categoryIds => {
     const categories = isArray(categoryIds) ? categoryIds : [categoryIds]
     return api.put(`user/unfollow/category`, {
-      categories
+      categories,
     })
   }
 
-  const getUserFollowers = (userId) => {
-    return api.get(`user/${userId}/followers`)
-    .then(response => safeNormalize(response, [User]))
+  const getUserFollowers = userId => {
+    return api
+      .get(`user/${userId}/followers`)
+      .then(response => safeNormalize(response, [User]))
   }
 
-  const getUserFollowing = (userId) => {
-    return api.get(`user/${userId}/following`)
-    .then(response => safeNormalize(response, [User]))
+  const getUserFollowing = userId => {
+    return api
+      .get(`user/${userId}/following`)
+      .then(response => safeNormalize(response, [User]))
   }
 
-  const getUserLikes = (userId) => {
+  const getUserLikes = userId => {
     return api.get(`story/user/${userId}/like/v2`)
   }
 
-  const likeStory = (storyId) => {
+  const likeStory = storyId => {
     return api.put(`story/${storyId}/like`)
   }
 
-  const unlikeStory = (storyId) => {
+  const unlikeStory = storyId => {
     return api.put(`story/${storyId}/unlike`)
   }
 
-  const flagStory = (storyId) => {
+  const flagStory = storyId => {
     return api.put(`story/${storyId}/flag`)
   }
 
-  const bookmarkStory = (storyId) => {
+  const bookmarkStory = storyId => {
     return api.post(`story/${storyId}/bookmark`)
   }
 
-  const removeStoryBookmark = (storyId) => {
+  const removeStoryBookmark = storyId => {
     return api.delete(`story/${storyId}/bookmark`)
   }
 
-  const getBookmarks = (userId) => {
-    return api.get(`story/user/${userId}/bookmark`)
-    .then(response => safeNormalize(response, [Story]))
+  const getBookmarks = userId => {
+    return api
+      .get(`story/user/${userId}/bookmark`)
+      .then(response => safeNormalize(response, [Story]))
   }
 
-  const getComments = (storyId) => {
+  const getComments = storyId => {
     return api.get(`story/${storyId}/comment`)
   }
 
-  const getGuideComments = (guideId) => {
+  const getGuideComments = guideId => {
     return api.get(`guide/${guideId}/comment`)
   }
 
   const createComment = (storyId, text) => {
     return api.post(`story/${storyId}/comment`, {
-      content: text
+      content: text,
     })
   }
 
   const createGuideComment = (guideId, text) => {
     return api.post(`guide/${guideId}/comment`, {
-      content: text
+      content: text,
     })
   }
 
   const uploadCoverImage = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/cover-image`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then(response => putMediaResponse(api, url, response, imageTimeout))
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image').then(response =>
+      putMediaResponse(api, url, response, imageTimeout),
+    )
   }
 
   const uploadCoverVideo = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/cover-video`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video')
-    .then(response => putMediaResponse(api, url, response, videoTimeout))
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video').then(response =>
+      putMediaResponse(api, url, response, videoTimeout),
+    )
   }
 
   const uploadAvatarImage = (userId, pathToFile) => {
     const url = `user/${userId}/avatar`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then(response => putMediaResponse(api, url, response, imageTimeout))
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image').then(response =>
+      putMediaResponse(api, url, response, imageTimeout),
+    )
   }
 
-  const removeAvatarImage = (userId) => api.put(`user/${userId}/avatar`)
+  const removeAvatarImage = userId => api.put(`user/${userId}/avatar`)
 
   const uploadUserCoverImage = (userId, pathToFile) => {
     const url = `user/${userId}/cover`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then(response => putMediaResponse(api, url, response, imageTimeout))
-
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image').then(response =>
+      putMediaResponse(api, url, response, imageTimeout),
+    )
   }
 
   const uploadStoryImage = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/image`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image')
-    .then(response => putMediaResponse(api, url, response, imageTimeout))
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'image').then(response =>
+      putMediaResponse(api, url, response, imageTimeout),
+    )
   }
 
   const uploadStoryVideo = (draftId, pathToFile) => {
     const url = `story/draft/${draftId}/video`
-    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video')
-    .then(response => putMediaResponse(api, url, response, videoTimeout))
+    return CloudinaryAPI.uploadMediaFile(pathToFile, 'video').then(response =>
+      putMediaResponse(api, url, response, videoTimeout),
+    )
   }
 
   const getActivity = () => {
-    return api.get(`user/activity`)
-    .then(response => safeNormalize(response, [Activity]))
+    return api.get(`user/activity`).then(response => safeNormalize(response, [Activity]))
   }
 
-  const setActivityRead = (activityId) => {
+  const setActivityRead = activityId => {
     return api.put(`user/activity/${activityId}`)
   }
 
   const changePassword = (userId, oldPassword, newPassword) => {
-    return api.put(`user/changePassword`, {userId, oldPassword, newPassword})
+    return api.put(`user/changePassword`, { userId, oldPassword, newPassword })
   }
 
-  const signupCheck = (vals) => {
-    const {username, email} = vals
-    return api.post('user/signupCheck', {username, email})
+  const signupCheck = vals => {
+    const { username, email } = vals
+    return api.post('user/signupCheck', { username, email })
   }
 
-  const createGuide = (guide) => {
-    return api.post('guide', {guide})
-    .then(response => safeNormalize(response, Guide))
+  const createGuide = guide => {
+    return api.post('guide', { guide }).then(response => safeNormalize(response, Guide))
   }
 
-  const updateGuide = (guide) => {
-    return api.put(`guide/${guide.id}`, {guide})
-    .then(response => safeNormalize(response, Guide))
+  const updateGuide = guide => {
+    return api
+      .put(`guide/${guide.id}`, { guide })
+      .then(response => safeNormalize(response, Guide))
   }
 
   const bulkSaveStoryToGuide = (storyId, isInGuide) => {
-    return api.put(`guide/story/${storyId}`, {isInGuide})
-    .then(response => safeNormalize(response, [Guide]))
+    return api
+      .put(`guide/story/${storyId}`, { isInGuide })
+      .then(response => safeNormalize(response, [Guide]))
   }
 
-  const getGuide = (guideId) => {
-    return api.get(`guide/${guideId}`)
-    .then(response => safeNormalize(response, Guide))
+  const getGuide = guideId => {
+    return api.get(`guide/${guideId}`).then(response => safeNormalize(response, Guide))
   }
 
-  const deleteGuide = (guideId) => {
+  const deleteGuide = guideId => {
     return api.delete(`guide/${guideId}`)
   }
 
-  const getUserGuides = (userId) => {
-    return api.get(`guide/user/${userId}`)
-    .then(response => safeNormalize(response, [Guide]))
+  const getUserGuides = userId => {
+    return api
+      .get(`guide/user/${userId}`)
+      .then(response => safeNormalize(response, [Guide]))
   }
 
-  const getUserFeedGuides = (userId) => {
-    return api.get(`guide/user/${userId}/feed`)
-    .then(response => safeNormalize(response, [Guide]))
+  const getUserFeedGuides = userId => {
+    return api
+      .get(`guide/user/${userId}/feed`)
+      .then(response => safeNormalize(response, [Guide]))
   }
 
-  const getCategoryGuides = (categoryId) => {
-    return api.get(`guide/category/${categoryId}`)
-    .then(response => safeNormalize(response, [Guide]))
+  const getCategoryGuides = categoryId => {
+    return api
+      .get(`guide/category/${categoryId}`)
+      .then(response => safeNormalize(response, [Guide]))
   }
 
-  const likeGuide = (guideId) => {
+  const likeGuide = guideId => {
     return api.put(`guide/${guideId}/like`)
   }
 
-  const unlikeGuide = (guideId) => {
+  const unlikeGuide = guideId => {
     return api.put(`guide/${guideId}/unlike`)
   }
 
-  const adminGetUsers = (params) => api.get(`admin/users`, params)
+  const adminGetUsers = params => api.get(`admin/users`, params)
 
-  const adminGetUser = (id) => api.get(`admin/users/${id}`)
+  const adminGetUser = id => api.get(`admin/users/${id}`)
 
   const adminPutUser = ({ id, values }) => api.put(`admin/users/${id}`, values)
 
-  const adminDeleteUser = (id) => api.delete(`admin/users/${id}`)
+  const adminDeleteUser = id => api.delete(`admin/users/${id}`)
 
-  const adminRestoreUsers = (ids) => api.post('admin/users/restore', { ids })
+  const adminRestoreUsers = ids => api.post('admin/users/restore', { ids })
 
-  const adminGetCategories = (params) => api.get('admin/categories', params)
+  const adminGetCategories = params => api.get('admin/categories', params)
 
-  const adminGetCategory = (id) => api.get(`admin/categories/${id}`)
+  const adminGetCategory = id => api.get(`admin/categories/${id}`)
 
   const adminPutCategory = ({ id, values }) => api.put(`admin/categories/${id}`, values)
 
   const adminPostCategory = ({ values }) => api.post(`admin/categories`, values)
 
-  const adminDeleteCategory = (id) => api.delete(`admin/categories/${id}`)
+  const adminDeleteCategory = id => api.delete(`admin/categories/${id}`)
 
-  const adminRestoreCategories = (ids) => api.post('admin/categories/restore', { ids })
+  const adminRestoreCategories = ids => api.post('admin/categories/restore', { ids })
 
-  const adminGetStories = (params) => api.get('admin/stories', params)
+  const adminGetStories = params => api.get('admin/stories', params)
 
-  const adminGetStory = (id) => api.get(`admin/stories/${id}`)
+  const adminGetStory = id => api.get(`admin/stories/${id}`)
 
-  const adminPutStory = ({ id, values }) => api.put(`admin/stories/${id}`, { story: values })
+  const adminPutStory = ({ id, values }) =>
+    api.put(`admin/stories/${id}`, { story: values })
 
-  const adminDeleteStory = (id) => api.delete(`admin/stories/${id}`)
+  const adminDeleteStory = id => api.delete(`admin/stories/${id}`)
 
-  const adminRestoreStories = (ids) => api.post('admin/stories/restore', { ids })
+  const adminRestoreStories = ids => api.post('admin/stories/restore', { ids })
 
-  const adminGetGuides = (params) => api.get('admin/guides', params)
+  const adminGetGuides = params => api.get('admin/guides', params)
 
-  const adminGetGuide = (id) => api.get(`admin/guides/${id}`)
+  const adminGetGuide = id => api.get(`admin/guides/${id}`)
 
   const adminPutGuide = ({ id, values }) => api.put(`admin/guides/${id}`, values)
 
-  const adminDeleteGuide = (id) => api.delete(`admin/guides/${id}`)
+  const adminDeleteGuide = id => api.delete(`admin/guides/${id}`)
 
-  const adminRestoreGuides = (ids) => api.post('admin/guides/restore', { ids })
+  const adminRestoreGuides = ids => api.post('admin/guides/restore', { ids })
 
   const adminGetTotalStats = () => api.get('admin/stats/total')
 
-  const adminGetNewStats = (params) => api.get('admin/stats/new', params)
+  const adminGetNewStats = params => api.get('admin/stats/new', params)
 
   // ------
   // STEP 3
@@ -562,6 +586,7 @@ const create = () => {
     getMe,
     updateUser,
     getUser,
+    getUsersThatAreChannels,
     resetPasswordRequest,
     resetPassword,
     deleteUser,
@@ -649,11 +674,11 @@ const create = () => {
     adminDeleteCategory,
     adminRestoreCategories,
     adminGetTotalStats,
-    adminGetNewStats
+    adminGetNewStats,
   }
 }
 
 // let's return back our create method as the default.
 export default {
-  create
+  create,
 }

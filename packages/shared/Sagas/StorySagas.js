@@ -6,7 +6,7 @@ import GuideActions from '../Redux/Entities/Guides'
 import UserActions, {
   isInitialAppDataLoaded,
   isStoryLiked,
-  isStoryBookmarked
+  isStoryBookmarked,
 } from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import StoryCreateActions from '../Redux/StoryCreateRedux'
@@ -37,30 +37,27 @@ function* getInitalData(api, userId) {
     const [likesResponse, bookmarksResponse, followingResponse] = yield [
       call(api.getUserLikes, userId),
       call(api.getBookmarks, userId),
-      call(api.getUserFollowing, userId)
+      call(api.getUserFollowing, userId),
     ]
 
     if (likesResponse.ok && bookmarksResponse.ok && followingResponse.ok) {
       const {
         result: followingById,
-        entities: followingEntities
+        entities: followingEntities,
       } = followingResponse.data
-      const {
-        result: bookmarksById,
-        entities: bookmarkEntities
-      } = bookmarksResponse.data
+      const { result: bookmarksById, entities: bookmarkEntities } = bookmarksResponse.data
       return yield [
         put(
           UserActions.receiveUsers({
             ...bookmarkEntities.users,
-            ...followingEntities.users
-          })
+            ...followingEntities.users,
+          }),
         ),
         put(UserActions.loadUserFollowingSuccess(userId, followingById)),
         put(CategoryActions.receiveCategories(bookmarkEntities.categories)),
         put(StoryActions.receiveStories(bookmarkEntities.stories)),
         put(UserActions.receiveLikes(userId, likesResponse.data)),
-        put(UserActions.receiveBookmarks(userId, bookmarksById))
+        put(UserActions.receiveBookmarks(userId, bookmarksById)),
       ]
     }
   }
@@ -79,7 +76,7 @@ export function* getUserFeed(api, action) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.userFeedSuccess(result, response.count, params))
+      put(StoryActions.userFeedSuccess(result, response.count, params)),
     ]
   } else {
     yield put(StoryActions.userFeedFailure(new Error('Failed to get user feed')))
@@ -94,12 +91,10 @@ export function* getNearbyUserFeed(api, { nearbyStoryIds }) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.nearbyFeedSuccess(result, response.count))
+      put(StoryActions.nearbyFeedSuccess(result, response.count)),
     ]
   } else {
-    yield put(
-      StoryActions.nearbyFeedFailure(new Error('Failed to get nearby feed'))
-    )
+    yield put(StoryActions.nearbyFeedFailure(new Error('Failed to get nearby feed')))
   }
 }
 
@@ -111,13 +106,11 @@ export function* getBadgeUserFeed(api) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.badgeUserFeedSuccess(result, response.count))
+      put(StoryActions.badgeUserFeedSuccess(result, response.count)),
     ]
   } else {
     yield put(
-      StoryActions.badgeUserFeedFailure(
-        new Error('Failed to get badge user feed')
-      )
+      StoryActions.badgeUserFeedFailure(new Error('Failed to get badge user feed')),
     )
   }
 }
@@ -126,22 +119,19 @@ export function* getLikesAndBookmarks(api, { userId }) {
   yield getInitalData(api, userId)
 }
 
-export function* getUserStories(api, { userId }) {
-  const response = yield call(api.getUserStories, userId)
+export function* getUserStories(api, { userId, storyType }) {
+  const response = yield call(api.getUserStories, userId, { type: storyType })
   if (response.ok) {
     const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.fromUserSuccess(userId, result))
+      put(StoryActions.fromUserSuccess(userId, result)),
     ]
   } else {
     yield put(
-      StoryActions.fromUserFailure(
-        userId,
-        new Error('Failed to get stories for user')
-      )
+      StoryActions.fromUserFailure(userId, new Error('Failed to get stories for user')),
     )
   }
 }
@@ -156,21 +146,18 @@ export function* getBookmarks(api, { userId }) {
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
       put(UserActions.receiveBookmarks(userId, result)),
-      put(StoryActions.getBookmarksSuccess(userId, result))
+      put(StoryActions.getBookmarksSuccess(userId, result)),
     ]
   } else {
     yield put(
-      StoryActions.getBookmarksFailure(
-        userId,
-        new Error('Failed to get bookmarks')
-      )
+      StoryActions.getBookmarksFailure(userId, new Error('Failed to get bookmarks')),
     )
   }
 }
 
 export function* getCategoryStories(api, { categoryId, storyType }) {
   const response = yield call(api.getCategoryStories, categoryId, {
-    type: storyType
+    type: storyType,
   })
   if (response.ok) {
     const { entities, result } = response.data
@@ -178,14 +165,14 @@ export function* getCategoryStories(api, { categoryId, storyType }) {
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.fromCategorySuccess(categoryId, result))
+      put(StoryActions.fromCategorySuccess(categoryId, result)),
     ]
   } else {
     yield put(
       StoryActions.fromCategoryFailure(
         categoryId,
-        new Error('Failed to get stories for category')
-      )
+        new Error('Failed to get stories for category'),
+      ),
     )
   }
 }
@@ -195,7 +182,7 @@ export const extractUploadData = uploadData => {
   const baseObject = {
     url: `${uploadData.public_id}.${uploadData.format}`,
     height: uploadData.height,
-    width: uploadData.width
+    width: uploadData.width,
   }
   if (uploadData.resource_type === 'video') {
     let baseUrl = uploadData.secure_url.split('.')
@@ -211,7 +198,7 @@ export const extractUploadData = uploadData => {
 export function* uploadMedia(api, { uri, callback, mediaType = 'image' }) {
   const cloudinaryMedia = yield CloudinaryAPI.uploadMediaFile(
     pathAsFileObject(uri),
-    mediaType
+    mediaType,
   )
 
   if (typeof cloudinaryMedia.data === 'string') {
@@ -226,9 +213,9 @@ export function* uploadMedia(api, { uri, callback, mediaType = 'image' }) {
       put(
         UXActions.openGlobalModal('error', {
           title: 'Upload Failure',
-          message: 'There was a problem uploading your file. Please retry.'
-        })
-      )
+          message: 'There was a problem uploading your file. Please retry.',
+        }),
+      ),
     ]
   } else {
     callback(cloudinaryMedia.data)
@@ -238,9 +225,7 @@ export function* uploadMedia(api, { uri, callback, mediaType = 'image' }) {
 
 export function* createCover(api, draft, isGuide) {
   const videoFileUri =
-    draft.coverVideo &&
-    draft.coverVideo.uri &&
-    isLocalMediaAsset(draft.coverVideo.uri)
+    draft.coverVideo && draft.coverVideo.uri && isLocalMediaAsset(draft.coverVideo.uri)
       ? draft.coverVideo.uri
       : undefined
   const isImageCover = draft.coverImage
@@ -249,7 +234,7 @@ export function* createCover(api, draft, isGuide) {
   if (!cover) return draft
   const cloudinaryCover = yield CloudinaryAPI.uploadMediaFile(
     cover,
-    isImageCover ? 'image' : 'video'
+    isImageCover ? 'image' : 'video',
   )
   // Web and mobile receive two different responses.
   if (typeof cloudinaryCover.data === 'string') {
@@ -270,7 +255,7 @@ export function* createCover(api, draft, isGuide) {
 function* uploadAtomicAssets(draft) {
   if (!draft.draftjsContent) return
   draft.draftjsContent = Immutable.asMutable(draft.draftjsContent, {
-    deep: true
+    deep: true,
   })
 
   const promise = yield Promise.all(
@@ -300,7 +285,7 @@ function* uploadAtomicAssets(draft) {
             })
         } else return undefined
       } else return undefined
-    })
+    }),
   )
 
   // part of what needs to get refactored during CloudinaryAPI refactor
@@ -334,10 +319,10 @@ function* saveDraftErrorHandling(draft, response) {
         draft,
         'Failed to publish',
         'saveLocalDraft',
-        'failed'
-      )
+        'failed',
+      ),
     ),
-    put(StoryCreateActions.syncError())
+    put(StoryCreateActions.syncError()),
   ]
   return err
 }
@@ -353,9 +338,9 @@ function* updateDraftErrorHandling(draft, response) {
         draft,
         'Failed to update',
         'updateDraft',
-        'failed'
-      )
-    )
+        'failed',
+      ),
+    ),
   ]
 }
 
@@ -388,15 +373,15 @@ export function* saveLocalDraft(api, action) {
         draft,
         'Failed to publish',
         'saveLocalDraft',
-        'retrying'
-      )
+        'retrying',
+      ),
     ),
     put(
       StoryCreateActions.initializeSyncProgress(
         getSyncProgressSteps(draft),
-        `${saveAsDraft ? 'Saving' : 'Publishing'} Story`
-      )
-    )
+        `${saveAsDraft ? 'Saving' : 'Publishing'} Story`,
+      ),
+    ),
   ]
 
   const coverResponse = yield createCover(api, draft)
@@ -420,7 +405,7 @@ export function* saveLocalDraft(api, action) {
     stories[story.id] = story
     yield [
       put(StoryCreateActions.saveDraftSuccess(draft, story)),
-      put(PendingUpdatesActions.removePendingUpdate(draft.id))
+      put(PendingUpdatesActions.removePendingUpdate(draft.id)),
     ]
     if (!saveAsDraft) yield put(StoryActions.addUserStory(stories, draft.id))
   } else {
@@ -435,9 +420,7 @@ export function* discardDraft(api, action) {
     yield put(StoryCreateActions.discardDraftSuccess())
   } else {
     yield put(
-      StoryCreateActions.discardDraftFailure(
-        new Error('Failed to initialize draft')
-      )
+      StoryCreateActions.discardDraftFailure(new Error('Failed to initialize draft')),
     )
   }
 }
@@ -450,15 +433,15 @@ export function* updateDraft(api, action) {
         draft,
         'Failed to update',
         'updateDraft',
-        'retrying'
-      )
+        'retrying',
+      ),
     ),
     put(
       StoryCreateActions.initializeSyncProgress(
         getSyncProgressSteps(draft),
-        'Saving Story'
-      )
-    )
+        'Saving Story',
+      ),
+    ),
   ]
 
   const coverResponse = yield createCover(api, draft)
@@ -482,7 +465,7 @@ export function* updateDraft(api, action) {
     }
     yield [
       put(StoryCreateActions.updateDraftSuccess(story)),
-      put(PendingUpdatesActions.removePendingUpdate(story.id))
+      put(PendingUpdatesActions.removePendingUpdate(story.id)),
     ]
   } else yield updateDraftErrorHandling(draft, draftId)
 }
@@ -496,8 +479,8 @@ export function* uploadCoverImage(api, action) {
   } else {
     yield put(
       StoryCreateActions.uploadCoverImageFailure(
-        new Error('Failed to upload cover image')
-      )
+        new Error('Failed to upload cover image'),
+      ),
     )
   }
 }
@@ -506,13 +489,13 @@ export function* bookmarkStory(api, { storyId }) {
   const userId = yield select(currentUserId)
   const [response] = yield [
     call(api.bookmarkStory, storyId),
-    put(UserActions.addBookmark(userId, storyId))
+    put(UserActions.addBookmark(userId, storyId)),
   ]
 
   if (!response.ok) {
     yield [
       put(StoryActions.storyFailure(new Error('Failed to bookmark story'))),
-      put(UserActions.removeBookmark(userId, storyId))
+      put(UserActions.removeBookmark(userId, storyId)),
     ]
   }
 }
@@ -521,17 +504,13 @@ export function* removeStoryBookmark(api, { storyId }) {
   const userId = yield select(currentUserId)
   const [response] = yield [
     call(api.removeStoryBookmark, storyId),
-    put(UserActions.removeBookmark(userId, storyId))
+    put(UserActions.removeBookmark(userId, storyId)),
   ]
 
   if (!response.ok) {
     yield [
-      put(
-        StoryActions.storyFailure(
-          new Error("Failed to remove story's bookmark")
-        )
-      ),
-      put(UserActions.addBookmark(userId, storyId))
+      put(StoryActions.storyFailure(new Error("Failed to remove story's bookmark"))),
+      put(UserActions.addBookmark(userId, storyId)),
     ]
   }
 }
@@ -541,7 +520,7 @@ export function* likeStory(api, { storyId, userId }) {
   const [response] = yield [
     call(api.likeStory, storyId),
     put(UserActions.userStoryLike(userId, storyId)),
-    put(StoryActions.changeCountOfType(storyId, 'likes', true))
+    put(StoryActions.changeCountOfType(storyId, 'likes', true)),
   ]
 
   // every update is done greedily so we do not need to do anything upon success
@@ -549,7 +528,7 @@ export function* likeStory(api, { storyId, userId }) {
     yield put(StoryActions.changeCountOfType(storyId, 'likes', false))
     yield [
       put(StoryActions.storyFailure(new Error('Failed to like story'))),
-      put(UserActions.userStoryUnlike(userId, storyId))
+      put(UserActions.userStoryUnlike(userId, storyId)),
     ]
   }
 }
@@ -558,7 +537,7 @@ export function* unlikeStory(api, { storyId, userId }) {
   const [response] = yield [
     call(api.unlikeStory, storyId),
     put(UserActions.userStoryUnlike(userId, storyId)),
-    put(StoryActions.changeCountOfType(storyId, 'likes', false))
+    put(StoryActions.changeCountOfType(storyId, 'likes', false)),
   ]
 
   // every update is done greedily so we do not need to do anything upon success
@@ -566,7 +545,7 @@ export function* unlikeStory(api, { storyId, userId }) {
     yield [
       put(StoryActions.storyFailure(new Error('Failed to unlike story'))),
       put(UserActions.userStoryLike(userId, storyId)),
-      put(StoryActions.changeCountOfType(storyId, 'likes', true))
+      put(StoryActions.changeCountOfType(storyId, 'likes', true)),
     ]
   }
 }
@@ -586,10 +565,7 @@ export function* loadStory(api, { storyId, cachedStory }) {
     yield put(StoryCreateActions.editStorySuccess(entities.stories[result]))
   } else {
     yield put(
-      StoryCreateActions.editStoryFailure(
-        new Error('Failed to load story'),
-        cachedStory
-      )
+      StoryCreateActions.editStoryFailure(new Error('Failed to load story'), cachedStory),
     )
   }
 }
@@ -601,12 +577,12 @@ export function* getStory(api, { storyId }) {
     const { entities } = response.data
     yield [
       put(StoryActions.receiveStories(entities.stories)),
-      put(UserActions.receiveUsers(entities.users))
+      put(UserActions.receiveUsers(entities.users)),
     ]
   } else {
     const errorObj = {}
     errorObj[storyId] = {
-      error: 'Story not found'
+      error: 'Story not found',
     }
     yield put(StoryActions.receiveStories(errorObj))
   }
@@ -619,21 +595,19 @@ export function* loadDrafts(api) {
     const { entities, result } = response.data
     yield [
       put(StoryActions.receiveStories(entities.stories)),
-      put(StoryActions.receiveStories(entities.categories))
+      put(StoryActions.receiveStories(entities.categories)),
     ]
     yield put(StoryActions.loadDraftsSuccess(result))
   } else {
     const userId = yield select(currentUserId)
-    yield put(
-      StoryActions.loadDraftsFailure(new Error('Failed to load drafts'), userId)
-    )
+    yield put(StoryActions.loadDraftsFailure(new Error('Failed to load drafts'), userId))
   }
 }
 
 export function* getGuideStories(api, { guideId }) {
   const response = yield call(api.getGuideStories, guideId)
   if (response.ok) {
-    const {entities, result} = response.data
+    const { entities, result } = response.data
     yield [
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
@@ -651,7 +625,7 @@ export function* deleteStory(api, { userId, storyId }) {
     yield [
       put(StoryActions.deleteStorySuccess(userId, storyId)),
       put(GuideActions.deleteStoryFromGuides(storyId)),
-      put(UserActions.removeActivities(storyId, 'story'))
+      put(UserActions.removeActivities(storyId, 'story')),
     ]
   }
 }
@@ -661,7 +635,7 @@ export function* getDeletedStories(api, { userId }) {
   if (response.ok) {
     yield [
       put(PendingUpdatesActions.checkIfDeleted(response.data)),
-      put(StoryActions.removeDeletedStories(response.data))
+      put(StoryActions.removeDeletedStories(response.data)),
     ]
   }
 }
@@ -684,8 +658,7 @@ export function* watchPendingUpdates() {
 }
 
 function getIsEditing({ routes }) {
-  const webCheck =
-    _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
+  const webCheck = _.get(routes, 'location.pathname', '').indexOf('editStory') !== -1
   const sceneName = _.get(routes, 'scene.name', '')
   const mobileCheck =
     sceneName.indexOf('createStory') !== -1 ||
@@ -698,9 +671,7 @@ function getIsEditing({ routes }) {
 
 function getNextPendingUpdate(state) {
   const { pendingUpdates, updateOrder } = state.pendingUpdates
-  const nextUpdateKey = updateOrder.find(
-    key => pendingUpdates[key].failCount < 5
-  )
+  const nextUpdateKey = updateOrder.find(key => pendingUpdates[key].failCount < 5)
   return nextUpdateKey ? pendingUpdates[nextUpdateKey] : {}
 }
 
@@ -714,16 +685,12 @@ export function* syncPendingUpdates(api) {
       const mutableStory = Immutable.asMutable(story, { deep: true })
       if (failedMethod === 'updateDraft') {
         yield put(StoryCreateActions.updateDraft(story.id, mutableStory, true))
-      } else
-        yield put(
-          StoryCreateActions[failedMethod](mutableStory, mutableStory.draft)
-        )
+      } else yield put(StoryCreateActions[failedMethod](mutableStory, mutableStory.draft))
     }
   }
 }
 
-
-export function * adminGetStories (api, action) {
+export function* adminGetStories(api, action) {
   const { params } = action
   const response = yield call(api.adminGetStories, params)
   if (response.ok && response.data && response.data.data) {
@@ -735,7 +702,7 @@ export function * adminGetStories (api, action) {
   }
 }
 
-export function * adminGetStory (api, action) {
+export function* adminGetStory(api, action) {
   const { id } = action
   const response = yield call(api.adminGetStory, id)
   if (response.ok && response.data) {
@@ -747,7 +714,7 @@ export function * adminGetStory (api, action) {
   }
 }
 
-export function * adminPutStory (api, action) {
+export function* adminPutStory(api, action) {
   const { values, id, message } = action.payload
   const response = yield call(api.adminPutStory, { values, id })
   if (response.ok && response.data) {
@@ -761,7 +728,7 @@ export function * adminPutStory (api, action) {
   }
 }
 
-export function * adminDeleteStory (api, action) {
+export function* adminDeleteStory(api, action) {
   const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteStory, id)
   if (response.ok && response.data) {
@@ -776,7 +743,7 @@ export function * adminDeleteStory (api, action) {
   }
 }
 
-export function * adminRestoreStories (api, action) {
+export function* adminRestoreStories(api, action) {
   const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreStories, ids)
   if (response.ok && response.data) {
@@ -787,7 +754,9 @@ export function * adminRestoreStories (api, action) {
       const { data, count } = storyResponse.data
       yield put(StoryActions.adminGetStoriesSuccess({ data, count }))
     } else {
-      const error = storyResponse.data ? storyResponse.data.message : 'Error fetching data'
+      const error = storyResponse.data
+        ? storyResponse.data.message
+        : 'Error fetching data'
       yield put(StoryActions.adminGetStoriesFailure(error))
     }
   } else {
@@ -795,4 +764,3 @@ export function * adminRestoreStories (api, action) {
     message.error(error)
   }
 }
-

@@ -6,11 +6,11 @@ import { connect } from 'react-redux'
 import { Actions as NavActions } from 'react-native-router-flux'
 
 import CategoryActions from '../../Shared/Redux/Entities/Categories'
+import UserActions from '../../Shared/Redux/Entities/Users'
 import HistoryActions from '../../Shared/Redux/HistoryRedux'
+import getGridData from '../../Shared/Lib/getGridData'
 
-import styles, {
-  CategoryFeedNavActionStyles,
-} from '../Styles/ExploreScreenStyles'
+import styles, { ExploreItemFeedNavActionStyles } from '../Styles/ExploreScreenStyles'
 
 import Loader from '../../Components/Loader'
 import ExploreGrid from '../../Components/ExploreGrid'
@@ -26,22 +26,26 @@ class ExploreScreen extends Component {
   static propTypes = {
     stories: PropTypes.object,
     loadCategories: PropTypes.func,
+    loadChannels: PropTypes.func,
     categories: PropTypes.object,
     categoriesFetchStatus: PropTypes.object,
     user: PropTypes.object,
+    users: PropTypes.object,
     addRecentSearch: PropTypes.func,
     searchHistory: PropTypes.object,
+    channelsByID: PropTypes.array,
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      selectedTab: tabTypes.categories,
+      selectedTab: tabTypes.channels,
     }
   }
 
   componentDidMount() {
     this.props.loadCategories()
+    this.props.loadChannels()
   }
 
   selectTab = selectedTab => {
@@ -57,35 +61,43 @@ class ExploreScreen extends Component {
     />
   )
 
-  _navToCategoryFeed = category => {
+  _navToCategoryFeed = tile => {
     NavActions.explore_categoryFeed({
-      categoryId: category.id,
-      title: category.title,
-      leftButtonIconStyle: CategoryFeedNavActionStyles.leftButtonIconStyle,
-      navigationBarStyle: CategoryFeedNavActionStyles.navigationBarStyle,
+      profileId: tile.id,
+      title: tile.title,
+      leftButtonIconStyle: ExploreItemFeedNavActionStyles.leftButtonIconStyle,
+      navigationBarStyle: ExploreItemFeedNavActionStyles.navigationBarStyle,
+      isChannel: tile.username ? true : false,
     })
+  }
+
+  getExploreItemsByType = () => {
+    const { selectedTab } = this.state
+    const { channelsByID, users, categories } = this.props
+    return getGridData(selectedTab, channelsByID, users, categories, tabTypes)
   }
 
   render() {
     const {
-      categories = {},
       categoriesFetchStatus,
       stories,
       searchHistory,
       addRecentSearch,
       user,
     } = this.props
-    const categoriesArray = _.values(categories)
 
-    const content = (
-      categoriesFetchStatus.fetching && !categoriesArray.length
-      ) ? (
+    const { selectedTab } = this.state
+    const exploreItemArray = _.values(this.getExploreItemsByType())
+
+    const content
+      = categoriesFetchStatus.fetching && !exploreItemArray.length ? (
         <Loader style={styles.loader} />
       ) : (
         <ScrollView>
           <ExploreGrid
             onPress={this._navToCategoryFeed}
-            categories={categoriesArray}
+            exploreItems={exploreItemArray}
+            isChannel={selectedTab === tabTypes.channels ? true : false}
           />
         </ScrollView>
       )
@@ -118,14 +130,18 @@ const mapStateToProps = state => {
     categoriesFetchStatus,
     error: categoriesError,
     user: state.entities.users.entities[state.session.userId],
+    users: state.entities.users.entities,
     stories: state.entities.stories.entities,
     searchHistory: state.history.searchHistory,
+    channels: state.entities.users,
+    channelsByID: state.entities.users.channelsByID,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
+    loadChannels: () => dispatch(UserActions.loadUsersChannels()),
     addRecentSearch: search => dispatch(HistoryActions.addRecentSearch(search)),
   }
 }

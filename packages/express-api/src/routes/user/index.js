@@ -1,7 +1,8 @@
 import express from 'express'
-import {hasValidOauth, hasClientId} from '../../middleware'
+import { hasValidOauth, hasClientId } from '../../middleware'
 import endpointWrapper from '../../utils/endpointWrapper'
 import getMe from './getMe'
+import getUser from './getUser'
 import create from './create'
 import createFacebook from './createFacebook'
 import connectFacebook from './connectFacebook'
@@ -33,177 +34,78 @@ import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
 import deleteUser from './deleteUser'
 import getUserByUserName from './getUserByUserName';
+import getAllChannelUsers from './getAllChannelUsers'
 
 const router = express.Router()
 
-router.get(
-  '/',
-  hasValidOauth,
-  endpointWrapper(getMe)
-)
+router.get('/', hasValidOauth, endpointWrapper(getMe))
 
-router.post('/',
-  hasClientId,
-  endpointWrapper(create)
-)
+router.get('/channels', endpointWrapper(getAllChannelUsers))
 
-router.post('/resetPasswordRequest',
-  hasClientId,
-  endpointWrapper(resetPasswordRequest)
-)
+router.post('/', hasClientId, endpointWrapper(create))
 
-router.put('/resetPassword',
-  hasClientId,
-  endpointWrapper(resetPassword)
-)
+router.post('/resetPasswordRequest', hasClientId, endpointWrapper(resetPasswordRequest))
 
-router.put('/changePassword',
-  hasValidOauth,
-  endpointWrapper(changePassword)
-)
+router.put('/resetPassword', hasClientId, endpointWrapper(resetPassword))
 
-router.get(
-  '/verify-email/:token',
-  hasValidOauth,
-  endpointWrapper(verifyEmail)
-)
+router.put('/changePassword', hasValidOauth, endpointWrapper(changePassword))
 
-router.get(
-  '/redirect-verify-email/:token',
-  verifyEmailRedirect
-)
+router.get('/verify-email/:token', hasValidOauth, endpointWrapper(verifyEmail))
 
-router.get(
-  '/redirect-reset-password/:token',
-  resetPasswordRedirect
-)
+router.get('/redirect-verify-email/:token', verifyEmailRedirect)
 
-router.post('/facebook',
-  hasClientId,
-  endpointWrapper(createFacebook)
-)
+router.get('/redirect-reset-password/:token', resetPasswordRedirect)
 
-router.post('/connectFacebook',
-  hasValidOauth,
-  endpointWrapper(connectFacebook)
-)
+router.post('/facebook', hasClientId, endpointWrapper(createFacebook))
 
-router.get(
-  '/suggestFollowers',
-  hasValidOauth,
-  endpointWrapper(suggestFollowers)
-)
+router.post('/connectFacebook', hasValidOauth, endpointWrapper(connectFacebook))
 
-router.get(
-  '/categories',
-  hasValidOauth,
-  endpointWrapper(getCategories)
-)
+router.get('/suggestFollowers', hasValidOauth, endpointWrapper(suggestFollowers))
 
-router.post('/follow/user/:userId',
-  hasValidOauth,
-  endpointWrapper(followUser)
-)
+router.get('/categories', hasValidOauth, endpointWrapper(getCategories))
 
-router.put('/unfollow/user/:userId',
-  hasValidOauth,
-  endpointWrapper(unfollowUser)
-)
+router.post('/follow/user/:userId', hasValidOauth, endpointWrapper(followUser))
 
-router.post('/follow/category',
-  hasValidOauth,
-  endpointWrapper(followCategory)
-)
+router.put('/unfollow/user/:userId', hasValidOauth, endpointWrapper(unfollowUser))
 
-router.put('/unfollow/category',
-  hasValidOauth,
-  endpointWrapper(unfollowCategory)
-)
+router.post('/follow/category', hasValidOauth, endpointWrapper(followCategory))
 
-router.get('/activity',
-  hasValidOauth,
-  endpointWrapper(activityList)
-)
+router.put('/unfollow/category', hasValidOauth, endpointWrapper(unfollowCategory))
 
-router.put('/activity/:activityId',
-  hasValidOauth,
-  endpointWrapper(activitySetRead)
-)
+router.get('/activity', hasValidOauth, endpointWrapper(activityList))
 
-router.get('/threads',
-  hasValidOauth,
-  endpointWrapper(threadList)
-)
+router.put('/activity/:activityId', hasValidOauth, endpointWrapper(activitySetRead))
 
-router.get('/threads/:id',
-  hasValidOauth,
-  endpointWrapper(threadMessageList)
-)
+router.get('/threads', hasValidOauth, endpointWrapper(threadList))
 
-router.post('/threads',
-  hasValidOauth,
-  endpointWrapper(threadCreate)
-)
+router.get('/threads/:id', hasValidOauth, endpointWrapper(threadMessageList))
 
-router.post('/threads/:id',
-  hasValidOauth,
-  endpointWrapper(threadCreateMessage)
-)
+router.post('/threads', hasValidOauth, endpointWrapper(threadCreate))
 
-router.get('/:username',
-  endpointWrapper(getUserByUserName)
-)
+router.post('/threads/:id', hasValidOauth, endpointWrapper(threadCreateMessage))
 
-router.put('/:id',
-  hasValidOauth,
-  endpointWrapper(update)
-)
+router.get('/:id', endpointWrapper(getUser))
 
-router.put('/:id/avatar',
-  hasValidOauth,
-  endpointWrapper(updateAvatar)
-)
+router.get('/:username', endpointWrapper(getUserByUserName))
 
-router.put('/:id/cover',
-  hasValidOauth,
-  endpointWrapper(updateCover)
-)
+router.put('/:id', hasValidOauth, endpointWrapper(update))
+
+router.put('/:id/avatar', hasValidOauth, endpointWrapper(updateAvatar))
+
+router.put('/:id/cover', hasValidOauth, endpointWrapper(updateCover))
 
 // Who is following a user?
-router.get(
-  '/:id/followers',
-  hasValidOauth,
-  endpointWrapper(getFollowees)
-)
+router.get('/:id/followers', hasValidOauth, endpointWrapper(getFollowees))
 
 // Who does a user follow?
-router.get(
-  '/:id/following',
-  hasValidOauth,
-  endpointWrapper(getFollowers)
-)
+router.get('/:id/following', hasValidOauth, endpointWrapper(getFollowers))
 
-router.put(
-  '/:id/device',
-  hasValidOauth,
-  endpointWrapper(updateDevice)
-)
+router.put('/:id/device', hasValidOauth, endpointWrapper(updateDevice))
 
-router.delete(
-  '/:id/device/:deviceId',
-  hasValidOauth,
-  endpointWrapper(removeDevice)
-)
+router.delete('/:id/device/:deviceId', hasValidOauth, endpointWrapper(removeDevice))
 
-router.post('/signupCheck',
-  hasClientId,
-  endpointWrapper(signupCheck)
-)
+router.post('/signupCheck', hasClientId, endpointWrapper(signupCheck))
 
-router.delete(
-  '/:id',
-  hasValidOauth,
-  endpointWrapper(deleteUser)
-)
+router.delete('/:id', hasValidOauth, endpointWrapper(deleteUser))
 
 export default router

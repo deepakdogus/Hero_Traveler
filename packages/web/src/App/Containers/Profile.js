@@ -1,15 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import UserActions, {getByBookmarks} from '../Shared/Redux/Entities/Users'
+import UserActions, { getByBookmarks } from '../Shared/Redux/Entities/Users'
 import StoryCreateActions from '../Shared/Redux/StoryCreateRedux'
 import UXActions from '../Redux/UXRedux'
 import GuideActions from '../Shared/Redux/Entities/Guides'
-import StoryActions, {getByUser, getUserFetchStatus, getBookmarksFetchStatus} from '../Shared/Redux/Entities/Stories'
+import StoryActions, {
+  getByUser,
+  getUserFetchStatus,
+  getBookmarksFetchStatus,
+} from '../Shared/Redux/Entities/Stories'
 import MediaUploadActions from '../Shared/Redux/MediaUploadRedux'
 import getPendingDrafts from '../Shared/Lib/getPendingDrafts'
 import { runIfAuthed } from '../Lib/authHelpers'
@@ -19,6 +23,7 @@ import ProfileHeader from '../Components/ProfileHeader/ProfileHeader'
 import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
+import UserFeed from './UserFeed'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -160,7 +165,7 @@ class Profile extends ContainerWithFeedList {
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
 
-    let {selectedFeedItems} = this.getSelectedFeedItems()
+    let { selectedFeedItems } = this.getSelectedFeedItems()
     if (this.state.activeTab === 'DRAFTS') {
       const selectedFeedItemsIds = selectedFeedItems.map(item => item.id)
       const filteredPendingDrafts = pendingDrafts.filter(draft => {
@@ -189,22 +194,14 @@ class Profile extends ContainerWithFeedList {
           sessionUserId={sessionUserId}
           reroute={reroute}
         />
-        {!isEdit
-          && <ListWrapper>
-            <TabBar
-              tabs={isUsersProfile ? tabBarTabs : readOnlyTabBarTabs}
-              activeTab={this.state.activeTab}
-              onClickTab={this.onClickTab}
-            />
-
-            { (!!selectedFeedItems.length)
-            && <FeedItemListWrapper>
-              <FeedItemList feedItems={selectedFeedItems} />
-              <Footer />
-            </FeedItemListWrapper>
-            }
-          </ListWrapper>
-        }
+        {!isEdit && (
+          <UserFeed
+            isUsersProfile={isUsersProfile}
+            pendingDrafts={pendingDrafts}
+            {...this.props}
+            isUser={true}
+          />
+        )}
       </ContentWrapper>
     )
   }
@@ -253,16 +250,31 @@ function mapDispatchToProps(dispatch) {
     loadBookmarks: (userId) => dispatch(StoryActions.getBookmarks(userId)),
     loadUserFollowing: (userId) => dispatch(UserActions.loadUserFollowing(userId)),
     followUser: (sessionUserId, userIdToFollow) =>
-      dispatch(runIfAuthed(sessionUserId, UserActions.followUser, [sessionUserId, userIdToFollow])),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.followUser, [
+          sessionUserId,
+          userIdToFollow,
+        ]),
+      ),
     unfollowUser: (sessionUserId, userIdToUnfollow) =>
-      dispatch(runIfAuthed(sessionUserId, UserActions.unfollowUser, [sessionUserId, userIdToUnfollow])),
-    reroute: (path) => dispatch(push(path)),
-    uploadMediaAsset: (userId, file, uploadType) => dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
-    removeAvatar: (userId) => dispatch(UserActions.removeAvatar(userId)),
-    openGlobalModal: (modalName, params) => dispatch(UXActions.openGlobalModal(modalName, params)),
+      dispatch(
+        runIfAuthed(sessionUserId, UserActions.unfollowUser, [
+          sessionUserId,
+          userIdToUnfollow,
+        ]),
+      ),
+    reroute: path => dispatch(push(path)),
+    uploadMediaAsset: (userId, file, uploadType) =>
+      dispatch(MediaUploadActions.uploadRequest(userId, file, uploadType)),
+    removeAvatar: userId => dispatch(UserActions.removeAvatar(userId)),
+    openGlobalModal: (modalName, params) =>
+      dispatch(UXActions.openGlobalModal(modalName, params)),
     uploadMedia: (file, callback) =>
       dispatch(StoryCreateActions.uploadMedia(file, callback, 'image')),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Profile)

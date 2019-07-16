@@ -1,6 +1,6 @@
 {
   "name": "@hero/ht-util",
-  "version": "0.0.68",
+  "version": "0.0.70",
   "description": "Common server/client javascript functions",
   "main": "dist/index.js",
   "keywords": [],

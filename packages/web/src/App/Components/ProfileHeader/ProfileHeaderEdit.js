@@ -240,16 +240,16 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  // componentDidMount(){
-  //   const { user } = this.props
-  //   if(user){
-  //     this.setState({
-  //       gender: user.gender,
-  //       locationInfo: _.get(user, 'locationInfo'),
-  //       address: _.get(user, 'locationInfo[0].name'),
-  //     })
-  //   }
-  // }
+  componentDidMount(){
+    const { user } = this.props
+    if(user){
+      this.setState({
+        gender: user.gender,
+        locationInfo: _.get(user, 'locationInfo'),
+        address: _.get(user, 'locationInfo[0].name'),
+      })
+    }
+  }
 
   componentDidUpdate(prevProps) {
 
@@ -266,8 +266,6 @@ export default class ProfileHeaderEdit extends React.Component {
     if(prevAddress !== currentAddress){
       this.setState({locationInfo: this.props.user.locationInfo, address: this.props.user.locationInfo[0].name})
     }
-    console.log(prevAddress, currentAddress, this.state.locationInfo[0], 'addresses')
-
     // if (prevProps.user.birthday !== this.props.user.birthday) {
     //   this.setState({
     //     birthday: this.props.user.birthday

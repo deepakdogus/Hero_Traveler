@@ -240,18 +240,19 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  componentDidMount(){
-    const { user } = this.props
-    if(user){
-      this.setState({
-        gender: user.gender,
-        locationInfo: _.get(user, 'locationInfo'),
-        address: _.get(user, 'locationInfo[0].name'),
-      })
-    }
-  }
+  // componentDidMount(){
+  //   const { user } = this.props
+  //   if(user){
+  //     this.setState({
+  //       gender: user.gender,
+  //       locationInfo: _.get(user, 'locationInfo'),
+  //       address: _.get(user, 'locationInfo[0].name'),
+  //     })
+  //   }
+  // }
 
   componentDidUpdate(prevProps) {
+
     if (prevProps.user.id !== this.props.user.id) {
       this.setState({
         bio: this.props.user.bio,
@@ -259,11 +260,19 @@ export default class ProfileHeaderEdit extends React.Component {
       })
     }
 
-    if (prevProps.user.birthday !== this.props.user.birthday) {
-      this.setState({
-        birthday: this.props.user.birthday
-      })
+    const prevAddress = _.get(prevProps.user, 'locationInfo[0].name')
+    const currentAddress = _.get(this.props.user, 'locationInfo[0].name')
+    
+    if(prevAddress !== currentAddress){
+      this.setState({locationInfo: this.props.user.locationInfo, address: this.props.user.locationInfo[0].name})
     }
+    console.log(prevAddress, currentAddress, this.state.locationInfo[0], 'addresses')
+
+    // if (prevProps.user.birthday !== this.props.user.birthday) {
+    //   this.setState({
+    //     birthday: this.props.user.birthday
+    //   })
+    // }
 
     const didSave =
       !!prevProps.updating

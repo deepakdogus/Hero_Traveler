@@ -6,10 +6,7 @@ import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
 import PhotoEditor from '../Modals/PhotoEditor'
 import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import { Row } from '../../Shared/Web/Components/FlexboxGrid'
-import {
-  StyledAvatar,
-  ButtonWrapper,
-} from './ProfileHeaderShared'
+import { StyledAvatar, ButtonWrapper } from './ProfileHeaderShared'
 import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import Icon from '../../Shared/Web/Components/Icon'
 import ResizableTextarea from '../ResizableTextarea'
@@ -106,7 +103,7 @@ const RelativeWrapper = styled.div`
 const UpdateAvatarText = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
@@ -119,7 +116,7 @@ const Label = styled.label`
   display: block;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   margin: 16px 0 8px;
@@ -240,75 +237,71 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { user } = this.props
     const gender = _.get(user, 'gender')
-    if(user){
+    if (user) {
       this.setState({
         gender: gender,
         locationInfo: _.get(user, 'locationInfo'),
         address: _.get(user, 'locationInfo[0].name'),
         birthday: _.get(user, 'birthday'),
       })
-      if(gender === 'female' || gender === 'male'){
-        this.setState({gender})
-      } else {
+      if (gender === 'female' || gender === 'male') {
+        this.setState({ gender })
+      }
+      else {
         this.setState({
           gender: 'other',
-          genderSelfDescribed: gender
+          genderSelfDescribed: gender,
         })
       }
     }
   }
 
   componentDidUpdate(prevProps) {
+    const tempState = {}
+
     if (prevProps.user.id !== this.props.user.id) {
-      this.setState({
-        bio: this.props.user.bio,
-        username: this.props.user.username,
-      })
+      tempState.bio = this.props.user.bio
+      tempState.username = this.props.user.username
     }
 
-    const prevAddress = _.get(prevProps.user, 'locationInfo[0].name')
-    const currentAddress = _.get(this.props.user, 'locationInfo[0].name')
-    
-    if(prevAddress !== currentAddress){
-      this.setState({
-        locationInfo: this.props.user.locationInfo,
-        address: this.props.user.locationInfo[0].name,
-      })
+    const prevAddressObj = _.get(prevProps.user, 'locationInfo[0]')
+    const currentAddressObj = _.get(this.props.user, 'locationInfo[0]')
+
+    if (!prevAddressObj && currentAddressObj) {
+      tempState.locationInfo = this.props.user.locationInfo
+      tempState.address = this.props.user.locationInfo[0].name
     }
 
     const prevBirthday = _.get(prevProps.user, 'birthday')
     const currentBirthday = _.get(this.props.user, 'birthday')
     if (prevBirthday !== currentBirthday) {
-      this.setState({
-        birthday: this.props.user.birthday,
-      })
+      tempState.birthday = this.props.user.birthday
     }
 
     const currentGender = _.get(this.props.user, 'gender')
     const prevGender = _.get(prevProps.user, 'gender')
-    if(currentGender !== prevGender){
-      if(currentGender === 'female' || currentGender === 'male'){
-        this.setState({gender: currentGender})
-      } else {
-        this.setState({
-          gender: 'other',
-          genderSelfDescribed: currentGender
-        })
+    if (currentGender !== prevGender) {
+      if (currentGender === 'female' || currentGender === 'male') {
+        tempState.gender = currentGender
+      }
+      else {
+        tempState.gender = 'other'
+        tempState.genderSelfDescribed = currentGender
       }
     }
 
-    const didSave =
-      !!prevProps.updating
-      && !this.props.updating
-      && !this.props.error
+    if (Object.keys(tempState).length) {
+      this.setState({ ...tempState })
+    }
+
+    const didSave = !!prevProps.updating && !this.props.updating && !this.props.error
 
     // If save was successful, reroute, except when avatar image changes
     if (
-      didSave
-      & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
+      didSave & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
     ) {
       this.props.toProfileView()
     }
@@ -321,7 +314,7 @@ export default class ProfileHeaderEdit extends React.Component {
     })
   }
 
-  onChangeText = (event) => {
+  onChangeText = event => {
     let newText = event.target.value
 
     if (event.target.name === 'about') {
@@ -333,14 +326,10 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   // add backend logic later
-  saveCroppedImage = async (croppedImageUrl) => {
+  saveCroppedImage = async croppedImageUrl => {
     // formatting into blob for upload
     const res = await fetch(croppedImageUrl)
-    this.props.uploadMediaAsset(
-      this.props.user.id,
-      res,
-      this.state.photoType,
-    )
+    this.props.uploadMediaAsset(this.props.user.id, res, this.state.photoType)
     const stateUpdates = { modal: undefined }
     stateUpdates[this.state.photoType] = croppedImageUrl
     this.setState(stateUpdates)
@@ -350,8 +339,8 @@ export default class ProfileHeaderEdit extends React.Component {
     this.props.removeAvatar(this.props.user.id)
   }
 
-  uploadImageToBrowser = (event) => {
-    uploadFile(event, this, (file) => {
+  uploadImageToBrowser = event => {
+    uploadFile(event, this, file => {
       if (!file) return
       const callback = cloudinaryFile => {
         if (cloudinaryFile) {
@@ -378,7 +367,9 @@ export default class ProfileHeaderEdit extends React.Component {
       username: this.state.username,
       about: this.state.about,
       birthday: this.state.birthday,
-      gender: (this.state.genderSelfDescribed ? this.state.genderSelfDescribed : this.state.gender),
+      gender: this.state.genderSelfDescribed
+        ? this.state.genderSelfDescribed
+        : this.state.gender,
       locationInfo: this.state.locationInfo,
       'profile.fullName': this.state.fullname,
     })
@@ -414,22 +405,13 @@ export default class ProfileHeaderEdit extends React.Component {
     this.setState({ genderSelfDescribed })
   }
 
-  render () {
-    const {user, error} = this.props
-    const {
-      bio,
-      loadedImage,
-      modal,
-      photoType,
-      username,
-      about,
-      fullname,
-    } = this.state
+  render() {
+    const { user, error } = this.props
+    const { bio, loadedImage, modal, photoType, username, about, fullname } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     const minRows = 7
-    const bioLines = (bio && typeof bio === 'string')
-      ? (bio.match(/\r?\n/g) || '').length + 1
-      : minRows
+    const bioLines
+      = bio && typeof bio === 'string' ? (bio.match(/\r?\n/g) || '').length + 1 : minRows
     let targetedImage
 
     if (photoType === 'avatar' && !!loadedImage) {
@@ -438,47 +420,44 @@ export default class ProfileHeaderEdit extends React.Component {
     else if (photoType === 'avatar') targetedImage = avatarUrl
 
     const isUsernameError = _.get(error, 'message', '').includes('username')
-    const isBioError = _.get(error, 'message', '').includes('Bio')
-      || (bio && bio.length > 500)
+    const isBioError
+      = _.get(error, 'message', '').includes('Bio') || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
     return (
       <Container>
         <RelativeWrapper>
-          <AvatarLabel htmlFor='image_upload'>
+          <AvatarLabel htmlFor="image_upload">
             <StyledAvatar
               avatarUrl={avatarUrl}
-              type='profile'
-              size='x-large'
+              type="profile"
+              size="x-large"
               responsiveProps={responsiveAvatarStyles}
               onClick={avatarIsClickable}
-            >
-            </StyledAvatar>
-              <EditAvatarWrapper>
+            />
+            <EditAvatarWrapper>
               <CameraIcon
-                type='avatar'
-                name='camera'
+                type="avatar"
+                name="camera"
               />
             </EditAvatarWrapper>
-            </AvatarLabel>
+          </AvatarLabel>
           <VerticalCenter>
             <UpdateAvatarRow>
-            <label htmlFor='image_upload'>
-              <UpdateAvatarText>
-                {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
-              </UpdateAvatarText>
-            </label>
-            {avatarUrl && <Divider>&nbsp;</Divider>}
-            {avatarUrl &&
-              <UpdateAvatarText onClick={this.removeAvatar}>
-                Remove
-              </UpdateAvatarText>
-            }
+              <label htmlFor="image_upload">
+                <UpdateAvatarText>
+                  {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
+                </UpdateAvatarText>
+              </label>
+              {avatarUrl && <Divider>&nbsp;</Divider>}
+              {avatarUrl && (
+                <UpdateAvatarText onClick={this.removeAvatar}>Remove</UpdateAvatarText>
+              )}
             </UpdateAvatarRow>
           </VerticalCenter>
           <HiddenInput
-            type='file'
-            id='image_upload'
+            type="file"
+            id="image_upload"
             onChange={this.uploadImageToBrowser}
             accept={getAcceptedFormats('image')}
           />
@@ -487,36 +466,39 @@ export default class ProfileHeaderEdit extends React.Component {
           <Label>Name</Label>
           <Input
             value={fullname}
-            name='fullname'
+            name="fullname"
             onChange={this.onChangeText}
             maxLength={SignupConstants.FULLNAME_MAX_LENGTH}
           />
           <Label>Username</Label>
           <Input
             value={username}
-            name='username'
+            name="username"
             onChange={this.onChangeText}
             maxLength={SignupConstants.USERNAME_MAX_LENGTH}
           />
-          { !!username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
-            <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
-          }
-          { !!isUsernameError &&
+          {!!username && username.length < SignupConstants.USERNAME_MIN_LENGTH && (
+            <ErrorText>
+              Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters
+              long
+            </ErrorText>
+          )}
+          {!!isUsernameError && (
             <ErrorText>Sorry, that username is already in use</ErrorText>
-          }
+          )}
           <Label>About</Label>
           <TextareaWrapper>
             <Textarea
               value={about}
-              name='about'
-              placeholder='Click to add About Me'
+              name="about"
+              placeholder="Click to add About Me"
               onChange={this.onChangeText}
               rows={2}
               maxLength={63}
             />
           </TextareaWrapper>
 
-          <AdditionalInformationForm 
+          <AdditionalInformationForm
             welcomeDisplay={false}
             handleHometownChange={this.handleHometownChange}
             handleHometownSelect={this.handleHometownSelect}
@@ -531,8 +513,8 @@ export default class ProfileHeaderEdit extends React.Component {
           <TextareaWrapper>
             <ResizableTextarea
               value={bio}
-              name='bio'
-              placeholder='Enter your bio'
+              name="bio"
+              placeholder="Enter your bio"
               onChange={this.onChangeText}
               rows={bioLines > minRows ? bioLines : minRows}
               minRows={5}
@@ -541,27 +523,27 @@ export default class ProfileHeaderEdit extends React.Component {
               textProps={ResizableTextareaStyles}
             />
           </TextareaWrapper>
-          { !!isBioError &&
+          {!!isBioError && (
             <ErrorText>Sorry, you‘ve exceeded the 500 character limit</ErrorText>
-          }
+          )}
         </InputsWrapper>
 
         <SaveCancelButtonWrapper>
-            <SaveCancelButton
-              margin='small'
-              type={'blackWhite'}
-              text={'CANCEL'}
-              onClick={this.onCancel}
-            />
-            <SaveCancelButton
-              margin='small'
-              text='SAVE CHANGES'
-              onClick={this.onSave}
-              disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH)}
-            />
+          <SaveCancelButton
+            margin="small"
+            type={'blackWhite'}
+            text={'CANCEL'}
+            onClick={this.onCancel}
+          />
+          <SaveCancelButton
+            margin="small"
+            text="SAVE CHANGES"
+            onClick={this.onSave}
+            disabled={!username || username.length < SignupConstants.USERNAME_MIN_LENGTH}
+          />
         </SaveCancelButtonWrapper>
         <Modal
-          contentLabel='Photo Editor'
+          contentLabel="Photo Editor"
           isOpen={modal === 'photoEditor'}
           style={customModalStyles}
         >

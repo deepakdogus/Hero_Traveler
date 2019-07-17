@@ -6,10 +6,7 @@ const tabNavEditHeight = 50
 const profileEditHeight = 150
 
 export const storyPreviewHeight
-  = Metrics.screenHeight
-  - coverInnerHeight
-  - tabNavEditHeight
-  - Metrics.tabBarHeight
+  = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)

@@ -281,7 +281,7 @@ class AdditionalInformationForm extends Component {
                 <SectionContent center={!welcomeDisplay}>
                   <DropdownDatePicker
                     name="birthday"
-                    user={this.props.user}
+                    birthday={this.props.birthday}
                     startRange={startRange}
                     endRange={endRange}
                     onChange={handleBirthdaySelect}

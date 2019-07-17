@@ -15,6 +15,7 @@ class DateSelect extends Component {
     endRange: PropTypes.string,
     format: PropTypes.string,
     onChange: PropTypes.func,
+    birthday: PropTypes.string,
   }
 
   constructor(params) {
@@ -199,11 +200,11 @@ class DateSelect extends Component {
 
   componentWillMount() {
     this.init()
-    const {user} = this.props
-    if(user.birthday){
-      const year = Number(user.birthday.slice(0, 4))
-      const month = Number(user.birthday.slice(5, 7))
-      const day = Number(user.birthday.slice(8, 10))
+    const { birthday } = this.props
+    if(birthday){
+      const year = Number(birthday.slice(0, 4))
+      const month = Number(birthday.slice(5, 7))
+      const day = Number(birthday.slice(8, 10))
 
       this.setState({
         selectedYear: year,
@@ -212,7 +213,21 @@ class DateSelect extends Component {
       })
     }
   }
-  
+
+  componentDidUpdate(prevProps) {
+    const { birthday } = this.props
+    if(birthday !== prevProps.birthday){
+      const year = Number(birthday.slice(0, 4))
+      const month = Number(birthday.slice(5, 7))
+      const day = Number(birthday.slice(8, 10))
+      this.setState({
+        selectedYear: year,
+        selectedMonth: month,
+        selectedDayOfMonth: day,
+      })
+    }
+  }
+
   render() {
     return (
       <div className={'select-datepicker'}>

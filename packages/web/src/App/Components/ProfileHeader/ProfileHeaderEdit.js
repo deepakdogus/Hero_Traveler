@@ -247,6 +247,7 @@ export default class ProfileHeaderEdit extends React.Component {
         gender: user.gender,
         locationInfo: _.get(user, 'locationInfo'),
         address: _.get(user, 'locationInfo[0].name'),
+        birthday: _.get(user, 'birthday'),
       })
     }
   }
@@ -264,13 +265,19 @@ export default class ProfileHeaderEdit extends React.Component {
     const currentAddress = _.get(this.props.user, 'locationInfo[0].name')
     
     if(prevAddress !== currentAddress){
-      this.setState({locationInfo: this.props.user.locationInfo, address: this.props.user.locationInfo[0].name})
+      this.setState({
+        locationInfo: this.props.user.locationInfo,
+        address: this.props.user.locationInfo[0].name,
+      })
     }
-    // if (prevProps.user.birthday !== this.props.user.birthday) {
-    //   this.setState({
-    //     birthday: this.props.user.birthday
-    //   })
-    // }
+
+    const prevBirthday = _.get(prevProps.user, 'birthday')
+    const currentBirthday = _.get(this.props.user, 'birthday')
+    if (prevBirthday !== currentBirthday) {
+      this.setState({
+        birthday: this.props.user.birthday,
+      })
+    }
 
     const didSave =
       !!prevProps.updating

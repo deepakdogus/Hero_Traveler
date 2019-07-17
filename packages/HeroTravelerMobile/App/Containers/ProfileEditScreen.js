@@ -213,7 +213,6 @@ class ProfileEditScreen extends Component {
       tempAvatar ? tempAvatar : userAvatar,
       'avatarLarge',
     )
-
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>

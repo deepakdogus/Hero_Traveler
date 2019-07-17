@@ -242,18 +242,26 @@ export default class ProfileHeaderEdit extends React.Component {
 
   componentDidMount(){
     const { user } = this.props
+    const gender = _.get(user, 'gender')
     if(user){
       this.setState({
-        gender: user.gender,
+        gender: gender,
         locationInfo: _.get(user, 'locationInfo'),
         address: _.get(user, 'locationInfo[0].name'),
         birthday: _.get(user, 'birthday'),
       })
+      if(gender === 'female' || gender === 'male'){
+        this.setState({gender})
+      } else {
+        this.setState({
+          gender: 'other',
+          genderSelfDescribed: gender
+        })
+      }
     }
   }
 
   componentDidUpdate(prevProps) {
-
     if (prevProps.user.id !== this.props.user.id) {
       this.setState({
         bio: this.props.user.bio,
@@ -277,6 +285,19 @@ export default class ProfileHeaderEdit extends React.Component {
       this.setState({
         birthday: this.props.user.birthday,
       })
+    }
+
+    const currentGender = _.get(this.props.user, 'gender')
+    const prevGender = _.get(prevProps.user, 'gender')
+    if(currentGender !== prevGender){
+      if(currentGender === 'female' || currentGender === 'male'){
+        this.setState({gender: currentGender})
+      } else {
+        this.setState({
+          gender: 'other',
+          genderSelfDescribed: currentGender
+        })
+      }
     }
 
     const didSave =
@@ -357,7 +378,7 @@ export default class ProfileHeaderEdit extends React.Component {
       username: this.state.username,
       about: this.state.about,
       birthday: this.state.birthday,
-      gender: this.state.gender,
+      gender: (this.state.genderSelfDescribed ? this.state.genderSelfDescribed : this.state.gender),
       locationInfo: this.state.locationInfo,
       'profile.fullName': this.state.fullname,
     })

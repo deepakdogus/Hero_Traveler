@@ -318,7 +318,7 @@ export default class ProfileHeaderEdit extends React.Component {
     })
 
     if (this.props.user.profile.username !== this.state.username) {
-      this.props.reroute(`/${this.state.username}/view`)
+      this.props.reroute(`/${this.state.username}`)
     }
   }
 
@@ -417,6 +417,10 @@ export default class ProfileHeaderEdit extends React.Component {
             <ErrorText>Usernames may contain letters, numbers, _ and -</ErrorText>
           }
 
+          { SignupConstants.PROTECTED_USERNAMES.includes(username) &&
+            <ErrorText>This name is not allowed as a username. Please choose another username</ErrorText>
+          }
+
           <Label>About</Label>
           <TextareaWrapper>
             <Textarea
@@ -458,7 +462,11 @@ export default class ProfileHeaderEdit extends React.Component {
               margin='small'
               text='SAVE CHANGES'
               onClick={this.onSave}
-              disabled={!username || (username.length < SignupConstants.USERNAME_MIN_LENGTH) || !SignupConstants.USERNAME_REGEX.test(username)}
+              disabled={!username
+                || (username.length < SignupConstants.USERNAME_MIN_LENGTH)
+                || !SignupConstants.USERNAME_REGEX.test(username)
+                || SignupConstants.PROTECTED_USERNAMES.includes(username)
+              }
             />
         </SaveCancelButtonWrapper>
         <Modal

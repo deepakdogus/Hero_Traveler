@@ -249,7 +249,7 @@ export default class FeedItemHeader extends React.Component {
   }
 
   _profileReroute = () => {
-    this.props.reroute(`/${this.props.author.username}/view`)
+    this.props.reroute(`/${this.props.author.username}`)
   }
 
   _editReroute = () => {

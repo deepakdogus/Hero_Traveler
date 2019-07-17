@@ -54,7 +54,7 @@ class ProfileMenu extends React.Component{
   }
 
   rerouteToProfile = ()=> {
-    this.rerouteAndClose(`/${this.props.user.username}/view`)
+    this.rerouteAndClose(`/${this.props.user.username}`)
   }
 
   rerouteToExplore = () => {
@@ -75,7 +75,7 @@ class ProfileMenu extends React.Component{
   }
 
   _openSaveEditsModalToProfile = () => {
-    this._saveEditsModalHelper(this.rerouteToProfile, `/${this.props.user.username}/view`)
+    this._saveEditsModalHelper(this.rerouteToProfile, `/${this.props.user.username}`)
   }
 
   _openSaveEditsModalToLogout = () => {

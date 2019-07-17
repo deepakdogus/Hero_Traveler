@@ -106,8 +106,8 @@ class EditUser extends React.Component {
           {
             title: 'Link',
             render: () => (
-              <a href={`https://herotraveler.com/profile/${record.id}`}>
-                {truncate(`herotraveler.com/profile/${record.id}`, 20)}
+              <a href={`https://herotraveler.com/${record.username}`}>
+                {truncate(`herotraveler.com/${record.username}`, 20)}
               </a>),
           },
           {

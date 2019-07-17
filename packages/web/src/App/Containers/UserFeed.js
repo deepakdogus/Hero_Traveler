@@ -30,6 +30,7 @@ export default class extends ContainerWithFeedList {
     isUsersProfile: PropTypes.bool,
     pendingDrafts: PropTypes.arrayOf(PropTypes.object),
     user: PropTypes.object,
+    profilesUser: PropTypes.object,
   }
 
   constructor() {
@@ -40,7 +41,7 @@ export default class extends ContainerWithFeedList {
   }
 
   componentWillMount = () => {
-    this.props.getStories()
+    this.props.getStories(this.props.profilesUser.id)
   }
 
   onClickTab = event => {

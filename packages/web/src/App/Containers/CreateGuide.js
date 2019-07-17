@@ -144,7 +144,7 @@ class CreateGuide extends SharedCreateGuide {
     }
     else if (guideId) {
       reroute({
-        pathname: `/${username}/view`,
+        pathname: `/${username}`,
         search: '?at=guides',
       })
     }

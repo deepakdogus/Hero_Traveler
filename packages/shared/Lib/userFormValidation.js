@@ -1,4 +1,5 @@
 import HeroAPI from '../../Shared/Services/HeroAPI'
+import RouteNames from './routeNames';
 
 const api = HeroAPI.create()
 
@@ -13,6 +14,7 @@ export const FieldConstraints = {
   USERNAME_REGEX: /(?=^.{5,20}$)^[a-zA-Z][a-zA-Z0-9]*[._-]?[a-zA-Z0-9]+$/,
   FULLNAME_MAX_LENGTH: 255,
   EMAIL_REGEX: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  PROTECTED_USERNAMES: Object.keys(RouteNames).map(key => RouteNames[key]),
 }
 
 export const validate = (values, _props, fields) => {
@@ -45,6 +47,8 @@ export const validate = (values, _props, fields) => {
       errors.username = `Must be between ${FieldConstraints.USERNAME_MIN_LENGTH} and ${FieldConstraints.USERNAME_MAX_LENGTH} characters`
     } else if (!FieldConstraints.USERNAME_REGEX.test(values.username)) {
       errors.username = 'Usernames may contain letters, numbers, _ and -'
+    } else if (FieldConstraints.PROTECTED_USERNAMES.includes(values.username)) {
+      errors.username = 'This name is not allowed as a username. Please choose another username'
     }
   }
 

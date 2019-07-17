@@ -40,6 +40,7 @@ class Explore extends Component {
     reroute: PropTypes.func,
     channels: PropTypes.array,
     users: PropTypes.object,
+    userId: PropTypes.string,
   }
 
   state = {
@@ -49,7 +50,12 @@ class Explore extends Component {
   componentDidMount() {
     this.props.loadCategories()
     this.props.loadChannelUsers()
-    this.props.loadUsers()
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if (this.props.userId !== nextProps.userId) {
+      this.props.loadUsers(nextProps.userId)
+    }
   }
 
   _navToCategory = categoryId => {
@@ -102,12 +108,13 @@ function mapStateToProps(state) {
     channels: state.entities.users.channelsByID,
     users: state.entities.users.entities,
     categories: state.entities.categories.entities,
+    userId: state.session.userId,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUsers: () => dispatch(UserActions.loadUser()),
+    loadUsers: (userId) => dispatch(UserActions.loadUser(userId)),
     loadChannelUsers: () => dispatch(UserActions.loadUsersChannels()),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
     reroute: path => dispatch(push(path)),

@@ -24,7 +24,7 @@ function renderTemplate(templateName, context) {
 export default function resetPasswordEmail(user) {
   const context = {
     subject: 'Link to Reset Your HERO Traveler Password',
-    resetPasswordUrl: `${process.env.CORS_ORIGIN}/profile/${user.id}/view?pt=${user.passwordResetToken}`,
+    resetPasswordUrl: `${process.env.CORS_ORIGIN}/${user.username}?pt=${user.passwordResetToken}`,
     logoUrl: 'https://s3.amazonaws.com/hero-traveler/assets/ht-logo-white-small.png',
     logoHeight: '50px',
     logoWidth: '246px',

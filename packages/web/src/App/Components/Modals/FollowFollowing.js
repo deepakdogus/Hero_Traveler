@@ -56,7 +56,7 @@ class FollowFollowing extends Component {
   navToProfile = (userId) => {
     const username = this.props.users[userId].username
     this.props.closeModal()
-    this.props.reroute(`/${username}/view`)
+    this.props.reroute(`/${username}`)
   }
 
   renderUserRows = (ids) => {

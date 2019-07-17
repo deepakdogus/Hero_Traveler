@@ -17,6 +17,7 @@ import ResetPassword from './Modals/ResetPassword'
 import {usersExample} from '../Containers/Feed_TEST_DATA'
 import LoginActions from '../Shared/Redux/LoginRedux'
 import StoryActions from '../Shared/Redux/Entities/Stories'
+import getUserByUsername from '../Shared/Lib/getUserByUsername'
 
 const customModalStyles = {
   content: {
@@ -127,6 +128,7 @@ class Header extends React.Component {
     attemptLogin: PropTypes.func,
     reroute: PropTypes.func,
     getLikesAndBookmarks: PropTypes.func,
+    username: PropTypes.string,
   }
 
   constructor(props) {
@@ -157,7 +159,7 @@ class Header extends React.Component {
   }
 
   render () {
-    const {isLoggedIn, attemptLogin, userId} = this.props
+    const {isLoggedIn, attemptLogin, userId, username} = this.props
     // quick fix to get this merge in - need to refactor accordingly (part of header refactor)
     const SelectedGrid = this.props.blackHeader ? StyledGridBlack : StyledGrid
     const user = usersExample['59d50b1c33aaac0010ef4b3f']
@@ -236,7 +238,7 @@ class Header extends React.Component {
                 <NotificationsIcon name='cameraFlash' />
               </StyledRoundedButton>
               <NavLink
-                to={`/profile/${userId}/view`}
+                to={`/${username}`}
               >
                 <StyledRoundedAvatarButton
                   type='headerButton'
@@ -307,6 +309,7 @@ function mapStateToProps(state) {
     userId: state.session.userId,
     isLoggedIn: state.login.isLoggedIn,
     isSignedUp: state.signup.signedUp,
+    username: getUserByUsername(state.entities.users.entities, state.session.userId).username,
   }
 }
 

@@ -24,6 +24,7 @@ import TabBar from '../Components/TabBar'
 import FeedItemList from '../Components/FeedItemList'
 import Footer from '../Components/Footer'
 import UserFeed from './UserFeed'
+import getUserByUsername from '../Shared/Lib/getUserByUsername'
 
 const tabBarTabs = ['STORIES', 'DRAFTS', 'BOOKMARKS', 'GUIDES']
 const readOnlyTabBarTabs = ['STORIES', 'GUIDES']
@@ -41,21 +42,10 @@ const ListWrapper = styled.div`
   position: relative;
 `
 
-const getUserByUserName = (users, name) => {
-  let user
-
-  for (const i in users) {
-    if (users.hasOwnProperty(i) && users[i].username === name) {
-      user = users[i]
-    }
-  }
-
-  return user
-}
-
 class Profile extends ContainerWithFeedList {
   static propTypes = {
     match: PropTypes.object,
+    location: PropTypes.object,
     // mapStateToProps properties
     profilesUser: PropTypes.object,
     userUpdating: PropTypes.bool,
@@ -117,13 +107,12 @@ class Profile extends ContainerWithFeedList {
   componentDidMount() {
     const username = this.props.match.params.username
     this.props.getUser(username)
-  }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if (nextProps.profilesUser !== this.props.profilesUser && nextProps.profilesUser) {
-      const userId = nextProps.profilesUser.id
+    if (this.props.profilesUser) {
+      const userId = this.props.profilesUser.id
 
-      this.props.getStories(userId)
+      this.props.getStories(this.props.profilesUser.id)
+
       if (this.props.sessionUserId === userId) {
         this.props.loadBookmarks(userId)
       }
@@ -139,12 +128,12 @@ class Profile extends ContainerWithFeedList {
   }
 
   _toProfileReroute = () => {
-    this.props.reroute(`/${this.props.profilesUser.username}/view`)
+    this.props.reroute(`/${this.props.profilesUser.username}`)
   }
 
   render() {
     const {
-      match,
+      location,
       profilesUser,
       sessionUserId,
       myFollowedUsers,
@@ -160,7 +149,12 @@ class Profile extends ContainerWithFeedList {
     } = this.props
     if (!profilesUser) return null
 
-    let path = match.path.split('/')
+    let path = location.pathname.split('/')
+
+    if (path[2] && path[2] !== 'edit') {
+      reroute(`/${profilesUser.username}`)
+    }
+
     const isEdit = path[path.length - 1] === 'edit'
     const isUsersProfile = profilesUser.id === sessionUserId
     const isFollowing = _.includes(myFollowedUsers, profilesUser.id)
@@ -210,7 +204,7 @@ class Profile extends ContainerWithFeedList {
 function mapStateToProps(state, ownProps) {
   let {stories, users, guides} = state.entities
   const username = ownProps.match.params.username
-  const profilesUser = getUserByUserName(users.entities, username)
+  const profilesUser = getUserByUsername(users.entities, username)
   const userId = profilesUser && profilesUser.id
   const sessionUserId = state.session.userId
   const myFollowedUsersObject = users.userFollowingByUserIdAndId[sessionUserId]

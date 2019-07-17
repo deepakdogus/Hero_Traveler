@@ -176,7 +176,7 @@ export default class NotificationRow extends Component {
   navToUserProfile = event => {
     event.stopPropagation()
     this._markSeen()
-    this.props.reroute(`/${this.props.activity.fromUser.username}/view`)
+    this.props.reroute(`/${this.props.activity.fromUser.username}`)
     this.props.closeModal()
   }
 

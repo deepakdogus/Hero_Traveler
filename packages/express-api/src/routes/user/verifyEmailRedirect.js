@@ -9,5 +9,5 @@ export default function verifyEmailRedirect(req, res) {
     user.isEmailVerified = true
     return user.save()
   })
-  .then(user => res.redirect(`${process.env.CORS_ORIGIN}/profile/${user.id}/view?t=${token}`))
+  .then(user => res.redirect(`${process.env.CORS_ORIGIN}/${user.username}?t=${token}`))
 }

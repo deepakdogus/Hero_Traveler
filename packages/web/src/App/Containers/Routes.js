@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Loadable from 'react-loadable'
 
 import Session from '../Shared/Web/Containers/Session'
@@ -111,11 +111,6 @@ class AppRoot extends Component {
         <Session />
         <Route
           exact
-          path="/"
-          component={Explore}
-        />
-        <Route
-          exact
           path="/category/:categoryId"
           component={ExploreItems}
         />
@@ -123,11 +118,6 @@ class AppRoot extends Component {
           exact
           path="/channel/:userId"
           component={ExploreItems}
-        />
-        <AuthRoute
-          exact
-          path="/feed"
-          component={Feed}
         />
         <AuthRoute
           path="/signup/social"
@@ -162,18 +152,6 @@ class AppRoot extends Component {
           component={EditStory}
         />
         <Route
-          path="/:username/view"
-          component={Profile}
-        />
-        <AuthRoute
-          path="/:username/edit"
-          component={Profile}
-        />
-        <Route
-          path="/search"
-          component={Search}
-        />
-        <Route
           exact
           path="/results/:country/:lat/:lng"
           component={SearchResults}
@@ -183,11 +161,29 @@ class AppRoot extends Component {
           path="/results/:country/:lat/:lng/:seeAllType"
           component={SearchResults}
         />
-        <Route
-          exact
-          path="/apply"
-          component={applyRedirect}
-        />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={Explore}
+          />
+          <Route
+            path="/apply"
+            component={applyRedirect}
+          />
+          <Route
+            path="/search"
+            component={Search}
+          />
+          <AuthRoute
+            path="/feed"
+            component={Feed}
+          />
+          <Route
+            path="/:username"
+            component={Profile}
+          />
+        </Switch>
       </div>
     )
   }

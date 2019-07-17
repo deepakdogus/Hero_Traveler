@@ -33,7 +33,6 @@ import signupCheck from './signupCheck'
 import resetPasswordRedirect from './resetPasswordRedirect'
 import verifyEmailRedirect from './verifyEmailRedirect'
 import deleteUser from './deleteUser'
-import getUserByUserName from './getUserByUserName';
 import getAllChannelUsers from './getAllChannelUsers'
 
 const router = express.Router()
@@ -85,8 +84,6 @@ router.post('/threads', hasValidOauth, endpointWrapper(threadCreate))
 router.post('/threads/:id', hasValidOauth, endpointWrapper(threadCreateMessage))
 
 router.get('/:id', endpointWrapper(getUser))
-
-router.get('/:username', endpointWrapper(getUserByUserName))
 
 router.put('/:id', hasValidOauth, endpointWrapper(update))
 

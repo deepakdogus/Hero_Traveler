@@ -1,7 +1,13 @@
-import {User} from '../models'
+import { User } from '../models'
 
-export default function getUser(query, options) {
+const HIDDEN_USER_FIELDS = ['gender', 'locationInfo', 'birthday']
+
+export default function getUser(query, shouldDisplay = false) {
+  const searchParams = HIDDEN_USER_FIELDS.reduce((acc, params) => {
+    return acc + (shouldDisplay ? '+' : '-') + params + ' '
+  }, '')
   return User.findOne(query)
-             .populate('profile.avatar')
-             .populate('profile.cover')
+    .select(searchParams.slice(0, searchParams.length - 1))
+    .populate('profile.avatar')
+    .populate('profile.cover')
 }

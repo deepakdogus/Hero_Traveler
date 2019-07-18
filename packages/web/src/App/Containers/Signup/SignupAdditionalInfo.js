@@ -2,19 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
-import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
-import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
 // component imports
 import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
-import { Title, Subtitle } from './SignupSocial'
 import HorizontalDivider from '../../Components/HorizontalDivider'
-import DropdownDatePicker from '../../Components/DropdownDatePicker'
-import GoogleLocator from '../../Components/GoogleLocator'
 
 // redux imports
 import UserActions from '../../Shared/Redux/Entities/Users'
@@ -22,6 +15,8 @@ import UserActions from '../../Shared/Redux/Entities/Users'
 // utils
 import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
 import '../../Components/CreateStory/Styles/GoogleLocatorStyles.css'
+
+import AdditionalInformationForm from '../../Components/AdditionalInformationForm'
 
 const TopicsContainer = styled.div`
   margin-bottom: 30px;
@@ -290,14 +285,6 @@ class SignupAdditionalInfo extends Component {
   )
 
   render() {
-    const { address, gender, genderSelfDescribed } = this.state
-    const startRange = moment()
-      .subtract(100, 'years')
-      .format('YYYY-MM-DD')
-    const endRange = moment()
-      .subtract(13, 'years')
-      .format('YYYY-MM-DD')
-
     return (
       <TopicsContainer>
         <NavLinkContainer>
@@ -309,102 +296,15 @@ class SignupAdditionalInfo extends Component {
             />
           </WrappedNavLink>
         </NavLinkContainer>
-        <Container>
-          <SizedDiv>
-            <Title>WELCOME!</Title>
-            <DescriptionTitle>
-              Tell us about yourself so we can better customize your experience.
-            </DescriptionTitle>
-            <Subtitle>
-              (This is optional info that is not visible to other users)
-            </Subtitle>
-            <AddInfoContainer>
-              <Section>
-                <GoogleLocator
-                  value={address}
-                  searchOptions={{ types: ['(regions)'] }}
-                  onChange={this.handleHometownChange}
-                  onSelect={this.handleHometownSelect}
-                  renderChildren={this.renderHometownInput}
-                />
-              </Section>
-              <Section>
-                <SectionLabel>Birthday</SectionLabel>
-                <SectionContent>
-                  <DropdownDatePicker
-                    name="birthday"
-                    startRange={startRange}
-                    endRange={endRange}
-                    onChange={this.handleBirthdaySelect}
-                  />
-                </SectionContent>
-              </Section>
-              <Section>
-                <SectionLabel>Gender</SectionLabel>
-                <SectionContent>
-                  <GenderRow>
-                    <RadioButtonGroup
-                      valueSelected={this.state.gender}
-                      name="gender"
-                      style={styles.radioButtonGroup}
-                      onChange={this.selectGenderOption}
-                      row
-                    >
-                      <RadioButton
-                        value={'male'}
-                        label={'Male'}
-                        style={styles.radioButton}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                      <RadioButton
-                        value={'female'}
-                        label={'Female'}
-                        style={styles.radioButton}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                      <RadioButton
-                        value={'other'}
-                        label={'Other:'}
-                        style={styles.radioButton}
-                        inputStyle={{ backgroundColor: 'green' }}
-                        labelStyle={styles.radioButtonLabel}
-                        checkedIcon={
-                          <RadioButtonChecked style={styles.radioButtonFilled} />
-                        }
-                        uncheckedIcon={
-                          <RadioButtonUnchecked style={styles.radioButtonUnfilled} />
-                        }
-                      />
-                    </RadioButtonGroup>
-                    <Input
-                      width={'200px'}
-                      placeholder="Self Describe"
-                      value={
-                        !['male', 'female', 'other'].includes(genderSelfDescribed)
-                          ? genderSelfDescribed
-                          : ''
-                      }
-                      disabled={['male', 'female'].includes(gender) || gender !== 'other'}
-                      onChange={this.onGenderTextChange}
-                    />
-                  </GenderRow>
-                </SectionContent>
-              </Section>
-            </AddInfoContainer>
-          </SizedDiv>
-        </Container>
+        <AdditionalInformationForm 
+          welcomeDisplay={true}
+          handleHometownChange={this.handleHometownChange}
+          handleHometownSelect={this.handleHometownSelect}
+          handleBirthdaySelect={this.handleBirthdaySelect}
+          selectGenderOption={this.selectGenderOption}
+          onGenderTextChange={this.onGenderTextChange}
+          {...this.state} 
+        />
       </TopicsContainer>
     )
   }

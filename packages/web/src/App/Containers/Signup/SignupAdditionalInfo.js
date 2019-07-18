@@ -2,19 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
-import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked'
-import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked'
 
 // component imports
 import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import { WrappedNavLink } from '../../Shared/Web/Components/NavLinkStyled'
-import { Title, Subtitle } from './SignupSocial'
 import HorizontalDivider from '../../Components/HorizontalDivider'
-import DropdownDatePicker from '../../Components/DropdownDatePicker'
-import GoogleLocator from '../../Components/GoogleLocator'
 
 // redux imports
 import UserActions from '../../Shared/Redux/Entities/Users'

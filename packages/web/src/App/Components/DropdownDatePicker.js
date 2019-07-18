@@ -122,7 +122,8 @@ class DateSelect extends Component {
     const dayOfMonth = this.state.selectedDayOfMonth
 
     if (!year || !month) return
-    const formattedValue = moment(`${year}-${month}-${dayOfMonth}`,
+    const formattedValue = moment(
+      `${year}-${month}-${dayOfMonth}`,
       this.props.format || 'YYYY-MM-DD',
     )
     this.props.onChange(formattedValue)
@@ -135,7 +136,10 @@ class DateSelect extends Component {
     if (MM && YYYY) {
       let startDate = 1
       let endDate = 31
-      if (MM == this.state.startRange.month() + 1 && YYYY == this.state.startRange.year()) {
+      if (
+        MM == this.state.startRange.month() + 1
+        && YYYY == this.state.startRange.year()
+      ) {
         startDate = this.state.startRange.date()
       }
       if (MM == this.state.endRange.month() + 1 && YYYY == this.state.endRange.year()) {
@@ -149,7 +153,10 @@ class DateSelect extends Component {
             !noCallbackNeeded && _self.onChange()
           })
         }
-        else if (_self.state.selectedDayOfMonth && _self.state.selectedDayOfMonth <= endDate) {
+        else if (
+          _self.state.selectedDayOfMonth
+          && _self.state.selectedDayOfMonth <= endDate
+        ) {
           !noCallbackNeeded && _self.onChange()
         }
       })
@@ -201,7 +208,7 @@ class DateSelect extends Component {
   componentWillMount() {
     this.init()
     const { birthday } = this.props
-    if(birthday){
+    if (birthday) {
       const year = Number(birthday.slice(0, 4))
       const month = Number(birthday.slice(5, 7))
       const day = Number(birthday.slice(8, 10))
@@ -217,7 +224,7 @@ class DateSelect extends Component {
   componentDidUpdate(prevProps) {
     const { birthday } = this.props
     const date = moment(birthday).format('YYYY/MM/DD')
-    if(birthday !== prevProps.birthday){
+    if (birthday !== prevProps.birthday) {
       const year = Number(date.slice(0, 4))
       const month = Number(date.slice(5, 7))
       const day = Number(date.slice(8, 10))
@@ -256,7 +263,10 @@ class DateSelect extends Component {
             className={'select-date'}
             options={this.state.daysOfMonth}
             placeholder={'Day'}
-            value={{ value: this.state.selectedDayOfMonth, label: this.state.selectedDayOfMonth }}
+            value={{
+              value: this.state.selectedDayOfMonth,
+              label: this.state.selectedDayOfMonth,
+            }}
             onChange={this.onDayOfMonthChange}
           />
         ) : (

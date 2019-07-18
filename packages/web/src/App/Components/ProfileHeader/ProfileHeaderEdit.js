@@ -239,71 +239,55 @@ export default class ProfileHeaderEdit extends React.Component {
 
   componentDidMount() {
     const { user } = this.props
-    const gender = _.get(user, 'gender')
     if (user) {
+      let gender = _.get(user, 'gender')
+      let genderSelfDescribed = this.state.genderSelfDescribed
+      if (gender !== 'female' && gender !== 'male') {
+        genderSelfDescribed = gender
+        gender = 'other'
+      }
       this.setState({
-        gender: gender,
-        locationInfo: _.get(user, 'locationInfo'),
         address: _.get(user, 'locationInfo[0].name'),
         birthday: _.get(user, 'birthday'),
+        gender,
+        genderSelfDescribed,
+        locationInfo: _.get(user, 'locationInfo'),
       })
-      if (gender === 'female' || gender === 'male') {
-        this.setState({ gender })
-      }
-      else {
-        this.setState({
-          gender: 'other',
-          genderSelfDescribed: gender,
-        })
-      }
     }
   }
 
   componentDidUpdate(prevProps) {
-    const tempState = {}
-
-    if (prevProps.user.id !== this.props.user.id) {
-      tempState.bio = this.props.user.bio
-      tempState.username = this.props.user.username
-    }
+    const { error, toProfileView, updating, user } = this.props
+    const updatedState = {}
 
     const prevAddressObj = _.get(prevProps.user, 'locationInfo[0]')
-    const currentAddressObj = _.get(this.props.user, 'locationInfo[0]')
-
+    const currentAddressObj = _.get(user, 'locationInfo[0]')
+    const currentAddress = _.get(user, 'locationInfo[0].name')
     if (!prevAddressObj && currentAddressObj) {
-      tempState.locationInfo = this.props.user.locationInfo
-      tempState.address = this.props.user.locationInfo[0].name
+      updatedState.locationInfo = user.locationInfo
+      updatedState.address = currentAddress
     }
 
     const prevBirthday = _.get(prevProps.user, 'birthday')
-    const currentBirthday = _.get(this.props.user, 'birthday')
-    if (prevBirthday !== currentBirthday) {
-      tempState.birthday = this.props.user.birthday
-    }
+    const currentBirthday = _.get(user, 'birthday')
+    if (prevBirthday !== currentBirthday) updatedState.birthday = user.birthday
 
-    const currentGender = _.get(this.props.user, 'gender')
     const prevGender = _.get(prevProps.user, 'gender')
+    const currentGender = _.get(user, 'gender')
     if (currentGender !== prevGender) {
-      if (currentGender === 'female' || currentGender === 'male') {
-        tempState.gender = currentGender
-      }
-      else {
-        tempState.gender = 'other'
-        tempState.genderSelfDescribed = currentGender
+      updatedState.gender = currentGender
+      if (currentGender !== 'female' && currentGender !== 'male') {
+        updatedState.gender = 'other'
+        updatedState.genderSelfDescribed = currentGender
       }
     }
 
-    if (Object.keys(tempState).length) {
-      this.setState({ ...tempState })
-    }
-
-    const didSave = !!prevProps.updating && !this.props.updating && !this.props.error
+    if (Object.keys(updatedState).length) this.setState({ ...updatedState })
 
     // If save was successful, reroute, except when avatar image changes
-    if (
-      didSave & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
-    ) {
-      this.props.toProfileView()
+    const didSave = !!prevProps.updating && !updating && !error
+    if (didSave & _.isEqual(prevProps.user.profile.avatar, user.profile.avatar)) {
+      toProfileView()
     }
   }
 

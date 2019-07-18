@@ -301,6 +301,7 @@ class ProfileEditScreen extends Component {
                   </Text>
                 </TouchableOpacity>
                 <View style={styles.inputWrapper}>
+                  <Text style={styles.inputLabel}>Gender</Text>
                   <View style={styles.radioButtonContainer}>
                     <RadioButton
                       style={styles.radioButton}
@@ -345,6 +346,7 @@ class ProfileEditScreen extends Component {
                     style={styles.inputContainer}
                     onPress={this.openDatePicker}
                   >
+                    <Text style={styles.inputLabel}>Birthday</Text>
                     <Text style={styles.input}>
                       {birthday ? moment(birthday).format('MM-DD-YYYY') : 'Birthday'}
                     </Text>

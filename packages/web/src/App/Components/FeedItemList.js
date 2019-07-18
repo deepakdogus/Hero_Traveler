@@ -39,7 +39,8 @@ export default class FeedItemList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const feedItemLength = this.props.feedItems.length
+    const { feedItems } = this.props
+    const feedItemLength = feedItems && feedItems.length
     if (
       prevProps.feedItems.length === 0
       && (feedItemLength && feedItemLength < itemsPerPage)
@@ -60,12 +61,10 @@ export default class FeedItemList extends React.Component {
       if (!feedItem) return rows
 
       if (index !== 0) {
-        rows.push(
-        <StyledDivider
+        rows.push(<StyledDivider
           key={`hr-${feedItem.id}`}
           color={'lighter-grey'}
-        />,
-        )
+                  />)
       }
 
       rows.push(

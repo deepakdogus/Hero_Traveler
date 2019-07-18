@@ -117,8 +117,7 @@ class ProfileEditScreen extends Component {
       .catch(() => {
         NavActions.pop()
         this.setState({
-          error:
-            'There was an error updating your profile photo. Please try again',
+          error: 'There was an error updating your profile photo. Please try again',
         })
       })
   }
@@ -209,18 +208,11 @@ class ProfileEditScreen extends Component {
       = user && user.profile
         ? [user.profile.avatar, user.profile.tempAvatar]
         : [undefined, undefined]
-    const avatarUrl = getImageUrl(
-      tempAvatar ? tempAvatar : userAvatar,
-      'avatarLarge',
-    )
+    const avatarUrl = getImageUrl(tempAvatar ? tempAvatar : userAvatar, 'avatarLarge')
     return (
       <View style={styles.profileWrapper}>
         <View style={styles.avatarWrapper}>
-          <Avatar
-            size="extraLarge"
-            avatarUrl={avatarUrl}
-            style={styles.avatar}
-          />
+          <Avatar size="extraLarge" avatarUrl={avatarUrl} style={styles.avatar} />
           <TouchableOpacity
             style={styles.addAvatarPhotoButton}
             onPress={this._selectAvatar}
@@ -329,9 +321,7 @@ class ProfileEditScreen extends Component {
                   </View>
                   <View style={styles.radioWithTextInput}>
                     <RadioButton
-                      selected={
-                        !!gender && !['male', 'female'].includes(gender)
-                      }
+                      selected={!!gender && !['male', 'female'].includes(gender)}
                       onPress={this.selectGenderOption}
                       value="other"
                       text="Other:"
@@ -341,9 +331,7 @@ class ProfileEditScreen extends Component {
                         style={styles.input}
                         placeholder="Self Describe"
                         value={
-                          !['male', 'female', 'other'].includes(gender)
-                            ? gender
-                            : ''
+                          !['male', 'female', 'other'].includes(gender) ? gender : ''
                         }
                         returnKeyType="done"
                         onChangeText={this.onGenderTextChange}
@@ -358,9 +346,7 @@ class ProfileEditScreen extends Component {
                     onPress={this.openDatePicker}
                   >
                     <Text style={styles.input}>
-                      {birthday
-                        ? moment(birthday).format('MM-DD-YYYY')
-                        : 'Birthday'}
+                      {birthday ? moment(birthday).format('MM-DD-YYYY') : 'Birthday'}
                     </Text>
                   </TouchableOpacity>
                 </View>

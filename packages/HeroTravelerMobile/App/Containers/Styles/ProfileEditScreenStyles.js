@@ -3,7 +3,6 @@ import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 const coverInnerHeight = 370
 const tabNavEditHeight = 50
-const profileEditHeight = 150
 
 export const storyPreviewHeight
   = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight

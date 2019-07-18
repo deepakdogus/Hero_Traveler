@@ -11,7 +11,6 @@ import HorizontalDivider from './HorizontalDivider'
 import DropdownDatePicker from './DropdownDatePicker'
 import GoogleLocator from './GoogleLocator'
 
-import { formatLocationWeb } from '../Shared/Lib/formatLocation'
 import './CreateStory/Styles/GoogleLocatorStyles.css'
 
 const TopicsContainer = styled.div`

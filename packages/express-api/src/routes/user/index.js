@@ -83,7 +83,7 @@ router.post('/threads', hasValidOauth, endpointWrapper(threadCreate))
 
 router.post('/threads/:id', hasValidOauth, endpointWrapper(threadCreateMessage))
 
-router.get('/:id', endpointWrapper(getUser))
+router.get('/:id', hasValidOauth, endpointWrapper(getUser))
 
 router.put('/:id', hasValidOauth, endpointWrapper(update))
 

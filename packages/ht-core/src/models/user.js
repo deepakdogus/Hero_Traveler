@@ -235,14 +235,14 @@ const UserSchema = new Schema({
   },
   birthday: {
     type: Date,
-    hideJSON: true,
+    select: false,
   },
   locationInfo: {
     type: [LocationInfoSchema],
-    hideJSON: true,
+    select: false,
   },
   gender: {
-    hideJSON: true,
+    select: false,
     type: String
   }
 }, {

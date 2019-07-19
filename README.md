@@ -10,11 +10,10 @@ Each subdirectory of `packages/` is an application or contains a bundle of code 
 
 Applications:
 
-- ~~`cms`~~ [Deprecated]
-- `cms-web`
-- `express-api` (backend server)
-- `HeroTravelerMobile` (the React Native app)
 - `web`
+- `HeroTravelerMobile` (the React Native app)
+- `express-api` (backend server)
+- `cms-web`
 
 Code Bundles:
 

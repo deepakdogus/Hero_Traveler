@@ -1,15 +1,11 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { ApplicationStyles, Fonts, Colors, Metrics } from '../../Shared/Themes/'
 
 const coverInnerHeight = 370
 const tabNavEditHeight = 50
-const profileEditHeight = 150
 
 export const storyPreviewHeight
-  = Metrics.screenHeight
-  - coverInnerHeight
-  - tabNavEditHeight
-  - Metrics.tabBarHeight
+  = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 // Don't forget to update ProfileTabAndStories.getHeaderHeight() if
 // related styles change. (username, about, badge, error, etc.)
@@ -68,6 +64,7 @@ export default StyleSheet.create({
     alignItems: 'stretch',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    paddingBottom: 50,
   },
   inputWrapper: {
     flexShrink: 1,
@@ -83,6 +80,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
     color: Colors.background,
+    marginBottom: 10,
   },
   input: {
     ...Fonts.style.inputLabels,
@@ -114,5 +112,44 @@ export default StyleSheet.create({
   topBorder: {
     borderTopWidth: 1,
     borderTopColor: Colors.feedDividerGrey,
+  },
+  subtitle: {
+    ...Fonts.style.instructions,
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  radioGroup: {
+    marginLeft: Metrics.section,
+    marginRight: Metrics.section,
+  },
+  radioButtonContainer: {
+    paddingTop: 5,
+    height: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioWithTextInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioTextInputContainer: {
+    marginTop: 5,
+    flex: 1,
+    justifyContent: 'center',
+    height: 25,
+    marginLeft: Metrics.baseMargin,
+    marginBottom: Metrics.baseMargin,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.whiteAlphaPt3,
+    borderStyle: 'solid',
+  },
+  dateWrapper: {
+    position: 'absolute',
+    top: 250,
+    left: 40,
+    width: Dimensions.get('window').width - 80,
+    elevation: 100,
+    backgroundColor: Colors.snow,
   },
 })

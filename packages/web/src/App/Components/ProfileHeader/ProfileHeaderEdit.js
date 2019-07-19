@@ -2,13 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Modal from 'react-modal'
+import { getLatLng, geocodeByPlaceId } from 'react-places-autocomplete'
 import PhotoEditor from '../Modals/PhotoEditor'
 import VerticalCenter from '../../Shared/Web/Components/VerticalCenter'
 import { Row } from '../../Shared/Web/Components/FlexboxGrid'
-import {
-  StyledAvatar,
-  ButtonWrapper,
-} from './ProfileHeaderShared'
+import { StyledAvatar, ButtonWrapper } from './ProfileHeaderShared'
 import RoundedButton from '../../Shared/Web/Components/RoundedButton'
 import Icon from '../../Shared/Web/Components/Icon'
 import ResizableTextarea from '../ResizableTextarea'
@@ -17,6 +15,10 @@ import { FieldConstraints as SignupConstants } from '../../Shared/Lib/userFormVa
 import uploadFile, { getAcceptedFormats } from '../../Utils/uploadFile'
 import getImageUrl from '../../Shared/Lib/getImageUrl'
 import _ from 'lodash'
+
+import { formatLocationWeb } from '../../Shared/Lib/formatLocation'
+
+import AdditionalInformationForm from '../AdditionalInformationForm'
 
 const customModalStyles = {
   content: {
@@ -101,7 +103,7 @@ const RelativeWrapper = styled.div`
 const UpdateAvatarText = styled.span`
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   font-size: 18px;
   color: ${props => props.theme.Colors.redHighlights};
   cursor: pointer;
@@ -114,7 +116,7 @@ const Label = styled.label`
   display: block;
   font-family: ${props => props.theme.Fonts.type.sourceSansPro};
   font-weight: 600;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   font-size: 16px;
   color: ${props => props.theme.Colors.background};
   margin: 16px 0 8px;
@@ -206,6 +208,13 @@ function getInitialState(user = {}) {
     modal: undefined,
     photoType: undefined,
     loadedImage: undefined,
+    address: '',
+    locationInfo: null,
+    birthday: null,
+    gender: '',
+    genderSelfDescribed: '',
+    modalVisible: false,
+    submitted: false,
   }
 }
 
@@ -229,25 +238,57 @@ export default class ProfileHeaderEdit extends React.Component {
     this.state = getInitialState(props.user)
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.user.id !== this.props.user.id) {
+  componentDidMount() {
+    const { user } = this.props
+    if (user) {
+      let gender = _.get(user, 'gender')
+      let genderSelfDescribed = this.state.genderSelfDescribed
+      if (gender !== 'female' && gender !== 'male') {
+        genderSelfDescribed = gender
+        gender = 'other'
+      }
       this.setState({
-        bio: this.props.user.bio,
-        username: this.props.user.username,
+        address: _.get(user, 'locationInfo[0].name'),
+        birthday: _.get(user, 'birthday'),
+        gender,
+        genderSelfDescribed,
+        locationInfo: _.get(user, 'locationInfo'),
       })
     }
+  }
 
-    const didSave =
-      !!prevProps.updating
-      && !this.props.updating
-      && !this.props.error
+  componentDidUpdate(prevProps) {
+    const { error, toProfileView, updating, user } = this.props
+    const updatedState = {}
+
+    const prevAddressObj = _.get(prevProps.user, 'locationInfo[0]')
+    const currentAddressObj = _.get(user, 'locationInfo[0]')
+    const currentAddress = _.get(user, 'locationInfo[0].name')
+    if (!prevAddressObj && currentAddressObj) {
+      updatedState.locationInfo = user.locationInfo
+      updatedState.address = currentAddress
+    }
+
+    const prevBirthday = _.get(prevProps.user, 'birthday')
+    const currentBirthday = _.get(user, 'birthday')
+    if (prevBirthday !== currentBirthday) updatedState.birthday = user.birthday
+
+    const prevGender = _.get(prevProps.user, 'gender')
+    const currentGender = _.get(user, 'gender')
+    if (currentGender !== prevGender) {
+      updatedState.gender = currentGender
+      if (currentGender !== 'female' && currentGender !== 'male') {
+        updatedState.gender = 'other'
+        updatedState.genderSelfDescribed = currentGender
+      }
+    }
+
+    if (Object.keys(updatedState).length) this.setState({ ...updatedState })
 
     // If save was successful, reroute, except when avatar image changes
-    if (
-      didSave
-      & _.isEqual(this.props.user.profile.avatar, prevProps.user.profile.avatar)
-    ) {
-      this.props.toProfileView()
+    const didSave = !!prevProps.updating && !updating && !error
+    if (didSave & _.isEqual(prevProps.user.profile.avatar, user.profile.avatar)) {
+      toProfileView()
     }
   }
 
@@ -258,7 +299,7 @@ export default class ProfileHeaderEdit extends React.Component {
     })
   }
 
-  onChangeText = (event) => {
+  onChangeText = event => {
     let newText = event.target.value
 
     if (event.target.name === 'about') {
@@ -270,14 +311,10 @@ export default class ProfileHeaderEdit extends React.Component {
   }
 
   // add backend logic later
-  saveCroppedImage = async (croppedImageUrl) => {
+  saveCroppedImage = async croppedImageUrl => {
     // formatting into blob for upload
     const res = await fetch(croppedImageUrl)
-    this.props.uploadMediaAsset(
-      this.props.user.id,
-      res,
-      this.state.photoType,
-    )
+    this.props.uploadMediaAsset(this.props.user.id, res, this.state.photoType)
     const stateUpdates = { modal: undefined }
     stateUpdates[this.state.photoType] = croppedImageUrl
     this.setState(stateUpdates)
@@ -287,8 +324,8 @@ export default class ProfileHeaderEdit extends React.Component {
     this.props.removeAvatar(this.props.user.id)
   }
 
-  uploadImageToBrowser = (event) => {
-    uploadFile(event, this, (file) => {
+  uploadImageToBrowser = event => {
+    uploadFile(event, this, file => {
       if (!file) return
       const callback = cloudinaryFile => {
         if (cloudinaryFile) {
@@ -314,6 +351,11 @@ export default class ProfileHeaderEdit extends React.Component {
       bio: this.state.bio,
       username: this.state.username,
       about: this.state.about,
+      birthday: this.state.birthday,
+      gender: this.state.genderSelfDescribed
+        ? this.state.genderSelfDescribed
+        : this.state.gender,
+      locationInfo: this.state.locationInfo,
       'profile.fullName': this.state.fullname,
     })
 
@@ -322,22 +364,43 @@ export default class ProfileHeaderEdit extends React.Component {
     }
   }
 
-  render () {
-    const {user, error} = this.props
-    const {
-      bio,
-      loadedImage,
-      modal,
-      photoType,
-      username,
-      about,
-      fullname,
-    } = this.state
+  handleHometownChange = address => this.setState({ address })
+
+  handleHometownSelect = async (address, placeId) => {
+    this.setState({ address })
+    let locationInfo = await formatLocationWeb(
+      address,
+      placeId,
+      geocodeByPlaceId,
+      getLatLng,
+    )
+    this.setState({ locationInfo, location: locationInfo.name })
+  }
+
+  handleBirthdaySelect = momentDate => {
+    const birthday = momentDate.toDate()
+    if (birthday instanceof Date && !isNaN(birthday)) {
+      this.setState({ birthday })
+    }
+  }
+
+  selectGenderOption = (event, gender) => {
+    this.setState({ gender, genderSelfDescribed: '' })
+  }
+
+  onGenderTextChange = event => {
+    const genderSelfDescribed = event.target.value
+    if (!genderSelfDescribed) this.setState({ gender: 'other' })
+    this.setState({ genderSelfDescribed })
+  }
+
+  render() {
+    const { user, error } = this.props
+    const { bio, loadedImage, modal, photoType, username, about, fullname } = this.state
     const avatarUrl = getImageUrl(user.profile.avatar, 'avatarLarge')
     const minRows = 7
-    const bioLines = (bio && typeof bio === 'string')
-      ? (bio.match(/\r?\n/g) || '').length + 1
-      : minRows
+    const bioLines
+      = bio && typeof bio === 'string' ? (bio.match(/\r?\n/g) || '').length + 1 : minRows
     let targetedImage
 
     if (photoType === 'avatar' && !!loadedImage) {
@@ -346,48 +409,44 @@ export default class ProfileHeaderEdit extends React.Component {
     else if (photoType === 'avatar') targetedImage = avatarUrl
 
     const isUsernameError = _.get(error, 'message', '').includes('username')
-    const isBioError = _.get(error, 'message', '').includes('Bio')
-      || (bio && bio.length > 500)
+    const isBioError
+      = _.get(error, 'message', '').includes('Bio') || (bio && bio.length > 500)
 
     const avatarIsClickable = () => true
-
     return (
       <Container>
         <RelativeWrapper>
-          <AvatarLabel htmlFor='image_upload'>
+          <AvatarLabel htmlFor="image_upload">
             <StyledAvatar
               avatarUrl={avatarUrl}
-              type='profile'
-              size='x-large'
+              type="profile"
+              size="x-large"
               responsiveProps={responsiveAvatarStyles}
               onClick={avatarIsClickable}
-            >
-            </StyledAvatar>
-              <EditAvatarWrapper>
+            />
+            <EditAvatarWrapper>
               <CameraIcon
-                type='avatar'
-                name='camera'
+                type="avatar"
+                name="camera"
               />
             </EditAvatarWrapper>
-            </AvatarLabel>
+          </AvatarLabel>
           <VerticalCenter>
             <UpdateAvatarRow>
-            <label htmlFor='image_upload'>
-              <UpdateAvatarText>
-                {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
-              </UpdateAvatarText>
-            </label>
-            {avatarUrl && <Divider>&nbsp;</Divider>}
-            {avatarUrl &&
-              <UpdateAvatarText onClick={this.removeAvatar}>
-                Remove
-              </UpdateAvatarText>
-            }
+              <label htmlFor="image_upload">
+                <UpdateAvatarText>
+                  {`${avatarUrl ? 'Update' : 'Upload'} profile picture`}
+                </UpdateAvatarText>
+              </label>
+              {avatarUrl && <Divider>&nbsp;</Divider>}
+              {avatarUrl && (
+                <UpdateAvatarText onClick={this.removeAvatar}>Remove</UpdateAvatarText>
+              )}
             </UpdateAvatarRow>
           </VerticalCenter>
           <HiddenInput
-            type='file'
-            id='image_upload'
+            type="file"
+            id="image_upload"
             onChange={this.uploadImageToBrowser}
             accept={getAcceptedFormats('image')}
           />
@@ -396,48 +455,62 @@ export default class ProfileHeaderEdit extends React.Component {
           <Label>Name</Label>
           <Input
             value={fullname}
-            name='fullname'
+            name="fullname"
             onChange={this.onChangeText}
             maxLength={SignupConstants.FULLNAME_MAX_LENGTH}
           />
           <Label>Username</Label>
           <Input
             value={username}
-            name='username'
+            name="username"
             onChange={this.onChangeText}
             maxLength={SignupConstants.USERNAME_MAX_LENGTH}
           />
-          { !!username && username.length < SignupConstants.USERNAME_MIN_LENGTH &&
-            <ErrorText>Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters long</ErrorText>
-          }
-          { !!isUsernameError &&
+          {!!username && username.length < SignupConstants.USERNAME_MIN_LENGTH && (
+            <ErrorText>
+              Username must be at least {SignupConstants.USERNAME_MIN_LENGTH} characters
+              long
+            </ErrorText>
+          )}
+          {!!isUsernameError && (
             <ErrorText>Sorry, that username is already in use</ErrorText>
-          }
-          { !SignupConstants.USERNAME_REGEX.test(username) &&
+          )}
+          {!SignupConstants.USERNAME_REGEX.test(username) && (
             <ErrorText>Usernames may contain letters, numbers, _ and -</ErrorText>
-          }
-
-          { SignupConstants.PROTECTED_USERNAMES.includes(username) &&
+          )}
+          {SignupConstants.PROTECTED_USERNAMES.includes(username) && (
             <ErrorText>This name is not allowed as a username. Please choose another username</ErrorText>
-          }
+          )}
 
           <Label>About</Label>
           <TextareaWrapper>
             <Textarea
               value={about}
-              name='about'
-              placeholder='Click to add About Me'
+              name="about"
+              placeholder="Click to add About Me"
               onChange={this.onChangeText}
               rows={2}
               maxLength={63}
             />
           </TextareaWrapper>
+
+          <AdditionalInformationForm
+            welcomeDisplay={false}
+            handleHometownChange={this.handleHometownChange}
+            handleHometownSelect={this.handleHometownSelect}
+            handleBirthdaySelect={this.handleBirthdaySelect}
+            selectGenderOption={this.selectGenderOption}
+            onGenderTextChange={this.onGenderTextChange}
+            {...this.state}
+            user={this.props.user}
+          />
+
           <Label>Bio</Label>
           <TextareaWrapper>
             <ResizableTextarea
               value={bio}
-              name='bio'
-              placeholder='Enter your bio'
+              name="bio"
+              placeholder="Enter your bio"
               onChange={this.onChangeText}
               rows={bioLines > minRows ? bioLines : minRows}
               minRows={5}
@@ -446,31 +519,31 @@ export default class ProfileHeaderEdit extends React.Component {
               textProps={ResizableTextareaStyles}
             />
           </TextareaWrapper>
-          { !!isBioError &&
+          {!!isBioError && (
             <ErrorText>Sorry, you‘ve exceeded the 500 character limit</ErrorText>
-          }
+          )}
         </InputsWrapper>
 
         <SaveCancelButtonWrapper>
-            <SaveCancelButton
-              margin='small'
-              type={'blackWhite'}
-              text={'CANCEL'}
-              onClick={this.onCancel}
-            />
-            <SaveCancelButton
-              margin='small'
-              text='SAVE CHANGES'
-              onClick={this.onSave}
-              disabled={!username
-                || (username.length < SignupConstants.USERNAME_MIN_LENGTH)
-                || !SignupConstants.USERNAME_REGEX.test(username)
-                || SignupConstants.PROTECTED_USERNAMES.includes(username)
-              }
-            />
+          <SaveCancelButton
+            margin="small"
+            type={'blackWhite'}
+            text={'CANCEL'}
+            onClick={this.onCancel}
+          />
+          <SaveCancelButton
+            margin="small"
+            text="SAVE CHANGES"
+            onClick={this.onSave}
+            disabled={!username
+              || (username.length < SignupConstants.USERNAME_MIN_LENGTH)
+              || !SignupConstants.USERNAME_REGEX.test(username)
+              || SignupConstants.PROTECTED_USERNAMES.includes(username)
+            }
+          />
         </SaveCancelButtonWrapper>
         <Modal
-          contentLabel='Photo Editor'
+          contentLabel="Photo Editor"
           isOpen={modal === 'photoEditor'}
           style={customModalStyles}
         >

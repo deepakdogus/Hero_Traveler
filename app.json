@@ -1,0 +1,66 @@
+{
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/mars/create-react-app-buildpack"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": {
+      "required": true
+    },
+    "REACT_APP_CDN_BASE_URL": {
+      "required": true
+    },
+    "REACT_APP_CLOUD_NAME": {
+      "required": true
+    },
+    "REACT_APP_FB_APP_ID": {
+      "required": true
+    },
+    "REACT_APP_IMAGE_PRESET": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_API_KEY": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_APP_NAME": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_CATEGORIES_INDEX": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_GUIDE_INDEX": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_HASHTAGS_INDEX": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_STORY_INDEX": {
+      "required": true
+    },
+    "REACT_APP_SEARCH_USER_INDEX": {
+      "required": true
+    },
+    "REACT_APP_SITE_URL": {
+      "required": true
+    },
+    "REACT_APP_VIDEO_PRESET": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "hero-traveler-monorepo",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}

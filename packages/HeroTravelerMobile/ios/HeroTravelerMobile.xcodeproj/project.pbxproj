@@ -602,6 +602,13 @@
 			remoteGlobalIDString = 3DBE0D001F3B181A0099AA32;
 			remoteInfo = fishhook;
 		};
+		F798CC5722E1239B005481C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 942D12171EB3956400A0CFE5 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E0FE6533198104C97DB047DD5CD8AC67;
+			remoteInfo = RNDeviceInfo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -654,7 +661,6 @@
 		5FF632B0EE214A62918492B6 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		654E80CD22959B26009F4F37 /* AVUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVUtilities.swift; sourceTree = "<group>"; };
 		656DC182365C4CFC8F7AF2AD /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
-		65839C92228C95940054E7B2 /* AVUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVUtilities.swift; sourceTree = "<group>"; };
 		6D90F19694EC4CB9AE99B71C /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../App/Fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		72700E4DD3BB45C692CE36B1 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		74190A2AFF2947748D244D76 /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBold.ttf"; path = "../App/Fonts/SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -1307,7 +1313,6 @@
 				91F19951204F29C700EC7125 /* RNVideoTrimmerBridge.m */,
 				91F19952204F29C700EC7125 /* RNVideoTrimmer.swift */,
 				91F19953204F29C700EC7125 /* SDAVAssetExportSession.h */,
-				6580145C227B3C1D004FECE5 /* AVUtilities.swift */,
 			);
 			path = RNVideoTrimmer;
 			sourceTree = "<group>";
@@ -1412,6 +1417,7 @@
 				942D12221EB3956400A0CFE5 /* libPods-HeroTravelerMobile.a */,
 				916DBF27203C89F60097DE98 /* libreact-native-google-maps.a */,
 				916DBF29203C89F60097DE98 /* libreact-native-maps.a */,
+				F798CC5822E1239B005481C3 /* libRNDeviceInfo.a */,
 				9162A0E220448F09005BA024 /* libSDWebImage.a */,
 			);
 			name = Products;
@@ -2167,6 +2173,13 @@
 			fileType = archive.ar;
 			path = libfishhook.a;
 			remoteRef = F762B87522BAF54000FFF014 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F798CC5822E1239B005481C3 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = F798CC5722E1239B005481C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

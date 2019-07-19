@@ -6,20 +6,23 @@ import SessionActions from '../Shared/Redux/SessionRedux'
 import FeedList from '../Components/FeedList'
 
 const mapStateToProps = (state, ownProps) => {
-  const {entities} = state
+  const { entities } = state
   // mapping Ids to actual stories or guides
   let mapFunc
   if (ownProps.isStory) {
-    const getStoryFromEntities = (storyId) => _.get(entities, `stories.entities[${storyId}]`)
+    const getStoryFromEntities = storyId =>
+      _.get(entities, `stories.entities[${storyId}]`)
     if (ownProps.isDraftsTab) {
-      mapFunc = (storyId) => {
-        return getStoryFromEntities(storyId)
+      mapFunc = storyId => {
+        return (
+          getStoryFromEntities(storyId)
           || _.get(state.pendingUpdates, `pendingUpdates[${storyId}].story`)
+        )
       }
     }
     else mapFunc = getStoryFromEntities
   }
-  else mapFunc = (guideId) => entities.guides.entities[guideId]
+  else mapFunc = guideId => entities.guides.entities[guideId]
 
   return {
     targetEntities: R.map(mapFunc, ownProps.entitiesById),
@@ -27,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearSessionError: () => dispatch(SessionActions.clearError()),
   }

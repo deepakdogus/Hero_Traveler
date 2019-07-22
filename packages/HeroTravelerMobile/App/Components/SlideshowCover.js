@@ -71,12 +71,12 @@ export default class SlideshowCover extends Component {
         return { height: Metrics.storyCover.feed.imageTypeHeight }
       }
       else {
-        return { height: Metrics.storyCover.feed.videoTypeHeight }
+        return { height: Metrics.storyCover.feed.slideshowHeight }
       }
     }
     else {
       let height = Math.min(
-        Metrics.storyCover.fullScreen.height,
+        Metrics.storyCover.feed.slideshowHeight,
         getRelativeHeight(containerWidth, extractCoverMetrics(slideshow[index])),
       )
       height = Math.max(282, height)
@@ -132,16 +132,14 @@ export default class SlideshowCover extends Component {
     width: this.props.isReadingScreen
       ? Metrics.screenWidth
       : '100%',
-    borderRadius: this.props.isReadingScreen
-      ? 0
-      : 6,
   })
 
   renderImage(cover, index, sliderHeight) {
+    const calculatedDimensions = this._getWidthHeight(false, 0)
     let imageUrl = getImageUrl(
       cover,
       'optimized',
-      this._getWidthHeight(true, index),
+      calculatedDimensions,
     )
     return this.renderImageWithUrl(false, imageUrl, null, index, sliderHeight)
   }
@@ -237,7 +235,7 @@ export default class SlideshowCover extends Component {
           style={{flex: 1, justifyContent: 'center'}}
           onPress={this._onPress}
         >
-          <View style={calculatedDimensions}>
+          <View style={{ flex: 1, ...calculatedDimensions}}>
             <VideoPlayer
               areInRenderLocation={this.props.areInRenderLocation}
               path={videoPath}
@@ -265,10 +263,9 @@ export default class SlideshowCover extends Component {
         style={{
           flex: 1,
           overflow: 'hidden',
+          alignItems: 'center',
           position: 'absolute',
           ...calculatedDimensions,
-          // width: calculatedDimensions.width,
-          // height: calculatedDimensions.height > 345.5 ? 345.5 : calculatedDimensions.height,
         }}
         onPress={this._onPress}
       >
@@ -323,6 +320,7 @@ export default class SlideshowCover extends Component {
     const rootStyles = {
       flex: 1,
       position: 'relative',
+      alignItems: 'center',
       backgroundColor: 'white',
     }
     const moreThanOneSlide = slideshow.length > 1
@@ -344,6 +342,7 @@ export default class SlideshowCover extends Component {
             marginBottom: 20,
             height,
             backgroundColor: 'white',
+            overflow: 'hidden',
             position: 'relative',
           }}
         >

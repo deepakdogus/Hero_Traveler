@@ -10,6 +10,8 @@ export default StyleSheet.create({
   },
   cardView: {
     width: `${Metrics.feedMargin}%`,
+    borderRadius: 6,
+    overflow: 'hidden',
     alignSelf: 'center',
     marginTop: 20,
   },

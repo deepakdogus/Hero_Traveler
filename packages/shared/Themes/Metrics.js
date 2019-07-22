@@ -37,6 +37,7 @@ const metrics = {
         height: 415,
     },
     feed: {
+      slideshowHeight: 345.5,
       imageTypeHeight: 415,
       videoTypeHeight: 415,
     },

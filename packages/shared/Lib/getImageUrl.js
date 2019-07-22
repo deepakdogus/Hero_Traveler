@@ -23,7 +23,6 @@ function buildParameters(urlParameters) {
 
 function buildUrl(base: string, uri: string, urlParameters: object, cropParams: array): string {
   const parameters = buildParameters(urlParameters)
-
   if (parameters.length > 0) {
     let parameterString = parameters.join(',')
     if (cropParams) {

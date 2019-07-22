@@ -329,7 +329,6 @@ function * createSlideshow(draft){
       return CloudinaryAPI.uploadMediaFile(pathAsFileObject(uri), type, item)
       .then(response => {
         if (response.error) {
-          console.log('error from cloudinary', response.error)
           return response
         }
         const responseData = typeof response.data === 'string'
@@ -433,7 +432,6 @@ function getSyncProgressSteps(story) {
 }
 
 export function* saveLocalDraft(api, action) {
-  console.log('saveLocalDraft is called', action)
   const { draft, saveAsDraft = false } = action
   draft.draft = saveAsDraft
 
@@ -524,13 +522,13 @@ export function* updateDraft(api, action) {
   ]
 
   const coverResponse = yield createCover(api, draft)
-  if (coverResponse.error) {
+  if (coverResponse && coverResponse.error) {
     yield updateDraftErrorHandling(draft, coverResponse.error)
     return
   }
 
   const atomicResponse = yield uploadAtomicAssets(draft)
-  if (atomicResponse.error){
+  if (atomicResponse && atomicResponse.error){
     yield updateDraftErrorHandling(draft, atomicResponse.error)
     return
   }

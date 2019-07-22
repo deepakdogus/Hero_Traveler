@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 
 import pathAsFileObject from '../Shared/Lib/pathAsFileObject'
-import { trimVideo } from '../Shared/Lib/mediaHelpers'
 import { Actions as NavActions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import getImageUrl from '../Shared/Lib/getImageUrl'
@@ -80,34 +79,30 @@ class EditableCoverMedia extends Component {
     const file = pathAsFileObject(path)
     const update = { coverCaption: '' }
 
-    const callback = (newSource) => {
-      // nesting coverMetrics inside of original.meta to mirror published media asset format
-      const modifiedFile = {
-        ...file,
-        uri: newSource,
-        original: {
-          meta: coverMetrics
-        }
+    // nesting coverMetrics inside of original.meta to mirror published media asset format
+    const modifiedFile = {
+      ...file,
+      uri: file.uri,
+      original: {
+        meta: coverMetrics
       }
-
-      if (isPhotoType) {
-        update.coverImage = modifiedFile
-        update.coverVideo = undefined
-      } else {
-        update.coverImage = undefined
-        update.coverVideo = modifiedFile
-      }
-
-      this.setState({
-        file,
-        isScrollDown: true,
-        coverMetrics,
-      })
-      this.props.onUpdate(update)
-      NavActions.pop()
     }
 
-    trimVideo(file.uri, callback, this.props.targetId, this)
+    if (isPhotoType) {
+      update.coverImage = modifiedFile
+      update.coverVideo = undefined
+    } else {
+      update.coverImage = undefined
+      update.coverVideo = modifiedFile
+    }
+
+    this.setState({
+      file,
+      isScrollDown: true,
+      coverMetrics,
+    })
+    this.props.onUpdate(update)
+    NavActions.pop()
   }
 
   resetAnimation() {

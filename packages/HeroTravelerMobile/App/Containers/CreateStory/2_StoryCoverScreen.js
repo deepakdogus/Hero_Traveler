@@ -24,7 +24,6 @@ import getRelativeHeight, {extractCoverMetrics} from '../../Shared/Lib/getRelati
 import isTooltipComplete, {Types as TooltipTypes} from '../../Shared/Lib/firstTimeTooltips'
 import { getPendingDraftById } from '../../Shared/Lib/getPendingDrafts'
 import isLocalDraft from '../../Shared/Lib/isLocalDraft'
-import {trimVideo} from '../../Shared/Lib/mediaHelpers'
 import UserActions from '../../Shared/Redux/Entities/Users'
 import Modal from '../../Components/Modal'
 import Tooltip from '../../Components/Tooltip'
@@ -490,11 +489,10 @@ class StoryCoverScreen extends Component {
 
   handleAddVideo = (data) => {
     this.editor.updateSelectionState({hasFocus: false})
-    const callback = (newSource) => {
-      this.editor.insertVideo(newSource)
+    // const callback = (newSource) => {
+      this.editor.insertVideo(data.uri)
       NavActions.pop()
-    }
-    trimVideo(data, callback, this.props.workingDraft.id, this)
+    // trimVideo(data, callback, this.props.workingDraft.id, this)
   }
 
   setHasFocus = (toolbarDisplay) => {

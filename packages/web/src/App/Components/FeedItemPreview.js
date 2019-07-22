@@ -198,7 +198,7 @@ const Username = styled(Text)`
 const TopRow = styled(Row)`
   height: 35px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    height: 0;
+    height: ${props => props.isGuide ? '35px' : '0'};
   }
 `
 
@@ -408,7 +408,7 @@ class FeedItemPreview extends Component {
           </ImageContainer>
           <StoryInfoContainer>
             {isList && (
-              <TopRow>
+              <TopRow isGuide={!isStory}>
                 {!isStory && <GuideIcon name='guide' />}
                 {!isStory && <GuideIconText>Guide</GuideIconText>}
               </TopRow>

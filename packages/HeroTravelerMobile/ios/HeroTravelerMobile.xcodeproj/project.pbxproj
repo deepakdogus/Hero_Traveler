@@ -509,6 +509,13 @@
 			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
+		F78F67AA22E7716200E67315 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 58B5119A1A9E6C1200147676;
+			remoteInfo = RCTText;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1341,6 +1348,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				F78F67AB22E7716200E67315 /* PBXTargetDependency */,
 			);
 			name = HeroTravelerMobile;
 			productName = "Hello World";
@@ -2153,6 +2161,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* HeroTravelerMobile-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		F78F67AB22E7716200E67315 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RCTText;
+			targetProxy = F78F67AA22E7716200E67315 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

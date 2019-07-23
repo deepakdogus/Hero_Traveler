@@ -1,5 +1,6 @@
 import { delay } from 'redux-saga'
 import {
+  all,
   call,
   fork,
   put,
@@ -156,7 +157,7 @@ function *watchRefreshTokens() {
 }
 
 export default function *root () {
-  yield [
+  yield all([
     fork(watchPendingUpdates),
     takeLatest(StartupTypes.STARTUP, startup, heroAPI),
     takeLatest(StartupTypes.HERO_STARTUP, heroStartup, heroAPI),
@@ -244,5 +245,5 @@ export default function *root () {
     ...getAdditionalSagas(heroAPI),
 
     fork(watchRefreshTokens),
-  ]
+  ])
 }

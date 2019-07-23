@@ -1,9 +1,9 @@
-import {call, put} from 'redux-saga/effects'
+import {all, call, put} from 'redux-saga/effects'
 import CommentActions from '../Redux/Entities/Comments'
 import StoryActions from '../Redux/Entities/Stories'
 import GuideActions from '../Redux/Entities/Guides'
 
-export function * getComments(api, {feedItemId, entityType}) {
+export function *getComments(api, {feedItemId, entityType}) {
   const response = entityType === 'story'
   ? yield call(api.getComments, feedItemId)
   : yield call(api.getGuideComments, feedItemId)
@@ -15,7 +15,7 @@ export function * getComments(api, {feedItemId, entityType}) {
   }
 }
 
-export function * createComment(api, {feedItemId, entityType, text}) {
+export function *createComment(api, {feedItemId, entityType, text}) {
   const response = entityType === 'story'
   ? yield call(api.createComment, feedItemId, text)
   : yield call(api.createGuideComment, feedItemId, text)
@@ -25,10 +25,10 @@ export function * createComment(api, {feedItemId, entityType, text}) {
   : GuideActions.changeCountOfType
 
   if (response.ok) {
-    yield [
+    yield all([
       put(CommentActions.createCommentSuccess(response.data, feedItemId, entityType)),
       put(changeCount(feedItemId, 'comments', true))
-    ]
+    ])
   } else {
     yield put(CommentActions.commentRequestFailure('get', 'Failed to create comment'))
   }

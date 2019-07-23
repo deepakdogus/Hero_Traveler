@@ -1,4 +1,4 @@
-import { call, put, select } from 'redux-saga/effects'
+import { all, call, put, select } from 'redux-saga/effects'
 import _ from 'lodash'
 import UserActions from '../Redux/Entities/Users'
 import LoginActions from '../Redux/LoginRedux'
@@ -36,26 +36,26 @@ export function * logout (api, action) {
       put(resultAction(deviceType)),
       put(setIsLoggedIn(false)),
       call(api.unsetAuth),
-    ] : yield [
+    ] : yield all([
         put(resultAction()),
         call(api.unsetAuth),
-      ]
-    yield [
+      ])
+    yield all([
       put(StartupActions.hideSplash()),
       put(UserActions.resetActivities()),
       put(PendingUpdatesActions.reset()),
       put(StoryActions.resetDrafts()),
-    ]
+    ])
   }
 }
 
 export function * resumeSession (api, action) {
   // I believe the userId here is redundant. Added task to remove
   yield put(SessionActions.startInitializeSession())
-  let [userId, tokens]= yield [
+  let [userId, tokens]= yield all([
     select(currentUserId),
     select(currentUserTokens),
-  ]
+  ])
 
   // for web we use retrieved tokens (cookies) since store does not persist
   if (action.retrievedTokens) tokens = action.retrievedTokens
@@ -76,14 +76,14 @@ export function * resumeSession (api, action) {
     const {users} = response.data.entities
     if (!userId) userId = Object.keys(users)[0]
     const user = users[userId]
-    yield [
+    yield all([
       // @TODO test me
       // Must receive users before running session initialization
       // so the user object is accessible
       put(UserActions.receiveUsers({[user.id]: user})),
       put(UserActions.fetchActivities()),
       put(SignupActions.signupGetUsersCategories()),
-    ]
+    ])
     yield put(SessionActions.initializeSession(user.id, tokens))
     yield put(SessionActions.refreshSessionSuccess(tokens))
   }
@@ -113,10 +113,10 @@ export function * refreshSession(api) {
   if (response.ok) {
     const {tokens: newTokens} = response.data
     const newAccessToken = _.find(newTokens, {type: 'access'})
-    return yield [
+    return yield all([
       call(api.setAuth, newAccessToken.value),
       put(SessionActions.refreshSessionSuccess(newTokens)),
-    ]
+    ])
   }
   else {
     return yield put(SessionActions.refreshSessionSuccess(tokens))

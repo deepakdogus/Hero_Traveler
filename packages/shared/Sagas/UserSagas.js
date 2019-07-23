@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { call, put, select } from 'redux-saga/effects'
+import { all, call, put, select } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import StoryActions from '../Redux/Entities/Stories'
 import StartupActions from '../Redux/StartupRedux'
@@ -74,11 +74,11 @@ export function * deleteUser(api) {
       userId
     )
     if (response.ok) {
-      yield [
+      yield all([
         put(UserActions.deleteUserSuccess()),
         put(SessionActions.logoutSuccess()),
         call(api.unsetAuth),
-      ]
+      ])
       yield put(StartupActions.hideSplash())
     } else {
       yield put(UserActions.deleteUserFailure(
@@ -98,10 +98,10 @@ export function * getSuggestedUsers (api, action) {
   const response = yield call(api.getSuggestedUsers)
   if (response.ok) {
     const { entities, result } = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserSuggestionsSuccess(result))
-    ]
+    ])
   } else {
     yield put(UserActions.loadUserSuggestionsFailure(new Error('error loading user suggestions')))
   }
@@ -122,10 +122,10 @@ export function * loadUserFollowers (api, {userId}) {
   const response = yield call(api.getUserFollowers, userId)
   if (response.ok) {
     const { entities, result } = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserFollowersSuccess(userId, result))
-    ]
+    ])
   } else {
     yield put(UserActions.loadUserFollowersFailure(userId, new Error('Failed to load followers')))
   }
@@ -135,10 +135,10 @@ export function * loadUserFollowing (api, {userId}) {
   const response = yield call(api.getUserFollowing, userId)
   if (response.ok) {
     const { entities, result } = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.loadUserFollowingSuccess(userId, result))
-    ]
+    ])
   } else {
     yield put(UserActions.loadUserFollowingFailure(userId, new Error('Failed to load follower suggestions')))
   }
@@ -177,11 +177,11 @@ export function  * getActivities(api) {
 
   if (response.ok) {
     const {entities, result} = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(UserActions.receiveActivities(entities.activities)),
       put(StoryActions.receiveStories(entities.stories)),
-    ]
+    ])
     yield put(UserActions.fetchActivitiesSuccess(result))
   } else {
     yield put(UserActions.fetchActivitiesFailure(new Error('Failed to fetch activities')))

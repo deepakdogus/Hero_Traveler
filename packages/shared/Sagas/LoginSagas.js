@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { call, put } from 'redux-saga/effects'
+import { all, call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
 import SessionActions from '../Redux/SessionRedux'
 import SignupActions from '../Redux/SignupRedux'
@@ -19,7 +19,7 @@ export function * login (api, { userIdentifier, password, requestType = 'default
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})
       yield call(api.setAuth, accessToken.value)
-      yield [
+      yield all([
         // @TODO test me
         // Must receive users before running session initialization
         // so the user object is accessible
@@ -29,7 +29,7 @@ export function * login (api, { userIdentifier, password, requestType = 'default
         put(LoginActions.loginSuccess()),
         put(UserActions.fetchActivities()),
         put(SignupActions.signupGetUsersCategories())
-      ]
+      ])
     } else {
       yield put(LoginActions.loginFailure(errorFormatter(response)))
     }

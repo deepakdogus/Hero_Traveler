@@ -1,46 +1,45 @@
-import { call, put } from 'redux-saga/effects'
+import { all, call, put } from 'redux-saga/effects'
 import GuideActions from '../Redux/Entities/Guides'
 import UserActions from '../Redux/Entities/Users'
 import CategoryActions from '../Redux/Entities/Categories'
 import { createCover } from './StorySagas'
-import _ from 'lodash'
 
-export function * createGuide(api, {guide, userId}) {
+export function *createGuide(api, {guide, userId}) {
   yield createCover(api, guide, true)
   // add error handling here
   const response = yield call(api.createGuide, guide)
   if (response.ok) {
     const {guides} = response.data.entities
-    yield [
+    yield all([
       put(GuideActions.receiveGuides(guides)),
       put(GuideActions.createGuideSuccess(guides, userId)),
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to create guide")
+      new Error('Failed to create guide')
     ))
   }
 }
 
 
-export function * getGuide(api, {guideId}) {
+export function *getGuide(api, {guideId}) {
   const response = yield call(api.getGuide, guideId)
   if (response.ok) {
     const {guides, users} = response.data.entities
-    yield [
+    yield all([
       put(UserActions.receiveUsers(users)),
       put(GuideActions.receiveGuides(guides)),
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to get guide")
+      new Error('Failed to get guide')
     ))
   }
 }
 
-export function * updateGuide(api, {guide}) {
+export function *updateGuide(api, {guide}) {
   yield createCover(api, guide, true)
   // add error handling
   const response = yield call(api.updateGuide, guide)
@@ -51,43 +50,43 @@ export function * updateGuide(api, {guide}) {
   // add error handling for fail
 }
 
-export function * deleteGuide(api, {guideId, userId}) {
+export function *deleteGuide(api, {guideId, userId}) {
   const response = yield call(api.deleteGuide, guideId)
   if (response.ok) {
-    yield [
+    yield all([
       put(GuideActions.deleteGuideSuccess(guideId, userId)),
       put(UserActions.removeActivities(guideId, 'guide')),
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to delete guide")
+      new Error('Failed to delete guide')
     ))
   }
 }
 
-export function * getUserGuides(api, {userId}) {
+export function *getUserGuides(api, {userId}) {
   const response = yield call(api.getUserGuides, userId)
   if (response.ok) {
     const {guides} = response.data.entities
-    yield [
+    yield all([
       put(GuideActions.receiveGuides(guides)),
       put(GuideActions.receiveUsersGuides(guides, userId)),
-    ]
+    ])
   }
   // add error handling for fail
 }
 
-export function * getUserFeedGuides(api, {userId}) {
+export function *getUserFeedGuides(api, {userId}) {
   const response = yield call(api.getUserFeedGuides, userId)
   if (response.ok) {
     const { entities, result } = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(GuideActions.receiveGuides(entities.guides)),
       put(GuideActions.guideFeedSuccess(result)),
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
@@ -96,16 +95,16 @@ export function * getUserFeedGuides(api, {userId}) {
   }
 }
 
-export function * getCategoryGuides(api, {categoryId}) {
+export function *getCategoryGuides(api, {categoryId}) {
   const response = yield call(api.getCategoryGuides, categoryId)
   if (response.ok) {
     const {entities, result} = response.data
-    yield [
+    yield all([
       put(UserActions.receiveUsers(entities.users)),
       put(CategoryActions.receiveCategories(entities.categories)),
       put(GuideActions.receiveGuides(entities.guides)),
       put(GuideActions.getCategoryGuidesSuccess(categoryId, result))
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
@@ -114,61 +113,61 @@ export function * getCategoryGuides(api, {categoryId}) {
   }
 }
 
-export function * bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
+export function *bulkSaveStoryToGuide(api, {storyId, isInGuide}) {
   const response = yield call(api.bulkSaveStoryToGuide, storyId, isInGuide)
   if (response.ok) {
     const {guides} = response.data.entities
-    yield [
+    yield all([
       put(GuideActions.receiveGuides(guides)),
-    ]
+    ])
   }
   else {
     yield put(GuideActions.guideFailure(
-      new Error("Failed to add story to guides")
+      new Error('Failed to add story to guides')
     ))
   }
 }
 
-export function * likeGuide(api, {guideId, userId}) {
+export function *likeGuide(api, {guideId, userId}) {
   // eagerly incrementing guideLike count and adding guide to users like list
-  const [response] = yield [
+  const [response] = yield all([
     call(api.likeGuide, guideId),
     put(UserActions.userGuideLike(userId, guideId)),
     put(GuideActions.changeCountOfType(guideId, 'likes', true)),
-  ]
+  ])
 
   // every update is done greedily so we do not need to do anything upon success
   if (!response.ok) {
     yield put(GuideActions.changeCountOfType(guideId, 'likes', false))
-    yield [
+    yield all([
       put(GuideActions.guideFailure(
-        new Error("Failed to like guide")
+        new Error('Failed to like guide')
       )),
       put(UserActions.userGuideUnlike(userId, guideId)),
-    ]
+    ])
   }
 }
 
-export function * unlikeGuide(api, {guideId, userId}) {
-  const [response] = yield [
+export function *unlikeGuide(api, {guideId, userId}) {
+  const [response] = yield all([
     call(api.unlikeGuide, guideId),
     put(UserActions.userGuideUnlike(userId, guideId)),
     put(GuideActions.changeCountOfType(guideId, 'likes', false)),
-  ]
+  ])
 
   // every update is done greedily so we do not need to do anything upon success
   if (!response.ok) {
-    yield [
+    yield all([
       put(GuideActions.guideFailure(
-        new Error("Failed to unlike guide")
+        new Error('Failed to unlike guide')
       )),
       put(UserActions.userGuideLike(userId, guideId)),
       put(GuideActions.changeCountOfType(guideId, 'likes', true)),
-    ]
+    ])
   }
 }
 
-export function * adminGetGuides (api, action) {
+export function *adminGetGuides (api, action) {
   const { params } = action
   const response = yield call(api.adminGetGuides, params)
   if (response.ok && response.data && response.data.data) {
@@ -180,7 +179,7 @@ export function * adminGetGuides (api, action) {
   }
 }
 
-export function * adminGetGuide (api, action) {
+export function *adminGetGuide (api, action) {
   const { id } = action
   const response = yield call(api.adminGetGuide, id)
   if (response.ok && response.data) {
@@ -192,7 +191,7 @@ export function * adminGetGuide (api, action) {
   }
 }
 
-export function * adminPutGuide (api, action) {
+export function *adminPutGuide (api, action) {
   const { values, id, message } = action.payload
   const response = yield call(api.adminPutGuide, { values, id })
   if (response.ok && response.data) {
@@ -206,11 +205,10 @@ export function * adminPutGuide (api, action) {
   }
 }
 
-export function * adminDeleteGuide (api, action) {
+export function *adminDeleteGuide (api, action) {
   const { id, message, cb } = action.payload
   const response = yield call(api.adminDeleteGuide, id)
   if (response.ok && response.data) {
-    const record = response.data
     yield put(GuideActions.adminDeleteGuideSuccess(id))
     message.success('Guide was deleted')
     if (cb) cb()
@@ -221,11 +219,10 @@ export function * adminDeleteGuide (api, action) {
   }
 }
 
-export function * adminRestoreGuides (api, action) {
+export function *adminRestoreGuides (api, action) {
   const { ids, message, getParams } = action.payload
   const response = yield call(api.adminRestoreGuides, ids)
   if (response.ok && response.data) {
-    const record = response.data
     message.success('Guides were restored')
     const guideResponse = yield call(api.adminGetGuides, getParams)
     if (guideResponse.ok && guideResponse.data && guideResponse.data.data) {
@@ -240,5 +237,4 @@ export function * adminRestoreGuides (api, action) {
     message.error(error)
   }
 }
-
 

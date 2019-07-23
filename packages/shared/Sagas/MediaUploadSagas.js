@@ -1,10 +1,10 @@
-import { call, put } from 'redux-saga/effects'
+import { all, call, put } from 'redux-saga/effects'
 import UserActions from '../Redux/Entities/Users'
 import MediaUploadActions from '../Redux/MediaUploadRedux'
 
 function getUploadMethod(api, uploadType){
 
-  switch(uploadType){
+  switch (uploadType){
     case 'avatar':
       return api.uploadAvatarImage
     case 'userCover':
@@ -22,7 +22,7 @@ function getUploadMethod(api, uploadType){
 }
 
 // objectId will be draftId or userId depending on uploadType
-export function * uploadMediaAsset (api, {objectId, file, uploadType}) {
+export function *uploadMediaAsset (api, {objectId, file, uploadType}) {
   const uploadMethod = getUploadMethod(api, uploadType)
   const response = yield call(
     uploadMethod,
@@ -31,10 +31,10 @@ export function * uploadMediaAsset (api, {objectId, file, uploadType}) {
   )
   // for now we actually only deal with avater + userCover - laying groundwork for the rest
   if (response.ok) {
-    yield [
+    yield all([
       put(UserActions.updateUserSuccess(response.data)),
       put(MediaUploadActions.uploadSuccess())
-    ]
+    ])
   } else {
     yield put(MediaUploadActions.uploadFailure(new Error('Failed to upload media file')))
   }

@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { all, call, put } from 'redux-saga/effects'
 import _ from 'lodash'
 import SignupActions from '../Redux/SignupRedux'
 import OpenScreenActions from '../Redux/OpenScreenRedux'
@@ -9,7 +9,7 @@ import {
 } from '../../Services/FacebookConnect'
 
 // attempts to signup with email
-export function * signupEmail (api, action) {
+export function *signupEmail (api, action) {
   try {
     const {fullName, username, email, password} = action
     const response = yield call(
@@ -23,26 +23,24 @@ export function * signupEmail (api, action) {
     if (response.ok) {
       const {user, tokens} = response.data
       const accessToken = _.find(tokens, {type: 'access'})
-      yield [
+      yield all([
         put(UserActions.receiveUsers({[user.id]: user})),
         call(api.setAuth, accessToken.value),
         put(SessionActions.initializeSession(user.id, tokens)),
         put(SignupActions.signupEmailSuccess()),
-      ]
-    } else {
-      if (response.data) {
+      ])
+    } else if (response.data) {
         yield put(SignupActions.signupEmailFailure(response.data.message))
       }
       else {
         yield put(SignupActions.signupEmailFailure(response.problem))
       }
-    }
   } catch (err) {
     yield put(SignupActions.signupEmailFailure(err))
   }
 }
 
-export function * signupFacebook(api, action) {
+export function *signupFacebook(api) {
   let userResponse
   try {
     userResponse = yield loginToFacebookAndGetUserInfo()
@@ -72,10 +70,10 @@ export function * signupFacebook(api, action) {
     const {user, tokens, wasSignedUp } = response.data
     const accessToken = _.find(tokens, {type: 'access'})
     yield call(api.setAuth, accessToken.value)
-    yield [
+    yield all([
       put(UserActions.receiveUsers({[user.id]: user})),
       put(SessionActions.initializeSession(user.id, tokens))
-    ]
+    ])
     // wasSignedUp = user had previously signed up before this signup attempt
     if (wasSignedUp) {
       yield put(OpenScreenActions.openScreen('tabbar'))
@@ -88,46 +86,40 @@ export function * signupFacebook(api, action) {
   }
 }
 
-export function * getUsersCategories(api) {
+export function *getUsersCategories(api) {
   const response = yield call(
     api.getUsersCategories
   )
 
   if (response.ok) {
     const categoryIds = response.data.map(category => category.followee)
-    yield [
-      put(SignupActions.signupGetUsersCategoriesSuccess(categoryIds))
-    ]
+    yield put(SignupActions.signupGetUsersCategoriesSuccess(categoryIds))
   } else {
     // add error handler
   }
 }
 
-export function * followCategory(api, {categoryId}) {
+export function *followCategory(api, {categoryId}) {
   const response = yield call(
     api.followCategory,
     categoryId
   )
 
   if (response.ok) {
-    yield [
-      put(SignupActions.signupFollowCategorySuccess(categoryId))
-    ]
+    yield put(SignupActions.signupFollowCategorySuccess(categoryId))
   } else {
     yield put(SignupActions.signupFollowCategoryFailure(categoryId, 'Did not save'))
   }
 }
 
-export function * unfollowCategory(api, {categoryId}) {
+export function *unfollowCategory(api, {categoryId}) {
   const response = yield call(
     api.unfollowCategory,
     categoryId
   )
 
   if (response.ok) {
-    yield [
-      put(SignupActions.signupUnfollowCategorySuccess(categoryId))
-    ]
+    yield put(SignupActions.signupUnfollowCategorySuccess(categoryId))
   } else {
     yield put(SignupActions.signupUnfollowCategoryFailure(categoryId, 'Did not save'))
   }

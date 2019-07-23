@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@hero/ht-util@^0.1.0":
-  version "0.1.0"
-  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.1.0.tgz#9bf20cfea0639d58fa54bb614713aa05b4984d52"
-  integrity sha512-D0Yp+m08jlQS7DfmajwAN3xlrjmAyUsn7kMSP3zX4kijvZbU38W98iIpPK7kJQ6Wxb4qa6GQk+evCKlU8YDJXg==
+"@hero/ht-util@^0.0.71":
+  version "0.0.71"
+  resolved "https://npm.abeck.io:443/@hero%2fht-util/-/ht-util-0.0.71.tgz#d010b39a25a4fee6ca3f1a054f5c2fedd7eaf2b3"
+  integrity sha512-FvFjYy/156D1BwSrW5+g36wL+3TFq++lLl9OqOMzFC52hZqxHWUdeUGBX7p2NxhfeMhcz9bgOSDRJkF/pZSATQ==
   dependencies:
     request "^2.81.0"
     request-promise "^4.2.1"
@@ -791,10 +791,15 @@ bluebird@3.5.0:
   resolved "https://npm.abeck.io:443/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
   integrity sha1-eRQg1/VR7qKJdFOop3ZT+WYG1nw=
 
-bluebird@^3.1.1, bluebird@^3.4.0, bluebird@^3.5.0:
+bluebird@^3.1.1, bluebird@^3.5.0:
   version "3.5.5"
   resolved "https://npm.abeck.io:443/bluebird/-/bluebird-3.5.5.tgz#a8d0afd73251effbbd5fe384a77d73003c17a71f"
   integrity sha512-5am6HnnfN+urzt4yfg7IgTbotDjIT/u8AJpEt0sIU9FtXfVeezXAPKswrG+xKUCOYAINpSdgZVDU6QFh+cuH3w==
+
+bluebird@^3.4.0:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
+  integrity sha512-/qKPUQlaW1OyR51WeCPBvRnAlnZFUJkCSG5HzGnuIqhgyJtF+T94lFnn33eiazjRm2LAHVy2guNnaq48X9SJuw==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -1813,7 +1818,12 @@ lodash.get@4.4.2, lodash.get@^4.0.2:
   resolved "https://npm.abeck.io:443/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.14.0, lodash@^4.17.11, lodash@^4.17.4:
+lodash@^4.14.0, lodash@^4.17.4:
+  version "4.17.4"
+  resolved "https://npm.abeck.io:443/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+  integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
+
+lodash@^4.17.11:
   version "4.17.11"
   resolved "https://npm.abeck.io:443/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
@@ -2329,10 +2339,15 @@ process@^0.11.10:
   resolved "https://npm.abeck.io:443/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
 
-psl@^1.1.24, psl@^1.1.28:
+psl@^1.1.24:
   version "1.1.32"
   resolved "https://npm.abeck.io:443/psl/-/psl-1.1.32.tgz#3f132717cf2f9c169724b2b6caf373cf694198db"
   integrity sha512-MHACAkHpihU/REGGPLj4sEfc/XKW2bheigvHO1dUqjaKigMp1C8+WLQYRGgeKFMsw5PMfegZcaN8IDXK/cD0+g==
+
+psl@^1.1.28:
+  version "1.2.0"
+  resolved "https://npm.abeck.io:443/psl/-/psl-1.2.0.tgz#df12b5b1b3a30f51c329eacbdef98f3a6e136dc6"
+  integrity sha512-GEn74ZffufCmkDDLNcl3uuyF/aSD6exEyh1v/ZSdAomB82t6G9hzJVRx0jBmLDW+VfZqks3aScmMw9DszwUalA==
 
 punycode@^1.4.1:
   version "1.4.1"

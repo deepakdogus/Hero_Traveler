@@ -21,7 +21,7 @@ function getAreInRenderLocation(state, ownProps) {
   ) {
     return true
   }
- else if (
+  else if (
     ownProps.renderLocation === 'myFeed'
     || ownProps.renderLocation === 'tabbar'
   ) {
@@ -32,12 +32,12 @@ function getAreInRenderLocation(state, ownProps) {
         && state.routes.scene.name === 'myFeed')
     )
   }
- else if (ownProps.renderLocation === 'explore_categoryFeed') {
+  else if (ownProps.renderLocation === 'explore_categoryFeed') {
     return (
       state.routes.scene.name === 'tabbar' && state.routes.scene.index === 1
     )
   }
- else if (ownProps.renderLocation === 'profile') {
+  else if (ownProps.renderLocation === 'profile') {
     return (
       state.routes.scene.name === 'tabbar' && state.routes.scene.index === 4
     )
@@ -59,12 +59,11 @@ function areAlreadyInProfileScreen(
 function onPressUser(sessionUserId, sceneName, profileId) {
   return userId => {
     // avoids naving to the scene we are already in
-    if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId))
-      return
+    if (areAlreadyInProfileScreen(sceneName, profileId, userId, sessionUserId)) return
     if (sessionUserId === userId) {
       navToProfile()
     }
- else {
+    else {
       NavActions.readOnlyProfile({ userId })
     }
   }
@@ -108,13 +107,13 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const isVisible = true
-  const isShowCover = !isReadingScreen
-    || isStory
-    || selectedTab === tabTypes.overview
+  const isShowCover
+    = !isReadingScreen || isStory || selectedTab === tabTypes.overview
 
-  const selectedStories = isStory || !isReadingScreen
-    ? []
-    : getSelectedStories(
+  const selectedStories
+    = isStory || !isReadingScreen
+      ? []
+      : getSelectedStories(
         entities.stories.entities,
         feedItem.stories,
         ownProps.selectedTab,
@@ -162,7 +161,8 @@ const mapDispatchToProps = (dispatch, props) => {
       dispatch(StoryActions.bookmarkStoryRequest(feedItemId)),
     onPressRemoveBookmark: () =>
       dispatch(StoryActions.removeStoryBookmarkRequest(feedItemId)),
-    onPressFollow: idToFollow => dispatch(UserActions.followUser(userId, idToFollow)),
+    onPressFollow: idToFollow =>
+      dispatch(UserActions.followUser(userId, idToFollow)),
     onPressUnfollow: idToUnfollow =>
       dispatch(UserActions.unfollowUser(userId, idToUnfollow)),
   }

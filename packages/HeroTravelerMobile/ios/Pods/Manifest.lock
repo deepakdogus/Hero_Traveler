@@ -117,6 +117,8 @@ PODS:
   - React-RCTWebSocket (0.60.4):
     - React-Core (= 0.60.4)
     - React-fishhook (= 0.60.4)
+  - RNDeviceInfo (2.2.2):
+    - React
   - SDWebImage (4.4.6):
     - SDWebImage/Core (= 4.4.6)
   - SDWebImage/Core (4.4.6)
@@ -158,6 +160,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info/RNDeviceInfo.podspec`)
   - SDWebImage (from `https://github.com/rehashstudio/SDWebImage.git`, commit `3db441165dd2f9e93a92b042a5e92f1f743014d5`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -226,6 +229,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info/RNDeviceInfo.podspec"
   SDWebImage:
     :commit: 3db441165dd2f9e93a92b042a5e92f1f743014d5
     :git: https://github.com/rehashstudio/SDWebImage.git
@@ -275,9 +280,10 @@ SPEC CHECKSUMS:
   React-RCTText: e0f224898b13af9aa036ea7cb3d438daa68c1044
   React-RCTVibration: 0bea40cd51bd089bd591a8f74c86e91fdf2666c5
   React-RCTWebSocket: 163873f4cdd5f1058a9483443404fc3801581cb6
+  RNDeviceInfo: 1215084f45c1059b031c530281442dc7079ccf0a
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: a22740c6e02461fa2df47710f693c19ebdc9b2c7
+PODFILE CHECKSUM: ba019afeed6bca7045f3069f9dcf6b88d02c432b
 
 COCOAPODS: 1.7.5

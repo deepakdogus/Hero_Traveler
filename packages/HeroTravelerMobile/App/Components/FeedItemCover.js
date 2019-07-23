@@ -94,14 +94,14 @@ export default class FeedItemCover extends Component {
           ...imageStyle,
           ...this._getWidthHeight(),
         }}>
-        { imageThumbnailUrl && (
-          <ImageWrapper
-            cached={true}
-            resizeMode='cover'
-            source={{uri: imageThumbnailUrl}}
-            style={this.getEmbeddedImageStyle()}
-          />
-         )}
+          { imageThumbnailUrl && (
+            <ImageWrapper
+              cached={true}
+              resizeMode='cover'
+              source={{uri: imageThumbnailUrl}}
+              style={this.getEmbeddedImageStyle()}
+            />
+          )}
           <ImageWrapper
             cached={true}
             resizeMode='cover'
@@ -218,7 +218,7 @@ export default class FeedItemCover extends Component {
     let nonStreamingVideoPath = getVideoUrl(this.props.cover, false)
 
     // If videoPath is a file url, then we do not need preview image or stream url
-    if (this.props.isFeed && videoPath.startsWith('file://')) {
+    if (this.props.isFeed && videoPath && videoPath.startsWith('file://')) {
       return (
         <TouchableWithoutFeedback
           style={{flex: 1}}

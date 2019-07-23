@@ -31,6 +31,8 @@ import UserActions from '../Shared/Redux/Entities/Users'
 import { createShareDialog } from '../Lib/sharingMobile'
 import StoryActionButton from '../Components/StoryActionButton'
 
+const LINK_ROLES = ['admin', 'brand', 'founding member']
+
 const enhanceStoryVideo = compose(
   withHandlers(() => {
     let _ref
@@ -240,12 +242,11 @@ class StoryReadingScreen extends React.Component {
     this.props.requestStory(this.props.storyId)
   }
 
-  stripLinks = (draftjsContent = {}) => {
-    const renderContent = Immutable.asMutable(draftjsContent, { deep: true })
-    const entityMap = renderContent ? renderContent.entityMap : null
-    if (renderContent && entityMap) {
-      Object.keys(renderContent.blocks).forEach(key => {
-        const block = renderContent.blocks[key]
+  stripLinks = draftjsContent => {
+    const entityMap = draftjsContent ? draftjsContent.entityMap : null
+    if (draftjsContent && entityMap) {
+      Object.keys(draftjsContent.blocks).forEach(key => {
+        const block = draftjsContent.blocks[key]
         if (block.entityRanges) {
           block.entityRanges = block.entityRanges.filter(
             entityRange => !entityMap[entityRange.key] === 'LINK',
@@ -253,7 +254,7 @@ class StoryReadingScreen extends React.Component {
         }
       })
     }
-    return renderContent
+    return draftjsContent
   }
 
   hasHashtags() {
@@ -261,8 +262,10 @@ class StoryReadingScreen extends React.Component {
   }
 
   renderBody = () => {
-    const { story } = this.props
-    const draftjsContent = this.stripLinks(story.draftjsContent)
+    const { story, author } = this.props
+    const draftjsContent = Immutable.asMutable(story.draftjsContent, {deep: true})
+    const isPrivilegedAuthor = author
+      && (LINK_ROLES.includes(author.role) || author.isChannel)
 
     return (
       <Fragment>
@@ -270,7 +273,10 @@ class StoryReadingScreen extends React.Component {
         <View style={styles.content}>
           {!!story.draftjsContent && (
             <RNDraftJSRender
-              contentState={draftjsContent}
+              contentState={isPrivilegedAuthor
+                ? draftjsContent
+                : this.stripLinks(draftjsContent)
+              }
               customStyles={rendererStyles}
               atomicHandler={atomicHandler}
             />

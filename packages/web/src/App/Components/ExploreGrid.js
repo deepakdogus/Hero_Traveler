@@ -1,21 +1,53 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
-import { Grid, Row, Col } from '../Shared/Web/Components/FlexboxGrid'
+import _ from 'lodash'
 import getImageUrl from '../Shared/Lib/getImageUrl'
 import Icon from '../Shared/Web/Components/Icon'
 import { VerticalCenterStyles } from '../Shared/Web/Components/VerticalCenter'
 import OverlayHover from './OverlayHover'
 
-const StyledGrid = styled(Grid)`
+const DisplayGrid = styled.div`
+  padding: 0 !important;
   max-width: 1000px;
+  display: grid;
+`
+
+const ChannelGrid = styled(DisplayGrid)`
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 10px;
+  max-width: 1000px;
+  margin: 70px auto;
+  padding: 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`
+
+const CategoryGrid = styled(DisplayGrid)`
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1000px;
+  margin: 80px auto;
+  padding: 0 25px;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `
 
 const Wrapper = styled.div`
-  margin: 1px;
+  margin: 10px;
   position: relative;
   cursor: pointer;
+`
+
+const CategoryCol = styled.div`
+  grid-column: auto;
 `
 
 const CategoryTile = styled.div`
@@ -25,6 +57,19 @@ const CategoryTile = styled.div`
   padding-top: 50%;
   padding-bottom: 50%;
   position: relative;
+`
+
+const ChannelTile = styled.div`
+  height: 185px;
+  max-width: 150px;
+  background-image: ${props => `url(${props.imageSource})`};
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.95;
+  }
+  margin: 10px 8px;
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -42,7 +87,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 18px;
   color: ${props => props.theme.Colors.snow};
-  letter-spacing: .6px;
+  letter-spacing: 0.6px;
   margin: 0;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     font-size: 12px;
@@ -60,75 +105,84 @@ const RedCheck = styled(Icon)`
   background-color: ${props => props.theme.Colors.snow};
 `
 
-// created specific component to optimize speed with _onClickTile
 class Tile extends React.Component {
-   static propTypes = {
-    category: PropTypes.object,
+  static propTypes = {
+    exploreItem: PropTypes.object,
+    isChannel: PropTypes.bool,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
+    onClickExploreItem: PropTypes.func,
   }
 
-  _onClickTile = () => {
-    this.props.onClick(this.props.category.id)
+  onClickTile = () => {
+    this.props.onClick(this.props.exploreItem.id)
   }
 
-  render(){
-    const {category, isSelected} = this.props
-    return (
-      <Col xs={4} lg={3} >
-        <Wrapper onClick={this._onClickTile}>
+  render() {
+    const { exploreItem, isChannel, isSelected } = this.props
+    const image = exploreItem.image || _.get(exploreItem, 'channelImage')
+
+    return isChannel ? (
+      <ChannelTile
+        onClick={this.onClickTile}
+        imageSource={getImageUrl(image, 'gridItemThumbnail')}
+      />
+    ) : (
+      <CategoryCol>
+        <Wrapper
+          onClick={this.onClickTile}
+          isChannel={isChannel}
+        >
           <CategoryTile
-            imageSource={
-              getImageUrl(
-                category.image,
-                'categoryThumbnail',
-                {width: 400, height: 400},
-              )
-            }
+            imageSource={getImageUrl(image, 'gridItemThumbnail', {
+              width: 400,
+              height: 400,
+            })}
           />
           <TitleContainer
-            selected={category.selected}
-            overlayColor='black'
+            selected={exploreItem.selected}
+            overlayColor="black"
           >
-            <Title>{category.title}</Title>
+            <Title>{exploreItem.title}</Title>
           </TitleContainer>
-          {isSelected &&
-            <RedCheck name='redCheck' />
-          }
+          {isSelected && <RedCheck name="redCheck" />}
         </Wrapper>
-      </Col>
+      </CategoryCol>
     )
   }
 }
 
 export default class ExploreGrid extends React.Component {
   static propTypes = {
-    categories: PropTypes.object,
+    exploreItems: PropTypes.array,
+    isChannel: PropTypes.bool,
     onClickCategory: PropTypes.func,
+    onClickExploreItem: PropTypes.func,
     getIsSelected: PropTypes.func,
   }
 
   render() {
-    const {categories, getIsSelected, onClickCategory} = this.props
-    console.log('categories', categories)
-    const renderedCategories = Object.keys(categories).map((key) => {
-      const category = categories[key]
+    const {
+      exploreItems,
+      isChannel,
+      getIsSelected,
+      onClickExploreItem,
+      onClickCategory,
+    } = this.props
+    const Grid = isChannel ? ChannelGrid : CategoryGrid
+    const renderedExploreItems = Object.keys(exploreItems).map(key => {
+      const exploreItem = exploreItems[key]
       return (
         <Tile
-          key={category.id}
-          category={category}
-          isSelected={getIsSelected ? getIsSelected(category.id) : false}
-          onClick={onClickCategory}
+          key={exploreItem.id}
+          exploreItem={exploreItem}
+          isChannel={isChannel}
+          isSelected={getIsSelected ? getIsSelected(exploreItem.id) : false}
+          onClick={onClickExploreItem || onClickCategory}
         />
       )
     })
 
-    return (
-      <StyledGrid fluid>
-        <Row>
-          {renderedCategories}
-        </Row>
-      </StyledGrid>
-    )
+    return <Grid>{renderedExploreItems}</Grid>
   }
 }

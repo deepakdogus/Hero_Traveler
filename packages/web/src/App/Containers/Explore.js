@@ -1,6 +1,7 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {push} from 'react-router-redux'
+import { push } from 'react-router-redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -8,24 +9,9 @@ import ExploreHeader from '../Components/ExploreHeader'
 import Footer from '../Components/Footer'
 import ExploreGrid from '../Components/ExploreGrid'
 import CategoryActions from '../Shared/Redux/Entities/Categories'
-
-const CenteredText = styled.p`
-  text-align: center;
-  color: ${props => props.theme.Colors.background};
-`
-
-const ExploreText = styled(CenteredText)`
-  font-family: ${props => props.theme.Fonts.type.montserrat};
-  font-weight: 600;
-  font-size: 30px;
-  letter-spacing: .6px;
-  padding: 50px 0px;
-  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
-    font-size: 18px;
-    padding: 30px 0px;
-    margin: 0;
-  }
-`
+import UserActions from '../Shared/Redux/Entities/Users'
+import TabBar from '../Components/TabBar'
+import getGridData from '../Shared/Lib/getGridData'
 
 const Wrapper = styled.div``
 
@@ -37,32 +23,73 @@ const ContentWrapper = styled.div`
   }
 `
 
+const tabTypes = {
+  channels: 'CHANNELS',
+  categories: 'CATEGORIES',
+}
+
+const tabBarTabs = [tabTypes.channels, tabTypes.categories]
+
 class Explore extends Component {
   static propTypes = {
     categories: PropTypes.object,
     fetchStatus: PropTypes.bool,
     loadCategories: PropTypes.func,
+    loadChannelUsers: PropTypes.func,
+    loadUsers: PropTypes.func,
     reroute: PropTypes.func,
+    channels: PropTypes.array,
+    users: PropTypes.object,
+  }
+
+  state = {
+    activeTab: tabTypes.channels,
   }
 
   componentDidMount() {
     this.props.loadCategories()
+    this.props.loadChannelUsers()
+    this.props.loadUsers()
   }
 
-  _navToCategory = (categoryId) => {
-    this.props.reroute(`/category/${categoryId}`)
+  _navToCategory = categoryId => {
+    this.props.reroute(`/category/${categoryId}/?type=category`)
+  }
+
+  _navToChannel = userId => {
+    this.props.reroute(`/channel/${userId}/?type=channel`)
+  }
+
+  onClickTab = event => {
+    let tab = event.target.innerHTML
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab })
+  }
+
+  getEntitiesByType = () => {
+    const { activeTab } = this.state
+    const { channels, users, categories } = this.props
+    return getGridData(activeTab, channels, users, categories, tabTypes)
   }
 
   render() {
+    const exploreItems = _.values(this.getEntitiesByType())
+    const { activeTab } = this.state
     return (
       <Wrapper>
-        <ExploreHeader/>
+        <ExploreHeader />
+        <TabBar
+          tabs={tabBarTabs}
+          activeTab={activeTab}
+          onClickTab={this.onClickTab}
+        />
         <ContentWrapper>
-          <ExploreText>EXPLORE</ExploreText>
-            <ExploreGrid
-              categories={this.props.categories}
-              onClickCategory={this._navToCategory}
-            />
+          <ExploreGrid
+            exploreItems={exploreItems}
+            isChannel={activeTab === tabTypes.channels}
+            onClickExploreItem={
+              activeTab === tabTypes.channels ? this._navToChannel : this._navToCategory
+            }
+          />
           <Footer />
         </ContentWrapper>
       </Wrapper>
@@ -70,23 +97,24 @@ class Explore extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  let {
-    fetchStatus: categoriesFetchStatus,
-    entities: categories,
-  } = state.entities.categories
-
+function mapStateToProps(state) {
   return {
-    categories,
-    categoriesFetchStatus,
+    channels: state.entities.users.channelsByID,
+    users: state.entities.users.entities,
+    categories: state.entities.categories.entities,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    loadUsers: () => dispatch(UserActions.loadUser()),
+    loadChannelUsers: () => dispatch(UserActions.loadUsersChannels()),
     loadCategories: () => dispatch(CategoryActions.loadCategoriesRequest()),
-    reroute: (path) => dispatch(push(path)),
+    reroute: path => dispatch(push(path)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Explore)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Explore)

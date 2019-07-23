@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     borderBottomWidth: 3,
     borderBottomColor: Colors.snow,
+    padding: 0,
   },
   tabSelected: {
     borderBottomColor: Colors.red,
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontFamily: Fonts.type.montserrat,
     color: Colors.navBarText,
-    fontSize: 13,
+    fontSize: 12,
     letterSpacing: 1.2,
     textAlign: 'center',
     fontWeight: '600',

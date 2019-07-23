@@ -34,6 +34,7 @@ target 'HeroTravelerMobile' do
 
   # Pods from React Native Community
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'RNDeviceInfo', path: '../node_modules/react-native-device-info/RNDeviceInfo.podspec'
 
   # Pods for HeroTravelerMobile dependencies
   pod 'GooglePlaces', '~> 3.0'

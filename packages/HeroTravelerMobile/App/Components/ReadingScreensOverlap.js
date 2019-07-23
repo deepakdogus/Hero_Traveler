@@ -1,19 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  Text,
-  View,
-  Animated,
-  RefreshControl,
-} from 'react-native'
+import { Text, View, Animated, RefreshControl } from 'react-native'
 
 import formatCount from '../Shared/Lib/formatCount'
 import ConnectedFeedItemPreview from '../Containers/ConnectedFeedItemPreview'
-import {Metrics} from '../Shared/Themes'
+import { Metrics } from '../Shared/Themes'
 import StoryReadingToolbar from './StoryReadingToolbar'
 import Loader from './Loader'
 import FlagModal from './FlagModal'
-import {styles, translations} from '../Containers/Styles/StoryReadingScreenStyles'
+import {
+  styles,
+  translations,
+} from '../Containers/Styles/StoryReadingScreenStyles'
+import _ from 'lodash'
 
 class ReadingScreenOverlap extends React.Component {
   static propTypes = {
@@ -50,33 +49,58 @@ class ReadingScreenOverlap extends React.Component {
   }
 
   _toggleFlag = () => {
-    this.setState({showFlagModal: !this.state.showFlagModal})
+    this.setState({ showFlagModal: !this.state.showFlagModal })
   }
 
-  render () {
+  render() {
     const {
-      author, user, isLiked, isBookmarked, renderBody, animatedViews,
-      onPressLike, onPressBookmark, onPressComment, onPressShare,
-      fetching, getTargetEntity, targetEntity, flagTargetEntity,
-      selectedTab, isStory,
+      author,
+      user,
+      isLiked,
+      isBookmarked,
+      renderBody,
+      animatedViews,
+      onPressLike,
+      onPressBookmark,
+      onPressComment,
+      onPressShare,
+      fetching,
+      getTargetEntity,
+      targetEntity,
+      flagTargetEntity,
+      selectedTab,
+      isStory,
     } = this.props
     const { scrollY } = this.state
     if (!targetEntity || !author) {
       return (
         <View style={[styles.root, styles.centered]}>
-          {!targetEntity && (
-            <Loader style={styles.loader} />
-          )}
+          {!targetEntity && <Loader style={styles.loader} />}
           {targetEntity && !!targetEntity.error && (
-            <Text style={styles.text}>
-              {targetEntity.error}
-            </Text>
+            <Text style={styles.text}>{targetEntity.error}</Text>
           )}
         </View>
       )
     }
 
     const toolbarTranslation = scrollY.interpolate(translations.toolbar)
+
+    // FOR TEMPORARY BUILDS ONLY -- REMOVE AFTER `feature/editor-upgrades` PR merged
+    let editingDisabled = false
+    if (isStory && targetEntity) {
+      // check for block level entries that can't be created in app yet
+      const blocks = _.get(targetEntity, 'draftjsContent.blocks')
+      const blockTypes = (blocks && blocks.map(block => block.type)) || []
+      const prohibitedValues = ['unordered-list-item', 'blockquote', 'divider']
+      editingDisabled = blockTypes.some(type => prohibitedValues.includes(type))
+
+      // ensure there are no links
+      const entityMap = _.get(targetEntity, 'draftjsContent.entityMap')
+      const entityTypes
+        = (entityMap && Object.keys(entityMap).map(key => entityMap[key].type))
+        || []
+      if (!editingDisabled) editingDisabled = entityTypes.includes('LINK')
+    }
 
     return (
       <View style={[styles.root]}>
@@ -106,16 +130,20 @@ class ReadingScreenOverlap extends React.Component {
             autoPlayVideo={true}
             allowVideoPlay={true}
             isReadingScreen={true}
+            // FOR TEMPORARY BUILDS ONLY -- REMOVE AFTER `feature/editor-upgrades` PR merged
+            editingDisabled={editingDisabled}
+            openModal={this.openModal}
             selectedTab={selectedTab}
           />
           {renderBody()}
-          {<View style={styles.toolbarPadding}/>}
+          {<View style={styles.toolbarPadding} />}
         </Animated.ScrollView>
         <Animated.View
           style={[
             styles.toolBar,
             { transform: [{ translateY: toolbarTranslation }] },
-          ]}>
+          ]}
+        >
           <StoryReadingToolbar
             isStory={isStory}
             likeCount={formatCount(targetEntity.counts.likes)}
@@ -132,7 +160,7 @@ class ReadingScreenOverlap extends React.Component {
           />
         </Animated.View>
         {animatedViews.map(renderFunc => {
-          return (renderFunc(scrollY))
+          return renderFunc(scrollY)
         })}
         {/* Plus button for adding to Guide */}
         {

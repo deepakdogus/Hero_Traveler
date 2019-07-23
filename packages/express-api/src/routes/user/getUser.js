@@ -1,6 +1,7 @@
-import {User} from '@hero/ht-core'
+import { User } from '@hero/ht-core'
 
 export default function getUser(req, res) {
-  const userId = req.params.id
-  return User.get({_id: userId})
+  const userId = req.user && req.user.id
+  const userParamsId = req.params.id
+  return User.get({ _id: userParamsId }, userId === userParamsId)
 }

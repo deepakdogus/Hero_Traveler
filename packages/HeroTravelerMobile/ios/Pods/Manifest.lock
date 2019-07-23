@@ -17,6 +17,7 @@ PODS:
     - FBSDKCoreKit (~> 5.0)
   - FBSDKShareKit (5.2.3):
     - FBSDKCoreKit (~> 5.0)
+  - FLAnimatedImage (1.0.12)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -128,6 +129,7 @@ DEPENDENCIES:
   - FBSDKMessengerShareKit
   - FBSDKPlacesKit
   - FBSDKShareKit
+  - FLAnimatedImage
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleMaps (~> 3.0)
@@ -168,6 +170,7 @@ SPEC REPOS:
     - FBSDKMessengerShareKit
     - FBSDKPlacesKit
     - FBSDKShareKit
+    - FLAnimatedImage
     - GoogleMaps
     - GooglePlacePicker
     - GooglePlaces
@@ -243,6 +246,7 @@ SPEC CHECKSUMS:
   FBSDKMessengerShareKit: bdd14265f5845e6d1c95a128ab33705a68ca1c21
   FBSDKPlacesKit: 072d87a5c10103c41b8b265ab97215fc7ba9c94a
   FBSDKShareKit: 6f9c622f9a5d051f43f2dab6f753d5198422b89c
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleMaps: 5c13302e6fe6bb6e686b267196586b91cd594225
@@ -274,6 +278,6 @@ SPEC CHECKSUMS:
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: 4bf8a6ff64562f3d313f9dc0abfa6a4535d49b5f
+PODFILE CHECKSUM: a22740c6e02461fa2df47710f693c19ebdc9b2c7
 
 COCOAPODS: 1.7.5

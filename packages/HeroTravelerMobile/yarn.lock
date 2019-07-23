@@ -931,6 +931,11 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
+"@react-native-community/geolocation@^1.4.2":
+  version "1.4.2"
+  resolved "https://npm.abeck.io:443/@react-native-community%2fgeolocation/-/geolocation-1.4.2.tgz#7228c6d37c2f55017af9c49c2b9ad586d9bcb9f8"
+  integrity sha512-9x9dHDeUXnh2larA4zTT3y/tXPmRnysh5o9fsNbGcnUKPj1BUCIHnGGPxEIDnwP1DNIMP2DN9DmuMHImtTbX6A==
+
 "@react-native-community/netinfo@^1.4.0":
   version "1.4.1"
   resolved "https://npm.abeck.io:443/@react-native-community%2fnetinfo/-/netinfo-1.4.1.tgz#09f63ce507b3472e41e744d69b10699b801fcb88"

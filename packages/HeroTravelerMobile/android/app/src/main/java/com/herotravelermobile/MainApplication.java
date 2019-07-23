@@ -3,6 +3,7 @@ package com.herotravelermobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.masteratul.RNAppstoreVersionCheckerPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GeolocationPackage(),
             new RNAppstoreVersionCheckerPackage(),
             new RNGooglePlacesPackage(),
             new RNCameraPackage(),

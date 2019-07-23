@@ -18,6 +18,7 @@ target 'HeroTravelerMobile' do
   pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
   pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
   pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
   pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
   pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
   pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
@@ -30,6 +31,9 @@ target 'HeroTravelerMobile' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  # Pods from React Native Community
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 
   # Pods for HeroTravelerMobile dependencies
   pod 'GooglePlaces', '~> 3.0'

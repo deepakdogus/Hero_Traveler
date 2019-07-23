@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Linking, TouchableOpacity, Alert, Platform } from 'react-native'
+import Geolocation from '@react-native-community/geolocation'
 import { connect } from 'react-redux'
 import SplashScreen from 'react-native-splash-screen'
 import { Actions as NavActions } from 'react-native-router-flux'
@@ -139,7 +140,7 @@ class MyFeedScreen extends React.Component {
   }
 
   searchNearbyStories() {
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
         this.helper
           .setQuery('')
@@ -265,7 +266,7 @@ class MyFeedScreen extends React.Component {
 
   getLocationPermission = () => {
     if (!this.state.permissionStatus)
-      navigator.geolocation.requestAuthorization()
+      Geolocation.requestAuthorization()
   }
 
   getEntitiesById() {

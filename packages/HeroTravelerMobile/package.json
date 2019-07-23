@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.2.1",
+    "@react-native-community/geolocation": "^1.4.2",
     "@react-native-community/netinfo": "^1.4.0",
     "algoliasearch": "^3.32.1",
     "algoliasearch-helper": "^2.26.1",

@@ -12,7 +12,7 @@
 #import <React/RCTRootView.h>
 #import "RCTPushNotificationManager.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <react-native-branch/RNBranch.h>
+#import <RNBranch/RNBranch.h>
 @import GooglePlaces;
 @import GoogleMaps;
 
@@ -101,6 +101,13 @@
                                                       sourceApplication:sourceApplication
                                                       annotation:annotation];
   }
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  if (![RNBranch.branch application:app openURL:url options:options]) {
+    // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+  }
+  return YES;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {

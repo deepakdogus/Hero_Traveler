@@ -94,7 +94,7 @@ install_dsym() {
     binary="${DERIVED_FILES_DIR}/${basename}.framework.dSYM/Contents/Resources/DWARF/${basename}"
 
     # Strip invalid architectures so "fat" simulator / device frameworks work on device
-    if [[ "$(file "$binary")" == *"Mach-O dSYM companion"* ]]; then
+    if [[ "$(file "$binary")" == *"Mach-O "*"dSYM companion"* ]]; then
       strip_invalid_archs "$binary"
     fi
 
@@ -107,6 +107,14 @@ install_dsym() {
       touch "${DWARF_DSYM_FOLDER_PATH}/${basename}.framework.dSYM"
     fi
   fi
+}
+
+# Copies the bcsymbolmap files of a vendored framework
+install_bcsymbolmap() {
+    local bcsymbolmap_path="$1"
+    local destination="${BUILT_PRODUCTS_DIR}"
+    echo "rsync --delete -av "${RSYNC_PROTECT_TMP_FILES[@]}" --filter "- CVS/" --filter "- .svn/" --filter "- .git/" --filter "- .hg/" --filter "- Headers" --filter "- PrivateHeaders" --filter "- Modules" "${bcsymbolmap_path}" "${destination}""
+    rsync --delete -av "${RSYNC_PROTECT_TMP_FILES[@]}" --filter "- CVS/" --filter "- .svn/" --filter "- .git/" --filter "- .hg/" --filter "- Headers" --filter "- PrivateHeaders" --filter "- Modules" "${bcsymbolmap_path}" "${destination}"
 }
 
 # Signs a framework with the provided identity
@@ -153,26 +161,68 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FBSDKMessengerShareKit/FBSDKMessengerShareKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKPlacesKit/FBSDKPlacesKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Folly/folly.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-Core/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-DevSupport/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTActionSheet/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTAnimation/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTBlob/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTImage/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTLinking/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTNetwork/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTSettings/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTText/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTVibration/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTWebSocket/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-cxxreact/cxxreact.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-fishhook/fishhook.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsi/jsi.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsiexecutor/jsireact.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsinspector/jsinspector.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/glog/glog.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/iOS-MagnifyingGlass/iOS_MagnifyingGlass.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/yoga/yoga.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FBSDKMessengerShareKit/FBSDKMessengerShareKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKPlacesKit/FBSDKPlacesKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Folly/folly.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-Core/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-DevSupport/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTActionSheet/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTAnimation/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTBlob/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTImage/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTLinking/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTNetwork/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTSettings/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTText/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTVibration/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-RCTWebSocket/React.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-cxxreact/cxxreact.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-fishhook/fishhook.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsi/jsi.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsiexecutor/jsireact.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/React-jsinspector/jsinspector.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/glog/glog.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/iOS-MagnifyingGlass/iOS_MagnifyingGlass.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/yoga/yoga.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

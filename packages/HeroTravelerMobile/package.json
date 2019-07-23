@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "react-native start",
     "start:ios": "concurrently -r 'npm run share:watch' 'react-native run-ios'",
     "share": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg}\" App/Shared",
     "share:watch": "rimraf App/Shared && mkdir App/Shared && cpx \"../shared/**/*.{ts,tsx,js,jsx,json,ttf,png,svg}\" App/Shared --watch",
@@ -26,11 +26,11 @@
     "react-mixin": "^5.0.0",
     "react-native": "0.60.4",
     "react-native-appstore-version-checker": "^2.7.2",
-    "react-native-branch": "^3.0.0-beta.3",
+    "react-native-branch": "^4.0.0",
     "react-native-camera": "^2.0.2",
     "react-native-draftjs-render": "^2.9.0",
-    "react-native-fast-image": "^6.0.0",
-    "react-native-fbsdk": "^0.8.0",
+    "react-native-fast-image": "^7.0.2",
+    "react-native-fbsdk": "git+https://github.com/facebook/react-native-fbsdk.git",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-places": "^2.5.2",
     "react-native-image-picker": "^0.28.0",
@@ -56,14 +56,15 @@
     "seamless-immutable": "^7.1.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/runtime": "^7.3.4",
+    "@babel/core": "^7.5.0",
+    "@babel/runtime": "^7.5.0",
+    "@react-native-community/eslint-config": "^0.0.3",
     "babel-jest": "^24.5.0",
     "concurrently": "^4.1.0",
     "cpx": "^1.5.0",
     "jest": "^24.5.0",
     "metro-react-native-babel-preset": "^0.53.0",
-    "react-test-renderer": "16.8.3",
+    "react-test-renderer": "16.8.6",
     "rimraf": "^2.6.3"
   },
   "jest": {

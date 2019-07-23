@@ -13,10 +13,7 @@ import com.airbnb.android.react.maps.MapsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import io.branch.rnbranch.RNBranchPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactNativeHost;
@@ -50,10 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
             new AsyncStoragePackage(),
-            new FastImageViewPackage(),
             new SplashScreenReactPackage(),
-            new RNBranchPackage(),
-            new FBSDKPackage(),
             new RNFetchBlobPackage(),
             new ReactNativePushNotificationPackage()
       );

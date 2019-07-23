@@ -114,3 +114,6 @@ flycheck_*.el
 .dir-locals.el
 
 /third-party/
+
+# CocoaPods
+/ios/Pods/

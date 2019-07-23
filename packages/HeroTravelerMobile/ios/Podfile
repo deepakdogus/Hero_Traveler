@@ -1,12 +1,37 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'HeroTravelerMobile' do
-  use_frameworks!
+  # use_frameworks!
 
-  # Pods for HeroTravelerMobile
+  # Pods for React Native
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/React'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  # Pods for HeroTravelerMobile dependencies
   pod 'GooglePlaces', '~> 3.0'
   pod 'GoogleMaps', '~> 3.0'
   pod 'GooglePlacePicker', '~> 3.0'
@@ -19,8 +44,12 @@ target 'HeroTravelerMobile' do
   pod 'FBSDKShareKit'
   pod 'FBSDKPlacesKit'
 
+  pod 'FBSDKMessengerShareKit'
+
+  pod 'react-native-branch', path: '../node_modules/react-native-branch/react-native-branch.podspec'
+
+  # Pods for NativeFeed dependencies
   pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '3db441165dd2f9e93a92b042a5e92f1f743014d5'
-  pod 'FLAnimatedImage'
 
 end
 
@@ -29,16 +58,16 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     targets_to_ignore = %w(React yoga)
 
-    if targets_to_ignore.include? target.name
-      target.remove_from_project
-    end
+    # if targets_to_ignore.include? target.name
+    #   target.remove_from_project
+    # end
     if target.name == 'react-native-google-maps'
       target.build_configurations.each do |config|
         config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
       end
     end
-    if target.name == "React"
-      target.remove_from_project
-    end
+    # if target.name == "React"
+    #   target.remove_from_project
+    # end
   end
 end

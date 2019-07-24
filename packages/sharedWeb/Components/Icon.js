@@ -187,6 +187,8 @@ export default class Icon extends React.Component {
         return Images.iconFounderBadge
       case 'fellow':
         return Images.iconFellowBadge
+      case 'local':
+        return Images.iconLocalBadge
       case 'defaultProfile':
         return Images.iconDefaultProfileLarge
       case 'defaultProfileSmall':

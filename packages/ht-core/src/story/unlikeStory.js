@@ -7,13 +7,14 @@ export default function unlikeStory(storyId, userId) {
   }
   return StoryLike.findOne(params)
   .then((storyLike) => {
-    if (!storyLike) return
+    if (!storyLike) throw new Error('This story doesn\'t have likes')
     return StoryLike.findOneAndRemove({
       _id: storyLike.id
     })
-    .then((response) => {
+    .then(() => {
       return Story.findOneAndUpdate({
-        _id: storyId
+        _id: storyId,
+        'counts.likes': {$gte: 1}
       }, {
         $inc: {'counts.likes': -1}
       }, {

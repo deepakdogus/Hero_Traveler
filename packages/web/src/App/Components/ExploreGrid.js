@@ -17,7 +17,11 @@ const ChannelGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 40px 15px;
   max-width: 1000px;
-  margin: 70px auto;
+  margin: 70px
+    ${props =>
+      !props.theme.Metrics.sizes.tablet && !props.theme.Metrics.sizes.phone
+        ? 'auto'
+        : '15px'};
   padding: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: repeat(4, 1fr);
@@ -65,6 +69,7 @@ const ChannelTile = styled(CategoryTile)`
     opacity: 0.95;
   }
   max-width: 150px;
+  max-height: 185px;
 `
 
 const TitleContainer = styled(OverlayHover)`

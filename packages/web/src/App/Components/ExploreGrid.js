@@ -54,8 +54,8 @@ const CategoryTile = styled.div`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
   background-size: cover;
-  ${props => props.isCategory && 'padding-top: 50%;'}
-  ${props => props.isCategory && 'padding-bottom: 50%;'}
+  padding-top: 50%;
+  padding-bottom: 50%;
   position: relative;
 `
 
@@ -73,13 +73,12 @@ const CategoryTile = styled.div`
 // `
 
 const ChannelTile = styled(CategoryTile)`
-  height: 185px;
-  margin: 10px 8px;
   cursor: pointer;
+  padding-bottom: 51.86%;
+  padding-top: 65%;
   &:hover {
     opacity: 0.95;
   }
-  position: relative;
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -148,7 +147,6 @@ class Tile extends React.Component {
               width: 400,
               height: 400,
             })}
-            isCategory={true}
           />
           <TitleContainer
             selected={exploreItem.selected}

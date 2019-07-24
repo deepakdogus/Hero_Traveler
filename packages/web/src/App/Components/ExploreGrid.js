@@ -15,7 +15,7 @@ const DisplayGrid = styled.div`
 
 const ChannelGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+  grid-gap: 40px 15px;
   max-width: 1000px;
   margin: 70px auto;
   padding: 0 25px;
@@ -58,7 +58,7 @@ const CategoryTile = styled.div`
 
 const ChannelTile = styled(CategoryTile)`
   cursor: pointer;
-  padding-bottom: 51.86%;
+  padding-bottom: 55.02%;
   padding-top: 65%;
   width: 100%;
   &:hover {

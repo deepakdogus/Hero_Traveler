@@ -214,11 +214,16 @@ export function* uploadMedia(api, { uri, callback, mediaType = 'image' }) {
     mediaType
   )
 
+  let parseError
   if (typeof cloudinaryMedia.data === 'string') {
-    cloudinaryMedia.data = JSON.parse(cloudinaryMedia.data)
+    try {
+      cloudinaryMedia.data = JSON.parse(cloudinaryMedia.data)
+    } catch (e) {
+      parseError = 'Error parsing cloudinary response'
+    } 
   }
   const failureMessage =
-    _.get(cloudinaryMedia, 'data.error') || _.get(cloudinaryMedia, 'problem')
+    _.get(cloudinaryMedia, 'data.error') || _.get(cloudinaryMedia, 'problem') || parseError
   if (failureMessage) {
     callback(null, failureMessage)
     yield [

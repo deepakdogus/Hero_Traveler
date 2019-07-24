@@ -218,7 +218,7 @@ class CreateSlideshowDetails extends React.Component {
   }
 
   getHashtagsValue() {
-    const { hashtags } = this.props.workingDraft
+    const { hashtags = [] } = this.props.workingDraft
     if (hashtags.length === 0) return undefined
     return _.map(hashtags, (hashtag) => {
       return `#${hashtag.title}`
@@ -226,7 +226,7 @@ class CreateSlideshowDetails extends React.Component {
   }
 
   getCategoriesValue() {
-    const { categories } = this.props.workingDraft
+    const { categories = [] } = this.props.workingDraft
     if (categories.length === 0) return undefined
     return _.map(categories, 'title').join(', ')
   }

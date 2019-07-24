@@ -25,6 +25,7 @@ const ChannelGrid = styled(DisplayGrid)`
   @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
     grid-template-columns: repeat(3, 1fr);
   }
+  justify-items: center;
 `
 
 const CategoryGrid = styled(DisplayGrid)`
@@ -46,10 +47,6 @@ const Wrapper = styled.div`
   cursor: pointer;
 `
 
-const CategoryCol = styled.div`
-  grid-column: auto;
-`
-
 const CategoryTile = styled.div`
   background-image: ${props => `url(${props.imageSource})`};
   background-repeat: no-repeat;
@@ -59,26 +56,15 @@ const CategoryTile = styled.div`
   position: relative;
 `
 
-// const ChannelTile = styled.div`
-//   height: 185px;
-//   max-width: 150px;
-//   background-image: ${props => `url(${props.imageSource})`};
-//   background-repeat: no-repeat;
-//   background-size: contain;
-//   cursor: pointer;
-//   &:hover {
-//     opacity: 0.95;
-//   }
-//   margin: 10px 8px;
-// `
-
 const ChannelTile = styled(CategoryTile)`
   cursor: pointer;
   padding-bottom: 51.86%;
   padding-top: 65%;
+  width: 100%;
   &:hover {
     opacity: 0.95;
   }
+  max-width: 150px;
 `
 
 const TitleContainer = styled(OverlayHover)`
@@ -137,26 +123,24 @@ class Tile extends React.Component {
         imageSource={getImageUrl(image, 'gridItemThumbnail')}
       />
     ) : (
-      <CategoryCol>
-        <Wrapper
-          onClick={this.onClickTile}
-          isChannel={isChannel}
+      <Wrapper
+        onClick={this.onClickTile}
+        isChannel={isChannel}
+      >
+        <CategoryTile
+          imageSource={getImageUrl(image, 'gridItemThumbnail', {
+            width: 400,
+            height: 400,
+          })}
+        />
+        <TitleContainer
+          selected={exploreItem.selected}
+          overlayColor="black"
         >
-          <CategoryTile
-            imageSource={getImageUrl(image, 'gridItemThumbnail', {
-              width: 400,
-              height: 400,
-            })}
-          />
-          <TitleContainer
-            selected={exploreItem.selected}
-            overlayColor="black"
-          >
-            <Title>{exploreItem.title}</Title>
-          </TitleContainer>
-          {isSelected && <RedCheck name="redCheck" />}
-        </Wrapper>
-      </CategoryCol>
+          <Title>{exploreItem.title}</Title>
+        </TitleContainer>
+        {isSelected && <RedCheck name="redCheck" />}
+      </Wrapper>
     )
   }
 }

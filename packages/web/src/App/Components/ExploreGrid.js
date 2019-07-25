@@ -17,17 +17,15 @@ const ChannelGrid = styled(DisplayGrid)`
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 40px 15px;
   max-width: 1000px;
-  margin: 70px
-    ${props =>
-      !props.theme.Metrics.sizes.tablet && !props.theme.Metrics.sizes.phone
-        ? 'auto'
-        : '15px'};
+  margin: 70px auto;
   padding: 0 25px;
   @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
     grid-template-columns: repeat(4, 1fr);
+    margin: 70px 15px;
   }
   @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
     grid-template-columns: repeat(3, 1fr);
+    margin: 70px 15px;
   }
   justify-items: center;
 `
@@ -65,6 +63,14 @@ const ChannelTile = styled(CategoryTile)`
   padding-bottom: 55.02%;
   padding-top: 65%;
   width: 100%;
+  @media (max-width: ${props => props.theme.Metrics.sizes.tablet}px) {
+    padding-bottom: 55%;
+    padding-top: 55%;
+  }
+  @media (max-width: ${props => props.theme.Metrics.sizes.phone}px) {
+    padding-bottom: 55.02%;
+    padding-top: 65%;
+  }
   &:hover {
     opacity: 0.95;
   }

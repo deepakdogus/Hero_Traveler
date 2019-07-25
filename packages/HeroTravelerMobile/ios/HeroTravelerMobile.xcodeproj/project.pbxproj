@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* HeroTravelerMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */; };
 		00E8C6E885DB87318D7B6D7D /* libPods-HeroTravelerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FA7CB2B7169331AF567971 /* libPods-HeroTravelerMobile.a */; };
@@ -511,6 +512,13 @@
 			remoteGlobalIDString = 58B5119A1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		F7C3DD7522EA41EB0050FC6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7C3DD6A22EA41EA0050FC6E /* RCTFBSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
+			remoteInfo = RCTFBSDK;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -712,6 +720,7 @@
 		F754468D22E777CB00878092 /* FFFastImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFFastImageViewManager.h; sourceTree = "<group>"; };
 		F754468E22E777CB00878092 /* RCTConvert+FFFastImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+FFFastImage.m"; sourceTree = "<group>"; };
 		F754468F22E777CC00878092 /* FFFastImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFFastImageViewManager.m; sourceTree = "<group>"; };
+		F7C3DD6A22EA41EA0050FC6E /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		FBADABDCD0374A7486286A3B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		FD3A9F4A8B7726D4ADF30BF7 /* libPods-HeroTravelerMobile-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HeroTravelerMobile-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4DFDB076AD41FE82CCB6E6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -941,6 +950,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F7C3DD6A22EA41EA0050FC6E /* RCTFBSDK.xcodeproj */,
 				EFB2E802224804AE00D63B84 /* KeyboardTrackingView.xcodeproj */,
 				EFDB20F8223AD79D00B182BA /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -1197,7 +1207,6 @@
 				C0F52031CA44489FAEDA84C9 /* libRNVersionNumber.a */,
 				F20098A9867E4E368AFBED9F /* libRNVersionNumber-tvOS.a */,
 				59D6173FFD594F52A01347E3 /* libRNImagePicker.a */,
-				8FC54BED386441F8A48603F8 /* libRNCamera.a */,
 				CCE4441BF1C14803A9EA1650 /* libRNGooglePlaces.a */,
 			);
 			name = "Recovered References";
@@ -1318,6 +1327,14 @@
 			);
 			name = FastImage;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		F7C3DD6B22EA41EA0050FC6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7C3DD7622EA41EB0050FC6E /* libRCTFBSDK.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1467,6 +1484,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = F7C3DD6B22EA41EA0050FC6E /* Products */;
+					ProjectRef = F7C3DD6A22EA41EA0050FC6E /* RCTFBSDK.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
@@ -1921,6 +1942,13 @@
 			fileType = archive.ar;
 			path = "libRCTPushNotification-tvOS.a";
 			remoteRef = EFDB20FF223AD79D00B182BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F7C3DD7622EA41EB0050FC6E /* libRCTFBSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTFBSDK.a;
+			remoteRef = F7C3DD7522EA41EB0050FC6E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

@@ -45,18 +45,14 @@ target 'HeroTravelerMobile' do
   pod 'IQKeyboardManager'
   pod 'iOS-MagnifyingGlass', '~> 0.0.2'
 
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
-  pod 'FBSDKShareKit'
-  pod 'FBSDKPlacesKit'
-
-  pod 'FBSDKMessengerShareKit'
+  pod 'react-native-fbsdk', path: '../node_modules/react-native-fbsdk/react-native-fbsdk.podspec'
 
   pod 'react-native-branch', path: '../node_modules/react-native-branch/react-native-branch.podspec'
 
   # Pods for NativeFeed dependencies
   pod 'SDWebImage', :git => 'https://github.com/rehashstudio/SDWebImage.git', :commit => '3db441165dd2f9e93a92b042a5e92f1f743014d5'
   pod 'FLAnimatedImage'
+
 
 end
 

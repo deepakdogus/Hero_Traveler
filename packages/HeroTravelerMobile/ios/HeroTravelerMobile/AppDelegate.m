@@ -61,7 +61,7 @@
   // [RNBranch useTestInstance]
   [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
 
-  NSURL *jsCodeLocation;
+//  NSURL *jsCodeLocation;
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -84,31 +84,39 @@
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
-            sourceApplication:(NSString *)sourceApplication
-            annotation:(id)annotation {
-
-  NSString *myUrl = url.absoluteString;
-
-  if ([myUrl containsString:@"com.herotraveler.herotraveler-beta"]) {
-    return YES;
-    // return [RCTLinkingManager application:application
-    //                           openURL:url
-    //                           sourceApplication:sourceApplication
-    //                           annotation:annotation];
-  } else {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                      openURL:url
-                                                      sourceApplication:sourceApplication
-                                                      annotation:annotation];
-  }
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                openURL:url
+                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+                  ];
+  // Add any custom logic here.
+  return handled;
 }
 
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  if (![RNBranch.branch application:app openURL:url options:options]) {
-    // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
-  }
-  return YES;
-}
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+//  if (![RNBranch.branch application:application openURL:url options:options]) {
+//    // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+//  }
+//
+//  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+//                                                                openURL:url
+//                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+//                  ];
+//  // Add any custom logic here.
+//  return handled;
+//}
+
+//- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+//  if (![RNBranch.branch application:app openURL:url options:options]) {
+//    // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+//  }
+//  return YES;
+//}
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     return [RNBranch continueUserActivity:userActivity];

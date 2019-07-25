@@ -35,7 +35,6 @@
     "react-native-drawer": "^2.3.0",
     "react-native-fast-image": "^7.0.2",
     "react-native-fbsdk": "git+https://github.com/facebook/react-native-fbsdk.git",
-    "react-native-fetch-blob": "^0.10.5",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-global-props": "^1.1.1",
     "react-native-google-places": "^2.5.2",

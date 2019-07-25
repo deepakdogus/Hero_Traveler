@@ -1,5 +1,4 @@
 import {
-  AccessToken,
   LoginManager,
   GraphRequest,
   GraphRequestManager,
@@ -7,7 +6,7 @@ import {
 
 export function loginToFacebook () {
   return new Promise((resolve, reject) => {
-    LoginManager.logInWithReadPermissions([
+    LoginManager.logInWithPermissions([
       'public_profile',
       'email',
       'user_friends'

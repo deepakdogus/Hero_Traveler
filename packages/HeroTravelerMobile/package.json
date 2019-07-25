@@ -15,7 +15,7 @@
     "@react-native-community/netinfo": "^1.4.0",
     "algoliasearch": "^3.32.1",
     "algoliasearch-helper": "^2.26.1",
-    "apisauce": "^1.0.2",
+    "apisauce": "^0.10.0",
     "draft-js": "^0.10.5",
     "keymirror": "^0.1.1",
     "lodash": "^4.17.11",
@@ -79,10 +79,5 @@
   },
   "jest": {
     "preset": "react-native"
-  },
-  "rnpm": {
-    "assets": [
-      "./App/Fonts"
-    ]
   }
 }

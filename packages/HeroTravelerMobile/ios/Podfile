@@ -33,8 +33,9 @@ target 'HeroTravelerMobile' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   # Pods from React Native Community
-  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'react-native-camera', path: '../node_modules/react-native-camera'
   pod 'RNDeviceInfo', path: '../node_modules/react-native-device-info/RNDeviceInfo.podspec'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 
   # Pods for HeroTravelerMobile dependencies
   pod 'GooglePlaces', '~> 3.0'

@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* HeroTravelerMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HeroTravelerMobileTests.m */; };
 		00E8C6E885DB87318D7B6D7D /* libPods-HeroTravelerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0FA7CB2B7169331AF567971 /* libPods-HeroTravelerMobile.a */; };
@@ -111,7 +110,6 @@
 		EF2426A0226E0D0D00A18EAA /* RCTVideoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242696226E0D0D00A18EAA /* RCTVideoCache.m */; };
 		EF2426A1226E0D0D00A18EAA /* VideoDownloadItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF242697226E0D0D00A18EAA /* VideoDownloadItem.m */; };
 		EF557781228B4D9900D3D561 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF557780228B4D9900D3D561 /* Launch Screen.storyboard */; };
-		EF6882492267D59200C04A1F /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB2E8602248086100D63B84 /* libRNCamera.a */; };
 		EFB2E808224804D900D63B84 /* libKeyboardTrackingView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB2E807224804AE00D63B84 /* libKeyboardTrackingView.a */; };
 		F754469022E777CC00878092 /* FFFastImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F754468822E777C900878092 /* FFFastImageView.m */; };
 		F754469122E777CC00878092 /* FFFastImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F754468B22E777CA00878092 /* FFFastImageSource.m */; };
@@ -457,13 +455,6 @@
 			remoteGlobalIDString = D834CED81CC64F2400FA5668;
 			remoteInfo = KeyboardTrackingView;
 		};
-		EFB2E85F2248086100D63B84 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 812ACFC596964A4CBD8A80E4 /* RNCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RNCamera;
-		};
 		EFC317932246B7B4005E7B62 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9492526E66A049D5AFC24951 /* RNCAsyncStorage.xcodeproj */;
@@ -588,11 +579,9 @@
 		76C10F96780640D3ADA95CC2 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7BC752DFE8C0466FBEBD9B02 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
-		812ACFC596964A4CBD8A80E4 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		833DA996CF9245ACADBA399F /* CrimsonText-Roman.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CrimsonText-Roman.ttf"; path = "../App/Fonts/CrimsonText-Roman.ttf"; sourceTree = "<group>"; };
 		8DFC2BA093EE46C4995285FA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
-		8FC54BED386441F8A48603F8 /* libRNCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCamera.a; sourceTree = "<group>"; };
 		916BC2EC227363E800215EC0 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = IQKeyboardManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		916BC384227367B900215EC0 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLAnimatedImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9492526E66A049D5AFC24951 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
@@ -742,7 +731,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF6882492267D59200C04A1F /* libRNCamera.a in Frameworks */,
 				EFB2E808224804D900D63B84 /* libKeyboardTrackingView.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				927B9B1B3E624A0F971CB381 /* libRNFetchBlob.a in Frameworks */,
@@ -975,7 +963,6 @@
 				178DB853AF464EC6A04D5EC6 /* RNCNetInfo.xcodeproj */,
 				B809CF0F090445F4A569EC3E /* RNVersionNumber.xcodeproj */,
 				553E344EF6CF487F9D457242 /* RNImagePicker.xcodeproj */,
-				812ACFC596964A4CBD8A80E4 /* RNCamera.xcodeproj */,
 				210F14372ECF44B39C9DDD29 /* RNGooglePlaces.xcodeproj */,
 			);
 			name = Libraries;
@@ -1300,14 +1287,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EFB2E85C2248086100D63B84 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EFB2E8602248086100D63B84 /* libRNCamera.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		EFC317902246B7B4005E7B62 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1524,10 +1503,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = EFB2E85C2248086100D63B84 /* Products */;
-					ProjectRef = 812ACFC596964A4CBD8A80E4 /* RNCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = EFC317902246B7B4005E7B62 /* Products */;
@@ -1899,13 +1874,6 @@
 			remoteRef = EFB2E806224804AE00D63B84 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EFB2E8602248086100D63B84 /* libRNCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCamera.a;
-			remoteRef = EFB2E85F2248086100D63B84 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		EFC317942246B7B4005E7B62 /* libRNCAsyncStorage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2224,7 +2192,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2260,7 +2227,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2307,7 +2273,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2356,7 +2321,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2401,7 +2365,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2445,7 +2408,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2488,7 +2450,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);
@@ -2531,7 +2492,6 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-places/ios",
 					"$(SRCROOT)/../node_modules/react-native-video-processing/ios/RNVideoProcessing/**",
 				);

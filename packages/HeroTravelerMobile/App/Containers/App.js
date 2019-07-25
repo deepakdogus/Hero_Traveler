@@ -6,6 +6,9 @@ import { PersistGate } from 'redux-persist/integration/react'
 import RootContainer from './RootContainer'
 import createStore from '../Shared/Redux'
 
+// turn on/off on-device warnings
+console.disableYellowBox = true
+
 // create our store
 const { store, persistor } = createStore()
 

@@ -113,6 +113,7 @@ const images = {
   iconClose: require('../Images/ht-icons/icon_create-menu-close-x.png'),
   iconReverseCamera: require('../Images/ht-icons/icon_camera-reverse.png'),
   iconFlashCamera: require('../Images/ht-icons/icon_camera-flash.png'),
+  iconFlashCameraOn: require('../Images/ht-icons/icon_camera-flash-on.png'),
   iconCreateMenuPhoto: require('../Images/ht-icons/icon_content-photo.png'),
   iconCreateMenuVideo: require('../Images/ht-icons/icon_create-menu-video.png'),
   iconCreateMenuStory: require('../Images/ht-icons/icon_create-menu-story.png'),

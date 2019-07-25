@@ -89,6 +89,14 @@ PODS:
   - react-native-branch (4.0.0):
     - Branch (= 0.27.1)
     - React
+  - react-native-camera (3.0.0):
+    - React
+    - react-native-camera/RCT (= 3.0.0)
+    - react-native-camera/RN (= 3.0.0)
+  - react-native-camera/RCT (3.0.0):
+    - React
+  - react-native-camera/RN (3.0.0):
+    - React
   - react-native-geolocation (1.4.2):
     - React
   - React-RCTActionSheet (0.60.4):
@@ -148,6 +156,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-branch (from `../node_modules/react-native-branch/react-native-branch.podspec`)
+  - react-native-camera (from `../node_modules/react-native-camera`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -205,6 +214,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-branch:
     :path: "../node_modules/react-native-branch/react-native-branch.podspec"
+  react-native-camera:
+    :path: "../node_modules/react-native-camera"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   React-RCTActionSheet:
@@ -268,6 +279,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7549641e48bafae7bfee3f3ea19bf4901639c5de
   React-jsinspector: 73f24a02fa684ed6a2b828ba116874a2191ded88
   react-native-branch: 5e2b3a7bbda82a7af421ce1981a956ef18c38d96
+  react-native-camera: 53e453fd5e6501afbac79d6b21a5fbfd84950eda
   react-native-geolocation: a7b94614afbd5fd8350e0233a2025c8228fc8041
   React-RCTActionSheet: 9f71d7ae3e8fb10e08d162cbf14c621349dbfab3
   React-RCTAnimation: 981d8c95b0e30918a9832ccac32af83562a27fae
@@ -284,6 +296,6 @@ SPEC CHECKSUMS:
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: ba019afeed6bca7045f3069f9dcf6b88d02c432b
+PODFILE CHECKSUM: 2cb6897c005a55560f42e0192811387b8e29801f
 
 COCOAPODS: 1.7.5

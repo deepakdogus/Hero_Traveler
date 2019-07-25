@@ -6,7 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.masteratul.RNAppstoreVersionCheckerPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -41,7 +40,6 @@ public class MainApplication extends Application implements ReactApplication {
             new GeolocationPackage(),
             new RNAppstoreVersionCheckerPackage(),
             new RNGooglePlacesPackage(),
-            new RNCameraPackage(),
             new ImagePickerPackage(),
             new RNVersionNumberPackage(),
             new NetInfoPackage(),

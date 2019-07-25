@@ -43,23 +43,23 @@ class MediaSelectorScreen extends React.Component {
   }
 
   launchMediaCapture = (selectedMediaType) => {
-    this.setState({captureOpen: true, media: null, selectedMediaType})
+    this.setState({ captureOpen: true, media: null, selectedMediaType })
   }
 
   launchMediaSelector = () => {
-    this.setState({captureOpen: false})
+    this.setState({ captureOpen: false })
     ImagePicker.launchImageLibrary({
       videoQuality: 'high',
       mediaType: this.props.mediaType || 'mixed',
     }, this.handleUploadedMedia)
   }
 
-  handleUploadedMedia = (data) => {
+  handleUploadedMedia = data => {
     if (data.didCancel) return this.launchMediaCapture('Photo')
-    this._handleMediaSelector(data)
+    this.handleMediaSelector(data)
   }
 
-  _completeNextTooltip = () => {
+  completeNextTooltip = () => {
     const tooltips = this.props.user.introTooltips.concat({
       name: TooltipTypes.STORY_PHOTO_NEXT,
       seen: true,
@@ -67,9 +67,9 @@ class MediaSelectorScreen extends React.Component {
     this.props.completeTooltip(tooltips)
   }
 
-  isCaptureInUse = (mediaType) => {
-    return (this.state.captureOpen || this.state.mediaCaptured) &&
-    (!mediaType || mediaType === this.state.selectedMediaType)
+  isCaptureInUse = mediaType => {
+    return (this.state.captureOpen || this.state.mediaCaptured)
+      && (!mediaType || mediaType === this.state.selectedMediaType)
   }
 
   renderNextTooltip() {
@@ -77,17 +77,17 @@ class MediaSelectorScreen extends React.Component {
       <Tooltip
         text='Tap to continue'
         position='right-nav-button'
-        onDismiss={this._completeNextTooltip}
+        onDismiss={this.completeNextTooltip}
       />
     );
   }
 
-  _retake = () => {
+  retake = () => {
     this.setState({media: null})
   }
 
   // Response from picking from the library
-  _handleMediaSelector = (data) => {
+  handleMediaSelector = (data) => {
     if (data.didCancel) {
       this.setState({captureOpen: true})
       return;
@@ -110,6 +110,7 @@ class MediaSelectorScreen extends React.Component {
 
     VideoManager.getWidthAndHeight(data)
       .then(response => {
+        console.log({response})
         this.setState({
           ...updateState,
           mediaMetrics: {
@@ -120,18 +121,17 @@ class MediaSelectorScreen extends React.Component {
       })
       .catch(err => {
         // Failing to get width/height is rare, and shouldn't stop being able to upload it
-        //   Only a few UI elements would look wrong
+        // Only a few UI elements would look wrong
         this.setState(updateState)
       })
 
   }
 
   // Handle the response from taking a photo or video
-  _handleCaptureMedia = (data) => {
-
+  handleCaptureMedia = (data) => {
     this.setState({
       mediaCaptured: true,
-      media: "file://" + data.path,
+      media: data.uri,
       mediaMetrics: {
         height: data.height,
         width: data.width,
@@ -139,7 +139,7 @@ class MediaSelectorScreen extends React.Component {
     })
   }
 
-  _onNext = () => {
+  onNext = () => {
     if (this.state.media) {
       const isPhotoType = this.getMediaType() === 'photo'
       this.props.onSelectMedia(this.state.media, isPhotoType, this.state.mediaMetrics)
@@ -154,11 +154,11 @@ class MediaSelectorScreen extends React.Component {
     else return 'photo'
   }
 
-  _closeError = () => {
+  closeError = () => {
     this.setState({error: undefined})
   }
 
-  _navToSettings = () => {
+  navToSettings = () => {
     this.setState({libraryNotAuthorized: false});
     Linking.openURL('app-settings:');
   }
@@ -184,7 +184,7 @@ class MediaSelectorScreen extends React.Component {
         <PhotoTaker
           mediaType={this.props.mediaType}
           isPhotoType={this.getIsPhotoType()}
-          onCapture={this._handleCaptureMedia}
+          onCapture={this.handleCaptureMedia}
           ref={this.setPhotoTakerRef}
         />
       )
@@ -199,7 +199,7 @@ class MediaSelectorScreen extends React.Component {
           {this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
-              onPress={this._retake}
+              onPress={this.retake}
             >
               <Text style={styles.retakeButtonText}>RETAKE</Text>
             </TouchableOpacity>
@@ -224,7 +224,7 @@ class MediaSelectorScreen extends React.Component {
             this.state.mediaCaptured &&
             <TouchableOpacity
               style={styles.retakeButton}
-              onPress={this._retake}
+              onPress={this.retake}
             >
               <Text style={styles.retakeButtonText}>RETAKE</Text>
             </TouchableOpacity>
@@ -241,7 +241,7 @@ class MediaSelectorScreen extends React.Component {
           leftTextStyle={this.props.leftTextStyle}
           title={this.props.title}
           titleStyle={this.props.titleStyle}
-          onRight={this._onNext}
+          onRight={this.onNext}
           isRightValid={!!this.state.media}
           rightIcon={this.props.rightIcon || 'arrowRightRed'}
           rightTitle={this.props.rightTitle}
@@ -251,7 +251,7 @@ class MediaSelectorScreen extends React.Component {
           {error &&
             <ShadowButton
               style={detailsStyles.errorButton}
-              onPress={this._closeError}
+              onPress={this.closeError}
               text={error.toString().substring(7)}
               title={'Media Load Failure'}
             />
@@ -259,7 +259,7 @@ class MediaSelectorScreen extends React.Component {
           {libraryNotAuthorized && !captureOpen &&
             <View style={[styles.notAuthorizedWrapper]}>
             <TouchableOpacity
-              onPress={this._navToSettings}
+              onPress={this.navToSettings}
             >
               <Text style={[styles.notAuthorizedText]}>Access to your photo library is currently disabled.{"\n"}Tap here to update your settings.</Text>
               </TouchableOpacity>

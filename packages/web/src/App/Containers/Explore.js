@@ -40,16 +40,19 @@ class Explore extends Component {
     reroute: PropTypes.func,
     channels: PropTypes.array,
     users: PropTypes.object,
+    isLoggedIn: PropTypes.bool,
   }
 
   state = {
-    activeTab: tabTypes.channels,
+    activeTab: tabTypes.categories,
   }
 
   componentDidMount() {
+    const { isLoggedIn } = this.props
     this.props.loadCategories()
     this.props.loadChannelUsers()
     this.props.loadUsers()
+    if(isLoggedIn) this.setState({activeTab: tabTypes.channels})
   }
 
   _navToCategory = categoryId => {
@@ -99,6 +102,7 @@ class Explore extends Component {
 
 function mapStateToProps(state) {
   return {
+    isLoggedIn: !state.session.isLoggedOut,
     channels: state.entities.users.channelsByID,
     users: state.entities.users.entities,
     categories: state.entities.categories.entities,

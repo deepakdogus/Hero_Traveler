@@ -86,8 +86,6 @@ class MyFeedScreen extends React.Component {
   componentDidMount() {
     if (!this.isPendingUpdate()) {
       this.props.attemptGetUserFeedStories(this.props.userId)
-      this.props.attemptGetUserFeedGuides(this.props.userId)
-      this.props.attemptGetBadgeUserStories()
     }
     if (this.props.user.usernameIsTemporary === true) {
       NavActions.signupFlow()

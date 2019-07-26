@@ -92,7 +92,8 @@ class NotificationScreen extends React.Component {
 
   _setSelectedTab = () => this.setState({ selectedTab: 0 })
 
-  renderRow = activityId => {
+  // @FIXME: refactor so flatlist takes populated activities array
+  renderRow = ({item: activityId}) => {
     const populatedActivity = getPopulatedActivity(activityId, this.props)
 
     return (

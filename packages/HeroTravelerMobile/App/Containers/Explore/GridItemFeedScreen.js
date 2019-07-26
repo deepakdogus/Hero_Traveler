@@ -56,7 +56,7 @@ class GridItemFeedScreen extends React.Component {
     loadCategoryGuides: PropTypes.func,
     loadUserStories: PropTypes.func,
     loadUserGuides: PropTypes.func,
-    userChannelName: PropTypes.func,
+    userChannelName: PropTypes.object,
     getSelectedCategories: PropTypes.func,
     selectedCategories: PropTypes.arrayOf(PropTypes.string),
     location: PropTypes.string,

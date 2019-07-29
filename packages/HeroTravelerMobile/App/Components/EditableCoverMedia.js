@@ -37,6 +37,10 @@ class EditableCoverMedia extends Component {
     toolbarOpacity: new Animated.Value(1),
   }
 
+  componentWillUnmount = () => {
+    if (this.timeout) clearTimeout(this.timeout)
+  }
+
   hasNoPhoto() {
     return !this.props.media.coverImage
   }

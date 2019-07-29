@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {View, TouchableOpacity, Animated, Easing, Text, Linking} from 'react-native'
 import { RNCamera } from 'react-native-camera'
-import reactMixin from 'react-mixin'
-import TimerMixin from 'react-timer-mixin'
 
 import {Metrics} from '../Shared/Themes'
 import styles from './Styles/PhotoTakerStyles'
@@ -37,6 +35,10 @@ class PhotoTaker extends Component {
       videoAnim: new Animated.Value(0),
       time: 0,
     }
+  }
+
+  componentWillUnmount = () => {
+    if (this._interval) clearInterval(this._interval)
   }
 
   takePicture = async () => {
@@ -83,7 +85,7 @@ class PhotoTaker extends Component {
   displayRecordingProgress = () => {
     this.startTime = Date.now()
     this.tick((0).toFixed(1))
-    this._interval = this.setInterval(() => {
+    this._interval = setInterval(() => {
       this.tick(this.getElapsedTime())
     }, 100)
     // resetting all timing to 0
@@ -96,7 +98,7 @@ class PhotoTaker extends Component {
         duration: this.props.maxVideoLength * 1000
       }
     ).start(() => {
-      this.clearInterval(this._interval)
+      clearInterval(this._interval)
       if (this.camera) this.camera.stopRecording()
     })
   }
@@ -210,7 +212,5 @@ class PhotoTaker extends Component {
     )
   }
 }
-
-reactMixin(PhotoTaker.prototype, TimerMixin)
 
 export default PhotoTaker

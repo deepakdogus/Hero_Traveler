@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
-
     backgroundColor: Colors.snow,
     borderBottomWidth: 3,
     borderBottomColor: Colors.snow,
     padding: 0,
   },
   tabSelected: {
+    paddingBottom: 2,
     borderBottomColor: Colors.red,
   },
   tabText: {

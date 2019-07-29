@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  tabStyle: {
+    marginLeft: 14,
+    marginRight: 14,
+  },
 })
 
 export default class TabBar extends Component {
@@ -57,8 +61,8 @@ export default class TabBar extends Component {
 
   onClickTab = tabValue => () => this.props.onClickTab(tabValue)
 
-  renderTabs() {
-    const { activeTab, tabs, tabStyle } = this.props
+  renderTabs = (tabStyle) => {
+    const { activeTab, tabs } = this.props
     return Object.keys(tabs).map((key, index) => (
       <Tab
         key={index}
@@ -78,7 +82,7 @@ export default class TabBar extends Component {
       case 2:
         return (
           <View style={styles.containerTwo}>
-            {this.renderTabs()}
+            {this.renderTabs(styles.tabStyle)}
           </View>
         )
       case 4:

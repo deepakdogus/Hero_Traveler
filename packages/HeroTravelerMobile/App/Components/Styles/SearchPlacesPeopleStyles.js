@@ -29,6 +29,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.baseMargin,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: `${Metrics.feedMargin}%`,
     height: 45,
   },
   searchWrapper: {

@@ -316,7 +316,7 @@ function* saveDraftErrorHandling(draft, response) {
 
   yield put(StoryCreateActions.saveDraftFailure(err))
 
-  yield adminDeleteStoryFailure([
+  yield all([
     put(
       PendingUpdatesActions.addPendingUpdate(
         draft,

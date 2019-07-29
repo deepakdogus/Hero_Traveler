@@ -8,12 +8,16 @@ import Tab from './Tab'
 const styles = StyleSheet.create({
   container: {
     width: `${Metrics.feedMargin}%`,
+    marginTop: 18,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   wrapper: {
     alignItems: 'center',
     backgroundColor: Colors.snow,
     height: 40,
-    borderBottomWidth: 1,
+
     borderBottomColor: Colors.feedDividerGrey,
   },
   largeWrapper: {
@@ -53,18 +57,24 @@ export default class TabBar extends Component {
   }
 
   render() {
-    const { largeTabBar } = this.props
+    const { largeTabBar, tabs } = this.props
+    const ScrollViewRender
+      = Object.keys(tabs).length > 4 ? (
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyles={styles.scrollView}
+          bounces={false}
+        >
+          {this.renderTabs()}
+        </ScrollView>
+      ) : (
+        this.renderTabs()
+      )
     return (
       <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
         <View style={styles.container}>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyles={styles.scrollView}
-            bounces={false}
-          >
-            {this.renderTabs()}
-          </ScrollView>
+          {ScrollViewRender}
         </View>
       </View>
     )

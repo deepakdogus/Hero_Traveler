@@ -28,7 +28,7 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   tabStyle: {
-    width: '100%',
+    // flexGrow: 0,
   },
   noStories: {
     marginTop: Metrics.doubleSection,

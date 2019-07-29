@@ -12,8 +12,7 @@ const styles = StyleSheet.create({
   tab: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1,
-    width: Metrics.screenWidth * 0.18,
+
     backgroundColor: Colors.snow,
     borderBottomWidth: 3,
     borderBottomColor: Colors.snow,

@@ -46,7 +46,7 @@
     "redux-form": "^6.5.0",
     "redux-logger": "^2.8.2",
     "redux-persist": "^4.1.0",
-    "redux-saga": "0.16.2",
+    "redux-saga": "^0.16.2",
     "reduxsauce": "^0.4.1",
     "seamless-immutable": "^7.1.2",
     "styled-components": "^2.1.1",

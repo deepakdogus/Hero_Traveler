@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import configureStore from './CreateStore'
+import configureStore from '../../Redux/CreateStore'
 import rootSaga from '../Sagas/'
 import { reducer as formReducer } from 'redux-form'
 import entities from './Entities'

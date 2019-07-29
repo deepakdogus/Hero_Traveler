@@ -1,7 +1,7 @@
 import immutablePersistenceTransform from '../Shared/Services/ImmutablePersistenceTransform'
 import { asyncLocalStorage } from 'redux-persist/storages'
 
-const REDUX_PERSIST = {
+const ReduxPersist = {
   active: true,
   reducerVersion: '12',
   storeConfig: {
@@ -13,4 +13,4 @@ const REDUX_PERSIST = {
   },
 }
 
-export default REDUX_PERSIST
+export default ReduxPersist

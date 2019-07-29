@@ -3,13 +3,14 @@ import {
   applyMiddleware,
   compose,
 } from 'redux'
-import { autoRehydrate, persistReducer, persistStore } from 'redux-persist'
-import Config from '../../Config/DebugConfig'
-import createSagaMiddleware from 'redux-saga'
-import RehydrationServices from '../Services/RehydrationServices'
 import { createLogger } from 'redux-logger'
-import ReduxPersist, { persistConfig } from '../../Config/ReduxPersist'
-import {middleware as routerMiddleware} from '../../Redux/Routes'
+import { autoRehydrate, persistReducer, persistStore } from 'redux-persist'
+import createSagaMiddleware from 'redux-saga'
+
+import Config from '../Config/DebugConfig'
+import RehydrationServices from '../Shared/Services/RehydrationServices'
+import ReduxPersist, { persistConfig } from '../Config/ReduxPersist'
+import {middleware as routerMiddleware} from './Routes'
 
 // creates the store
 export default (rootReducer, rootSaga) => {

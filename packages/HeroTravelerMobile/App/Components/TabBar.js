@@ -13,7 +13,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  containerFour: {
+  containerFourSmall: {
+    width: `${Metrics.feedMargin}%`,
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  containerFourLarge: {
     width: `${Metrics.feedMargin}%`,
     marginTop: 18,
     display: 'flex',
@@ -63,7 +70,10 @@ export default class TabBar extends Component {
     ))
   }
 
-  tabBarRender = (tabAmount) => {
+  tabBarRender = (tabAmount, largeTabBar) => {
+    const sizeStyle = largeTabBar
+      ? styles.containerFourLarge
+      : styles.containerFourSmall
     switch (tabAmount){
       case 2:
         return (
@@ -73,7 +83,7 @@ export default class TabBar extends Component {
         )
       case 4:
         return (
-          <View style={styles.containerFour}>
+          <View style={sizeStyle}>
             {this.renderTabs()}
           </View>
         )
@@ -96,7 +106,7 @@ export default class TabBar extends Component {
     const tabAmount = Object.keys(tabs).length
     return (
       <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
-        {this.tabBarRender(tabAmount)}
+        {this.tabBarRender(tabAmount, largeTabBar)}
       </View>
     )
   }

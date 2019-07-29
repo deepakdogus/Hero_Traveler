@@ -39,11 +39,6 @@ export default StyleSheet.create({
     paddingVertical: 7,
     textAlign: 'center',
   },
-  tabStyle: {
-    width: '100%',
-    marginLeft: 14,
-    marginRight: 14,
-  },
   tabWrapper: {
     width: Metrics.screenWidth,
   },

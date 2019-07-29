@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   tabSelected: {
-    paddingBottom: 2,
+    paddingBottom: 3,
     borderBottomColor: Colors.red,
   },
   tabText: {

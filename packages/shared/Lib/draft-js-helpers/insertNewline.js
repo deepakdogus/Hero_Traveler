@@ -7,7 +7,8 @@ export default function keyCommandInsertNewline(editorState) {
   const selection = editorState.getSelection()
 
   const selectedKey = selection.getStartKey()
-  const selectionType = content.getBlockForKey(selectedKey).getType()
+  const selectedBlock = content && content.getBlockForKey(selectedKey)
+  const selectionType = selectedBlock && selectedBlock.getType()
 
   if (selectionType == 'atomic') {
     return insertBlock(

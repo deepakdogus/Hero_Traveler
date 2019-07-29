@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  View,
-  Text,
-} from 'react-native'
+import { View, Text } from 'react-native'
 
 import styles, { feedItemHeight } from './Styles/ProfileTabsAndStoriesStyles'
 import { Colors } from '../Shared/Themes'
@@ -33,8 +30,8 @@ export default class ProfileTabsAndStories extends Component {
     onRefresh: PropTypes.func,
   }
 
-  renderTabs(){
-    const {tabTypes, selectedTab, selectTab} = this.props
+  renderTabs() {
+    const { tabTypes, selectedTab, selectTab } = this.props
     return (
       <TabBar
         tabs={tabTypes}
@@ -48,8 +45,12 @@ export default class ProfileTabsAndStories extends Component {
 
   renderFeedItem = ({feedItem, index}) => {
     const {
-      tabTypes, selectedTab, isStory,
-      editable, sessionUserId, location,
+      tabTypes,
+      selectedTab,
+      isStory,
+      editable,
+      sessionUserId,
+      location,
     } = this.props
 
     return (
@@ -72,22 +73,23 @@ export default class ProfileTabsAndStories extends Component {
     )
   }
 
-  isFetching(){
+  isFetching() {
     return this.props.fetchStatus && this.props.fetchStatus.fetching
   }
 
-  areNoStories(){
-    return this.props.feedItemsById.length === 0
+  areNoStories() {
+    return this.props.feedItemsById && this.props.feedItemsById.length === 0
   }
 
   getNoStoriesText() {
-    const {editable, tabTypes, selectedTab, showTooltip} = this.props
+    const { editable, tabTypes, selectedTab, showTooltip } = this.props
     if (showTooltip) return ''
-    else if (selectedTab === tabTypes.stories){
+    else if (selectedTab === tabTypes.stories) {
       return editable ? 'There are no stories here' : 'This user has no stories published'
     }
     else if (selectedTab === tabTypes.drafts) return 'There are no stories here'
-    else if (selectedTab === tabTypes.bookmarks) return 'There are no bookmarked stories here'
+    else if (selectedTab === tabTypes.bookmarks)
+      return 'There are no bookmarked stories here'
     else if (selectedTab === tabTypes.guides) return 'There are no guides here'
     return ''
   }
@@ -97,23 +99,25 @@ export default class ProfileTabsAndStories extends Component {
   }
 
   _renderProfileInfo = () => {
-    const {renderProfileInfo, error} = this.props
-    let errorText = _.get(error, 'message', 'Unable to fully load user data. Please try again.')
+    const { renderProfileInfo, error } = this.props
+    let errorText = _.get(
+      error,
+      'message',
+      'Unable to fully load user data. Please try again.',
+    )
     return (
       <View style={styles.topAreaWrapper}>
         {renderProfileInfo()}
-        {!!error && (
-          <Text style={styles.errorText}>{errorText}</Text>
-        )}
+        {!!error && <Text style={styles.errorText}>{errorText}</Text>}
       </View>
     )
   }
 
-  getHeaderHeight(){
+  getHeaderHeight() {
     // This is quite manual but RN currently doesn't give accurate metrics
     // from .measure() or onLayout. So don't forget to update here if styles
     // change.
-    const { editable} = this.props
+    const { editable } = this.props
 
     // half point needed for downsample rounding on iPhone XS Max
     let height = editable ? 236.5 : 199
@@ -137,10 +141,14 @@ export default class ProfileTabsAndStories extends Component {
     const hasNoStories = this.areNoStories()
 
     return (
-      <View style={[
-        styles.profileTabsAndStoriesHeight,
-        editable ? styles.profileTabsAndStoriesRoot : styles.profileTabsAndStoriesRootWithMarginForNavbar,
-      ]}>
+      <View
+        style={[
+          styles.profileTabsAndStoriesHeight,
+          editable
+            ? styles.profileTabsAndStoriesRoot
+            : styles.profileTabsAndStoriesRootWithMarginForNavbar,
+        ]}
+      >
         {hasNoStories && (
           <View>
             {renderProfileInfo && this._renderProfileInfo()}

@@ -1,11 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Colors, Fonts } from '../Shared/Themes'
 
 const styles = StyleSheet.create({
@@ -37,17 +32,8 @@ const styles = StyleSheet.create({
 
 const Tab = ({ text, onPress, selected, style }) => (
   <TouchableWithoutFeedback onPress={onPress}>
-    <View style={[
-      styles.tab,
-      selected ? styles.tabSelected : null,
-      style,
-    ]}>
-      <Text
-        style={[
-          styles.tabText,
-          selected ? styles.tabTextSelected : null,
-        ]}
-      >
+    <View style={[styles.tab, selected ? styles.tabSelected : null, style]}>
+      <Text style={[styles.tabText, selected ? styles.tabTextSelected : null]}>
         {text}
       </Text>
     </View>

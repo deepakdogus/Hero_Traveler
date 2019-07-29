@@ -20,9 +20,7 @@ export default StyleSheet.create({
   logo: {
     width: 148,
     height: 30,
-    marginTop: isIPhoneX()
-      ? Metrics.baseMargin * 1.5 + 15
-      : Metrics.baseMargin * 1.5,
+    marginTop: isIPhoneX() ? Metrics.baseMargin * 1.5 + 15 : Metrics.baseMargin * 1.5,
   },
   scrollItemFullScreen: {
     flex: 1,
@@ -54,7 +52,7 @@ export default StyleSheet.create({
     flex: 1,
     height: Metrics.searchBarHeight,
     backgroundColor: Colors.feedDividerGrey,
-    opacity: .6,
+    opacity: 0.6,
     paddingLeft: Metrics.baseMargin / 2,
     paddingRight: Metrics.baseMargin / 2,
     borderRadius: 5,

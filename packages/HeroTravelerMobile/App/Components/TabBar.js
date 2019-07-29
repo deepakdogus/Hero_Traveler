@@ -61,7 +61,7 @@ export default class TabBar extends Component {
 
   onClickTab = tabValue => () => this.props.onClickTab(tabValue)
 
-  renderTabs = (tabStyle) => {
+  renderTabs = tabStyle => {
     const { activeTab, tabs } = this.props
     return Object.keys(tabs).map((key, index) => (
       <Tab
@@ -75,22 +75,12 @@ export default class TabBar extends Component {
   }
 
   tabBarRender = (tabAmount, largeTabBar) => {
-    const sizeStyle = largeTabBar
-      ? styles.containerFourLarge
-      : styles.containerFourSmall
-    switch (tabAmount){
+    const sizeStyle = largeTabBar ? styles.containerFourLarge : styles.containerFourSmall
+    switch (tabAmount) {
       case 2:
-        return (
-          <View style={styles.containerTwo}>
-            {this.renderTabs(styles.tabStyle)}
-          </View>
-        )
+        return <View style={styles.containerTwo}>{this.renderTabs(styles.tabStyle)}</View>
       case 4:
-        return (
-          <View style={sizeStyle}>
-            {this.renderTabs()}
-          </View>
-        )
+        return <View style={sizeStyle}>{this.renderTabs()}</View>
       default:
         return (
           <ScrollView

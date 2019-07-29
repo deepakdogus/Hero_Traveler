@@ -5,7 +5,8 @@ import { isIPhoneX } from '../../Themes/Metrics'
 const coverInnerHeight = 370
 const tabNavEditHeight = 50
 
-export const feedItemHeight = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
+export const feedItemHeight
+  = Metrics.screenHeight - coverInnerHeight - tabNavEditHeight - Metrics.tabBarHeight
 
 export default StyleSheet.create({
   profileTabsAndStoriesHeight: {
@@ -42,7 +43,7 @@ export default StyleSheet.create({
   },
   subtitleStyle: {
     fontSize: 13,
-    letterSpacing: .7,
+    letterSpacing: 0.7,
     fontWeight: '300',
   },
 })

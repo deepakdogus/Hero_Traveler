@@ -27,9 +27,6 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.montserrat,
     marginBottom: 10,
   },
-  tabStyle: {
-    // flexGrow: 0,
-  },
   noStories: {
     marginTop: Metrics.doubleSection,
   },

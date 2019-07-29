@@ -6,7 +6,14 @@ import { Metrics } from '../Shared/Themes'
 import Tab from './Tab'
 
 const styles = StyleSheet.create({
-  container: {
+  containerTwo: {
+    width: `${Metrics.feedMargin}%`,
+    marginTop: 18,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  containerFour: {
     width: `${Metrics.feedMargin}%`,
     marginTop: 18,
     display: 'flex',
@@ -56,26 +63,40 @@ export default class TabBar extends Component {
     ))
   }
 
+  tabBarRender = (tabAmount) => {
+    switch (tabAmount){
+      case 2:
+        return (
+          <View style={styles.containerTwo}>
+            {this.renderTabs()}
+          </View>
+        )
+      case 4:
+        return (
+          <View style={styles.containerFour}>
+            {this.renderTabs()}
+          </View>
+        )
+      default:
+        return (
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyles={styles.scrollView}
+            bounces={false}
+          >
+            {this.renderTabs()}
+          </ScrollView>
+        )
+    }
+  }
+
   render() {
     const { largeTabBar, tabs } = this.props
-    const ScrollViewRender
-      = Object.keys(tabs).length > 4 ? (
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyles={styles.scrollView}
-          bounces={false}
-        >
-          {this.renderTabs()}
-        </ScrollView>
-      ) : (
-        this.renderTabs()
-      )
+    const tabAmount = Object.keys(tabs).length
     return (
       <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
-        <View style={styles.container}>
-          {ScrollViewRender}
-        </View>
+        {this.tabBarRender(tabAmount)}
       </View>
     )
   }

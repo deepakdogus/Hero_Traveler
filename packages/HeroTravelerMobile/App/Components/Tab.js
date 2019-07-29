@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { Colors, Fonts, Metrics } from '../Shared/Themes'
+import { Colors, Fonts } from '../Shared/Themes'
 
 const styles = StyleSheet.create({
   tab: {
@@ -35,23 +35,23 @@ const styles = StyleSheet.create({
 })
 
 const Tab = ({ text, onPress, selected, style }) => (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[
-        styles.tab,
-        selected ? styles.tabSelected : null,
-        style,
-      ]}>
-        <Text
-          style={[
-            styles.tabText,
-            selected ? styles.tabTextSelected : null,
-          ]}
-        >
-          {text}
-        </Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View style={[
+      styles.tab,
+      selected ? styles.tabSelected : null,
+      style,
+    ]}>
+      <Text
+        style={[
+          styles.tabText,
+          selected ? styles.tabTextSelected : null,
+        ]}
+      >
+        {text}
+      </Text>
+    </View>
+  </TouchableWithoutFeedback>
+)
 
 Tab.propTypes = {
   text: PropTypes.string,

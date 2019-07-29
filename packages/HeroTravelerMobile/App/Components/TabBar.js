@@ -8,7 +8,7 @@ import Tab from './Tab'
 const styles = StyleSheet.create({
   containerTwo: {
     width: `${Metrics.feedMargin}%`,
-    marginTop: 18,
+    marginTop: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.snow,
     height: 40,
-
+    borderBottomWidth: 1,
     borderBottomColor: Colors.feedDividerGrey,
   },
   largeWrapper: {

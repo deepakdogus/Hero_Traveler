@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderBottomColor: Colors.snow,
     padding: 0,
-    height: 30,
+    height: 29,
   },
   tabSelected: {
     flex: 0,

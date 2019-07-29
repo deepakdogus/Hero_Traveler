@@ -2,9 +2,13 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { ScrollView, View, StyleSheet } from 'react-native'
 import { Colors } from '../Shared/Themes'
+import { Metrics } from '../Shared/Themes'
 import Tab from './Tab'
 
 const styles = StyleSheet.create({
+  container: {
+    width: `${Metrics.feedMargin}%`,
+  },
   wrapper: {
     alignItems: 'center',
     backgroundColor: Colors.snow,
@@ -18,9 +22,9 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.feedDividerGrey,
   },
   scrollView: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 })
 
@@ -52,14 +56,16 @@ export default class TabBar extends Component {
     const { largeTabBar } = this.props
     return (
       <View style={[styles.wrapper, largeTabBar && styles.largeWrapper]}>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyles={styles.scrollView}
-          bounces={false}
-        >
-          {this.renderTabs()}
-        </ScrollView>
+        <View style={styles.container}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyles={styles.scrollView}
+            bounces={false}
+          >
+            {this.renderTabs()}
+          </ScrollView>
+        </View>
       </View>
     )
   }
